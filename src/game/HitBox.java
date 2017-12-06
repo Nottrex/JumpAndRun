@@ -72,13 +72,13 @@ public class HitBox {
 	}
 
 	public boolean collides(HitBox box2) {
-		return (x2 > box2.x1 &&  box2.x2 > x1 &&  y2 > box2.y1 && box2.y2 > y1);
+		return (x2 > box2.x1 && box2.x2 > x1 && y2 > box2.y1 && box2.y2 > y1);
 	}
 
 	/**
 	 * @param box2 the second box
 	 * @return the direction of the given Box relative to this
-	 *
+	 * <p>
 	 * LUR
 	 * L#R
 	 * LDR
@@ -94,10 +94,9 @@ public class HitBox {
 	}
 
 	/**
-	 *
 	 * @param box2 the moveable box
-	 * @param ax the x part of the direction where the object should be moved
-	 * @param ay the y part of the direction where the object should be moved
+	 * @param ax   the x part of the direction where the object should be moved
+	 * @param ay   the y part of the direction where the object should be moved
 	 * @return the amount of the given direction the second object has to be moved to avoid collision
 	 */
 	public float collisionDepth(HitBox box2, float ax, float ay) {
@@ -107,16 +106,16 @@ public class HitBox {
 
 		if (ax != 0) {
 			if (ax < 0) {
-				distance = (box2.x2 - x1) / ax;
+				distance = (box2.x2 - x1) / (-ax);
 			} else {
-				distance = (box2.x2 - x1) / ax;
+				distance = (x2 - box2.x1) / ax;
 			}
 		}
 		if (ay != 0) {
 			if (ay < 0) {
-				distance = Math.min((x2 - box2.x1) / ax, distance);
+				distance = Math.min((box2.y2 - y1) / (-ay), distance);
 			} else {
-				distance = Math.min((box2.x2 - x1) / ax, distance);
+				distance = Math.min((y2 - box2.y1) / ay, distance);
 			}
 		}
 
