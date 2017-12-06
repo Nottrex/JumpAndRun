@@ -1,4 +1,4 @@
-package game;
+package game.gameObjects;
 
 public interface Drawable extends GameObject {
 	public float getDrawingPriority();

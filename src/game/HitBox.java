@@ -67,8 +67,8 @@ public class HitBox {
 	}
 
 	@Override
-	protected Object clone() {
-		return new HitBox(x, y, x + width, y + height);
+	public HitBox clone() {
+		return new HitBox(x, y, width, height);
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class HitBox {
 		return String.format("[(%f, %f), (%f, %f)]", x, y, x + width, y + height);
 	}
 
-	private enum HitBoxDirection {
+	public enum HitBoxDirection {
 		LEFT(-1, 0), UP(0, 1), RIGHT(1, 0), DOWN(0, -1), COLLIDE(0, 0);
 
 		private float ax, ay;
@@ -86,12 +86,12 @@ public class HitBox {
 			this.ay = ay;
 		}
 
-		float getXDirection() {
+		public float getXDirection() {
 			if (ax == 0 && ay == 0) return ((float) Math.random()) * 2 - 1;
 			return ax;
 		}
 
-		float getYDirection() {
+		public float getYDirection() {
 			if (ax == 0 && ay == 0) return ((float) Math.random()) * 2 - 1;
 			return ay;
 		}

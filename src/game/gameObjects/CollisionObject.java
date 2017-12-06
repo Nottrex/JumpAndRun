@@ -1,4 +1,6 @@
-package game;
+package game.gameObjects;
+
+import game.HitBox;
 
 import java.util.List;
 
