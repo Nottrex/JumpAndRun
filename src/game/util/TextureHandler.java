@@ -26,8 +26,7 @@ public class TextureHandler {
 		try {
 			textures_png.put(textureName, ImageIO.read(ClassLoader.getSystemResource("res/textures/" + fileName + ".png")));
 		} catch (IOException e) {
-			System.err.println("Error loading texture: " + textureName);
-			System.exit(-1);
+			ErrorUtil.printError(String.format("Loading texture: %s", textureName));
 		}
 	}
 
@@ -51,8 +50,7 @@ public class TextureHandler {
 				textures_sprite_sheet_texture.put(spriteSheetName + "_" + texture, spriteSheetName);
 			}
 		} catch (Exception e) {
-			System.err.println("Error loading spritesheet: " + spriteSheetName);
-			System.exit(-1);
+			ErrorUtil.printError(String.format("Loading spritesheet: %s", spriteSheetName));
 		}
 	}
 
@@ -71,6 +69,7 @@ public class TextureHandler {
 			Rectangle rec = textures_sprite_sheet.get(textureName);
 			return textures_png.get(textures_sprite_sheet_texture.get(textureName)).getSubimage(rec.x, rec.y, rec.width, rec.height);
 		}
-		throw new RuntimeException("No such image: " + textureName);
+		ErrorUtil.printError(String.format("No such image: %s", textureName));
+		return null;
 	}
 }

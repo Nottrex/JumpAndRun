@@ -1,5 +1,6 @@
 package game;
 
+import game.util.ErrorUtil;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -16,14 +17,14 @@ public class Window {
 
 		GLFWErrorCallback.createPrint(System.err).set();
 
-		if (!GLFW.glfwInit()) throw new RuntimeException("Error while initializing GLFW");
+		if (!GLFW.glfwInit()) ErrorUtil.printError("initializing GLFW");
 
 		GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE,  GLFW.GLFW_FALSE);
 		GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE,  GLFW.GLFW_TRUE);
 
 		window = GLFW.glfwCreateWindow(WIDTH, HEIGHT, WINDOW_NAME, MemoryUtil.NULL, MemoryUtil.NULL);
 
-		if (window == MemoryUtil.NULL) throw new RuntimeException("Error while creating window");
+		if (window == MemoryUtil.NULL) ErrorUtil.printError("creating window");
 
 		GLFW.glfwMakeContextCurrent(window);
 		GLFW.glfwSwapInterval(1); //Enable v-sync
