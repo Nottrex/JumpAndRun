@@ -4,8 +4,10 @@ import game.gameObjects.CollisionObject;
 import game.gameObjects.Drawable;
 import game.gameObjects.GameObject;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Game {
 	private boolean running = true;
@@ -14,35 +16,34 @@ public class Game {
 	private List<CollisionObject> collisionObjects;
 	private List<Drawable> drawables;
 
-	private List<GameObject> toRemove;
-	private List<GameObject> toAdd;
+	private Queue<GameObject> toRemove;
+	private Queue<GameObject> toAdd;
 
 	public Game() {
-		gameObjects = new ArrayList<>();
-		collisionObjects = new ArrayList<>();
-		drawables = new ArrayList<>();
+		gameObjects = new LinkedList<>();
+		collisionObjects = new LinkedList<>();
+		drawables = new LinkedList<>();
 
-		toRemove = new ArrayList<>();
-		toAdd = new ArrayList<>();
+		toRemove = new ConcurrentLinkedQueue<>();
+		toAdd = new ConcurrentLinkedQueue<>();
 
 		gameLoop();
 	}
 
 	private void gameLoop() {
 		while (running) {
-			for (GameObject gameObject: toAdd) {
+			while (!toAdd.isEmpty()) {
+				GameObject gameObject = toAdd.poll();
 				gameObjects.add(gameObject);
 				if (gameObject instanceof CollisionObject) collisionObjects.add((CollisionObject) gameObject);
 				if (gameObject instanceof Drawable) drawables.add((Drawable) gameObject);
 			}
-			toAdd.clear();
 
-			for (GameObject gameObject: toRemove) {
-				gameObjects.remove(gameObject);
+			while (!toRemove.isEmpty()) {
+				GameObject gameObject = toRemove.poll();
 				if (gameObject instanceof CollisionObject) collisionObjects.remove(gameObject);
 				if (gameObject instanceof Drawable) drawables.remove(gameObject);
 			}
-			toRemove.clear();
 
 			gameObjects.sort((o1, o2) -> (int) Math.signum(o1.getDrawingPriority()-o2.getDrawingPriority()));
 
