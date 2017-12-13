@@ -18,19 +18,19 @@ public final class Window {
 	private static final String WINDOW_NAME = "JumpAndRun";
 
 	private long window;
+	private Keyboard keyboard;
 
 	private Window() {
 		System.out.println(String.format("LWJGL Version %s", Version.getVersion()));
 
 		initGLFW();
 		initOpenGL();
-
-		run();
 	}
 
 	public void run() {
 		while (!GLFW.glfwWindowShouldClose(window)) {
 			draw();
+			keyboard.update();
 
 			try {
 				Thread.sleep(1);
@@ -45,7 +45,6 @@ public final class Window {
 
 
 		GLFW.glfwSwapBuffers(window);
-		GLFW.glfwPollEvents();
 	}
 
 	private void cleanUp() {
@@ -75,11 +74,11 @@ public final class Window {
 		if (window == MemoryUtil.NULL) ErrorUtil.printError("Creating window");
 
 		GLFW.glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
-			System.out.println(GLFW.glfwGetJoystickButtons(GLFW.GLFW_JOYSTICK_1).get(GLFW.GLFW_GAMEPAD_BUTTON_LEFT_THUMB));
-			if ( key == GLFW.GLFW_KEY_ESCAPE && action == GLFW.GLFW_RELEASE )
-				GLFW.glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
+			if (action == GLFW.GLFW_RELEASE)
+				GLFW.glfwSetWindowShouldClose(window, true);
 		});
 
+		keyboard = new Keyboard(window);
 
 		try ( MemoryStack stack = MemoryStack.stackPush() ) {
 			IntBuffer pWidth = stack.mallocInt(1);
@@ -100,6 +99,10 @@ public final class Window {
 		GLFW.glfwSwapInterval(1);
 
 		GLFW.glfwShowWindow(window);
+	}
+
+	public Keyboard getKeyboard() {
+		return keyboard;
 	}
 
 	private static Window INSTANCE;

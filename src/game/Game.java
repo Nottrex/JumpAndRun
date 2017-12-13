@@ -3,6 +3,8 @@ package game;
 import game.gameObjects.CollisionObject;
 import game.gameObjects.Drawable;
 import game.gameObjects.GameObject;
+import game.window.Keyboard;
+import game.window.Window;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -26,11 +28,9 @@ public final class Game {
 
 		toRemove = new ConcurrentLinkedQueue<>();
 		toAdd = new ConcurrentLinkedQueue<>();
-
-		gameLoop();
 	}
 
-	private void gameLoop() {
+	public void gameLoop() {
 		while (running) {
 			while (!toAdd.isEmpty()) {
 				GameObject gameObject = toAdd.poll();
