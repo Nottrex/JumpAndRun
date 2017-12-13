@@ -48,7 +48,7 @@ public abstract class SimpleMovementEntity implements CollisionObject {
 	}
 
 	@Override
-	public void update(Game game) {
+	public void update() {
 		vx = mx * SPEED;
 		vy -= GRAVITY_ACCELERATION;
 		if (onGround) vy += jumping * JUMP_ACCELERATION;
@@ -56,23 +56,25 @@ public abstract class SimpleMovementEntity implements CollisionObject {
 		vx = MathUtil.clamp(vx, -MAX_SPEED, MAX_SPEED);
 		vy = MathUtil.clamp(vy, -MAX_SPEED, MAX_SPEED);
 
-		move(game.getCollisionObjects());
+		move();
 	}
 
-	private void move(List<CollisionObject> collisionObjects) {
-		boolean collision = false;
+	private void move() {
 		List<CollisionObject> collides = new ArrayList<>();
 		HitBox targetLocation = hitBox.clone();
 		targetLocation.move(vx, vy);
 
+		boolean collision;
 		do {
-			for (CollisionObject collisionObject: collisionObjects) {
+			collision = false;
+			for (CollisionObject collisionObject: Game.getInstance().getCollisionObjects()) {
 				for (HitBox hitBox2: collisionObject.getCollisionBoxes()) {
 					if (hitBox2.collides(targetLocation)) {
 						collision = true;
 						if (!collides.contains(collisionObject)) collides.add(collisionObject);
 
 						HitBox.HitBoxDirection direction = hitBox2.direction(hitBox);
+						if (direction == HitBox.HitBoxDirection.COLLIDE) continue;
 						if (direction == HitBox.HitBoxDirection.UP) onGround = true;
 
 						float ax = direction.getXDirection();

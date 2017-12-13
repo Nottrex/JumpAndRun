@@ -15,7 +15,7 @@ public class Player extends SimpleMovementEntity {
 	}
 
 	@Override
-	public float getDrawingPriority() {
+	public float getPriority() {
 		return 1;
 	}
 }

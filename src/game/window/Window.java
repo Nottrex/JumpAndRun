@@ -1,7 +1,6 @@
-package game;
+package game.window;
 
 import game.util.ErrorUtil;
-import game.util.TextureHandler;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
@@ -14,13 +13,13 @@ import org.lwjgl.system.MemoryUtil;
 
 import java.nio.IntBuffer;
 
-public class Window {
+public final class Window {
 	private static final int WIDTH = 800, HEIGHT = 600;
 	private static final String WINDOW_NAME = "JumpAndRun";
 
 	private long window;
 
-	public Window() {
+	private Window() {
 		System.out.println(String.format("LWJGL Version %s", Version.getVersion()));
 
 		initGLFW();
@@ -76,9 +75,11 @@ public class Window {
 		if (window == MemoryUtil.NULL) ErrorUtil.printError("Creating window");
 
 		GLFW.glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
+			System.out.println(GLFW.glfwGetJoystickButtons(GLFW.GLFW_JOYSTICK_1).get(GLFW.GLFW_GAMEPAD_BUTTON_LEFT_THUMB));
 			if ( key == GLFW.GLFW_KEY_ESCAPE && action == GLFW.GLFW_RELEASE )
 				GLFW.glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
 		});
+
 
 		try ( MemoryStack stack = MemoryStack.stackPush() ) {
 			IntBuffer pWidth = stack.mallocInt(1);
@@ -99,5 +100,16 @@ public class Window {
 		GLFW.glfwSwapInterval(1);
 
 		GLFW.glfwShowWindow(window);
+	}
+
+	private static Window INSTANCE;
+
+	public static Window getInstance() {
+		if (INSTANCE == null) {
+			synchronized (Window.class) {
+				if (INSTANCE == null) INSTANCE = new Window();
+			}
+		}
+		return INSTANCE;
 	}
 }

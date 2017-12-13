@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class Game {
+public final class Game {
 	private boolean running = true;
 
 	private List<GameObject> gameObjects;
@@ -19,7 +19,7 @@ public class Game {
 	private Queue<GameObject> toRemove;
 	private Queue<GameObject> toAdd;
 
-	public Game() {
+	private Game() {
 		gameObjects = new LinkedList<>();
 		collisionObjects = new LinkedList<>();
 		drawables = new LinkedList<>();
@@ -45,11 +45,13 @@ public class Game {
 				if (gameObject instanceof Drawable) drawables.remove(gameObject);
 			}
 
-			gameObjects.sort((o1, o2) -> (int) Math.signum(o1.getDrawingPriority()-o2.getDrawingPriority()));
+			gameObjects.sort((o1, o2) -> (int) Math.signum(o2.getPriority()-o1.getPriority()));
 
 			for (GameObject gameObject: gameObjects) {
-				gameObject.update(this);
+				gameObject.update();
 			}
+
+			//TODO: WAIT FOR TICK TIME
 		}
 	}
 
@@ -63,5 +65,15 @@ public class Game {
 
 	public List<CollisionObject> getCollisionObjects() {
 		return collisionObjects;
+	}
+
+	private static Game INSTANCE;
+	public static Game getInstance() {
+		if (INSTANCE == null) {
+			synchronized (Game.class) {
+				if (INSTANCE == null) INSTANCE = new Game();
+			}
+		}
+		return INSTANCE;
 	}
 }
