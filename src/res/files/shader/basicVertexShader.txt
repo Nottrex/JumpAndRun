@@ -1,0 +1,26 @@
+#version 130
+uniform mat4 projectionMatrix;
+uniform mat4 cameraMatrix;
+
+uniform float x, y, width, height;
+
+uniform float time;
+
+uniform int texTW;
+uniform int texTH;
+uniform int texX;
+uniform int texY;
+uniform int texW;
+uniform int texH;
+
+out vec2 fragTex;
+
+void main() {
+    fragTex = vec2((gl_VertexID & 2)/2, gl_VertexID & 1);
+    fragTex.x = (texX+fragTex.x*texW)/texTW;
+    fragTex.y = 1-(texY+(1-fragTex.y)*texH)/texTH;
+
+    vec4 pos = vec4(((gl_VertexID & 2)/2)*width+x, (gl_VertexID & 1)*height+y, 0, 1);
+
+    gl_Position = projectionMatrix * cameraMatrix * pos;
+}

@@ -1,6 +1,8 @@
 package game.gameObjects;
 
+import game.window.Window;
+
 public interface Drawable extends GameObject {
-	public float getDrawingPriority();
-	public void draw();
+	float getDrawingPriority();
+	void draw(Window window, long time);
 }
