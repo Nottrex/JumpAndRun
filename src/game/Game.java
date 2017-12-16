@@ -15,7 +15,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public final class Game {
-	public static final int TPS = 30;
+	public static final int TPS = 60;
 
 	private List<GameObject> gameObjects;
 	private List<CollisionObject> collisionObjects;
@@ -45,6 +45,7 @@ public final class Game {
 
 			player.setJumping(keyboard.getPressed(Keyboard.GAMEPAD_BUTTON_A));
 			player.setMx(keyboard.getPressed(Keyboard.GAMEPAD_AXIS_LEFT_X_RIGHT) - keyboard.getPressed(Keyboard.GAMEPAD_AXIS_LEFT_X_LEFT));
+			if (keyboard.isPressed(Keyboard.GAMEPAD_BUTTON_B)) Window.getInstance().getCamera().addScreenshake(0.03f);
 
 			while (!toAdd.isEmpty()) {
 				GameObject gameObject = toAdd.poll();

@@ -107,8 +107,6 @@ public final class Window {
 
 			CamMath.lookAt(cameraPosition, target, up, viewMatrix);
 
-			System.out.println(viewMatrix);
-
 			shaderHandler.setViewMatrix(viewMatrix);
 		}
 	}
@@ -134,6 +132,8 @@ public final class Window {
 	}
 
 	private void cleanUp() {
+		shaderHandler.cleanUp();
+
 		GL11.glDeleteTextures(texture);
 
 		Callbacks.glfwFreeCallbacks(window);
@@ -239,6 +239,10 @@ public final class Window {
 
 	public ShaderHandler getShaderHandler() {
 		return shaderHandler;
+	}
+
+	public Camera getCamera() {
+		return camera;
 	}
 
 	public boolean isRunning() {

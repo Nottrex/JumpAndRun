@@ -109,4 +109,12 @@ public class ShaderHandler {
 		ErrorUtil.printError("Unknown Shader: " + name);
 		return null;
 	}
+
+	public void cleanUp() {
+		while (!shaders.isEmpty()) {
+			String name = (String) shaders.keySet().toArray()[0];
+			shaders.get(name).cleanUp();
+			shaders.remove(name);
+		}
+	}
 }

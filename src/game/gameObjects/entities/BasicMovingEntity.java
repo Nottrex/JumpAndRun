@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BasicMovingEntity extends BasicDrawingEntity implements CollisionObject {
-	private static final float MAX_SPEED = 0.5f;
+	private static final float MAX_SPEED = 0.25f;
 
 	private List<HitBox> hitBoxList;
 	protected float vx, vy;
