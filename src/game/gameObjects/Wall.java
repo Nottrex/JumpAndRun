@@ -1,26 +1,19 @@
 package game.gameObjects;
 
 import game.HitBox;
+import game.Sprite;
+import game.gameObjects.entities.BasicMovingEntity;
 
-import java.util.LinkedList;
-import java.util.List;
-
-public class Wall implements CollisionObject {
-	private List<HitBox> collisionBoxes;
+public class Wall extends BasicMovingEntity {
+	private Sprite sprite = new Sprite(1, "wall");
 
 	public Wall() {
-		collisionBoxes = new LinkedList<>();
-		collisionBoxes.add(new HitBox(-20, -5, 40, 1));
+		super(new HitBox(-2, -5, 10, 1));
 	}
 
 	@Override
 	public float getPriority() {
 		return 0;
-	}
-
-	@Override
-	public List<HitBox> getCollisionBoxes() {
-		return collisionBoxes;
 	}
 
 	@Override
@@ -31,5 +24,15 @@ public class Wall implements CollisionObject {
 	@Override
 	public void update() {
 
+	}
+
+	@Override
+	public float getDrawingPriority() {
+		return 0;
+	}
+
+	@Override
+	public Sprite getCurrentSprite() {
+		return sprite;
 	}
 }

@@ -9,7 +9,7 @@ public class Player extends BasicWalkingEntity {
 	private Sprite walking = new Sprite(1000, "player", "wall");
 
 	public Player() {
-		super(new HitBox(-3,-3,1,1));
+		super(new HitBox(3,-3,1,1));
 	}
 
 	@Override
