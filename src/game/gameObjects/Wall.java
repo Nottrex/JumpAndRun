@@ -8,7 +8,7 @@ public class Wall extends BasicMovingEntity {
 	private Sprite sprite = new Sprite(1, "wall");
 
 	public Wall() {
-		super(new HitBox(-2, -5, 10, 1));
+		super(new HitBox(-5, -5, 10, 1));
 	}
 
 	@Override

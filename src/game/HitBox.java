@@ -33,8 +33,8 @@ public class HitBox {
 
 		if ((x + width) <= box2.x) return HitBoxDirection.RIGHT;
 		if ((box2.x + box2.width) <= x) return HitBoxDirection.LEFT;
-		if ((y + height) <= box2.x) return HitBoxDirection.DOWN;
-		return HitBoxDirection.UP;
+		if ((y + height) <= box2.y) return HitBoxDirection.UP;
+		return HitBoxDirection.DOWN;
 	}
 
 	/**

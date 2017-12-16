@@ -49,7 +49,7 @@ public abstract class BasicMovingEntity extends BasicDrawingEntity implements Co
 			for (CollisionObject collisionObject: Game.getInstance().getCollisionObjects()) {
 				for (HitBox hitBox2: collisionObject.getCollisionBoxes()) {
 					if (hitBox2.collides(targetLocation)) {
-						HitBox.HitBoxDirection direction = hitBox2.direction(hitBox);
+						HitBox.HitBoxDirection direction = hitBox.direction(hitBox2);
 
 						collides.add(collisionObject);
 						directions.add(direction);
