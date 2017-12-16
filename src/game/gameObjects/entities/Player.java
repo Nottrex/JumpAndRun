@@ -6,8 +6,10 @@ import game.HitBox;
 
 public class Player extends BasicWalkingEntity {
 
+	private Sprite walking = new Sprite(1000, "player", "wall");
+
 	public Player() {
-		super(new HitBox(0,0,1,1));
+		super(new HitBox(-3,-3,1,1));
 	}
 
 	@Override
@@ -28,6 +30,6 @@ public class Player extends BasicWalkingEntity {
 
 	@Override
 	public Sprite getCurrentSprite() {
-		return null;
+		return walking;
 	}
 }

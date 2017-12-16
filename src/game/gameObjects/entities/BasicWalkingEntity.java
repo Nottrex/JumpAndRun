@@ -5,9 +5,9 @@ import game.gameObjects.GameObject;
 import game.util.MathUtil;
 
 public abstract class BasicWalkingEntity extends BasicMovingEntity {
-	private static final float SPEED = 0.05f;
-	private static final float JUMP_ACCELERATION = 0.3f;
-	private static final float GRAVITY_ACCELERATION = 0.01f;
+	private static final float SPEED = 0.25f;
+	private static final float JUMP_ACCELERATION = 1f;
+	private static final float GRAVITY_ACCELERATION = 0.05f;
 
 	private boolean onGround;
 
@@ -17,7 +17,7 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 	public BasicWalkingEntity(HitBox hitBox) {
 		super(hitBox);
 		mx = 0;
-		jumping = 0;
+		jumping = 1;
 		onGround = false;
 	}
 

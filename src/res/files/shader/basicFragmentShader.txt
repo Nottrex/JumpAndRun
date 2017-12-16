@@ -4,5 +4,5 @@ in vec2 fragTex;
 out vec4 finalColor;
 
 void main() {
-    finalColor = texture2D(tex, fragTex);
+    finalColor = texture2D(tex, fragTex);;
 }

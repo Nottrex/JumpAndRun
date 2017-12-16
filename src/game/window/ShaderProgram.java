@@ -14,7 +14,7 @@ public abstract class ShaderProgram {
 
 	public ShaderProgram(String vertexFile, String fragmentFile) {
 		vertexShaderID = loadShader(vertexFile, GL20.GL_VERTEX_SHADER);
-		fragmentShaderID = loadShader(vertexFile, GL20.GL_FRAGMENT_SHADER);
+		fragmentShaderID = loadShader(fragmentFile, GL20.GL_FRAGMENT_SHADER);
 		programID = GL20.glCreateProgram();
 
 		GL20.glAttachShader(programID, vertexShaderID);
@@ -72,13 +72,27 @@ public abstract class ShaderProgram {
 		GL20.glUniform1f(location, toLoad);
 	}
 
-	protected void setUniformMat4(int location, float[] matrix) {
+	protected void setUniformMat4(int location, FloatBuffer matrix) {
 		GL20.glUniformMatrix4fv(location, false, matrix);
 	}
 
+
+
 	protected abstract void bindAttributes();
 
-	protected abstract void getUniformLocations();
+
+	private int texLocation, viewMatrixLocation, projectionMatrixLocation;
+	private int texTWLocation, texTHLocation, timeLocation;
+
+	protected void getUniformLocations() {
+		texLocation = getUniformLocation("tex");
+		viewMatrixLocation = getUniformLocation("viewMatrix");
+		projectionMatrixLocation = getUniformLocation("projectionMatrix");
+		texTWLocation = getUniformLocation("texTW");
+		texTHLocation = getUniformLocation("texTH");
+		timeLocation = getUniformLocation("time");
+
+	}
 
 	protected int getUniformLocation(String name) {
 		return GL20.glGetUniformLocation(programID, name);
@@ -86,6 +100,29 @@ public abstract class ShaderProgram {
 
 	protected int getAttributeLocation(String name) {
 		return GL20.glGetAttribLocation(programID, name);
+	}
+
+
+
+	public void setTexture(int tex) {
+		setUniform1i(texLocation, tex);
+	}
+
+	public void setViewMatrix(FloatBuffer viewMatrix) {
+		setUniformMat4(viewMatrixLocation, viewMatrix);
+	}
+
+	public void setProjectionMatrix(FloatBuffer projectionMatrix) {
+		setUniformMat4(projectionMatrixLocation, projectionMatrix);
+	}
+
+	public void setTextureTotalBounds(int texTW, int texTH) {
+		setUniform1i(texTWLocation, texTW);
+		setUniform1i(texTHLocation, texTH);
+	}
+
+	public void setTime(float time) {
+		setUniform1f(timeLocation, time);
 	}
 
 }

@@ -50,16 +50,16 @@ public class HitBox {
 
 		if (ax != 0) {
 			if (ax < 0) {
-				distance = ((box2.x + box2.width) - x) / (-ax);
+				distance = ((x + width) - box2.x) / (-ax);
 			} else {
-				distance = ((x + width) - box2.x) / ax;
+				distance = ((box2.x + box2.width) - x) / ax;
 			}
 		}
 		if (ay != 0) {
 			if (ay < 0) {
-				distance = Math.min(((box2.y + box2.height) - y) / (-ay), distance);
+				distance = Math.min(((y + height) - box2.y) / (-ay), distance);
 			} else {
-				distance = Math.min(((y + height) - box2.y) / ay, distance);
+				distance = Math.min(((box2.y + box2.height) - y) / ay, distance);
 			}
 		}
 
