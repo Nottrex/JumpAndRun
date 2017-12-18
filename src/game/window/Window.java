@@ -6,7 +6,7 @@ import com.joml.vector.Vector3f;
 import game.gameObjects.Drawable;
 import game.util.ErrorUtil;
 import game.util.TextureHandler;
-import game.util.WaitUtil;
+import game.util.TimeUtil;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
@@ -67,7 +67,7 @@ public final class Window {
 			draw();
 			keyboard.update();
 
-			WaitUtil.sleep(1);
+			TimeUtil.sleep(1);
 			running = !GLFW.glfwWindowShouldClose(window);
 		}
 
@@ -79,7 +79,7 @@ public final class Window {
 
 		updateViewMatrix();
 
-		long time = System.currentTimeMillis();
+		long time = TimeUtil.getTime();
 		shaderHandler.setTime((time/1000) % 10 - 5);
 
 		drawables.forEach(drawable -> drawable.draw(this, time));
@@ -116,7 +116,6 @@ public final class Window {
 		float aspect = width * 1.0f / height;
 
 		CamMath.perspective(FOV, aspect, NEAR, FAR, projectionMatrix);
-		//CamMath.ortho(1, 1, 1, 1, NEAR, FAR, projectionMatrix);
 
 		shaderHandler.setProjectionMatrix(projectionMatrix);
 

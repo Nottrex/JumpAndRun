@@ -1,6 +1,10 @@
 package game.util;
 
-public class WaitUtil {
+public class TimeUtil {
+
+	public static long getTime() {
+		return System.currentTimeMillis();
+	}
 
 	public static void sleep(int time) {
 		try {

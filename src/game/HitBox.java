@@ -38,7 +38,7 @@ public class HitBox {
 	}
 
 	/**
-	 * @param box2 the moveable box
+	 * @param box2 the movable box
 	 * @param ax   the x part of the direction where the object should be moved
 	 * @param ay   the y part of the direction where the object should be moved
 	 * @return the amount of the given direction the second object has to be moved to avoid collision

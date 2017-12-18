@@ -1,8 +1,8 @@
 package game.gameObjects.entities;
 
+import game.HitBox;
 import game.Sprite;
 import game.gameObjects.GameObject;
-import game.HitBox;
 
 public class Player extends BasicWalkingEntity {
 

@@ -1,5 +1,7 @@
 package game.window;
 
+import game.util.TimeUtil;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -77,7 +79,7 @@ public class Camera {
 	 */
 	public boolean update() {
 		boolean b5 = (delayFrameAmount != 0) || (zoom != tzoom) || (x != tx) || (y != ty) || z || z2 || z3 || (tilt != ttilt) || !screenshakeList.isEmpty();
-		long time = System.currentTimeMillis() % 10000000;
+		long time = TimeUtil.getTime() % 10000000;
 
 		if (z) {
 			if (time > targetTime) {
@@ -147,7 +149,7 @@ public class Camera {
 	}
 
 	public void addScreenshake(float strength) {
-		screenshakeList.add(new Screenshake(System.currentTimeMillis() % 10000000, (float) DECAY, strength, strength, (float) (Math.random() * 2 * Math.PI), (float) (Math.random() * 2 * Math.PI), 1, 1));
+		screenshakeList.add(new Screenshake(TimeUtil.getTime() % 10000000, DECAY, strength, strength, (float) (Math.random() * 2 * Math.PI), (float) (Math.random() * 2 * Math.PI), 1, 1));
 	}
 
 	public void zoomSmooth(float a2) {
@@ -158,7 +160,7 @@ public class Camera {
 		float v = 0;
 		float t = tzoom;
 		if (z) {
-			v = calculateDerivative(((System.currentTimeMillis() % 10000000) * 1.0f - beginTime) / (targetTime - beginTime), a, b, c, d);
+			v = calculateDerivative(((TimeUtil.getTime() % 10000000) * 1.0f - beginTime) / (targetTime - beginTime), a, b, c, d);
 			t = targetZoom;
 		}
 		t *= a2;
@@ -168,8 +170,8 @@ public class Camera {
 		c = v;
 		b = 3 * t - 2 * v - 3 * currentZoom;
 		a = v + 2 * currentZoom - 2 * t;
-		beginTime = System.currentTimeMillis() % 10000000;
-		targetTime = System.currentTimeMillis() % 10000000 + time;
+		beginTime = TimeUtil.getTime() % 10000000;
+		targetTime = TimeUtil.getTime() % 10000000 + time;
 		targetZoom = t;
 
 		z = true;
@@ -191,8 +193,8 @@ public class Camera {
 		float v2 = 0, v3 = 0;
 		float t2 = x, t3 = y;
 		if (z2) {
-			v2 = calculateDerivative(((System.currentTimeMillis() % 10000000) * 1.0f - beginTime2) / (targetTime2 - beginTime2), a2, b2, c2, d2);
-			v3 = calculateDerivative(((System.currentTimeMillis() % 10000000) * 1.0f - beginTime2) / (targetTime2 - beginTime2), a3, b3, c3, d3);
+			v2 = calculateDerivative(((TimeUtil.getTime() % 10000000) * 1.0f - beginTime2) / (targetTime2 - beginTime2), a2, b2, c2, d2);
+			v3 = calculateDerivative(((TimeUtil.getTime() % 10000000) * 1.0f - beginTime2) / (targetTime2 - beginTime2), a3, b3, c3, d3);
 		}
 		float currentX = tx, currentY = ty;
 
@@ -206,8 +208,8 @@ public class Camera {
 		b3 = 3 * t3 - 2 * v3 - 3 * currentY;
 		a3 = v3 + 2 * currentY - 2 * t3;
 
-		beginTime2 = System.currentTimeMillis() % 10000000;
-		targetTime2 = System.currentTimeMillis() % 10000000 + time;
+		beginTime2 = TimeUtil.getTime() % 10000000;
+		targetTime2 = TimeUtil.getTime() % 10000000 + time;
 		targetX = x;
 		targetY = y;
 
@@ -218,7 +220,7 @@ public class Camera {
 		float v = 0;
 		float t = Math.max(Math.min(tilt, 0.5f), -0.5f);
 		if (z3) {
-			v = calculateDerivative(((System.currentTimeMillis() % 10000000) * 1.0f - beginTime3) / (targetTime3 - beginTime3), a4, b4, c4, d4);
+			v = calculateDerivative(((TimeUtil.getTime() % 10000000) * 1.0f - beginTime3) / (targetTime3 - beginTime3), a4, b4, c4, d4);
 		}
 		float currentTilt = ttilt;
 
@@ -226,8 +228,8 @@ public class Camera {
 		c4 = v;
 		b4 = 3 * t - 2 * v - 3 * currentTilt;
 		a4 = v + 2 * currentTilt - 2 * t;
-		beginTime3 = System.currentTimeMillis() % 10000000;
-		targetTime3 = System.currentTimeMillis() % 10000000 + time;
+		beginTime3 = TimeUtil.getTime() % 10000000;
+		targetTime3 = TimeUtil.getTime() % 10000000 + time;
 		targetTilt = t;
 
 		z3 = true;

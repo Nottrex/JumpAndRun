@@ -5,7 +5,7 @@ import game.gameObjects.Drawable;
 import game.gameObjects.GameObject;
 import game.gameObjects.Wall;
 import game.gameObjects.entities.Player;
-import game.util.WaitUtil;
+import game.util.TimeUtil;
 import game.window.Keyboard;
 import game.window.Window;
 
@@ -38,9 +38,8 @@ public final class Game {
 	}
 
 	public void gameLoop() {
+		long time = TimeUtil.getTime();
 		while (Window.getInstance().isRunning()) {
-			long time = System.currentTimeMillis();
-
 			Keyboard keyboard = Window.getInstance().getKeyboard();
 
 			player.setJumping(keyboard.getPressed(Keyboard.GAMEPAD_BUTTON_A));
@@ -66,7 +65,9 @@ public final class Game {
 				gameObject.update();
 			}
 
-			WaitUtil.sleep((int) (1000.0f/TPS - (System.currentTimeMillis()-time)));
+			long newTime = TimeUtil.getTime();
+			TimeUtil.sleep((int) (1000.0f/TPS - (newTime-time)));
+			time = newTime;
 		}
 	}
 

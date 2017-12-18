@@ -9,7 +9,7 @@ public class Sprite {
 	private int time;
 
 	public Sprite(int time, String... textures) {
-		this.textures = new ArrayList<String>(Arrays.asList(textures));
+		this.textures = new ArrayList<>(Arrays.asList(textures));
 		this.time = time;
 	}
 

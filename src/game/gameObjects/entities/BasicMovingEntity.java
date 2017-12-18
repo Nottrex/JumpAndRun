@@ -1,9 +1,8 @@
 package game.gameObjects.entities;
 
-import game.gameObjects.CollisionObject;
 import game.Game;
 import game.HitBox;
-import game.gameObjects.Drawable;
+import game.gameObjects.CollisionObject;
 import game.util.MathUtil;
 
 import java.util.ArrayList;
