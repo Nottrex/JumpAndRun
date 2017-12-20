@@ -84,7 +84,7 @@ public class TextureHandler {
 
 		ByteBuffer buffer = BufferUtils.createByteBuffer(image.getWidth() * image.getHeight() * 4); //4 for RGBA, 3 for RGB
 
-		for(int y = 0; y < image.getHeight(); y++){
+		for(int y = image.getHeight() - 1; y >= 0 ; y--){
 			for(int x = 0; x < image.getWidth(); x++){
 				int pixel = pixels[y * image.getWidth() + x];
 				buffer.put((byte) ((pixel >> 16) & 0xFF));     // Red component
@@ -95,13 +95,12 @@ public class TextureHandler {
 		}
 		buffer.flip();
 
-		IntBuffer texture = IntBuffer.allocate(1);
-		GL11.glGenTextures(texture);
+		int texture = GL11.glGenTextures();
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 
 		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, image.getWidth(), image.getHeight(), 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, buffer);
 
-		return texture.get(0);
+		return texture;
 	}
 }
