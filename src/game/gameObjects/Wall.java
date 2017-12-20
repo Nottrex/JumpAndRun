@@ -3,12 +3,29 @@ package game.gameObjects;
 import game.HitBox;
 import game.Sprite;
 import game.gameObjects.entities.BasicMovingEntity;
+import javafx.util.Pair;
 
-public class Wall extends BasicMovingEntity {
-	private Sprite sprite = new Sprite(1, "wall");
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class Wall extends StaticDraw implements CollisionObject {
+	private List<Pair<HitBox, String>> hitBoxList;
+	private List<HitBox> hitBoxes;
 
 	public Wall() {
-		super(new HitBox(-5, -5, 10, 1));
+		hitBoxList = new ArrayList<>();
+
+
+		for (int i = -8; i <= 8; i++) {
+			hitBoxList.add(new Pair<>(new HitBox(i, -5, 1, 1), "wall"));
+		}
+
+		hitBoxList.add(new Pair<>(new HitBox(2, -4, 1, 1), "wall"));
+		hitBoxList.add(new Pair<>(new HitBox(2, -3, 1, 1), "wall"));
+		super.updateContent(hitBoxList);
+
+		hitBoxes = hitBoxList.stream().map(Pair::getKey).collect(Collectors.toList());
 	}
 
 	@Override
@@ -32,7 +49,7 @@ public class Wall extends BasicMovingEntity {
 	}
 
 	@Override
-	public Sprite getCurrentSprite() {
-		return sprite;
+	public List<HitBox> getCollisionBoxes() {
+		return hitBoxes;
 	}
 }

@@ -33,7 +33,18 @@ public abstract class BasicMovingEntity extends BasicDrawingEntity implements Co
 		vx = MathUtil.clamp(vx, -MAX_SPEED, MAX_SPEED);
 		vy = MathUtil.clamp(vy, -MAX_SPEED, MAX_SPEED);
 
+		float vx_ = vx;
+
+		vx = 0;
 		move();
+
+		float vy_ = vy;
+		vx += vx_;
+		vy -= vy_;
+
+		move();
+
+		vy += vy_;
 	}
 
 	private void move() {

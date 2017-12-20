@@ -33,8 +33,8 @@ public final class Game {
 
 		player = new Player();
 
-		this.addGameObject(player);
 		this.addGameObject(new Wall());
+		this.addGameObject(player);
 	}
 
 	public void gameLoop() {

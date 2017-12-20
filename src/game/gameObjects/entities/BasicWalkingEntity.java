@@ -6,8 +6,8 @@ import game.util.MathUtil;
 
 public abstract class BasicWalkingEntity extends BasicMovingEntity {
 	private static final float SPEED = 0.125f;
-	private static final float JUMP_ACCELERATION = 1f;
-	private static final float GRAVITY_ACCELERATION = 0.015f;
+	private static final float JUMP_ACCELERATION = 0.2f;
+	private static final float GRAVITY_ACCELERATION = 0.007f;
 
 	private boolean onGround;
 
@@ -25,7 +25,7 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 	public void update() {
 		vx = mx * SPEED;
 		vy -= GRAVITY_ACCELERATION;
-		if (onGround) vy += jumping * JUMP_ACCELERATION;
+		if (onGround) vy  = jumping * JUMP_ACCELERATION;
 
 		onGround = false;
 		super.update();

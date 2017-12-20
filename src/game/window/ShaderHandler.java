@@ -3,6 +3,7 @@ package game.window;
 import com.joml.matrix.Matrix4f;
 import game.util.ErrorUtil;
 import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 import java.util.HashMap;
@@ -21,14 +22,16 @@ public class ShaderHandler {
 		shaderUse = new HashMap<>();
 	}
 
-	public void loadShader(String name) {
+	public ShaderProgram loadShader(String name) {
+		shaderUse.put(name, getUseAmount(name) + 1);
 		if (!shaders.containsKey(name)) {
 			ShaderProgram shader = createShader(name);
 
 			shaders.put(name, shader);
 
-			viewMatrix.flip();
-			projectionMatrix.flip();
+			viewMatrix.rewind();
+			projectionMatrix.rewind();
+
 			shader.start();
 			shader.setTexture(texture);
 			shader.setTextureTotalBounds(textureWidth, textureHeight);
@@ -37,8 +40,9 @@ public class ShaderHandler {
 			shader.setProjectionMatrix(projectionMatrix);
 			shader.stop();
 
+			return shader;
 		}
-		shaderUse.put(name, getUseAmount(name) + 1);
+		return shaders.get(name);
 	}
 
 	public void unloadShader(String name) {
@@ -58,7 +62,7 @@ public class ShaderHandler {
 		this.projectionMatrix = buffer;
 
 		shaders.values().forEach(shader -> {
-			buffer.flip();
+			buffer.rewind();
 			shader.start();
 			shader.setProjectionMatrix(buffer);
 			shader.stop();
@@ -71,27 +75,37 @@ public class ShaderHandler {
 		this.viewMatrix = buffer;
 
 		shaders.values().forEach(shader -> {
-			buffer.flip();
+			buffer.rewind();
 			shader.start();
 			shader.setViewMatrix(buffer);
 			shader.stop();
 		});
+
 	}
 
 	public void setTime(float time) {
 		this.time = time;
-		shaders.values().forEach(shader -> shader.setTime(time));
+		shaders.values().forEach(shader -> {
+			shader.start();
+			shader.setTime(time);
+		});
 	}
 
 	public void setTextureTotalBounds(int textureWidth, int textureHeight) {
 		this.textureWidth = textureWidth;
 		this.textureHeight = textureHeight;
-		shaders.values().forEach(shader -> shader.setTextureTotalBounds(textureWidth, textureHeight));
+		shaders.values().forEach(shader -> {
+			shader.start();
+			shader.setTextureTotalBounds(textureWidth, textureHeight);
+		});
 	}
 
 	public void setTexture(int texture) {
 		this.texture = texture;
-		shaders.values().forEach(shader -> shader.setTexture(texture));
+		shaders.values().forEach(shader -> {
+			shader.start();
+			shader.setTexture(texture);
+		});
 	}
 
 	public ShaderProgram getShader(String name) {
@@ -105,6 +119,7 @@ public class ShaderHandler {
 
 	private ShaderProgram createShader(String name) {
 		if (name.equals("BasicShader")) return new BasicShader();
+		if (name.equals("StaticShader")) return new StaticShader();
 
 		ErrorUtil.printError("Unknown Shader: " + name);
 		return null;
