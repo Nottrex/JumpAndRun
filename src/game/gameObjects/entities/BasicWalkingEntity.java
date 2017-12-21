@@ -8,10 +8,11 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 	private static final float SPEED = 0.175f;
 	private static final float JUMP_ACCELERATION = 0.3f;
 	private static final float DOWN_ACCELERATION = 0.1f;
-	private static final float GRAVITY_ACCELERATION = 0.015f;
-	private static final float MAX_GRAVITY_SPEED = 0.15f;
+	private static final float GRAVITY_ACCELERATION = 0.04f;
+	private static final float MAX_GRAVITY_SPEED = 0.3f;
+	private static final int MAX_JUMP_TICKS = 10;
 
-	private boolean onGround;
+	private int lastOnGround;
 
 	private float mx;
 	private float jumping;
@@ -22,24 +23,24 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 		mx = 0;
 		jumping = 0;
 		down = 0;
-		onGround = false;
+		lastOnGround = 0;
 	}
 
 	@Override
 	public void update() {
 		vx = mx * SPEED;
 		if (-vy < MAX_GRAVITY_SPEED) vy -= GRAVITY_ACCELERATION;
-		if (onGround && jumping > 0.5f) vy += jumping * JUMP_ACCELERATION;
-		if (!onGround) vy -= down * DOWN_ACCELERATION;
+		if (lastOnGround < MAX_JUMP_TICKS && jumping > 0.5f) vy = jumping * JUMP_ACCELERATION;
+		vy -= down * DOWN_ACCELERATION;
 
-		onGround = false;
+		lastOnGround++;
 		super.update();
 	}
 
 	@Override
 	public void collide(GameObject gameObject, HitBox.HitBoxDirection direction) {
 		if (direction == HitBox.HitBoxDirection.DOWN) {
-			onGround = true;
+			lastOnGround = 0;
 		}
 	}
 

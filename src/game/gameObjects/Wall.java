@@ -23,6 +23,9 @@ public class Wall extends StaticDraw implements CollisionObject {
 
 		hitBoxList.add(new Pair<>(new HitBox(2, -4, 1, 1), "wall"));
 		hitBoxList.add(new Pair<>(new HitBox(2, -3, 1, 1), "wall"));
+		hitBoxList.add(new Pair<>(new HitBox(1, -4, 1, 1), "wall"));
+		hitBoxList.add(new Pair<>(new HitBox(1, -3, 1, 1), "wall"));
+		hitBoxList.add(new Pair<>(new HitBox(1, -2, 1, 1), "wall"));
 		super.updateContent(hitBoxList);
 
 		hitBoxes = hitBoxList.stream().map(Pair::getKey).collect(Collectors.toList());
