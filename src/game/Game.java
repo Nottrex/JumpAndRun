@@ -1,9 +1,6 @@
 package game;
 
-import game.gameObjects.CollisionObject;
-import game.gameObjects.Drawable;
-import game.gameObjects.GameObject;
-import game.gameObjects.Wall;
+import game.gameObjects.*;
 import game.gameObjects.entities.Player;
 import game.util.TimeUtil;
 import game.window.Keyboard;
@@ -38,11 +35,13 @@ public final class Game {
 	}
 
 	public void gameLoop() {
-		long time = TimeUtil.getTime();
+		long time;
 		while (Window.getInstance().isRunning()) {
+			time = TimeUtil.getTime();
 			Keyboard keyboard = Window.getInstance().getKeyboard();
 
 			player.setJumping(keyboard.getPressed(Keyboard.GAMEPAD_BUTTON_A));
+			player.setDown(keyboard.getPressed(Keyboard.GAMEPAD_AXIS_LEFT_Y_RIGHT));
 			player.setMx(keyboard.getPressed(Keyboard.GAMEPAD_AXIS_LEFT_X_RIGHT) - keyboard.getPressed(Keyboard.GAMEPAD_AXIS_LEFT_X_LEFT));
 			if (keyboard.isPressed(Keyboard.GAMEPAD_BUTTON_B)) Window.getInstance().getCamera().addScreenshake(0.03f);
 
@@ -66,8 +65,8 @@ public final class Game {
 			}
 
 			long newTime = TimeUtil.getTime();
+
 			TimeUtil.sleep((int) (1000.0f/TPS - (newTime-time)));
-			time = newTime;
 		}
 	}
 

@@ -6,8 +6,6 @@ import game.window.StaticShader;
 import game.window.Window;
 import javafx.util.Pair;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.PointerBuffer;
-import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
@@ -26,6 +24,7 @@ public abstract class StaticDraw implements Drawable {
 
 	private int rectangles;
 	private int vao, vao2;
+	private int locationBuffer, texLocationBuffer, indicesBuffer;
 	private List<Pair<HitBox, String>> hitBoxList;
 
 	private boolean update;
@@ -63,6 +62,18 @@ public abstract class StaticDraw implements Drawable {
 
 	@Override
 	public void cleanUp(Window window) {
+		if (indicesBuffer != 0) {
+			GL15.glDeleteBuffers(indicesBuffer);
+		}
+
+		if (locationBuffer != 0) {
+			GL15.glDeleteBuffers(locationBuffer);
+		}
+
+		if (texLocationBuffer != 0) {
+			GL15.glDeleteBuffers(texLocationBuffer);
+		}
+
 		GL30.glDeleteVertexArrays(vao);
 		GL30.glDeleteVertexArrays(vao2);
 
@@ -105,9 +116,9 @@ public abstract class StaticDraw implements Drawable {
 		texLocations.flip();
 		indices.flip();
 
-		int locationBuffer = GL15.glGenBuffers();
-		int texLocationBuffer = GL15.glGenBuffers();
-		int indicesBuffer =  GL15.glGenBuffers();
+		locationBuffer = GL15.glGenBuffers();
+		texLocationBuffer = GL15.glGenBuffers();
+		indicesBuffer =  GL15.glGenBuffers();
 
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, locationBuffer);
 		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, locations, GL15.GL_STATIC_DRAW);
