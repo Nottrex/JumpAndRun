@@ -74,7 +74,8 @@ public abstract class BasicMovingEntity extends BasicDrawingEntity implements Co
 
 						vx -= ax;
 						vy -= ay;
-						targetLocation.move(-ax, -ay);
+						targetLocation = hitBox.clone();
+						targetLocation.move(vx, vy);
 					}
 				}
 			}
