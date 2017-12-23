@@ -12,35 +12,50 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 	private static final float MAX_GRAVITY_SPEED = 0.3f;
 	private static final int MAX_JUMP_TICKS = 10;
 
-	private int lastOnGround;
+	private boolean onGround;
+	private int jumpTicks;
+	private boolean jumpingLastTick;
 
 	private float mx;
-	private float jumping;
+	private boolean jumping;
 	private float down;
 
 	public BasicWalkingEntity(HitBox hitBox) {
 		super(hitBox);
+
 		mx = 0;
-		jumping = 0;
+		jumping = false;
 		down = 0;
-		lastOnGround = 0;
+
+		jumpTicks = 0;
+		jumpingLastTick = false;
+		onGround = false;
 	}
 
 	@Override
 	public void update() {
 		vx = mx * SPEED;
 		if (-vy < MAX_GRAVITY_SPEED) vy -= GRAVITY_ACCELERATION;
-		if (lastOnGround < MAX_JUMP_TICKS && jumping > 0.5f) vy = jumping * JUMP_ACCELERATION;
+
+		if (((onGround && !jumpingLastTick) || (jumpTicks < MAX_JUMP_TICKS && jumpTicks > 0)) && jumping) {
+			vy = JUMP_ACCELERATION;
+			jumpTicks++;
+		} else {
+			jumpTicks = 0;
+		}
+
+		jumpingLastTick = jumping;
+
 		vy -= down * DOWN_ACCELERATION;
 
-		lastOnGround++;
+		onGround = false;
 		super.update();
 	}
 
 	@Override
 	public void collide(GameObject gameObject, HitBox.HitBoxDirection direction) {
 		if (direction == HitBox.HitBoxDirection.DOWN) {
-			lastOnGround = 0;
+			onGround = true;
 		}
 	}
 
@@ -48,8 +63,8 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 		this.mx = MathUtil.clamp(mx, -1, 1);
 	}
 
-	public void setJumping(float jumping) {
-		this.jumping = MathUtil.clamp(jumping, 0, 1);
+	public void setJumping(boolean jumping) {
+		this.jumping = jumping;
 	}
 
 	public void setDown(float down) {
