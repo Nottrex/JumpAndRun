@@ -1,15 +1,25 @@
 #version 130
 
-#define MIN_BRIGHTNESS 0.3
+#define MIN_BRIGHTNESS 0
 
 uniform sampler2D tex;
+uniform int lightAmount;
+uniform vec3 lights[10];
+uniform vec3 lightColors[10];
 
 in vec2 fragTex;
-in vec3 brightness;
+in vec2 fragPos;
 
 out vec4 finalColor;
 
 void main() {
+
+    vec3 brightness = vec3 (0, 0, 0);
+    for (int i = 0; i < lightAmount; i++) {
+        brightness += lightColors[i] * lights[i].z / pow(((lights[i].x - fragPos.x)*(lights[i].x - fragPos.x) + (lights[i].y - fragPos.y)*(lights[i].y - fragPos.y)), 1);
+    }
+    brightness = vec3(clamp(brightness.r, 0, 1),clamp(brightness.g, 0, 1),clamp(brightness.b, 0, 1));
+
     finalColor = texture2D(tex, fragTex);
     finalColor = vec4(finalColor.r * (brightness.r*(1-MIN_BRIGHTNESS) + MIN_BRIGHTNESS), finalColor.g * (brightness.g*(1-MIN_BRIGHTNESS) + MIN_BRIGHTNESS), finalColor.b * (brightness.b*(1-MIN_BRIGHTNESS) + MIN_BRIGHTNESS), finalColor.a);
 }
