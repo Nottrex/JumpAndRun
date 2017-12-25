@@ -16,9 +16,11 @@ public class ShaderHandler {
 	private FloatBuffer projectionMatrix, viewMatrix;
 	private float time;
 	private int textureWidth, textureHeight, texture;
+
 	private int lightAmount;
 	private FloatBuffer lights;
 	private FloatBuffer lightColors;
+	private float minimumBrightness;
 
 	public ShaderHandler() {
 		shaders = new HashMap<>();
@@ -38,6 +40,7 @@ public class ShaderHandler {
 			lightColors.rewind();
 
 			shader.start();
+			shader.setMinimumBrightness(minimumBrightness);
 			shader.setLightAmount(lightAmount);
 			shader.setLights(lights);
 			shader.setLightColors(lightColors);
@@ -147,6 +150,14 @@ public class ShaderHandler {
 			shader.start();
 			lightColors.rewind();
 			shader.setLights(lightColors);
+		});
+	}
+
+	public void setMinimumBrightness(float minimumBrightness) {
+		this.minimumBrightness = minimumBrightness;
+		shaders.values().forEach(shader -> {
+			shader.start();
+			shader.setMinimumBrightness(minimumBrightness);
 		});
 	}
 

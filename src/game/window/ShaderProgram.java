@@ -80,12 +80,16 @@ public abstract class ShaderProgram {
 		GL20.glUniform3fv(location, buffer);
 	}
 
+	protected void setUniform2f(int location, FloatBuffer buffer) {
+		GL20.glUniform2fv(location, buffer);
+	}
+
 	protected abstract void bindAttributes();
 
 
 	private int texLocation, viewMatrixLocation, projectionMatrixLocation;
 	private int texTWLocation, texTHLocation, timeLocation;
-	private int lightAmountLocation, lightsLocation, lightColorsLocation;
+	private int lightAmountLocation, lightsLocation, lightColorsLocation, minBrightnessLocation;
 
 	protected void getUniformLocations() {
 		texLocation = getUniformLocation("tex");
@@ -97,6 +101,7 @@ public abstract class ShaderProgram {
 		lightAmountLocation = getUniformLocation("lightAmount");
 		lightsLocation = getUniformLocation("lights");
 		lightColorsLocation = getUniformLocation("lightColors");
+		minBrightnessLocation = getUniformLocation("minBrightness");
 
 	}
 
@@ -119,6 +124,10 @@ public abstract class ShaderProgram {
 
 	public void setLightColors(FloatBuffer lightColors) {
 		setUniform3f(lightColorsLocation, lightColors);
+	}
+
+	public void setMinimumBrightness(float minimumBrightness) {
+		setUniform1f(minBrightnessLocation, minimumBrightness);
 	}
 
 	public void setTexture(int tex) {
