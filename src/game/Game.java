@@ -32,6 +32,7 @@ public final class Game {
 		player = new Player();
 
 		this.addGameObject(new Wall());
+		this.addGameObject(new Background());
 		this.addGameObject(player);
 	}
 

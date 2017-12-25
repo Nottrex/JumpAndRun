@@ -182,6 +182,11 @@ public final class Window {
 		shaderHandler.setTexture(texture);
 		shaderHandler.setTextureTotalBounds(image.getWidth(), image.getHeight());
 
+		shaderHandler.setLightAmount(2);
+		shaderHandler.setLights(new float[][] {
+				{-5,0,5},{5,0,5}
+		});
+
 		updateProjectionMatrix();
 	}
 

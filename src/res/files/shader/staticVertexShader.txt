@@ -4,15 +4,25 @@ in vec2 texLocation;
 
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
-
+uniform float time;
 uniform int texTW;
 uniform int texTH;
-
-uniform float time;
+uniform int lightAmount;
+uniform vec3 lights[10];
 
 out vec2 fragTex;
+out float brightness;
 
 void main() {
     fragTex = vec2(texLocation.x / texTW, texLocation.y / texTH);
-    gl_Position = projectionMatrix * viewMatrix * vec4(location.x, location.y, 0, 1);
+
+    vec4 pos = vec4(location.x, location.y, 0, 1);
+
+    brightness = 0;
+    for (int i = 0; i < lightAmount; i++) {
+        brightness += lights[i].z / ((lights[i].x - pos.x)*(lights[i].x - pos.x) + (lights[i].y - pos.y)*(lights[i].y - pos.y));
+    }
+    brightness = clamp(brightness, 0, 1);
+
+    gl_Position = projectionMatrix * viewMatrix * pos;
 }
