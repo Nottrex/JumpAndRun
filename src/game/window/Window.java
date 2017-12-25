@@ -98,8 +98,9 @@ public final class Window {
 		}
 
 		if (viewMatrix.determinant() == 0 || b) {
+			right.set((float) Math.cos(camera.getTilt()), (float) -Math.sin(camera.getTilt()), 0);
 			target.set(camera.x, camera.y, 0);
-			cameraPosition.set(camera.x, camera.y - camera.tilt / camera.zoom, 1 / camera.zoom);
+			cameraPosition.set(camera.x, camera.y, 1 / camera.zoom);
 			dir.set(cameraPosition.x - target.x, cameraPosition.y - target.y, cameraPosition.z - target.z);
 
 

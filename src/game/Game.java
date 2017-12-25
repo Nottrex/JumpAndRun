@@ -3,6 +3,7 @@ package game;
 import game.gameObjects.*;
 import game.gameObjects.entities.Player;
 import game.util.TimeUtil;
+import game.window.Camera;
 import game.window.Keyboard;
 import game.window.Window;
 
@@ -34,11 +35,19 @@ public final class Game {
 		this.addGameObject(player);
 	}
 
+	private boolean test = false;
 	public void gameLoop() {
 		long time;
 		while (Window.getInstance().isRunning()) {
 			time = TimeUtil.getTime();
 			Keyboard keyboard = Window.getInstance().getKeyboard();
+
+			boolean testC = keyboard.isPressed(Keyboard.GAMEPAD_BUTTON_Y);
+			if (testC && !test) {
+				Camera cam = Window.getInstance().getCamera();
+				cam.rotateSmooth((float) (Math.PI/20));
+			}
+			test = testC;
 
 			player.setJumping(keyboard.isPressed(Keyboard.GAMEPAD_BUTTON_A));
 			player.setDown(keyboard.getPressed(Keyboard.GAMEPAD_AXIS_LEFT_Y_RIGHT));

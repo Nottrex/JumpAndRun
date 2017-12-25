@@ -217,12 +217,27 @@ public class Camera {
 	}
 
 	public void setTiltSmooth(float tilt, long time) {
+		while(tilt < 0) {
+			tilt += 2*Math.PI;
+		}
+		tilt %= Math.PI*2;
+
 		float v = 0;
-		float t = Math.max(Math.min(tilt, 0.5f), -0.5f);
+		float t = tilt;
 		if (z3) {
 			v = calculateDerivative(((TimeUtil.getTime() % 10000000) * 1.0f - beginTime3) / (targetTime3 - beginTime3), a4, b4, c4, d4);
 		}
+
 		float currentTilt = ttilt;
+		while(currentTilt < 0) {
+			currentTilt += 2*Math.PI;
+		}
+		currentTilt %= Math.PI*2;
+		if (currentTilt < Math.PI && tilt - currentTilt > Math.PI) {
+			currentTilt += 2*Math.PI;
+ 		} else if (currentTilt > Math.PI  && currentTilt - tilt > Math.PI) {
+			currentTilt -= 2*Math.PI;
+		}
 
 		d4 = currentTilt;
 		c4 = v;
@@ -233,6 +248,11 @@ public class Camera {
 		targetTilt = t;
 
 		z3 = true;
+	}
+
+	public void rotateSmooth(float radiant) {
+		System.out.println(ttilt);
+		setTiltSmooth(ttilt + radiant, 300);
 	}
 
 	public float getTilt() {
