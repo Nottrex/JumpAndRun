@@ -33,7 +33,7 @@ public abstract class ShaderProgram {
 		GL20.glCompileShader(shaderID);
 
 		if(GL20.glGetShaderi(shaderID, GL20.GL_COMPILE_STATUS )== GL11.GL_FALSE){
-			ErrorUtil.printError("Could not compile shader: " + GL20.glGetShaderInfoLog(shaderID, 500));
+			ErrorUtil.printError("Could not compile shader " + file + ": " + GL20.glGetShaderInfoLog(shaderID, 500));
 		}
 
 		return shaderID;
@@ -85,7 +85,7 @@ public abstract class ShaderProgram {
 
 	private int texLocation, viewMatrixLocation, projectionMatrixLocation;
 	private int texTWLocation, texTHLocation, timeLocation;
-	private int lightAmountLocation, lightsLocation;
+	private int lightAmountLocation, lightsLocation, lightColorsLocation;
 
 	protected void getUniformLocations() {
 		texLocation = getUniformLocation("tex");
@@ -96,6 +96,7 @@ public abstract class ShaderProgram {
 		timeLocation = getUniformLocation("time");
 		lightAmountLocation = getUniformLocation("lightAmount");
 		lightsLocation = getUniformLocation("lights");
+		lightColorsLocation = getUniformLocation("lightColors");
 
 	}
 
@@ -114,6 +115,10 @@ public abstract class ShaderProgram {
 
 	public void setLights(FloatBuffer lights) {
 		setUniform3f(lightsLocation, lights);
+	}
+
+	public void setLightColors(FloatBuffer lightColors) {
+		setUniform3f(lightColorsLocation, lightColors);
 	}
 
 	public void setTexture(int tex) {

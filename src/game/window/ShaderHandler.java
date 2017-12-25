@@ -18,6 +18,7 @@ public class ShaderHandler {
 	private int textureWidth, textureHeight, texture;
 	private int lightAmount;
 	private FloatBuffer lights;
+	private FloatBuffer lightColors;
 
 	public ShaderHandler() {
 		shaders = new HashMap<>();
@@ -34,10 +35,12 @@ public class ShaderHandler {
 			viewMatrix.rewind();
 			projectionMatrix.rewind();
 			lights.rewind();
+			lightColors.rewind();
 
 			shader.start();
 			shader.setLightAmount(lightAmount);
 			shader.setLights(lights);
+			shader.setLightColors(lightColors);
 			shader.setTexture(texture);
 			shader.setTextureTotalBounds(textureWidth, textureHeight);
 			shader.setTime(time);
@@ -131,6 +134,19 @@ public class ShaderHandler {
 			shader.start();
 			lights.rewind();
 			shader.setLights(lights);
+		});
+	}
+
+	public void setLightColors(float[][] lightColorsArray) {
+		this.lightColors = BufferUtils.createFloatBuffer(lightColorsArray.length * lightColorsArray[0].length);
+		for (int i = 0; i < lightColorsArray.length; i++) {
+			lightColors.put(lightColorsArray[i]);
+		}
+
+		shaders.values().forEach(shader -> {
+			shader.start();
+			lightColors.rewind();
+			shader.setLights(lightColors);
 		});
 	}
 

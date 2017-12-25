@@ -184,7 +184,10 @@ public final class Window {
 
 		shaderHandler.setLightAmount(2);
 		shaderHandler.setLights(new float[][] {
-				{-5,0,5},{5,0,5}
+				{-5,0,10},{5,0,10}
+		});
+		shaderHandler.setLightColors(new float[][] {
+				{0.5f, 1, 0}, {1, 1, 1}
 		});
 
 		updateProjectionMatrix();

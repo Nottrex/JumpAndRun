@@ -1,13 +1,15 @@
 #version 130
 
+#define MIN_BRIGHTNESS 0.3
+
 uniform sampler2D tex;
 
 in vec2 fragTex;
-in float brightness;
+in vec3 brightness;
 
 out vec4 finalColor;
 
 void main() {
     finalColor = texture2D(tex, fragTex);
-    finalColor = vec4(finalColor.rgb * (brightness*0.5 + 0.5), finalColor.a);
+    finalColor = vec4(finalColor.r * (brightness.r*(1-MIN_BRIGHTNESS) + MIN_BRIGHTNESS), finalColor.g * (brightness.g*(1-MIN_BRIGHTNESS) + MIN_BRIGHTNESS), finalColor.b * (brightness.b*(1-MIN_BRIGHTNESS) + MIN_BRIGHTNESS), finalColor.a);
 }
