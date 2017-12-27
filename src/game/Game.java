@@ -12,8 +12,10 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public final class Game {
+public class Game {
 	public static final int TPS = 60;
+
+	private Window window;
 
 	private List<GameObject> gameObjects;
 	private List<CollisionObject> collisionObjects;
@@ -23,7 +25,9 @@ public final class Game {
 
 	private Player player;
 
-	private Game() {
+	public Game(Window window) {
+		this.window = window;
+
 		gameObjects = new LinkedList<>();
 		collisionObjects = new LinkedList<>();
 		toRemove = new ConcurrentLinkedQueue<>();
@@ -36,42 +40,34 @@ public final class Game {
 		this.addGameObject(player);
 	}
 
-	private boolean test = false;
 	public void gameLoop() {
 		long time;
-		while (Window.getInstance().isRunning()) {
+		while (window.isRunning()) {
 			time = TimeUtil.getTime();
-			Keyboard keyboard = Window.getInstance().getKeyboard();
-
-			boolean testC = keyboard.isPressed(Keyboard.GAMEPAD_BUTTON_Y);
-			if (testC && !test) {
-				Camera cam = Window.getInstance().getCamera();
-				cam.rotateSmooth((float) (Math.PI/20));
-			}
-			test = testC;
+			Keyboard keyboard = window.getKeyboard();
 
 			player.setJumping(keyboard.isPressed(Keyboard.GAMEPAD_BUTTON_A));
 			player.setDown(keyboard.getPressed(Keyboard.GAMEPAD_AXIS_LEFT_Y_RIGHT));
 			player.setMx(keyboard.getPressed(Keyboard.GAMEPAD_AXIS_LEFT_X_RIGHT) - keyboard.getPressed(Keyboard.GAMEPAD_AXIS_LEFT_X_LEFT));
-			if (keyboard.isPressed(Keyboard.GAMEPAD_BUTTON_B)) Window.getInstance().getCamera().addScreenshake(0.03f);
+			if (keyboard.isPressed(Keyboard.GAMEPAD_BUTTON_B)) window.getCamera().addScreenshake(0.03f);
 
 			while (!toAdd.isEmpty()) {
 				GameObject gameObject = toAdd.poll();
 				gameObjects.add(gameObject);
 				if (gameObject instanceof CollisionObject) collisionObjects.add((CollisionObject) gameObject);
-				if (gameObject instanceof Drawable) Window.getInstance().addDrawable((Drawable) gameObject);
+				if (gameObject instanceof Drawable) window.addDrawable((Drawable) gameObject);
 			}
 
 			while (!toRemove.isEmpty()) {
 				GameObject gameObject = toRemove.poll();
 				if (gameObject instanceof CollisionObject) collisionObjects.remove(gameObject);
-				if (gameObject instanceof Drawable) Window.getInstance().removeDrawable((Drawable) gameObject);
+				if (gameObject instanceof Drawable) window.removeDrawable((Drawable) gameObject);
 			}
 
 			gameObjects.sort((o1, o2) -> Float.compare(o2.getPriority(),o1.getPriority()));
 
 			for (GameObject gameObject: gameObjects) {
-				gameObject.update();
+				gameObject.update(this);
 			}
 
 			long newTime = TimeUtil.getTime();
@@ -90,15 +86,5 @@ public final class Game {
 
 	public List<CollisionObject> getCollisionObjects() {
 		return collisionObjects;
-	}
-
-	private static Game INSTANCE;
-	public static Game getInstance() {
-		if (INSTANCE == null) {
-			synchronized (Game.class) {
-				if (INSTANCE == null) INSTANCE = new Game();
-			}
-		}
-		return INSTANCE;
 	}
 }

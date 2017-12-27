@@ -1,5 +1,6 @@
 package game.gameObjects;
 
+import game.Game;
 import game.HitBox;
 import game.Sprite;
 import game.gameObjects.entities.BasicMovingEntity;
@@ -31,7 +32,7 @@ public class Background extends StaticDraw {
 	}
 
 	@Override
-	public void update() {
+	public void update(Game game) {
 
 	}
 

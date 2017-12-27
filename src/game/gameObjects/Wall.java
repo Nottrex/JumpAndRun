@@ -1,5 +1,6 @@
 package game.gameObjects;
 
+import game.Game;
 import game.HitBox;
 import game.Sprite;
 import game.gameObjects.entities.BasicMovingEntity;
@@ -42,7 +43,7 @@ public class Wall extends StaticDraw implements CollisionObject {
 	}
 
 	@Override
-	public void update() {
+	public void update(Game game) {
 
 	}
 

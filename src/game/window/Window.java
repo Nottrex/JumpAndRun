@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public final class Window {
+public class Window {
 	private static final int WIDTH = 800, HEIGHT = 600;
 	private static final String WINDOW_NAME = "JumpAndRun";
 	private static final float FOV = 90, NEAR = 0.01f, FAR = 1000f;
@@ -41,7 +41,7 @@ public final class Window {
 	private Queue<Drawable> toRemove;
 	private Queue<Drawable> toAdd;
 
-	private Window() {
+	public Window() {
 		System.out.println(String.format("LWJGL Version %s", Version.getVersion()));
 
 		initGLFW();
@@ -98,7 +98,7 @@ public final class Window {
 		}
 
 		if (viewMatrix.determinant() == 0 || b) {
-			right.set((float) Math.cos(camera.getTilt()), (float) -Math.sin(camera.getTilt()), 0);
+			right.set((float) Math.cos(camera.getRotation()), (float) -Math.sin(camera.getRotation()), 0);
 			target.set(camera.x, camera.y, 0);
 			cameraPosition.set(camera.x, camera.y, 1 / camera.zoom);
 			dir.set(cameraPosition.x - target.x, cameraPosition.y - target.y, cameraPosition.z - target.z);
@@ -184,7 +184,7 @@ public final class Window {
 
 		shaderHandler.setLightAmount(2);
 		shaderHandler.setLights(new float[][] {
-				{-5,0, 0.7f},{5,0.95f}
+				{-5,0, 0.7f},{5,0, 0.95f}
 		});
 		shaderHandler.setLightColors(new float[][] {
 				{0.5f, 1, 0}, {1, 1, 1}
@@ -258,16 +258,5 @@ public final class Window {
 
 	public boolean isRunning() {
 		return running;
-	}
-
-	private static Window INSTANCE;
-
-	public static Window getInstance() {
-		if (INSTANCE == null) {
-			synchronized (Window.class) {
-				if (INSTANCE == null) INSTANCE = new Window();
-			}
-		}
-		return INSTANCE;
 	}
 }

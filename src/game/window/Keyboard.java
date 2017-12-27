@@ -42,18 +42,20 @@ public class Keyboard {
 	public void update() {
 		GLFW.glfwPollEvents();
 
-		ByteBuffer values = GLFW.glfwGetJoystickButtons(GLFW.GLFW_JOYSTICK_1);
-		for (int i = 0; i < values.limit(); i++) {
-			keys.put(i, 1f * values.get(i));
-		}
+		if (GLFW.glfwJoystickPresent(GLFW.GLFW_JOYSTICK_1) && GLFW.glfwJoystickIsGamepad(GLFW.GLFW_JOYSTICK_1)) {
+			ByteBuffer values = GLFW.glfwGetJoystickButtons(GLFW.GLFW_JOYSTICK_1);
+			for (int i = 0; i < values.limit(); i++) {
+				keys.put(i, 1f * values.get(i));
+			}
 
-		FloatBuffer values2 = GLFW.glfwGetJoystickAxes(GLFW.GLFW_JOYSTICK_1);
-		for (int j = 0; j < values2.limit(); j++) {
-			if (j == GLFW.GLFW_GAMEPAD_AXIS_LEFT_TRIGGER || j == GLFW.GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER) {
-				keys.put(15 + j, (values2.get(j) + 1) / 2);
-			} else {
-				keys.put(15 + j, -Math.min(0, values2.get(j) + DEAD_ZONE) / (1-DEAD_ZONE));
-				keys.put(21 + j, Math.max(0, values2.get(j) - DEAD_ZONE) / (1- DEAD_ZONE));
+			FloatBuffer values2 = GLFW.glfwGetJoystickAxes(GLFW.GLFW_JOYSTICK_1);
+			for (int j = 0; j < values2.limit(); j++) {
+				if (j == GLFW.GLFW_GAMEPAD_AXIS_LEFT_TRIGGER || j == GLFW.GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER) {
+					keys.put(15 + j, (values2.get(j) + 1) / 2);
+				} else {
+					keys.put(15 + j, -Math.min(0, values2.get(j) + DEAD_ZONE) / (1-DEAD_ZONE));
+					keys.put(21 + j, Math.max(0, values2.get(j) - DEAD_ZONE) / (1- DEAD_ZONE));
+				}
 			}
 		}
 	}

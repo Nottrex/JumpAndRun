@@ -1,6 +1,8 @@
 package game.gameObjects;
 
+import game.Game;
+
 public interface GameObject {
 	float getPriority();
-	void update();
+	void update(Game game);
 }

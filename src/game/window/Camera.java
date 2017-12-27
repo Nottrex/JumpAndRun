@@ -10,25 +10,28 @@ public class Camera {
 	private static final float MIN_AMP = 0.0001f;
 	private static final float DECAY = 0.8f;
 
-	public float zoom, x, y, tilt;
+	public float zoom, x, y, rotation;
 
 	private List<Screenshake> screenshakeList;
 
 	private class Screenshake {
-		private Screenshake(long startTime, float decay, float amp_x, float amp_y, float phase_x, float phase_y, float freq_x, float freq_y) {
+		private Screenshake(long startTime, float decay, float amp_x, float amp_y, float amp_r, float phase_x, float phase_y, float phase_r, float freq_x, float freq_y, float freq_r) {
 			this.startTime = startTime;
 			this.decay = decay;
 			this.amp_x = amp_x;
 			this.amp_y = amp_y;
+			this.amp_r = amp_r;
 			this.phase_x = phase_x;
 			this.phase_y = phase_y;
+			this.phase_r = phase_r;
 			this.freq_x = freq_x;
 			this.freq_y = freq_y;
+			this.freq_r = freq_r;
 		}
 
 		long startTime;
 		float decay;
-		float amp_x, amp_y, phase_x, phase_y, freq_x, freq_y;
+		float amp_x, amp_y, amp_r, phase_x, phase_y, phase_r, freq_x, freq_y, freq_r;
 	}
 
 	private float tx, ty;
@@ -44,8 +47,8 @@ public class Camera {
 	private float a, b, c, d;
 	private boolean z = false;
 
-	private float ttilt;
-	private float targetTilt = ttilt;
+	private float trotation;
+	private float targetTilt = trotation;
 	private long beginTime3 = 0, targetTime3 = 0;
 	private float a4, b4, c4, d4;
 	private boolean z3 = false;
@@ -57,19 +60,19 @@ public class Camera {
 		zoom = 0.1f;
 		x = 0;
 		y = 0;
-		tilt = 0;
+		rotation = 0;
 		delayFrameAmount = 0;
 		delayFrames = new float[delayFrameAmount][4];
 		for (int t = 0; t < delayFrameAmount; t++) {
 			delayFrames[t][0] = zoom;
 			delayFrames[t][1] = x;
 			delayFrames[t][2] = y;
-			delayFrames[t][3] = tilt;
+			delayFrames[t][3] = rotation;
 		}
 		tzoom = zoom;
 		tx = x;
 		ty = y;
-		ttilt = tilt;
+		trotation = rotation;
 
 		screenshakeList = new LinkedList<>();
 	}
@@ -78,7 +81,7 @@ public class Camera {
 	 * Takes t-Values and put it to the inUse values
 	 */
 	public boolean update() {
-		boolean b5 = (delayFrameAmount != 0) || (zoom != tzoom) || (x != tx) || (y != ty) || z || z2 || z3 || (tilt != ttilt) || !screenshakeList.isEmpty();
+		boolean b5 = (delayFrameAmount != 0) || (zoom != tzoom) || (x != tx) || (y != ty) || z || z2 || z3 || (rotation != trotation) || !screenshakeList.isEmpty();
 		long time = TimeUtil.getTime() % 10000000;
 
 		if (z) {
@@ -103,22 +106,24 @@ public class Camera {
 
 		if (z3) {
 			if (time > targetTime3) {
-				ttilt = targetTilt;
+				trotation = targetTilt;
 				z3 = false;
 			} else {
-				ttilt = calculateFunction((time * 1.0f - beginTime3) / (targetTime3 - beginTime3), a4, b4, c4, d4);
+				trotation = calculateFunction((time * 1.0f - beginTime3) / (targetTime3 - beginTime3), a4, b4, c4, d4);
 			}
 		}
 
-		float sx = 0, sy = 0;
+		float sx = 0, sy = 0, sr = 0;
 		for (int i = 0; i < screenshakeList.size(); i++) {
 			Screenshake s = screenshakeList.get(i);
 			double d = Math.pow(s.decay, (time - s.startTime)/TIME_FRAC);
-			if (d * s.amp_x < MIN_AMP && d * s.amp_y < MIN_AMP) {
+			if (d * s.amp_x < MIN_AMP && d * s.amp_y < MIN_AMP && d * s.amp_r < MIN_AMP) {
 				screenshakeList.remove(s);
 			} else {
-				sx += d * s.amp_x * Math.cos(s.freq_x * (time-s.startTime) / TIME_FRAC + s.phase_x);
-				sy += d * s.amp_y * Math.cos(s.freq_y * (time-s.startTime) / TIME_FRAC + s.phase_y);
+				float t = (time-s.startTime) / TIME_FRAC;
+				sx += d * s.amp_x * Math.cos(s.freq_x * t + s.phase_x);
+				sy += d * s.amp_y * Math.cos(s.freq_y * t + s.phase_y);
+				sr += d * s.amp_r * Math.cos(s.freq_r * t + s.phase_r);
 			}
 		}
 
@@ -126,7 +131,7 @@ public class Camera {
 			zoom = delayFrames[0][0];
 			x = delayFrames[0][1] + sx / zoom;
 			y = delayFrames[0][2] + sy / zoom;
-			tilt = delayFrames[0][3];
+			rotation = delayFrames[0][3] + sr;
 
 			for (int t = 0; t < delayFrameAmount-1; t++) {
 				delayFrames[t][0] = delayFrames[t+1][0];
@@ -137,19 +142,19 @@ public class Camera {
 			delayFrames[delayFrameAmount-1][0] = tzoom;
 			delayFrames[delayFrameAmount-1][1] = tx;
 			delayFrames[delayFrameAmount-1][2] = ty;
-			delayFrames[delayFrameAmount-1][3] = ttilt;
+			delayFrames[delayFrameAmount-1][3] = trotation;
 		} else {
 			zoom = tzoom;
 			x = tx + sx / zoom;
 			y = ty + sy / zoom;
-			tilt = ttilt;
+			rotation = trotation + sr;
 		}
 
 		return b5;
 	}
 
 	public void addScreenshake(float strength) {
-		screenshakeList.add(new Screenshake(TimeUtil.getTime() % 10000000, DECAY, strength, strength, (float) (Math.random() * 2 * Math.PI), (float) (Math.random() * 2 * Math.PI), 1, 1));
+		screenshakeList.add(new Screenshake(TimeUtil.getTime() % 10000000, DECAY, strength, strength, strength, (float) (Math.random() * 2 * Math.PI), (float) (Math.random() * 2 * Math.PI), (float) (Math.random() * 2 * Math.PI), 1, 1, 1));
 	}
 
 	public void zoomSmooth(float a2) {
@@ -216,26 +221,26 @@ public class Camera {
 		z2 = true;
 	}
 
-	public void setTiltSmooth(float tilt, long time) {
-		while(tilt < 0) {
-			tilt += 2*Math.PI;
+	public void setRotationSmooth(float rotation, long time) {
+		while(rotation < 0) {
+			rotation += 2*Math.PI;
 		}
-		tilt %= Math.PI*2;
+		rotation %= Math.PI*2;
 
 		float v = 0;
-		float t = tilt;
+		float t = rotation;
 		if (z3) {
 			v = calculateDerivative(((TimeUtil.getTime() % 10000000) * 1.0f - beginTime3) / (targetTime3 - beginTime3), a4, b4, c4, d4);
 		}
 
-		float currentTilt = ttilt;
+		float currentTilt = trotation;
 		while(currentTilt < 0) {
 			currentTilt += 2*Math.PI;
 		}
 		currentTilt %= Math.PI*2;
-		if (currentTilt < Math.PI && tilt - currentTilt > Math.PI) {
+		if (currentTilt < Math.PI && rotation - currentTilt > Math.PI) {
 			currentTilt += 2*Math.PI;
- 		} else if (currentTilt > Math.PI  && currentTilt - tilt > Math.PI) {
+ 		} else if (currentTilt > Math.PI  && currentTilt - rotation > Math.PI) {
 			currentTilt -= 2*Math.PI;
 		}
 
@@ -251,25 +256,17 @@ public class Camera {
 	}
 
 	public void rotateSmooth(float radiant) {
-		System.out.println(ttilt);
-		setTiltSmooth(ttilt + radiant, 300);
+		System.out.println(trotation);
+		setRotationSmooth(trotation + radiant, 300);
 	}
 
-	public float getTilt() {
-		return tilt;
+	public float getRotation() {
+		return rotation;
 	}
 
-	public void setTilt(float tilt) {
-		ttilt = tilt;
+	public void setRotation(float rotation) {
+		trotation = rotation;
 		z3 = false;
-	}
-
-	public void raiseTilt() {
-		setTiltSmooth(targetTilt + 0.1f, 300);
-	}
-
-	public void decreaseTilt() {
-		setTiltSmooth(targetTilt - 0.1f, 300);
 	}
 
 	public float getZoom() {
@@ -288,7 +285,7 @@ public class Camera {
 			delayFrames[t][0] = zoom;
 			delayFrames[t][1] = x;
 			delayFrames[t][2] = y;
-			delayFrames[t][3] = tilt;
+			delayFrames[t][3] = rotation;
 		}
 	}
 

@@ -29,22 +29,22 @@ public abstract class BasicMovingEntity extends BasicDrawingEntity implements Co
 	}
 
 	@Override
-	public void update() {
+	public void update(Game game) {
 		vx = MathUtil.clamp(vx, -MAX_SPEED, MAX_SPEED);
 		vy = MathUtil.clamp(vy, -MAX_SPEED, MAX_SPEED);
 
 		float vx_ = vx;
 		vx = 0;
-		move();
+		move(game);
 		vx += vx_;
 
 		float vy_ = vy;
 		vy = 0;
-		move();
+		move(game);
 		vy += vy_;
 	}
 
-	private void move() {
+	private void move(Game game) {
 		List<CollisionObject> collides = new ArrayList<>();
 		List<HitBox.HitBoxDirection> directions = new ArrayList<>();
 		HitBox targetLocation = hitBox.clone();
@@ -53,7 +53,7 @@ public abstract class BasicMovingEntity extends BasicDrawingEntity implements Co
 		boolean collision;
 		do {
 			collision = false;
-			for (CollisionObject collisionObject: Game.getInstance().getCollisionObjects()) {
+			for (CollisionObject collisionObject: game.getCollisionObjects()) {
 				for (HitBox hitBox2: collisionObject.getCollisionBoxes()) {
 					if (hitBox2.collides(targetLocation)) {
 						HitBox.HitBoxDirection direction = hitBox.direction(hitBox2);

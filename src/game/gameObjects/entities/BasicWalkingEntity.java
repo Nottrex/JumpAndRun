@@ -1,5 +1,6 @@
 package game.gameObjects.entities;
 
+import game.Game;
 import game.HitBox;
 import game.gameObjects.GameObject;
 import game.util.MathUtil;
@@ -33,7 +34,7 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 	}
 
 	@Override
-	public void update() {
+	public void update(Game game) {
 		vx = mx * SPEED;
 		if (-vy < MAX_GRAVITY_SPEED) vy -= GRAVITY_ACCELERATION;
 
@@ -49,7 +50,7 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 		vy -= down * DOWN_ACCELERATION;
 
 		onGround = false;
-		super.update();
+		super.update(game);
 	}
 
 	@Override
