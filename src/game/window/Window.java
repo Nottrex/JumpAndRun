@@ -32,6 +32,7 @@ public class Window {
 	private long window;
 	private Keyboard keyboard;
 	private Camera camera;
+	private LightHandler lightHandler;
 	private ShaderHandler shaderHandler;
 	private int texture;
 	private int width, height;
@@ -61,6 +62,13 @@ public class Window {
 				drawables.remove(drawable);
 				drawable.cleanUp(this);
 			}
+
+			if (lightHandler.update()) {
+				shaderHandler.setLightAmount(lightHandler.getLightAmount());
+				shaderHandler.setLights(lightHandler.getLights());
+				shaderHandler.setLightColors(lightHandler.getLightColors());
+			}
+
 
 			drawables.sort((o1, o2) -> Float.compare(o2.getDrawingPriority(), o1.getDrawingPriority()));
 
@@ -182,14 +190,9 @@ public class Window {
 		shaderHandler.setTexture(texture);
 		shaderHandler.setTextureTotalBounds(image.getWidth(), image.getHeight());
 
-		shaderHandler.setLightAmount(2);
-		shaderHandler.setLights(new float[][] {
-				{-5,0, 0.7f},{5,0, 0.95f}
-		});
-		shaderHandler.setLightColors(new float[][] {
-				{0.5f, 1, 0}, {1, 1, 1}
-		});
 		shaderHandler.setMinimumBrightness(0.5f);
+
+		lightHandler = new LightHandler();
 
 		updateProjectionMatrix();
 	}
@@ -242,6 +245,10 @@ public class Window {
 		GLFW.glfwSwapInterval(1);
 
 		GLFW.glfwShowWindow(window);
+	}
+
+	public LightHandler getLightHandler() {
+		return lightHandler;
 	}
 
 	public Keyboard getKeyboard() {

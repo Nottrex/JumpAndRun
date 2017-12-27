@@ -128,7 +128,10 @@ public class ShaderHandler {
 	}
 
 	public void setLights(float[][] lightArray) {
-		this.lights = BufferUtils.createFloatBuffer(lightArray.length * lightArray[0].length);
+		int length = lightArray.length;
+		if (length != 0) length *= lightArray[0].length;
+
+		this.lights = BufferUtils.createFloatBuffer(length);
 		for (int i = 0; i < lightArray.length; i++) {
 			lights.put(lightArray[i]);
 		}
@@ -141,7 +144,10 @@ public class ShaderHandler {
 	}
 
 	public void setLightColors(float[][] lightColorsArray) {
-		this.lightColors = BufferUtils.createFloatBuffer(lightColorsArray.length * lightColorsArray[0].length);
+		int length = lightColorsArray.length;
+		if (length != 0) length *= lightColorsArray[0].length;
+
+		this.lightColors = BufferUtils.createFloatBuffer(length);
 		for (int i = 0; i < lightColorsArray.length; i++) {
 			lightColors.put(lightColorsArray[i]);
 		}
@@ -149,7 +155,7 @@ public class ShaderHandler {
 		shaders.values().forEach(shader -> {
 			shader.start();
 			lightColors.rewind();
-			shader.setLights(lightColors);
+			shader.setLightColors(lightColors);
 		});
 	}
 
