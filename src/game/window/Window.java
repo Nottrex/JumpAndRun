@@ -67,6 +67,7 @@ public class Window {
 				shaderHandler.setLightAmount(lightHandler.getLightAmount());
 				shaderHandler.setLights(lightHandler.getLights());
 				shaderHandler.setLightColors(lightHandler.getLightColors());
+				shaderHandler.setMinimumBrightness(lightHandler.getMinimumBrightness());
 			}
 
 			drawables.sort((o1, o2) -> Float.compare(o2.getDrawingPriority(), o1.getDrawingPriority()));
@@ -186,8 +187,6 @@ public class Window {
 
 		shaderHandler.setTexture(texture);
 		shaderHandler.setTextureTotalBounds(image.getWidth(), image.getHeight());
-
-		shaderHandler.setMinimumBrightness(0.5f);
 
 		lightHandler = new LightHandler();
 

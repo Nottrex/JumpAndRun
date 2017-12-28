@@ -40,10 +40,18 @@ public class Game {
 	}
 
 	public void gameLoop() {
+		boolean test = false;
+
 		long time;
 		while (window.isRunning()) {
 			time = TimeUtil.getTime();
 			Keyboard keyboard = window.getKeyboard();
+
+			boolean test2 = keyboard.isPressed(Keyboard.GAMEPAD_BUTTON_X) ;
+			if (!test && test2) {
+				window.getLightHandler().setMinimumBrightnessSmooth((float) Math.random(), 1000);
+			}
+			test = test2;
 
 			player.setJumping(keyboard.isPressed(Keyboard.GAMEPAD_BUTTON_A));
 			player.setDown(keyboard.getPressed(Keyboard.GAMEPAD_AXIS_LEFT_Y_RIGHT));

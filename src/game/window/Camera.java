@@ -1,5 +1,6 @@
 package game.window;
 
+import game.util.MathUtil;
 import game.util.TimeUtil;
 
 import java.util.LinkedList;
@@ -90,7 +91,7 @@ public class Camera {
 				tzoom = targetZoom;
 				z = false;
 			} else {
-				tzoom = calculateFunction((time * 1.0f - beginTime) / (targetTime - beginTime), a, b, c, d);
+				tzoom = MathUtil.calculateCubicFunction((time * 1.0f - beginTime) / (targetTime - beginTime), a, b, c, d);
 			}
 		}
 
@@ -100,8 +101,8 @@ public class Camera {
 				ty = targetY;
 				z2 = false;
 			} else {
-				tx = calculateFunction((time * 1.0f - beginTime2) / (targetTime2 - beginTime2), a2, b2, c2, d2);
-				ty = calculateFunction((time * 1.0f - beginTime2) / (targetTime2 - beginTime2), a3, b3, c3, d3);
+				tx = MathUtil.calculateCubicFunction((time * 1.0f - beginTime2) / (targetTime2 - beginTime2), a2, b2, c2, d2);
+				ty = MathUtil.calculateCubicFunction((time * 1.0f - beginTime2) / (targetTime2 - beginTime2), a3, b3, c3, d3);
 			}
 		}
 
@@ -110,7 +111,7 @@ public class Camera {
 				trotation = targetTilt;
 				z3 = false;
 			} else {
-				trotation = calculateFunction((time * 1.0f - beginTime3) / (targetTime3 - beginTime3), a4, b4, c4, d4);
+				trotation = MathUtil.calculateCubicFunction((time * 1.0f - beginTime3) / (targetTime3 - beginTime3), a4, b4, c4, d4);
 			}
 		}
 
@@ -122,9 +123,9 @@ public class Camera {
 			if (d * s.amp_x < MIN_AMP && d * s.amp_y < MIN_AMP && d * s.amp_r < MIN_AMP) {
 				screenshakeList.remove(s);
 			} else {
-				sx += d * s.amp_x * (noise((int) (10000 * s.phase_x), t, Math.round(s.freq_x)) * 2 - 1);
-				sy += d * s.amp_y * (noise((int) (10000 * s.phase_y), t, Math.round(s.freq_y)) * 2 - 1);
-				sr += d * s.amp_r * (noise((int) (10000 * s.phase_r), t, Math.round(s.freq_r)) * 2 - 1);
+				sx += d * s.amp_x * (MathUtil.noise((int) (10000 * s.phase_x), t, Math.round(s.freq_x)) * 2 - 1);
+				sy += d * s.amp_y * (MathUtil.noise((int) (10000 * s.phase_y), t, Math.round(s.freq_y)) * 2 - 1);
+				sr += d * s.amp_r * (MathUtil.noise((int) (10000 * s.phase_r), t, Math.round(s.freq_r)) * 2 - 1);
 			}
 		}
 
@@ -166,7 +167,7 @@ public class Camera {
 		float v = 0;
 		float t = tzoom;
 		if (z) {
-			v = calculateDerivative(((TimeUtil.getTime() % 10000000) * 1.0f - beginTime) / (targetTime - beginTime), a, b, c, d);
+			v = MathUtil.calculateCubicDerivative(((TimeUtil.getTime() % 10000000) * 1.0f - beginTime) / (targetTime - beginTime), a, b, c, d);
 			t = targetZoom;
 		}
 		t *= a2;
@@ -199,8 +200,8 @@ public class Camera {
 		float v2 = 0, v3 = 0;
 		float t2 = x, t3 = y;
 		if (z2) {
-			v2 = calculateDerivative(((TimeUtil.getTime() % 10000000) * 1.0f - beginTime2) / (targetTime2 - beginTime2), a2, b2, c2, d2);
-			v3 = calculateDerivative(((TimeUtil.getTime() % 10000000) * 1.0f - beginTime2) / (targetTime2 - beginTime2), a3, b3, c3, d3);
+			v2 = MathUtil.calculateCubicDerivative(((TimeUtil.getTime() % 10000000) * 1.0f - beginTime2) / (targetTime2 - beginTime2), a2, b2, c2, d2);
+			v3 = MathUtil.calculateCubicDerivative(((TimeUtil.getTime() % 10000000) * 1.0f - beginTime2) / (targetTime2 - beginTime2), a3, b3, c3, d3);
 		}
 		float currentX = tx, currentY = ty;
 
@@ -231,7 +232,7 @@ public class Camera {
 		float v = 0;
 		float t = rotation;
 		if (z3) {
-			v = calculateDerivative(((TimeUtil.getTime() % 10000000) * 1.0f - beginTime3) / (targetTime3 - beginTime3), a4, b4, c4, d4);
+			v = MathUtil.calculateCubicDerivative(((TimeUtil.getTime() % 10000000) * 1.0f - beginTime3) / (targetTime3 - beginTime3), a4, b4, c4, d4);
 		}
 
 		float currentTilt = trotation;
@@ -296,43 +297,5 @@ public class Camera {
 
 	public float getY() {
 		return ty;
-	}
-
-	private float calculateFunction(float x, float a, float b, float c, float d) {
-		return a * x * x * x + b * x * x + c * x + d;
-	}
-
-	private float calculateDerivative(float x, float a, float b, float c, float d) {
-		return 3 * a * x * x + 2 * b * x + c;
-	}
-
-	public static float noise(int seed, float time, int STEP_SIZE) {
-		int left = (int) Math.floor(time / STEP_SIZE);
-		int right = (int) Math.ceil(time / STEP_SIZE);
-		float d = (time % STEP_SIZE) / STEP_SIZE;
-
-		float l = nextFloat(seed, left);
-		float r = nextFloat(seed, right);
-
-		float m = (1.0f - (float) Math.cos(d * Math.PI)) / 2.0f;
-		return l * (1 - m) + r * m;
-		//return 2*(r-l)*d*d*d + (l-r)*d*d + l;    //Cubic
-		//return l + d * (r - l);                //Linear
-	}
-
-	private static float nextFloat(int seed, int seed2) {
-		if (seed2 == 0) return 0.5f;
-
-		Random r1 = new Random(seed);
-		r1.nextLong();
-
-		Random r2 = new Random(seed2);
-		r2.nextLong();
-		r2.nextLong();
-
-		Random r3 = new Random(r1.nextLong() ^ r2.nextLong());
-		r3.nextFloat();
-
-		return r3.nextFloat();
 	}
 }

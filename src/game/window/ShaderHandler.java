@@ -34,21 +34,29 @@ public class ShaderHandler {
 
 			shaders.put(name, shader);
 
-			viewMatrix.rewind();
-			projectionMatrix.rewind();
-			lights.rewind();
-			lightColors.rewind();
 
 			shader.start();
 			shader.setMinimumBrightness(minimumBrightness);
 			shader.setLightAmount(lightAmount);
-			shader.setLights(lights);
-			shader.setLightColors(lightColors);
+			if (lights != null)  {
+				lights.rewind();
+				shader.setLights(lights);
+			}
+			if (lightColors != null) {
+				lightColors.rewind();
+				shader.setLightColors(lightColors);
+			}
 			shader.setTexture(texture);
 			shader.setTextureTotalBounds(textureWidth, textureHeight);
 			shader.setTime(time);
-			shader.setViewMatrix(viewMatrix);
-			shader.setProjectionMatrix(projectionMatrix);
+			if (viewMatrix != null) {
+				viewMatrix.rewind();
+				shader.setViewMatrix(viewMatrix);
+			}
+			if (projectionMatrix != null) {
+				projectionMatrix.rewind();
+				shader.setProjectionMatrix(projectionMatrix);
+			}
 			shader.stop();
 
 			return shader;
