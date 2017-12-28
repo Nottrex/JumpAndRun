@@ -48,7 +48,7 @@ public class Game {
 			player.setJumping(keyboard.isPressed(Keyboard.GAMEPAD_BUTTON_A));
 			player.setDown(keyboard.getPressed(Keyboard.GAMEPAD_AXIS_LEFT_Y_RIGHT));
 			player.setMx(keyboard.getPressed(Keyboard.GAMEPAD_AXIS_LEFT_X_RIGHT) - keyboard.getPressed(Keyboard.GAMEPAD_AXIS_LEFT_X_LEFT));
-			if (keyboard.isPressed(Keyboard.GAMEPAD_BUTTON_B)) window.getCamera().addScreenshake(0.03f);
+			if (keyboard.isPressed(Keyboard.GAMEPAD_BUTTON_B)) window.getCamera().addScreenshake(0.01f);
 
 			while (!toAdd.isEmpty()) {
 				GameObject gameObject = toAdd.poll();
@@ -73,6 +73,10 @@ public class Game {
 
 			TimeUtil.sleep((int) (1000.0f/TPS - (newTime-time)));
 		}
+	}
+
+	public Camera getCamera() {
+		return window.getCamera();
 	}
 
 	public void addGameObject(GameObject gameObject) {

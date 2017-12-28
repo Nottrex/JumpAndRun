@@ -24,8 +24,7 @@ public abstract class BasicDrawingEntity implements Drawable {
 
 	@Override
 	public void draw(Window window, long time) {
-		String texture = getCurrentSprite().getTexture(time);
-		Rectangle bounds = TextureHandler.getSpriteSheetBounds("textures_" + texture);
+		Rectangle bounds = getCurrentSprite().getTexture(time);
 
 		BasicShader shader = (BasicShader) window.getShaderHandler().getShader("BasicShader");
 

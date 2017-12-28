@@ -69,14 +69,11 @@ public class Window {
 				shaderHandler.setLightColors(lightHandler.getLightColors());
 			}
 
-
 			drawables.sort((o1, o2) -> Float.compare(o2.getDrawingPriority(), o1.getDrawingPriority()));
 
 			draw();
 			keyboard.update();
 
-
-			TimeUtil.sleep(1);
 			running = !GLFW.glfwWindowShouldClose(window);
 		}
 

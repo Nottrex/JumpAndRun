@@ -117,14 +117,14 @@ public class Camera {
 		float sx = 0, sy = 0, sr = 0;
 		for (int i = 0; i < screenshakeList.size(); i++) {
 			Screenshake s = screenshakeList.get(i);
-			double d = Math.pow(s.decay, (time - s.startTime) / TIME_FRAC);
+			float t = 1.0f*(time - s.startTime) / TIME_FRAC;
+			double d = Math.pow(s.decay, t);
 			if (d * s.amp_x < MIN_AMP && d * s.amp_y < MIN_AMP && d * s.amp_r < MIN_AMP) {
 				screenshakeList.remove(s);
 			} else {
-				float t = (time - s.startTime) / TIME_FRAC;
-				sx += d * s.amp_x * (noise((int) (10000 * s.phase_x), t, Math.round(2 * s.freq_x)) * 2 - 1);
-				sy += d * s.amp_y * (noise((int) (10000 * s.phase_y), t, Math.round(2 * s.freq_y)) * 2 - 1);
-				sr += d * s.amp_r * (noise((int) (10000 * s.phase_r), t, Math.round(2 * s.freq_r)) * 2 - 1);
+				sx += d * s.amp_x * (noise((int) (10000 * s.phase_x), t, Math.round(s.freq_x)) * 2 - 1);
+				sy += d * s.amp_y * (noise((int) (10000 * s.phase_y), t, Math.round(s.freq_y)) * 2 - 1);
+				sr += d * s.amp_r * (noise((int) (10000 * s.phase_r), t, Math.round(s.freq_r)) * 2 - 1);
 			}
 		}
 
@@ -311,12 +311,28 @@ public class Camera {
 		int right = (int) Math.ceil(time / STEP_SIZE);
 		float d = (time % STEP_SIZE) / STEP_SIZE;
 
-		float l = new Random((((17*31+left)*31)+seed)).nextInt(100000) / 100000f;
-		float r = new Random((((17*31+right)*31)+seed)).nextInt(100000) / 100000f;
+		float l = nextFloat(seed, left);
+		float r = nextFloat(seed, right);
 
 		float m = (1.0f - (float) Math.cos(d * Math.PI)) / 2.0f;
 		return l * (1 - m) + r * m;
 		//return 2*(r-l)*d*d*d + (l-r)*d*d + l;    //Cubic
 		//return l + d * (r - l);                //Linear
+	}
+
+	private static float nextFloat(int seed, int seed2) {
+		if (seed2 == 0) return 0.5f;
+
+		Random r1 = new Random(seed);
+		r1.nextLong();
+
+		Random r2 = new Random(seed2);
+		r2.nextLong();
+		r2.nextLong();
+
+		Random r3 = new Random(r1.nextLong() ^ r2.nextLong());
+		r3.nextFloat();
+
+		return r3.nextFloat();
 	}
 }

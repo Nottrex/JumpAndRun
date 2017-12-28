@@ -35,6 +35,7 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 
 	@Override
 	public void update(Game game) {
+		test = game;
 		vx = mx * SPEED;
 		if (-vy < MAX_GRAVITY_SPEED) vy -= GRAVITY_ACCELERATION;
 
@@ -49,13 +50,23 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 
 		vy -= down * DOWN_ACCELERATION;
 
+		lastTickOnGround = onGround;
 		onGround = false;
 		super.update(game);
 	}
 
+	//TEST
+	private boolean lastTickOnGround;
+	private Game test;
+
+
 	@Override
 	public void collide(GameObject gameObject, HitBox.HitBoxDirection direction) {
 		if (direction == HitBox.HitBoxDirection.DOWN) {
+			if (!lastTickOnGround) {
+				test.getCamera().addScreenshake(0.03f);
+			}
+
 			onGround = true;
 		}
 	}
