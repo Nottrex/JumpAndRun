@@ -4,6 +4,7 @@ import game.util.TimeUtil;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 public class Camera {
 	private static final int TIME_FRAC = 25;
@@ -116,14 +117,14 @@ public class Camera {
 		float sx = 0, sy = 0, sr = 0;
 		for (int i = 0; i < screenshakeList.size(); i++) {
 			Screenshake s = screenshakeList.get(i);
-			double d = Math.pow(s.decay, (time - s.startTime)/TIME_FRAC);
+			double d = Math.pow(s.decay, (time - s.startTime) / TIME_FRAC);
 			if (d * s.amp_x < MIN_AMP && d * s.amp_y < MIN_AMP && d * s.amp_r < MIN_AMP) {
 				screenshakeList.remove(s);
 			} else {
-				float t = (time-s.startTime) / TIME_FRAC;
-				sx += d * s.amp_x * Math.cos(s.freq_x * t + s.phase_x);
-				sy += d * s.amp_y * Math.cos(s.freq_y * t + s.phase_y);
-				sr += d * s.amp_r * Math.cos(s.freq_r * t + s.phase_r);
+				float t = (time - s.startTime) / TIME_FRAC;
+				sx += d * s.amp_x * (noise((int) (10000 * s.phase_x), t, Math.round(2 * s.freq_x)) * 2 - 1);
+				sy += d * s.amp_y * (noise((int) (10000 * s.phase_y), t, Math.round(2 * s.freq_y)) * 2 - 1);
+				sr += d * s.amp_r * (noise((int) (10000 * s.phase_r), t, Math.round(2 * s.freq_r)) * 2 - 1);
 			}
 		}
 
@@ -133,16 +134,16 @@ public class Camera {
 			y = delayFrames[0][2] + sy / zoom;
 			rotation = delayFrames[0][3] + sr;
 
-			for (int t = 0; t < delayFrameAmount-1; t++) {
-				delayFrames[t][0] = delayFrames[t+1][0];
-				delayFrames[t][1] = delayFrames[t+1][1];
-				delayFrames[t][2] = delayFrames[t+1][2];
-				delayFrames[t][3] = delayFrames[t+1][3];
+			for (int t = 0; t < delayFrameAmount - 1; t++) {
+				delayFrames[t][0] = delayFrames[t + 1][0];
+				delayFrames[t][1] = delayFrames[t + 1][1];
+				delayFrames[t][2] = delayFrames[t + 1][2];
+				delayFrames[t][3] = delayFrames[t + 1][3];
 			}
-			delayFrames[delayFrameAmount-1][0] = tzoom;
-			delayFrames[delayFrameAmount-1][1] = tx;
-			delayFrames[delayFrameAmount-1][2] = ty;
-			delayFrames[delayFrameAmount-1][3] = trotation;
+			delayFrames[delayFrameAmount - 1][0] = tzoom;
+			delayFrames[delayFrameAmount - 1][1] = tx;
+			delayFrames[delayFrameAmount - 1][2] = ty;
+			delayFrames[delayFrameAmount - 1][3] = trotation;
 		} else {
 			zoom = tzoom;
 			x = tx + sx / zoom;
@@ -222,10 +223,10 @@ public class Camera {
 	}
 
 	public void setRotationSmooth(float rotation, long time) {
-		while(rotation < 0) {
-			rotation += 2*Math.PI;
+		while (rotation < 0) {
+			rotation += 2 * Math.PI;
 		}
-		rotation %= Math.PI*2;
+		rotation %= Math.PI * 2;
 
 		float v = 0;
 		float t = rotation;
@@ -234,14 +235,14 @@ public class Camera {
 		}
 
 		float currentTilt = trotation;
-		while(currentTilt < 0) {
-			currentTilt += 2*Math.PI;
+		while (currentTilt < 0) {
+			currentTilt += 2 * Math.PI;
 		}
-		currentTilt %= Math.PI*2;
+		currentTilt %= Math.PI * 2;
 		if (currentTilt < Math.PI && rotation - currentTilt > Math.PI) {
-			currentTilt += 2*Math.PI;
- 		} else if (currentTilt > Math.PI  && currentTilt - rotation > Math.PI) {
-			currentTilt -= 2*Math.PI;
+			currentTilt += 2 * Math.PI;
+		} else if (currentTilt > Math.PI && currentTilt - rotation > Math.PI) {
+			currentTilt -= 2 * Math.PI;
 		}
 
 		d4 = currentTilt;
@@ -303,5 +304,19 @@ public class Camera {
 
 	private float calculateDerivative(float x, float a, float b, float c, float d) {
 		return 3 * a * x * x + 2 * b * x + c;
+	}
+
+	public static float noise(int seed, float time, int STEP_SIZE) {
+		int left = (int) Math.floor(time / STEP_SIZE);
+		int right = (int) Math.ceil(time / STEP_SIZE);
+		float d = (time % STEP_SIZE) / STEP_SIZE;
+
+		float l = new Random((((17*31+left)*31)+seed)).nextInt(100000) / 100000f;
+		float r = new Random((((17*31+right)*31)+seed)).nextInt(100000) / 100000f;
+
+		float m = (1.0f - (float) Math.cos(d * Math.PI)) / 2.0f;
+		return l * (1 - m) + r * m;
+		//return 2*(r-l)*d*d*d + (l-r)*d*d + l;    //Cubic
+		//return l + d * (r - l);                //Linear
 	}
 }

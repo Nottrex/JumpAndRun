@@ -31,7 +31,6 @@ public class Player extends BasicWalkingEntity implements Light {
 	@Override
 	public void collide(GameObject gameObject, HitBox.HitBoxDirection direction) {
 		super.collide(gameObject, direction);
-
 	}
 
 	@Override
