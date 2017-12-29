@@ -16,7 +16,7 @@ public class MathUtil {
 		return 3 * a * x * x + 2 * b * x + c;
 	}
 
-	public static float noise(int seed, float time, int STEP_SIZE) {
+	public static float noise(int seed, float time, float STEP_SIZE) {
 		int left = (int) Math.floor(time / STEP_SIZE);
 		int right = (int) Math.ceil(time / STEP_SIZE);
 		float d = (time % STEP_SIZE) / STEP_SIZE;

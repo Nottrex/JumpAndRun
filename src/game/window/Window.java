@@ -181,7 +181,6 @@ public class Window {
 		toRemove = new ConcurrentLinkedQueue<>();
 		toAdd = new ConcurrentLinkedQueue<>();
 
-		TextureHandler.loadImagePngSpriteSheet("textures", "textures");
 		BufferedImage image = TextureHandler.getImagePng("textures");
 		texture = TextureHandler.createImage(image);
 

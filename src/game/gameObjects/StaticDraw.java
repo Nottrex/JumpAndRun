@@ -18,13 +18,13 @@ import java.util.List;
 
 public abstract class StaticDraw implements Drawable {
 	private static final int INDICES = 6;
-	private static final float[][] VERTEX_POS = new float[][] {
-		{0,0}, {0,1}, {1,1}, {1,0}
+	private static final float[][] VERTEX_POS = new float[][]{
+			{0, 0}, {0, 1}, {1, 1}, {1, 0}
 	};
 
 	private int rectangles;
 	private int vao, vao2;
-	private int locationBuffer, texLocationBuffer, indicesBuffer;
+	private int locationVBO, texLocationVBO, indicesVBO;
 	private List<Pair<HitBox, String>> hitBoxList;
 
 	private boolean update;
@@ -36,8 +36,13 @@ public abstract class StaticDraw implements Drawable {
 	@Override
 	public void setup(Window window) {
 		window.getShaderHandler().loadShader("StaticShader");
+
 		vao = GL30.glGenVertexArrays();
 		vao2 = GL30.glGenVertexArrays();
+
+		locationVBO = GL15.glGenBuffers();
+		texLocationVBO = GL15.glGenBuffers();
+		indicesVBO = GL15.glGenBuffers();
 	}
 
 	@Override
@@ -62,16 +67,16 @@ public abstract class StaticDraw implements Drawable {
 
 	@Override
 	public void cleanUp(Window window) {
-		if (indicesBuffer != 0) {
-			GL15.glDeleteBuffers(indicesBuffer);
+		if (indicesVBO != 0) {
+			GL15.glDeleteBuffers(indicesVBO);
 		}
 
-		if (locationBuffer != 0) {
-			GL15.glDeleteBuffers(locationBuffer);
+		if (locationVBO != 0) {
+			GL15.glDeleteBuffers(locationVBO);
 		}
 
-		if (texLocationBuffer != 0) {
-			GL15.glDeleteBuffers(texLocationBuffer);
+		if (texLocationVBO != 0) {
+			GL15.glDeleteBuffers(texLocationVBO);
 		}
 
 		GL30.glDeleteVertexArrays(vao);
@@ -116,27 +121,23 @@ public abstract class StaticDraw implements Drawable {
 		texLocations.flip();
 		indices.flip();
 
-		locationBuffer = GL15.glGenBuffers();
-		texLocationBuffer = GL15.glGenBuffers();
-		indicesBuffer =  GL15.glGenBuffers();
-
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, locationBuffer);
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, locationVBO);
 		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, locations, GL15.GL_STATIC_DRAW);
 
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, texLocationBuffer);
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, texLocationVBO);
 		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, texLocations, GL15.GL_STATIC_DRAW);
 
 		GL30.glBindVertexArray(vao);
 
 		GL20.glEnableVertexAttribArray(shader.getLocationLocation());
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, locationBuffer);
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, locationVBO);
 		GL20.glVertexAttribPointer(shader.getLocationLocation(), 2, GL11.GL_FLOAT, false, 0, 0);
 
 		GL20.glEnableVertexAttribArray(shader.getTexLocationLocation());
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, texLocationBuffer);
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, texLocationVBO);
 		GL20.glVertexAttribPointer(shader.getTexLocationLocation(), 2, GL11.GL_FLOAT, false, 0, 0);
 
-		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer);
+		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesVBO);
 		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indices, GL15.GL_STATIC_DRAW);
 
 		GL30.glBindVertexArray(vao2);

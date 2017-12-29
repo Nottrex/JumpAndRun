@@ -24,6 +24,10 @@ public class TextureHandler {
 		textures_sprite_sheet_texture = new HashMap<>();
 	}
 
+	static {
+		TextureHandler.loadImagePngSpriteSheet("textures", "textures");
+	}
+
 	private TextureHandler() {
 	}
 

@@ -187,6 +187,7 @@ public class ShaderHandler {
 	private ShaderProgram createShader(String name) {
 		if (name.equals("BasicShader")) return new BasicShader();
 		if (name.equals("StaticShader")) return new StaticShader();
+		if (name.equals("ParticleShader")) return new ParticleShader();
 
 		ErrorUtil.printError("Unknown Shader: " + name);
 		return null;

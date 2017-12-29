@@ -24,6 +24,7 @@ public class Game {
 	private Queue<GameObject> toAdd;
 
 	private Player player;
+	private ParticleSystem particleSystem;
 
 	public Game(Window window) {
 		this.window = window;
@@ -34,9 +35,11 @@ public class Game {
 		toAdd = new ConcurrentLinkedQueue<>();
 
 		player = new Player();
+		particleSystem = new ParticleSystem();
 
 		this.addGameObject(new Wall());
 		this.addGameObject(player);
+		this.addGameObject(particleSystem);
 	}
 
 	public void gameLoop() {
@@ -49,7 +52,8 @@ public class Game {
 
 			boolean test2 = keyboard.isPressed(Keyboard.GAMEPAD_BUTTON_X) ;
 			if (!test && test2) {
-				window.getLightHandler().setMinimumBrightnessSmooth((float) Math.random(), 1000);
+				for (int i = 0; i < 100; i++) particleSystem.createParticle(ParticleType.EXPLOSION, 0, 0, (float)Math.random() * 0.2f - 0.1f, (float)Math.random()*0.2f - 0.1f);
+				//window.getLightHandler().setMinimumBrightnessSmooth((float) Math.random(), 1000);
 			}
 			test = test2;
 
