@@ -1,6 +1,7 @@
 package game.gameObjects;
 
 import game.Game;
+import game.util.TimeUtil;
 import game.window.ParticleShader;
 import game.window.Window;
 import org.lwjgl.BufferUtils;
@@ -36,7 +37,7 @@ public class ParticleSystem implements Drawable {
 
 	public void createParticle(ParticleType particle, float x, float y, float vx, float vy) {
 		if (particles.size() < MAX_PARTICLES)
-			particles.add(new Particle(particle, x, y, vx, vy));
+			particles.add(new Particle(particle, x, y, vx, vy, TimeUtil.getTime()));
 	}
 
 	@Override
@@ -150,7 +151,7 @@ public class ParticleSystem implements Drawable {
 			for (int i = 0; i < MAX_PARTICLES && i < particles.size(); i++) {
 				Particle particle = particles.get(i);
 
-				Rectangle texBounds = particle.type.getSprite().getTexture(time);
+				Rectangle texBounds = particle.type.getSprite().getTexture(particle.startTime, time);
 
 				for (float[] v: VERTEX_POS) {
 					locationBuffer.put(v[0] * particle.type.getWidth() + particle.x);
@@ -176,20 +177,22 @@ public class ParticleSystem implements Drawable {
 	}
 
 	private class Particle {
-		private static final float GRAVITY_ACCELERATION = 0.01f;
+		private static final float GRAVITY_ACCELERATION = 0.003f;
 		private static final float MAX_GRAVITY_SPEED = 0.1f;
 
 		private float x, y;
 		private float vx, vy;
 		private ParticleType type;
+		private long startTime;
 		private int time;
 
-		private Particle(ParticleType type, float x, float y, float vx, float vy) {
+		private Particle(ParticleType type, float x, float y, float vx, float vy, long startTime) {
 			this.type = type;
 			this.x = x;
 			this.y = y;
 			this.vx = vx;
 			this.vy = vy;
+			this.startTime = startTime;
 
 			time = 0;
 		}

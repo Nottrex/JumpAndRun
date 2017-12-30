@@ -20,8 +20,8 @@ public class Sprite {
 		}
 	}
 
-	public Rectangle getTexture(long currentTime) {
-		return textures.get((int) ((currentTime / time) % textures.size()));
+	public Rectangle getTexture(long startTime, long currentTime) {
+		return textures.get((int) (((currentTime - startTime) / time) % textures.size()));
 	}
 
 }

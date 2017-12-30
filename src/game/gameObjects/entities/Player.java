@@ -12,6 +12,8 @@ public class Player extends BasicWalkingEntity implements Light {
 
 	public Player() {
 		super(new HitBox(3,-3,1,1));
+
+		setSprite(walking);
 	}
 
 	@Override
@@ -41,11 +43,6 @@ public class Player extends BasicWalkingEntity implements Light {
 	@Override
 	public float getDrawingPriority() {
 		return 0;
-	}
-
-	@Override
-	public Sprite getCurrentSprite() {
-		return walking;
 	}
 
 

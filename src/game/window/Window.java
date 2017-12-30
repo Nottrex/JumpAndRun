@@ -41,6 +41,9 @@ public class Window {
 	private List<Drawable> drawables;
 	private Queue<Drawable> toRemove;
 	private Queue<Drawable> toAdd;
+	private Vector3f cameraPosition, dir, up, target, right;
+	private Matrix4f viewMatrix;
+	private Matrix4f projectionMatrix;
 
 	public Window() {
 		System.out.println(String.format("LWJGL Version %s", Version.getVersion()));
@@ -94,8 +97,6 @@ public class Window {
 		GLFW.glfwSwapBuffers(window);
 	}
 
-	private Vector3f cameraPosition, dir, up, target, right;
-	private Matrix4f viewMatrix;
 	private void updateViewMatrix() {
 		boolean b = camera.update();
 		if (camera.zoom == Double.POSITIVE_INFINITY || camera.zoom == Double.NEGATIVE_INFINITY || camera.zoom == Double.NaN) {
@@ -119,7 +120,6 @@ public class Window {
 		}
 	}
 
-	private Matrix4f projectionMatrix;
 	private void updateProjectionMatrix() {
 		float aspect = width * 1.0f / height;
 
@@ -174,7 +174,7 @@ public class Window {
 		dir = new Vector3f();
 		target = new Vector3f();
 		up = new Vector3f();
-		right = new Vector3f(1,0,0);
+		right = new Vector3f(1, 0, 0);
 		projectionMatrix = new Matrix4f();
 
 		drawables = new LinkedList<>();
@@ -197,8 +197,8 @@ public class Window {
 
 		if (!GLFW.glfwInit()) ErrorUtil.printError("Initializing GLFW");
 
-		GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE,  GLFW.GLFW_FALSE);
-		GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE,  GLFW.GLFW_TRUE);
+		GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_FALSE);
+		GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GLFW.GLFW_TRUE);
 
 		window = GLFW.glfwCreateWindow(WIDTH, HEIGHT, WINDOW_NAME, MemoryUtil.NULL, MemoryUtil.NULL);
 
@@ -218,7 +218,7 @@ public class Window {
 			if (projectionMatrix != null) updateProjectionMatrix();
 		});
 
-		try ( MemoryStack stack = MemoryStack.stackPush() ) {
+		try (MemoryStack stack = MemoryStack.stackPush()) {
 			IntBuffer pWidth = stack.mallocInt(1);
 			IntBuffer pHeight = stack.mallocInt(1);
 

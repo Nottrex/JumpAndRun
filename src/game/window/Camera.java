@@ -5,7 +5,6 @@ import game.util.TimeUtil;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 public class Camera {
 	private static final int TIME_FRAC = 25;
@@ -15,49 +14,24 @@ public class Camera {
 	public float zoom, x, y, rotation;
 
 	private List<Screenshake> screenshakeList;
-
-	private class Screenshake {
-		private Screenshake(long startTime, float decay, float amp_x, float amp_y, float amp_r, float phase_x, float phase_y, float phase_r, float freq_x, float freq_y, float freq_r) {
-			this.startTime = startTime;
-			this.decay = decay;
-			this.amp_x = amp_x;
-			this.amp_y = amp_y;
-			this.amp_r = amp_r;
-			this.phase_x = phase_x;
-			this.phase_y = phase_y;
-			this.phase_r = phase_r;
-			this.freq_x = freq_x;
-			this.freq_y = freq_y;
-			this.freq_r = freq_r;
-		}
-
-		long startTime;
-		float decay;
-		float amp_x, amp_y, amp_r, phase_x, phase_y, phase_r, freq_x, freq_y, freq_r;
-	}
-
 	private float tx, ty;
 	private boolean z2 = false;
 	private float targetX, targetY;
 	private long beginTime2 = 0, targetTime2 = 0;
 	private float a2, b2, c2, d2;
 	private float a3, b3, c3, d3;
-
 	private float tzoom;
 	private float targetZoom = tzoom;
 	private long beginTime = 0, targetTime = 0;
 	private float a, b, c, d;
 	private boolean z = false;
-
 	private float trotation;
 	private float targetTilt = trotation;
 	private long beginTime3 = 0, targetTime3 = 0;
 	private float a4, b4, c4, d4;
 	private boolean z3 = false;
-
 	private int delayFrameAmount;
 	private float[][] delayFrames;
-
 	public Camera() {
 		zoom = 0.1f;
 		x = 0;
@@ -118,7 +92,7 @@ public class Camera {
 		float sx = 0, sy = 0, sr = 0;
 		for (int i = 0; i < screenshakeList.size(); i++) {
 			Screenshake s = screenshakeList.get(i);
-			float t = 1.0f*(time - s.startTime) / TIME_FRAC;
+			float t = 1.0f * (time - s.startTime) / TIME_FRAC;
 			double d = Math.pow(s.decay, t);
 			if (d * s.amp_x < MIN_AMP && d * s.amp_y < MIN_AMP && d * s.amp_r < MIN_AMP) {
 				screenshakeList.remove(s);
@@ -297,5 +271,24 @@ public class Camera {
 
 	public float getY() {
 		return ty;
+	}
+
+	private class Screenshake {
+		long startTime;
+		float decay;
+		float amp_x, amp_y, amp_r, phase_x, phase_y, phase_r, freq_x, freq_y, freq_r;
+		private Screenshake(long startTime, float decay, float amp_x, float amp_y, float amp_r, float phase_x, float phase_y, float phase_r, float freq_x, float freq_y, float freq_r) {
+			this.startTime = startTime;
+			this.decay = decay;
+			this.amp_x = amp_x;
+			this.amp_y = amp_y;
+			this.amp_r = amp_r;
+			this.phase_x = phase_x;
+			this.phase_y = phase_y;
+			this.phase_r = phase_r;
+			this.freq_x = freq_x;
+			this.freq_y = freq_y;
+			this.freq_r = freq_r;
+		}
 	}
 }

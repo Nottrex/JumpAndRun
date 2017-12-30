@@ -4,6 +4,7 @@ import game.HitBox;
 import game.Sprite;
 import game.gameObjects.Drawable;
 import game.util.TextureHandler;
+import game.util.TimeUtil;
 import game.window.BasicShader;
 import game.window.Window;
 import org.lwjgl.opengl.GL11;
@@ -12,6 +13,8 @@ import java.awt.*;
 
 public abstract class BasicDrawingEntity implements Drawable {
 	protected HitBox hitBox;
+	private Sprite sprite;
+	private long startTime;
 
 	public BasicDrawingEntity(HitBox hitBox) {
 		this.hitBox = hitBox;
@@ -24,7 +27,9 @@ public abstract class BasicDrawingEntity implements Drawable {
 
 	@Override
 	public void draw(Window window, long time) {
-		Rectangle bounds = getCurrentSprite().getTexture(time);
+		if (sprite == null) return;
+
+		Rectangle bounds = sprite.getTexture(startTime, time);
 
 		BasicShader shader = (BasicShader) window.getShaderHandler().getShader("BasicShader");
 
@@ -40,5 +45,8 @@ public abstract class BasicDrawingEntity implements Drawable {
 		window.getShaderHandler().unloadShader("BasicShader");
 	}
 
-	public abstract Sprite getCurrentSprite();
+	protected void setSprite(Sprite sprite) {
+		this.sprite = sprite;
+		this.startTime = TimeUtil.getTime();
+	}
 }

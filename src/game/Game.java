@@ -52,7 +52,7 @@ public class Game {
 
 			boolean test2 = keyboard.isPressed(Keyboard.GAMEPAD_BUTTON_X) ;
 			if (!test && test2) {
-				for (int i = 0; i < 100; i++) particleSystem.createParticle(ParticleType.EXPLOSION, 0, 0, (float)Math.random() * 0.2f - 0.1f, (float)Math.random()*0.2f - 0.1f);
+				for (int i = 0; i < 100; i++) particleSystem.createParticle(ParticleType.EXPLOSION, player.getHitBox().x, player.getHitBox().y, (float)Math.random() * 0.2f - 0.1f, (float)Math.random()*0.2f - 0.1f);
 				//window.getLightHandler().setMinimumBrightnessSmooth((float) Math.random(), 1000);
 			}
 			test = test2;
