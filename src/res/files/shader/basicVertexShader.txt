@@ -14,7 +14,7 @@ out vec2 fragPos;
 void main() {
     fragTex = vec2((gl_VertexID & 2)/2, gl_VertexID & 1);
     fragTex.x = (texX+fragTex.x*texW)/texTW;
-    fragTex.y = 1-(texY+(1-fragTex.y)*texH)/texTH;
+    fragTex.y = (texY+(1-fragTex.y)*texH)/texTH;
 
     vec4 pos = vec4(((gl_VertexID & 2)/2)*width + x, (gl_VertexID & 1)*height+y, 0, 1);
 

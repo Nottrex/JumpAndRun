@@ -105,8 +105,8 @@ public abstract class StaticDraw implements Drawable {
 				locations.put(hitBox.x + VERTEX_POS[v][0] * hitBox.width);
 				locations.put(hitBox.y + VERTEX_POS[v][1] * hitBox.height);
 
-				texLocations.put(texture.x + VERTEX_POS[v][0] * texture.width);
-				texLocations.put(texture.y + VERTEX_POS[v][1] * texture.height);
+				texLocations.put(texture.x + (1-VERTEX_POS[v][0]) * texture.width);
+				texLocations.put(texture.y + (1-VERTEX_POS[v][1]) * texture.height);
 			}
 
 			indices.put(i * VERTEX_POS.length);

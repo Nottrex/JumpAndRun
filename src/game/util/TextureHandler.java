@@ -88,7 +88,7 @@ public class TextureHandler {
 
 		ByteBuffer buffer = BufferUtils.createByteBuffer(image.getWidth() * image.getHeight() * 4); //4 for RGBA, 3 for RGB
 
-		for(int y = image.getHeight() - 1; y >= 0 ; y--){
+		for(int y = 0; y < image.getHeight() ; y++){
 			for(int x = 0; x < image.getWidth(); x++){
 				int pixel = pixels[y * image.getWidth() + x];
 				buffer.put((byte) ((pixel >> 16) & 0xFF));     // Red component

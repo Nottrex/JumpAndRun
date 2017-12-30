@@ -12,10 +12,8 @@ import org.lwjgl.opengl.GL30;
 import java.awt.*;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class ParticleSystem implements Drawable {
 	private static final int INDICES = 6;
@@ -29,28 +27,29 @@ public class ParticleSystem implements Drawable {
 	private FloatBuffer locationBuffer, texLocationBuffer;
 	private IntBuffer indicesBuffer;
 
-	private List<Particle> particles;
-	private Queue<Particle> toRemove;
+	private final List<Particle> particles = new ArrayList<>();
+	private List<Particle> toRemove;
 
 	public ParticleSystem() {
-		particles = new ArrayList<>();
-		toRemove = new ConcurrentLinkedQueue<>();
+		toRemove = new LinkedList<>();
 	}
 
 	public void createParticle(ParticleType particle, float x, float y, float vx, float vy) {
-		particles.add(new Particle(particle, x, y, vx, vy));
+		if (particles.size() < MAX_PARTICLES)
+			particles.add(new Particle(particle, x, y, vx, vy));
 	}
 
 	@Override
 	public void update(Game game) {
-		for (Particle particle: particles) {
-			if (particle.update())
-				toRemove.add(particle);
-		}
+		synchronized (particles) {
+			for (Particle particle: particles) {
+				if (particle.update())
+					toRemove.add(particle);
+			}
 
-		while (!toRemove.isEmpty()) {
-			particles.remove(toRemove.poll());
+			particles.removeAll(toRemove);
 		}
+		toRemove.clear();
 	}
 
 	@Override
@@ -143,40 +142,42 @@ public class ParticleSystem implements Drawable {
 	}
 
 	private void updateBuffers(long time) {
-		locationBuffer.clear();
-		texLocationBuffer.clear();
-		indicesBuffer.clear();
+		synchronized (particles) {
+			locationBuffer.clear();
+			texLocationBuffer.clear();
+			indicesBuffer.clear();
 
-		for (int i = 0; i < MAX_PARTICLES && i < particles.size(); i++) {
-			Particle particle = particles.get(i);
+			for (int i = 0; i < MAX_PARTICLES && i < particles.size(); i++) {
+				Particle particle = particles.get(i);
 
-			Rectangle texBounds = particle.type.getSprite().getTexture(time);
+				Rectangle texBounds = particle.type.getSprite().getTexture(time);
 
-			for (float[] v: VERTEX_POS) {
-				locationBuffer.put(v[0] * particle.type.getWidth() + particle.x);
-				locationBuffer.put(v[1] * particle.type.getHeight() + particle.y);
+				for (float[] v: VERTEX_POS) {
+					locationBuffer.put(v[0] * particle.type.getWidth() + particle.x);
+					locationBuffer.put(v[1] * particle.type.getHeight() + particle.y);
 
-				texLocationBuffer.put(v[0] * texBounds.width + texBounds.x);
-				texLocationBuffer.put(v[1] * texBounds.height + texBounds.y);
+					texLocationBuffer.put((1-v[0]) * texBounds.width + texBounds.x);
+					texLocationBuffer.put((1-v[1]) * texBounds.height + texBounds.y);
+				}
+
+
+				indicesBuffer.put(i * VERTEX_POS.length);
+				indicesBuffer.put(i * VERTEX_POS.length + 2);
+				indicesBuffer.put(i * VERTEX_POS.length + 1);
+				indicesBuffer.put(i * VERTEX_POS.length);
+				indicesBuffer.put(i * VERTEX_POS.length + 3);
+				indicesBuffer.put(i * VERTEX_POS.length + 2);
 			}
 
-
-			indicesBuffer.put(i * VERTEX_POS.length);
-			indicesBuffer.put(i * VERTEX_POS.length + 2);
-			indicesBuffer.put(i * VERTEX_POS.length + 1);
-			indicesBuffer.put(i * VERTEX_POS.length);
-			indicesBuffer.put(i * VERTEX_POS.length + 3);
-			indicesBuffer.put(i * VERTEX_POS.length + 2);
+			locationBuffer.flip();
+			texLocationBuffer.flip();
+			indicesBuffer.flip();
 		}
-
-		locationBuffer.flip();
-		texLocationBuffer.flip();
-		indicesBuffer.flip();
 	}
 
 	private class Particle {
-		private static final float GRAVITY_ACCELERATION = 0.04f;
-		private static final float MAX_GRAVITY_SPEED = 0.3f;
+		private static final float GRAVITY_ACCELERATION = 0.01f;
+		private static final float MAX_GRAVITY_SPEED = 0.1f;
 
 		private float x, y;
 		private float vx, vy;

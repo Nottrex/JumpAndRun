@@ -87,7 +87,7 @@ public class Window {
 		updateViewMatrix();
 
 		long time = TimeUtil.getTime();
-		shaderHandler.setTime((time/1000) % 10 - 5);
+		shaderHandler.setTime(time);
 
 		drawables.forEach(drawable -> drawable.draw(this, time));
 

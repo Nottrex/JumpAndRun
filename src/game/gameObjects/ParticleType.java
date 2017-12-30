@@ -3,7 +3,7 @@ package game.gameObjects;
 import game.Sprite;
 
 public enum ParticleType {
-	EXPLOSION(new Sprite(120, "wall"), 60, 0.1f, 0.1f, false);
+	EXPLOSION(new Sprite(500, "player", "player2"), 60, 1f, 1f, false);
 
 	private int lifeTime;
 	private boolean gravity;
