@@ -11,7 +11,7 @@ public enum ShaderType {
 		this.shader = shader;
 	}
 
-	public ShaderProgram getShader() {
+	public ShaderProgram createShader() {
 		return shader.get();
 	}
 }

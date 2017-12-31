@@ -26,12 +26,11 @@ public class ShaderHandler {
 	}
 
 	public ShaderProgram loadShader(ShaderType shaderType) {
-		shaderUse.put(shaderType, getUseAmount(shaderType) + 1);
+		shaderUse.put(shaderType, shaderUse.getOrDefault(shaderType, 0) + 1);
 		if (!shaders.containsKey(shaderType)) {
-			ShaderProgram shader = shaderType.getShader();
+			ShaderProgram shader = shaderType.createShader();
 
 			shaders.put(shaderType, shader);
-
 
 			shader.start();
 			shader.setMinimumBrightness(minimumBrightness);
@@ -63,8 +62,8 @@ public class ShaderHandler {
 	}
 
 	public void unloadShader(ShaderType shaderType) {
-		shaderUse.put(shaderType, getUseAmount(shaderType) - 1);
-		if (getUseAmount(shaderType) <= 0) {
+		shaderUse.put(shaderType, shaderUse.getOrDefault(shaderType, 0) - 1);
+		if (shaderUse.getOrDefault(shaderType, 0) <= 0) {
 			ShaderProgram shader = shaders.get(shaderType);
 
 			shader.cleanUp();
@@ -175,11 +174,6 @@ public class ShaderHandler {
 
 	public ShaderProgram getShader(ShaderType shaderType) {
 		return shaders.get(shaderType);
-	}
-
-	private int getUseAmount(ShaderType shaderType) {
-		if (shaderUse.containsKey(shaderType)) return shaderUse.get(shaderType);
-		return 0;
 	}
 
 	public void cleanUp() {

@@ -3,7 +3,6 @@ package game.gameObjects;
 import game.Game;
 import game.util.TimeUtil;
 import game.window.ParticleShader;
-import game.window.ShaderHandler;
 import game.window.ShaderType;
 import game.window.Window;
 import org.lwjgl.BufferUtils;
@@ -15,22 +14,23 @@ import org.lwjgl.opengl.GL30;
 import java.awt.*;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ParticleSystem implements Drawable {
-	private static final int INDICES = 6;
+	public static final int MAX_PARTICLES = 1000;
+	private static final int[] INDICES = new int[]{
+			0, 2, 1, 0, 3, 2
+	};
 	private static final float[][] VERTEX_POS = new float[][]{
 			{0, 0}, {0, 1}, {1, 1}, {1, 0}
 	};
-	public static final int MAX_PARTICLES = 1000;
-
+	private final List<Particle> particles = new ArrayList<>();
 	private int vao, vao2;
 	private int locationVBO, texLocationVBO, indicesVBO;
 	private FloatBuffer locationBuffer, texLocationBuffer;
 	private IntBuffer indicesBuffer;
-
-	private final List<Particle> particles = new ArrayList<>();
 	private List<Particle> toRemove;
 
 	public ParticleSystem() {
@@ -45,7 +45,7 @@ public class ParticleSystem implements Drawable {
 	@Override
 	public void update(Game game) {
 		synchronized (particles) {
-			for (Particle particle: particles) {
+			for (Particle particle : particles) {
 				if (particle.update())
 					toRemove.add(particle);
 			}
@@ -67,7 +67,7 @@ public class ParticleSystem implements Drawable {
 
 		locationBuffer = BufferUtils.createFloatBuffer(MAX_PARTICLES * VERTEX_POS.length * 2);
 		texLocationBuffer = BufferUtils.createFloatBuffer(MAX_PARTICLES * VERTEX_POS.length * 2);
-		indicesBuffer = BufferUtils.createIntBuffer(MAX_PARTICLES * INDICES);
+		indicesBuffer = BufferUtils.createIntBuffer(MAX_PARTICLES * INDICES.length);
 
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, locationVBO);
 		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, locationBuffer, GL15.GL_DYNAMIC_DRAW);
@@ -109,7 +109,7 @@ public class ParticleSystem implements Drawable {
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesVBO);
 		GL15.glBufferSubData(GL15.GL_ELEMENT_ARRAY_BUFFER, 0, indicesBuffer);
 
-		GL11.glDrawElements(GL11.GL_TRIANGLES, Math.min(MAX_PARTICLES, particles.size()) * INDICES, GL11.GL_UNSIGNED_INT, 0);
+		GL11.glDrawElements(GL11.GL_TRIANGLES, Math.min(MAX_PARTICLES, particles.size()) * INDICES.length, GL11.GL_UNSIGNED_INT, 0);
 
 		GL30.glBindVertexArray(vao2);
 	}
@@ -155,21 +155,17 @@ public class ParticleSystem implements Drawable {
 
 				Rectangle texBounds = particle.type.getSprite().getTexture(particle.startTime, time);
 
-				for (float[] v: VERTEX_POS) {
+				for (float[] v : VERTEX_POS) {
 					locationBuffer.put(v[0] * particle.type.getWidth() + particle.x);
 					locationBuffer.put(v[1] * particle.type.getHeight() + particle.y);
 
-					texLocationBuffer.put((1-v[0]) * texBounds.width + texBounds.x);
-					texLocationBuffer.put((1-v[1]) * texBounds.height + texBounds.y);
+					texLocationBuffer.put((1 - v[0]) * texBounds.width + texBounds.x);
+					texLocationBuffer.put((1 - v[1]) * texBounds.height + texBounds.y);
 				}
 
-
-				indicesBuffer.put(i * VERTEX_POS.length);
-				indicesBuffer.put(i * VERTEX_POS.length + 2);
-				indicesBuffer.put(i * VERTEX_POS.length + 1);
-				indicesBuffer.put(i * VERTEX_POS.length);
-				indicesBuffer.put(i * VERTEX_POS.length + 3);
-				indicesBuffer.put(i * VERTEX_POS.length + 2);
+				for (int ind : INDICES) {
+					indicesBuffer.put(i * VERTEX_POS.length + ind);
+				}
 			}
 
 			locationBuffer.flip();
