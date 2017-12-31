@@ -63,7 +63,7 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 	@Override
 	public void collide(GameObject gameObject, HitBox.HitBoxDirection direction) {
 		if (direction == HitBox.HitBoxDirection.DOWN) {
-			if (!lastTickOnGround) {
+			if (!lastTickOnGround && down > 0) {
 				test.getCamera().addScreenshake(0.03f);
 			}
 

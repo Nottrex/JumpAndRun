@@ -3,6 +3,7 @@ package game.window;
 import com.joml.matrix.Matrix4f;
 import com.joml.utils.CamMath;
 import com.joml.vector.Vector3f;
+import game.Options;
 import game.gameObjects.Drawable;
 import game.util.ErrorUtil;
 import game.util.TextureHandler;
@@ -147,6 +148,7 @@ public class Window {
 		GLFW.glfwDestroyWindow(window);
 		GLFW.glfwTerminate();
 		GLFW.glfwSetErrorCallback(null).free();
+		Options.save();
 	}
 
 	private void initOpenGL() {
