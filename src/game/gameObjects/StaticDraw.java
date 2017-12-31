@@ -2,6 +2,7 @@ package game.gameObjects;
 
 import game.HitBox;
 import game.util.TextureHandler;
+import game.window.ShaderType;
 import game.window.StaticShader;
 import game.window.Window;
 import javafx.util.Pair;
@@ -35,7 +36,7 @@ public abstract class StaticDraw implements Drawable {
 
 	@Override
 	public void setup(Window window) {
-		window.getShaderHandler().loadShader("StaticShader");
+		window.getShaderHandler().loadShader(ShaderType.STATIC_SHADER);
 
 		vao = GL30.glGenVertexArrays();
 		vao2 = GL30.glGenVertexArrays();
@@ -47,7 +48,7 @@ public abstract class StaticDraw implements Drawable {
 
 	@Override
 	public void draw(Window window, long time) {
-		StaticShader shader = (StaticShader) window.getShaderHandler().getShader("StaticShader");
+		StaticShader shader = (StaticShader) window.getShaderHandler().getShader(ShaderType.STATIC_SHADER);
 
 		shader.start();
 
@@ -82,7 +83,7 @@ public abstract class StaticDraw implements Drawable {
 		GL30.glDeleteVertexArrays(vao);
 		GL30.glDeleteVertexArrays(vao2);
 
-		window.getShaderHandler().unloadShader("StaticShader");
+		window.getShaderHandler().unloadShader(ShaderType.STATIC_SHADER);
 	}
 
 	protected void updateContent(List<Pair<HitBox, String>> hitBoxList) {

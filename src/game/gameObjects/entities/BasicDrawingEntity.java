@@ -6,6 +6,7 @@ import game.gameObjects.Drawable;
 import game.util.TextureHandler;
 import game.util.TimeUtil;
 import game.window.BasicShader;
+import game.window.ShaderType;
 import game.window.Window;
 import org.lwjgl.opengl.GL11;
 
@@ -22,7 +23,7 @@ public abstract class BasicDrawingEntity implements Drawable {
 
 	@Override
 	public void setup(Window window) {
-		window.getShaderHandler().loadShader("BasicShader");
+		window.getShaderHandler().loadShader(ShaderType.BASIC_SHADER);
 	}
 
 	@Override
@@ -31,7 +32,7 @@ public abstract class BasicDrawingEntity implements Drawable {
 
 		Rectangle bounds = sprite.getTexture(startTime, time);
 
-		BasicShader shader = (BasicShader) window.getShaderHandler().getShader("BasicShader");
+		BasicShader shader = (BasicShader) window.getShaderHandler().getShader(ShaderType.BASIC_SHADER);
 
 		shader.start();
 		shader.setTextureSheetBounds(bounds.x, bounds.y, bounds.width, bounds.height);
@@ -42,7 +43,7 @@ public abstract class BasicDrawingEntity implements Drawable {
 
 	@Override
 	public void cleanUp(Window window) {
-		window.getShaderHandler().unloadShader("BasicShader");
+		window.getShaderHandler().unloadShader(ShaderType.BASIC_SHADER);
 	}
 
 	protected void setSprite(Sprite sprite) {

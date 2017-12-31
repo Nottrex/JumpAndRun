@@ -1,17 +1,15 @@
 package game.window;
 
 import com.joml.matrix.Matrix4f;
-import game.util.ErrorUtil;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ShaderHandler {
-	private Map<String, ShaderProgram> shaders;
-	private Map<String, Integer> shaderUse;
+	private Map<ShaderType, ShaderProgram> shaders;
+	private Map<ShaderType, Integer> shaderUse;
 
 	private FloatBuffer projectionMatrix, viewMatrix;
 	private float time;
@@ -27,18 +25,18 @@ public class ShaderHandler {
 		shaderUse = new HashMap<>();
 	}
 
-	public ShaderProgram loadShader(String name) {
-		shaderUse.put(name, getUseAmount(name) + 1);
-		if (!shaders.containsKey(name)) {
-			ShaderProgram shader = createShader(name);
+	public ShaderProgram loadShader(ShaderType shaderType) {
+		shaderUse.put(shaderType, getUseAmount(shaderType) + 1);
+		if (!shaders.containsKey(shaderType)) {
+			ShaderProgram shader = shaderType.getShader();
 
-			shaders.put(name, shader);
+			shaders.put(shaderType, shader);
 
 
 			shader.start();
 			shader.setMinimumBrightness(minimumBrightness);
 			shader.setLightAmount(lightAmount);
-			if (lights != null)  {
+			if (lights != null) {
 				lights.rewind();
 				shader.setLights(lights);
 			}
@@ -61,17 +59,17 @@ public class ShaderHandler {
 
 			return shader;
 		}
-		return shaders.get(name);
+		return shaders.get(shaderType);
 	}
 
-	public void unloadShader(String name) {
-		shaderUse.put(name, getUseAmount(name) - 1);
-		if (getUseAmount(name) <= 0) {
-			ShaderProgram shader = shaders.get(name);
+	public void unloadShader(ShaderType shaderType) {
+		shaderUse.put(shaderType, getUseAmount(shaderType) - 1);
+		if (getUseAmount(shaderType) <= 0) {
+			ShaderProgram shader = shaders.get(shaderType);
 
 			shader.cleanUp();
-			shaders.remove(name);
-			shaderUse.remove(name);
+			shaders.remove(shaderType);
+			shaderUse.remove(shaderType);
 		}
 	}
 
@@ -175,29 +173,20 @@ public class ShaderHandler {
 		});
 	}
 
-	public ShaderProgram getShader(String name) {
-		return shaders.get(name);
+	public ShaderProgram getShader(ShaderType shaderType) {
+		return shaders.get(shaderType);
 	}
 
-	private int getUseAmount(String name) {
-		if (shaderUse.containsKey(name)) return shaderUse.get(name);
+	private int getUseAmount(ShaderType shaderType) {
+		if (shaderUse.containsKey(shaderType)) return shaderUse.get(shaderType);
 		return 0;
-	}
-
-	private ShaderProgram createShader(String name) {
-		if (name.equals("BasicShader")) return new BasicShader();
-		if (name.equals("StaticShader")) return new StaticShader();
-		if (name.equals("ParticleShader")) return new ParticleShader();
-
-		ErrorUtil.printError("Unknown Shader: " + name);
-		return null;
 	}
 
 	public void cleanUp() {
 		while (!shaders.isEmpty()) {
-			String name = (String) shaders.keySet().toArray()[0];
-			shaders.get(name).cleanUp();
-			shaders.remove(name);
+			ShaderType shaderType = (ShaderType) shaders.keySet().toArray()[0];
+			shaders.get(shaderType).cleanUp();
+			shaders.remove(shaderType);
 		}
 	}
 }

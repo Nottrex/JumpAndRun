@@ -3,6 +3,8 @@ package game.gameObjects;
 import game.Game;
 import game.util.TimeUtil;
 import game.window.ParticleShader;
+import game.window.ShaderHandler;
+import game.window.ShaderType;
 import game.window.Window;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -55,7 +57,7 @@ public class ParticleSystem implements Drawable {
 
 	@Override
 	public void setup(Window window) {
-		ParticleShader shader = (ParticleShader) window.getShaderHandler().loadShader("ParticleShader");
+		ParticleShader shader = (ParticleShader) window.getShaderHandler().loadShader(ShaderType.PARTICLE_SHADER);
 		vao = GL30.glGenVertexArrays();
 		vao2 = GL30.glGenVertexArrays();
 
@@ -91,7 +93,7 @@ public class ParticleSystem implements Drawable {
 
 	@Override
 	public void draw(Window window, long time) {
-		ParticleShader shader = (ParticleShader) window.getShaderHandler().getShader("ParticleShader");
+		ParticleShader shader = (ParticleShader) window.getShaderHandler().getShader(ShaderType.PARTICLE_SHADER);
 
 		shader.start();
 
@@ -129,7 +131,7 @@ public class ParticleSystem implements Drawable {
 		GL30.glDeleteVertexArrays(vao);
 		GL30.glDeleteVertexArrays(vao2);
 
-		window.getShaderHandler().unloadShader("ParticleShader");
+		window.getShaderHandler().unloadShader(ShaderType.PARTICLE_SHADER);
 	}
 
 	@Override
