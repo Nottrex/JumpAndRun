@@ -52,15 +52,18 @@ public class Game {
 
 			boolean test2 = keyboard.isPressed(Options.CONTROLS.get("PARTICLE")) ;
 			if (!test && test2) {
-				for (int i = 0; i < 100; i++) particleSystem.createParticle(ParticleType.EXPLOSION, player.getHitBox().x, player.getHitBox().y, (float)Math.random() * 0.2f - 0.1f, (float)Math.random()*0.2f - 0.1f);
+				//for (int i = 0; i < 100; i++) particleSystem.createParticle(ParticleType.EXPLOSION, player.getHitBox().x, player.getHitBox().y, (float)Math.random() * 0.2f - 0.1f, (float)Math.random()*0.2f - 0.1f);
 				//window.getLightHandler().setMinimumBrightnessSmooth((float) Math.random(), 1000);
+				window.getCamera().setRotationSmooth((float) Math.random() * (float)Math.PI *  2, 500);
 			}
 			test = test2;
 
 			player.setJumping(keyboard.isPressed(Options.CONTROLS.get("UP")));
 			player.setDown(keyboard.getPressed(Options.CONTROLS.get("DOWN")));
 			player.setMx(keyboard.getPressed(Options.CONTROLS.get("RIGHT")) - keyboard.getPressed(Options.CONTROLS.get("LEFT")));
-			if (keyboard.isPressed(Options.CONTROLS.get("SHAKE"))) window.getCamera().addScreenshake(0.01f);
+			if (keyboard.isPressed(Options.CONTROLS.get("SHAKE"))) {
+				window.getCamera().addScreenshake(0.01f);
+			}
 
 			while (!toAdd.isEmpty()) {
 				GameObject gameObject = toAdd.poll();

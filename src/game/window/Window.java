@@ -100,15 +100,15 @@ public class Window {
 
 	private void updateViewMatrix() {
 		boolean b = camera.update();
-		if (camera.zoom == Double.POSITIVE_INFINITY || camera.zoom == Double.NEGATIVE_INFINITY || camera.zoom == Double.NaN) {
+		if (camera.getZoom() == Double.POSITIVE_INFINITY || camera.getZoom() == Double.NEGATIVE_INFINITY || camera.getZoom() == Double.NaN) {
 			camera.setZoom(1);
 			b = camera.update();
 		}
 
 		if (viewMatrix.determinant() == 0 || b) {
 			right.set((float) Math.cos(camera.getRotation()), (float) -Math.sin(camera.getRotation()), 0);
-			target.set(camera.x, camera.y, 0);
-			cameraPosition.set(camera.x, camera.y, 1 / camera.zoom);
+			target.set(camera.getX(), camera.getY(), 0);
+			cameraPosition.set(camera.getX(), camera.getY(), 1 / camera.getZoom());
 			dir.set(cameraPosition.x - target.x, cameraPosition.y - target.y, cameraPosition.z - target.z);
 
 

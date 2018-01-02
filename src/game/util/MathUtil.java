@@ -8,12 +8,9 @@ public class MathUtil {
 		return Math.max(min, Math.min(max, x));
 	}
 
-	public static float calculateCubicFunction(float x, float a, float b, float c, float d) {
-		return a * x * x * x + b * x * x + c * x + d;
-	}
-
-	public static float calculateCubicDerivative(float x, float a, float b, float c, float d) {
-		return 3 * a * x * x + 2 * b * x + c;
+	public static float mod(float value, float mod) {
+		while (value < 0) value += mod;
+		return value % mod;
 	}
 
 	public static float noise(int seed, float time, float STEP_SIZE) {
