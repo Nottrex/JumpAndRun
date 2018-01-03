@@ -2,8 +2,8 @@ package game.gameObjects.entities;
 
 import game.HitBox;
 import game.Sprite;
+import game.gameObjects.AbstractGameObject;
 import game.gameObjects.Drawable;
-import game.util.TextureHandler;
 import game.util.TimeUtil;
 import game.window.BasicShader;
 import game.window.ShaderType;
@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
-public abstract class BasicDrawingEntity implements Drawable {
+public abstract class BasicDrawingEntity extends AbstractGameObject implements Drawable {
 	protected HitBox hitBox;
 	private Sprite sprite;
 	private long startTime;

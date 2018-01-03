@@ -67,6 +67,9 @@ public class Game {
 
 			while (!toAdd.isEmpty()) {
 				GameObject gameObject = toAdd.poll();
+
+				gameObject.init(this);
+
 				gameObjects.add(gameObject);
 				if (gameObject instanceof CollisionObject) collisionObjects.add((CollisionObject) gameObject);
 				if (gameObject instanceof Drawable) window.addDrawable((Drawable) gameObject);

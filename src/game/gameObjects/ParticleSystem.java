@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ParticleSystem implements Drawable {
+public class ParticleSystem extends AbstractGameObject implements Drawable {
 	public static final int MAX_PARTICLES = 1000;
 	private static final int[] INDICES = new int[]{
 			0, 2, 1, 0, 3, 2

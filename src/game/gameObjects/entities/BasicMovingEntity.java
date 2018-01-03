@@ -2,6 +2,7 @@ package game.gameObjects.entities;
 
 import game.Game;
 import game.HitBox;
+import game.HitBoxDirection;
 import game.gameObjects.CollisionObject;
 import game.util.MathUtil;
 
@@ -46,7 +47,8 @@ public abstract class BasicMovingEntity extends BasicDrawingEntity implements Co
 
 	private void move(Game game) {
 		List<CollisionObject> collides = new ArrayList<>();
-		List<HitBox.HitBoxDirection> directions = new ArrayList<>();
+		List<HitBoxDirection> directions = new ArrayList<>();
+		List<Float> velocities = new ArrayList<>();
 		HitBox targetLocation = hitBox.clone();
 		targetLocation.move(vx, vy);
 
@@ -56,12 +58,15 @@ public abstract class BasicMovingEntity extends BasicDrawingEntity implements Co
 			for (CollisionObject collisionObject: game.getCollisionObjects()) {
 				for (HitBox hitBox2: collisionObject.getCollisionBoxes()) {
 					if (hitBox2.collides(targetLocation)) {
-						HitBox.HitBoxDirection direction = hitBox.direction(hitBox2);
+						HitBoxDirection direction = hitBox.direction(hitBox2);
 
 						collides.add(collisionObject);
 						directions.add(direction);
 
-						if (direction == HitBox.HitBoxDirection.COLLIDE) continue;
+						if (direction == HitBoxDirection.COLLIDE) {
+							velocities.add(0f);
+							continue;
+						}
 						collision = true;
 
 						float ax = direction.getXDirection();
@@ -71,6 +76,8 @@ public abstract class BasicMovingEntity extends BasicDrawingEntity implements Co
 
 						ax *= distance;
 						ay *= distance;
+
+						velocities.add((float) Math.sqrt(ax*ax + ay*ay));
 
 						vx -= ax;
 						vy -= ay;
@@ -85,10 +92,11 @@ public abstract class BasicMovingEntity extends BasicDrawingEntity implements Co
 
 		for (int i = 0; i < collides.size(); i++) {
 			CollisionObject collisionObject = collides.get(i);
-			HitBox.HitBoxDirection direction = directions.get(i);
+			HitBoxDirection direction = directions.get(i);
+			float velocity = velocities.get(i);
 
-			collide(collisionObject, direction);
-			collisionObject.collide(this, direction.invert());
+			collide(collisionObject, direction, velocity);
+			collisionObject.collide(this, direction.invert(), velocity);
 		}
 	}
 

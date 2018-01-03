@@ -2,13 +2,15 @@ package game.gameObjects.entities;
 
 import game.Game;
 import game.HitBox;
+import game.HitBoxDirection;
 import game.gameObjects.GameObject;
 import game.util.MathUtil;
 
 public abstract class BasicWalkingEntity extends BasicMovingEntity {
 	private static final float SPEED = 0.175f;
 	private static final float JUMP_ACCELERATION = 0.3f;
-	private static final float DOWN_ACCELERATION = 0.1f;
+	private static final float DOWN_ACCELERATION = 0.04f;
+	private static final float MAX_DOWN_SPEED = 0.5f;
 	private static final float GRAVITY_ACCELERATION = 0.04f;
 	private static final float MAX_GRAVITY_SPEED = 0.3f;
 	private static final int MAX_JUMP_TICKS = 10;
@@ -35,9 +37,9 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 
 	@Override
 	public void update(Game game) {
-		test = game;
 		vx = mx * SPEED;
-		if (-vy < MAX_GRAVITY_SPEED) vy -= GRAVITY_ACCELERATION;
+		if (-vy < MAX_GRAVITY_SPEED) vy = Math.max( vy - GRAVITY_ACCELERATION, -MAX_GRAVITY_SPEED);
+		if (-vy < MAX_DOWN_SPEED) vy = Math.max( vy - down * DOWN_ACCELERATION, -MAX_DOWN_SPEED);
 
 		if (((onGround && !jumpingLastTick) || (jumpTicks < MAX_JUMP_TICKS && jumpTicks > 0)) && jumping) {
 			vy = JUMP_ACCELERATION;
@@ -48,23 +50,15 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 
 		jumpingLastTick = jumping;
 
-		vy -= down * DOWN_ACCELERATION;
-
-		lastTickOnGround = onGround;
 		onGround = false;
 		super.update(game);
 	}
 
-	//TEST
-	private boolean lastTickOnGround;
-	private Game test;
-
-
 	@Override
-	public void collide(GameObject gameObject, HitBox.HitBoxDirection direction) {
-		if (direction == HitBox.HitBoxDirection.DOWN) {
-			if (!lastTickOnGround && down > 0) {
-				test.getCamera().addScreenshake(0.03f);
+	public void collide(GameObject gameObject, Enum<HitBoxDirection> direction, float velocity) {
+		if (direction == HitBoxDirection.DOWN) {
+			if (velocity > MAX_GRAVITY_SPEED) {
+				game.getCamera().addScreenshake(velocity / 15);
 			}
 
 			onGround = true;

@@ -35,8 +35,7 @@ public class Keyboard {
 	}
 
 	public float getPressed(int keyCode) {
-		if (!keys.containsKey(keyCode)) return 0;
-		return keys.get(keyCode);
+		return keys.getOrDefault(keyCode, 0f);
 	}
 
 	public void update() {

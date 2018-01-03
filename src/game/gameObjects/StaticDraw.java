@@ -17,7 +17,7 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.List;
 
-public abstract class StaticDraw implements Drawable {
+public abstract class StaticDraw extends AbstractGameObject implements Drawable {
 	private static final int[] INDICES = new int[] {
 			0, 2, 1, 0, 3, 2
 	};
