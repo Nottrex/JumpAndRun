@@ -1,10 +1,12 @@
-package game.gameObjects;
+package game.gameobjects.gameobjects.wall;
 
-import game.HitBox;
+import game.data.HitBox;
+import game.gameobjects.AbstractGameObject;
+import game.gameobjects.Drawable;
 import game.util.TextureHandler;
-import game.window.ShaderType;
-import game.window.StaticShader;
 import game.window.Window;
+import game.window.shader.ShaderType;
+import game.window.shader.shader.StaticShader;
 import javafx.util.Pair;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -18,7 +20,7 @@ import java.nio.IntBuffer;
 import java.util.List;
 
 public abstract class StaticDraw extends AbstractGameObject implements Drawable {
-	private static final int[] INDICES = new int[] {
+	private static final int[] INDICES = new int[]{
 			0, 2, 1, 0, 3, 2
 	};
 	private static final float[][] VERTEX_POS = new float[][]{
@@ -104,7 +106,7 @@ public abstract class StaticDraw extends AbstractGameObject implements Drawable 
 			HitBox hitBox = hitBoxList.get(i).getKey();
 			Rectangle texture = TextureHandler.getSpriteSheetBounds("textures_" + hitBoxList.get(i).getValue());
 
-			for (float[] v: VERTEX_POS) {
+			for (float[] v : VERTEX_POS) {
 				locations.put(hitBox.x + v[0] * hitBox.width);
 				locations.put(hitBox.y + v[1] * hitBox.height);
 
@@ -112,7 +114,7 @@ public abstract class StaticDraw extends AbstractGameObject implements Drawable 
 				texLocations.put(texture.y + (1 - v[1]) * texture.height);
 			}
 
-			for (int ind: INDICES) {
+			for (int ind : INDICES) {
 				indices.put(i * VERTEX_POS.length + ind);
 			}
 		}

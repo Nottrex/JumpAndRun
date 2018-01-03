@@ -3,11 +3,12 @@ package game.window;
 import com.joml.matrix.Matrix4f;
 import com.joml.utils.CamMath;
 import com.joml.vector.Vector3f;
-import game.Options;
-import game.gameObjects.Drawable;
+import game.gameobjects.Drawable;
 import game.util.ErrorUtil;
 import game.util.TextureHandler;
 import game.util.TimeUtil;
+import game.window.light.LightHandler;
+import game.window.shader.ShaderHandler;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
@@ -148,7 +149,6 @@ public class Window {
 		GLFW.glfwDestroyWindow(window);
 		GLFW.glfwTerminate();
 		GLFW.glfwSetErrorCallback(null).free();
-		Options.save();
 	}
 
 	private void initOpenGL() {

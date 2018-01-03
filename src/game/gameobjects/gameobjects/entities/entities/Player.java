@@ -1,17 +1,17 @@
-package game.gameObjects.entities;
+package game.gameobjects.gameobjects.entities.entities;
 
-import game.HitBox;
-import game.Sprite;
-import game.gameObjects.GameObject;
-import game.window.Light;
+import game.data.HitBox;
+import game.data.Sprite;
+import game.gameobjects.gameobjects.entities.BasicWalkingEntity;
 import game.window.Window;
+import game.window.light.Light;
 
 public class Player extends BasicWalkingEntity implements Light {
 
 	private Sprite walking = new Sprite(1000, "player", "player2");
 
 	public Player() {
-		super(new HitBox(3,-3,1,1));
+		super(new HitBox(3, -3, 1, 1));
 
 		setSprite(walking);
 	}
@@ -50,8 +50,8 @@ public class Player extends BasicWalkingEntity implements Light {
 
 	@Override
 	public void getLightPosition(float[] values) {
-		values[0] = hitBox.x + hitBox.width/2;
-		values[1] = hitBox.y + hitBox.height/2;
+		values[0] = hitBox.x + hitBox.width / 2;
+		values[1] = hitBox.y + hitBox.height / 2;
 		values[2] = 0.95f;
 	}
 

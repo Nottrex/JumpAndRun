@@ -1,13 +1,13 @@
-package game.gameObjects.entities;
+package game.gameobjects.gameobjects.entities;
 
-import game.HitBox;
-import game.Sprite;
-import game.gameObjects.AbstractGameObject;
-import game.gameObjects.Drawable;
+import game.data.HitBox;
+import game.data.Sprite;
+import game.gameobjects.AbstractGameObject;
+import game.gameobjects.Drawable;
 import game.util.TimeUtil;
-import game.window.BasicShader;
-import game.window.ShaderType;
 import game.window.Window;
+import game.window.shader.ShaderType;
+import game.window.shader.shader.BasicShader;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;

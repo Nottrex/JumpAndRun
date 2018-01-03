@@ -1,9 +1,9 @@
-package game.gameObjects.entities;
+package game.gameobjects.gameobjects.entities;
 
 import game.Game;
-import game.HitBox;
-import game.HitBoxDirection;
-import game.gameObjects.CollisionObject;
+import game.data.HitBox;
+import game.data.HitBoxDirection;
+import game.gameobjects.CollisionObject;
 import game.util.MathUtil;
 
 import java.util.ArrayList;
@@ -55,8 +55,8 @@ public abstract class BasicMovingEntity extends BasicDrawingEntity implements Co
 		boolean collision;
 		do {
 			collision = false;
-			for (CollisionObject collisionObject: game.getCollisionObjects()) {
-				for (HitBox hitBox2: collisionObject.getCollisionBoxes()) {
+			for (CollisionObject collisionObject : game.getCollisionObjects()) {
+				for (HitBox hitBox2 : collisionObject.getCollisionBoxes()) {
 					if (hitBox2.collides(targetLocation)) {
 						HitBoxDirection direction = hitBox.direction(hitBox2);
 
@@ -77,7 +77,7 @@ public abstract class BasicMovingEntity extends BasicDrawingEntity implements Co
 						ax *= distance;
 						ay *= distance;
 
-						velocities.add((float) Math.sqrt(ax*ax + ay*ay));
+						velocities.add((float) Math.sqrt(ax * ax + ay * ay));
 
 						vx -= ax;
 						vy -= ay;

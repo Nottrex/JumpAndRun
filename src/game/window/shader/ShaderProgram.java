@@ -1,4 +1,4 @@
-package game.window;
+package game.window.shader;
 
 import game.util.ErrorUtil;
 import game.util.FileHandler;
@@ -11,6 +11,9 @@ public abstract class ShaderProgram {
 	private int programID;
 	private int vertexShaderID;
 	private int fragmentShaderID;
+	private int texLocation, viewMatrixLocation, projectionMatrixLocation;
+	private int texTWLocation, texTHLocation, timeLocation;
+	private int lightAmountLocation, lightsLocation, lightColorsLocation, minBrightnessLocation;
 
 	public ShaderProgram(String vertexFile, String fragmentFile) {
 		vertexShaderID = loadShader(vertexFile, GL20.GL_VERTEX_SHADER);
@@ -32,7 +35,7 @@ public abstract class ShaderProgram {
 		GL20.glShaderSource(shaderID, shaderSource);
 		GL20.glCompileShader(shaderID);
 
-		if(GL20.glGetShaderi(shaderID, GL20.GL_COMPILE_STATUS )== GL11.GL_FALSE){
+		if (GL20.glGetShaderi(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
 			ErrorUtil.printError("Could not compile shader " + file + ": " + GL20.glGetShaderInfoLog(shaderID, 500));
 		}
 
@@ -85,11 +88,6 @@ public abstract class ShaderProgram {
 	}
 
 	protected abstract void bindAttributes();
-
-
-	private int texLocation, viewMatrixLocation, projectionMatrixLocation;
-	private int texTWLocation, texTHLocation, timeLocation;
-	private int lightAmountLocation, lightsLocation, lightColorsLocation, minBrightnessLocation;
 
 	protected void getUniformLocations() {
 		texLocation = getUniformLocation("tex");

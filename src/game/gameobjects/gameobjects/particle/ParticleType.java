@@ -1,6 +1,6 @@
-package game.gameObjects;
+package game.gameobjects.gameobjects.particle;
 
-import game.Sprite;
+import game.data.Sprite;
 
 public enum ParticleType {
 	EXPLOSION(new Sprite(500, "player", "player2"), 60, 1f, 1f, false);

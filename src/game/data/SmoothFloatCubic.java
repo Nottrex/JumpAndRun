@@ -1,4 +1,4 @@
-package game;
+package game.data;
 
 import game.util.TimeUtil;
 
@@ -64,7 +64,7 @@ public class SmoothFloatCubic implements SmoothFloat {
 				tValue = targetValue;
 				z = false;
 			} else {
-				tValue = calculateCubicFunction(((float)(time - beginTime)) / (targetTime - beginTime), a, b, c, d);
+				tValue = calculateCubicFunction(((float) (time - beginTime)) / (targetTime - beginTime), a, b, c, d);
 			}
 		}
 

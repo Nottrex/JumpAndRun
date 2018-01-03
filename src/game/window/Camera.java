@@ -1,7 +1,7 @@
 package game.window;
 
-import game.SmoothFloat;
-import game.SmoothFloatCubic;
+import game.data.SmoothFloat;
+import game.data.SmoothFloatCubic;
 import game.util.MathUtil;
 import game.util.TimeUtil;
 
@@ -17,6 +17,7 @@ public class Camera {
 	private SmoothFloat tZoom, tX, tY, tRotation;
 
 	private List<Screenshake> screenshakeList;
+
 	public Camera() {
 		zoom = 0.1f;
 		x = 0;
@@ -129,6 +130,7 @@ public class Camera {
 		long startTime;
 		float decay;
 		float amp_x, amp_y, amp_r, phase_x, phase_y, phase_r, freq_x, freq_y, freq_r;
+
 		private Screenshake(long startTime, float decay, float amp_x, float amp_y, float amp_r, float phase_x, float phase_y, float phase_r, float freq_x, float freq_y, float freq_r) {
 			this.startTime = startTime;
 			this.decay = decay;

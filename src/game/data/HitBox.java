@@ -1,4 +1,4 @@
-package game;
+package game.data;
 
 public class HitBox {
 	public float x, y, width, height;

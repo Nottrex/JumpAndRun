@@ -1,10 +1,12 @@
-package game.gameObjects;
+package game.gameobjects.gameobjects.particle;
 
 import game.Game;
+import game.gameobjects.AbstractGameObject;
+import game.gameobjects.Drawable;
 import game.util.TimeUtil;
-import game.window.ParticleShader;
-import game.window.ShaderType;
 import game.window.Window;
+import game.window.shader.ShaderType;
+import game.window.shader.shader.ParticleShader;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;

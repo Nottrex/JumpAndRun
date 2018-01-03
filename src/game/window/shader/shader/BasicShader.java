@@ -1,5 +1,6 @@
-package game.window;
+package game.window.shader.shader;
 
+import game.window.shader.ShaderProgram;
 
 public class BasicShader extends ShaderProgram {
 	private static final String VERTEX_FILE = "basicVertexShader";

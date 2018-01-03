@@ -1,4 +1,4 @@
-package game;
+package game.data;
 
 public enum HitBoxDirection {
 	LEFT(-1, 0), UP(0, 1), RIGHT(1, 0), DOWN(0, -1), COLLIDE(0, 0);
@@ -11,7 +11,7 @@ public enum HitBoxDirection {
 	}
 
 	public HitBoxDirection invert() {
-		for (HitBoxDirection direction: HitBoxDirection.values()) {
+		for (HitBoxDirection direction : HitBoxDirection.values()) {
 			if (direction.ax == -ax && direction.ay == -ay) return direction;
 		}
 		return COLLIDE;

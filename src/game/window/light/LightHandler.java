@@ -1,8 +1,7 @@
-package game.window;
+package game.window.light;
 
-import game.SmoothFloat;
-import game.SmoothFloatCubic;
-import game.util.MathUtil;
+import game.data.SmoothFloat;
+import game.data.SmoothFloatCubic;
 import game.util.TimeUtil;
 
 import java.util.ArrayList;
@@ -27,7 +26,7 @@ public class LightHandler {
 	public boolean update() {
 		boolean change = changed;
 
-		for (Light light: lights) {
+		for (Light light : lights) {
 			change |= light.updateLight();
 		}
 

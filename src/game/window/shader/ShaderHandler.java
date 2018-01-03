@@ -1,4 +1,4 @@
-package game.window;
+package game.window.shader;
 
 import com.joml.matrix.Matrix4f;
 import org.lwjgl.BufferUtils;

@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -88,8 +87,8 @@ public class TextureHandler {
 
 		ByteBuffer buffer = BufferUtils.createByteBuffer(image.getWidth() * image.getHeight() * 4); //4 for RGBA, 3 for RGB
 
-		for(int y = 0; y < image.getHeight() ; y++){
-			for(int x = 0; x < image.getWidth(); x++){
+		for (int y = 0; y < image.getHeight(); y++) {
+			for (int x = 0; x < image.getWidth(); x++) {
 				int pixel = pixels[y * image.getWidth() + x];
 				buffer.put((byte) ((pixel >> 16) & 0xFF));     // Red component
 				buffer.put((byte) ((pixel >> 8) & 0xFF));      // Green component

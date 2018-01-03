@@ -1,9 +1,9 @@
-package game.gameObjects.entities;
+package game.gameobjects.gameobjects.entities;
 
 import game.Game;
-import game.HitBox;
-import game.HitBoxDirection;
-import game.gameObjects.GameObject;
+import game.data.HitBox;
+import game.data.HitBoxDirection;
+import game.gameobjects.GameObject;
 import game.util.MathUtil;
 
 public abstract class BasicWalkingEntity extends BasicMovingEntity {
@@ -38,8 +38,8 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 	@Override
 	public void update(Game game) {
 		vx = mx * SPEED;
-		if (-vy < MAX_GRAVITY_SPEED) vy = Math.max( vy - GRAVITY_ACCELERATION, -MAX_GRAVITY_SPEED);
-		if (-vy < MAX_DOWN_SPEED) vy = Math.max( vy - down * DOWN_ACCELERATION, -MAX_DOWN_SPEED);
+		if (-vy < MAX_GRAVITY_SPEED) vy = Math.max(vy - GRAVITY_ACCELERATION, -MAX_GRAVITY_SPEED);
+		if (-vy < MAX_DOWN_SPEED) vy = Math.max(vy - down * DOWN_ACCELERATION, -MAX_DOWN_SPEED);
 
 		if (((onGround && !jumpingLastTick) || (jumpTicks < MAX_JUMP_TICKS && jumpTicks > 0)) && jumping) {
 			vy = JUMP_ACCELERATION;
@@ -55,7 +55,7 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 	}
 
 	@Override
-	public void collide(GameObject gameObject, Enum<HitBoxDirection> direction, float velocity) {
+	public void collide(GameObject gameObject, HitBoxDirection direction, float velocity) {
 		if (direction == HitBoxDirection.DOWN) {
 			if (velocity > MAX_GRAVITY_SPEED) {
 				game.getCamera().addScreenshake(velocity / 15);

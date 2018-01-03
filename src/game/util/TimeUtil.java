@@ -9,7 +9,7 @@ public class TimeUtil {
 	public static void sleep(int time) {
 		try {
 			Thread.sleep(Math.max(0, time));
-		} catch(Exception e) {
+		} catch (Exception e) {
 			ErrorUtil.printError("Error while sleeping ???");
 		}
 	}

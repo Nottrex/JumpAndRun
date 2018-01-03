@@ -1,8 +1,10 @@
-package game.gameObjects;
+package game.gameobjects.gameobjects.wall;
 
 import game.Game;
-import game.HitBox;
-import game.HitBoxDirection;
+import game.data.HitBox;
+import game.data.HitBoxDirection;
+import game.gameobjects.CollisionObject;
+import game.gameobjects.GameObject;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
@@ -37,7 +39,7 @@ public class Wall extends StaticDraw implements CollisionObject {
 	}
 
 	@Override
-	public void collide(GameObject gameObject, Enum<HitBoxDirection> direction, float velocity) {
+	public void collide(GameObject gameObject, HitBoxDirection direction, float velocity) {
 
 	}
 

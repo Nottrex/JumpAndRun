@@ -1,4 +1,8 @@
-package game.window;
+package game.window.shader;
+
+import game.window.shader.shader.BasicShader;
+import game.window.shader.shader.ParticleShader;
+import game.window.shader.shader.StaticShader;
 
 import java.util.function.Supplier;
 

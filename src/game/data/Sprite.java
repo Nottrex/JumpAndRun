@@ -1,10 +1,9 @@
-package game;
+package game.data;
 
 import game.util.TextureHandler;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Sprite {
@@ -15,7 +14,7 @@ public class Sprite {
 		this.textures = new ArrayList<>();
 		this.time = time;
 
-		for (String texture: textureNames) {
+		for (String texture : textureNames) {
 			textures.add(TextureHandler.getSpriteSheetBounds("textures_" + texture));
 		}
 	}
