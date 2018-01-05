@@ -28,7 +28,7 @@ public class Game {
 	private Queue<GameObject> toRemove;
 	private Queue<GameObject> toAdd;
 
-	private Player player;
+	private Player player1, player2, player3;
 	private ParticleSystem particleSystem;
 
 	public Game(Window window) {
@@ -39,11 +39,15 @@ public class Game {
 		toRemove = new ConcurrentLinkedQueue<>();
 		toAdd = new ConcurrentLinkedQueue<>();
 
-		player = new Player();
+		player1 = new Player();
+		player2 = new Player();
+		player3 = new Player();
 		particleSystem = new ParticleSystem();
 
 		this.addGameObject(new Wall());
-		this.addGameObject(player);
+		this.addGameObject(player1);
+		this.addGameObject(player2);
+		this.addGameObject(player3);
 		this.addGameObject(particleSystem);
 	}
 
@@ -55,18 +59,27 @@ public class Game {
 			time = TimeUtil.getTime();
 			Keyboard keyboard = window.getKeyboard();
 
-			boolean test2 = keyboard.isPressed(Options.CONTROLS.get("PARTICLE"));
+			boolean test2 = keyboard.isPressed(Options.PRIMARY_CONTROLS.get("PARTICLE")) || keyboard.isPressed(Options.SECONDARY_CONTROLS.get("PARTICLE")) || keyboard.isPressed(Options.CONTROLLER_CONTROLS.get("PARTICLE"));
 			if (!test && test2) {
-				for (int i = 0; i < 1; i++) particleSystem.createParticle(ParticleType.EXPLOSION, player.getHitBox().getCenterX(), player.getHitBox().getCenterY(), (float)0, (float)0);
+				for (int i = 0; i < 1; i++) particleSystem.createParticle(ParticleType.EXPLOSION, player1.getHitBox().getCenterX(), player1.getHitBox().getCenterY(), (float)0, (float)0);
 				//window.getLightHandler().setMinimumBrightnessSmooth((float) Math.random(), 1000);
 				//window.getCamera().setRotationSmooth((float) Math.random() * (float) Math.PI * 2, 500);
 			}
 			test = test2;
 
-			player.setJumping(keyboard.isPressed(Options.CONTROLS.get("UP")));
-			player.setDown(keyboard.getPressed(Options.CONTROLS.get("DOWN")));
-			player.setMx(keyboard.getPressed(Options.CONTROLS.get("RIGHT")) - keyboard.getPressed(Options.CONTROLS.get("LEFT")));
-			if (keyboard.isPressed(Options.CONTROLS.get("SHAKE"))) {
+			player1.setJumping(keyboard.isPressed(Options.PRIMARY_CONTROLS.get("UP")));
+			player1.setDown(keyboard.getPressed(Options.PRIMARY_CONTROLS.get("DOWN")));
+			player1.setMx(keyboard.getPressed(Options.PRIMARY_CONTROLS.get("RIGHT")) - keyboard.getPressed(Options.PRIMARY_CONTROLS.get("LEFT")));
+
+			player2.setJumping(keyboard.isPressed(Options.SECONDARY_CONTROLS.get("UP")));
+			player2.setDown(keyboard.getPressed(Options.SECONDARY_CONTROLS.get("DOWN")));
+			player2.setMx(keyboard.getPressed(Options.SECONDARY_CONTROLS.get("RIGHT")) - keyboard.getPressed(Options.SECONDARY_CONTROLS.get("LEFT")));
+
+			player3.setJumping(keyboard.isPressed(Options.CONTROLLER_CONTROLS.get("UP")));
+			player3.setDown(keyboard.getPressed(Options.CONTROLLER_CONTROLS.get("DOWN")));
+			player3.setMx(keyboard.getPressed(Options.CONTROLLER_CONTROLS.get("RIGHT")) - keyboard.getPressed(Options.CONTROLLER_CONTROLS.get("LEFT")));
+
+			if (keyboard.isPressed(Options.PRIMARY_CONTROLS.get("SHAKE")) || keyboard.isPressed(Options.SECONDARY_CONTROLS.get("SHAKE")) || keyboard.isPressed(Options.CONTROLLER_CONTROLS.get("SHAKE"))) {
 				window.getCamera().addScreenshake(0.01f);
 			}
 
