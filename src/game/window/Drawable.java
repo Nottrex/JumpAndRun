@@ -1,8 +1,8 @@
-package game.gameobjects;
+package game.window;
 
 import game.window.Window;
 
-public interface Drawable extends GameObject {
+public interface Drawable {
 	float getDrawingPriority();
 
 	void setup(Window window);

@@ -2,7 +2,7 @@ package game.gameobjects.gameobjects.particle;
 
 import game.Game;
 import game.gameobjects.AbstractGameObject;
-import game.gameobjects.Drawable;
+import game.window.Drawable;
 import game.util.TimeUtil;
 import game.window.Window;
 import game.window.shader.ShaderType;
@@ -28,7 +28,7 @@ public class ParticleSystem extends AbstractGameObject implements Drawable {
 	private static final float[][] VERTEX_POS = new float[][]{
 			{0, 0}, {0, 1}, {1, 1}, {1, 0}
 	};
-	private final List<Particle> particles = new ArrayList<>();
+	private final List<Particle> particles;
 	private int vao, vao2;
 	private int locationVBO, texLocationVBO, indicesVBO;
 	private FloatBuffer locationBuffer, texLocationBuffer;
@@ -36,6 +36,7 @@ public class ParticleSystem extends AbstractGameObject implements Drawable {
 	private List<Particle> toRemove;
 
 	public ParticleSystem() {
+		particles = new ArrayList<>();
 		toRemove = new LinkedList<>();
 	}
 

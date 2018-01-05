@@ -3,7 +3,6 @@ package game.window;
 import com.joml.matrix.Matrix4f;
 import com.joml.utils.CamMath;
 import com.joml.vector.Vector3f;
-import game.gameobjects.Drawable;
 import game.util.ErrorUtil;
 import game.util.TextureHandler;
 import game.util.TimeUtil;

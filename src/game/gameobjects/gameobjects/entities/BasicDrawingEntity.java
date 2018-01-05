@@ -3,7 +3,7 @@ package game.gameobjects.gameobjects.entities;
 import game.data.HitBox;
 import game.data.Sprite;
 import game.gameobjects.AbstractGameObject;
-import game.gameobjects.Drawable;
+import game.window.Drawable;
 import game.util.TimeUtil;
 import game.window.Window;
 import game.window.shader.ShaderType;

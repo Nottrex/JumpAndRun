@@ -3,6 +3,7 @@ package game.gameobjects.gameobjects.entities;
 import game.Game;
 import game.data.HitBox;
 import game.data.HitBoxDirection;
+import game.gameobjects.CollisionObject;
 import game.gameobjects.GameObject;
 import game.util.MathUtil;
 
@@ -55,7 +56,7 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 	}
 
 	@Override
-	public void collide(GameObject gameObject, HitBoxDirection direction, float velocity) {
+	public void collide(CollisionObject gameObject, HitBoxDirection direction, float velocity) {
 		if (direction == HitBoxDirection.DOWN) {
 			if (velocity > MAX_GRAVITY_SPEED) {
 				game.getCamera().addScreenshake(velocity / 15);

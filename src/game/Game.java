@@ -1,10 +1,11 @@
 package game;
 
 import game.gameobjects.CollisionObject;
-import game.gameobjects.Drawable;
+import game.window.Drawable;
 import game.gameobjects.GameObject;
 import game.gameobjects.gameobjects.entities.entities.Player;
 import game.gameobjects.gameobjects.particle.ParticleSystem;
+import game.gameobjects.gameobjects.particle.ParticleType;
 import game.gameobjects.gameobjects.wall.Wall;
 import game.util.TimeUtil;
 import game.window.Camera;
@@ -56,9 +57,9 @@ public class Game {
 
 			boolean test2 = keyboard.isPressed(Options.CONTROLS.get("PARTICLE"));
 			if (!test && test2) {
-				//for (int i = 0; i < 100; i++) particleSystem.createParticle(ParticleType.EXPLOSION, player.getHitBox().x, player.getHitBox().y, (float)Math.random() * 0.2f - 0.1f, (float)Math.random()*0.2f - 0.1f);
+				for (int i = 0; i < 100; i++) particleSystem.createParticle(ParticleType.EXPLOSION, player.getHitBox().x, player.getHitBox().y, (float)Math.random() * 0.2f - 0.1f, (float)Math.random()*0.2f - 0.1f);
 				//window.getLightHandler().setMinimumBrightnessSmooth((float) Math.random(), 1000);
-				window.getCamera().setRotationSmooth((float) Math.random() * (float) Math.PI * 2, 500);
+				//window.getCamera().setRotationSmooth((float) Math.random() * (float) Math.PI * 2, 500);
 			}
 			test = test2;
 
