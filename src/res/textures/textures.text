@@ -1,4 +1,4 @@
-138
+137
 single_stone 0 32 8 8
 row_stone_left 8 32 8 8
 row_stone_middle 16 32 8 8
@@ -112,13 +112,12 @@ player_bow_2 208 56 10 8
 player_bow_3 208 64 10 8
 player_bow_4 208 72 10 8
 player_sword_1 208 80 8 8
-player_sword_2 216 80 10 8
-player_sword_3 216 88 10 8
-player_sword_4 216 96 10 8
-player_sword_5 216 104 10 8
-player_sword_6 216 112 10 8
-player_sword_7 216 120 10 8
-player_sword_8 216 128 10 8
+player_sword_2 214 80 12 8
+player_sword_3 214 88 12 8
+player_sword_4 214 96 12 8
+player_sword_5 214 104 12 8
+player_sword_6 214 112 12 8
+player_sword_7 214 120 12 8
 explosion_1 184 184 24 24
 explosion_2 208 184 24 24
 explosion_3 232 184 24 24

@@ -104,10 +104,6 @@ public class Game {
 		Options.save();
 	}
 
-	public Camera getCamera() {
-		return window.getCamera();
-	}
-
 	public void addGameObject(GameObject gameObject) {
 		toAdd.add(gameObject);
 	}
@@ -118,5 +114,13 @@ public class Game {
 
 	public List<CollisionObject> getCollisionObjects() {
 		return collisionObjects;
+	}
+
+	public Camera getCamera() {
+		return window.getCamera();
+	}
+
+	public ParticleSystem getParticleSystem() {
+		return particleSystem;
 	}
 }

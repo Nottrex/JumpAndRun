@@ -5,6 +5,7 @@ import game.data.HitBox;
 import game.data.HitBoxDirection;
 import game.gameobjects.CollisionObject;
 import game.gameobjects.GameObject;
+import game.gameobjects.gameobjects.particle.ParticleType;
 import game.util.MathUtil;
 
 public abstract class BasicWalkingEntity extends BasicMovingEntity {
@@ -60,6 +61,8 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 		if (direction == HitBoxDirection.DOWN) {
 			if (velocity > MAX_GRAVITY_SPEED) {
 				game.getCamera().addScreenshake(velocity / 15);
+
+				game.getParticleSystem().createParticle(ParticleType.EXPLOSION, hitBox.getCenterX(), hitBox.y, 0, 0);
 			}
 
 			onGround = true;

@@ -8,12 +8,13 @@ import game.window.light.Light;
 
 public class Player extends BasicWalkingEntity implements Light {
 
+	private Sprite attack = new Sprite(125, "player_sword_1", "player_sword_2", "player_sword_3", "player_sword_4", "player_sword_5", "player_sword_6", "player_sword_7");
 	private Sprite walking = new Sprite(1000, "player_idle_0");
 
 	public Player() {
-		super(new HitBox(3, -3, 1, 1));
+		super(new HitBox(3, -3, 0.75f, 1f));
 
-		setSprite(walking);
+		setSprite(attack);
 	}
 
 	@Override
