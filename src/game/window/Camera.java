@@ -31,15 +31,16 @@ public class Camera {
 			@Override
 			public void setSmooth(float value, long time) {
 				value = MathUtil.mod(value, (float) (Math.PI * 2));
-				tValue = MathUtil.mod(tValue, (float) (Math.PI * 2));
+				float currentValue = get();
+				float tValue = MathUtil.mod(currentValue, (float) (Math.PI * 2));
 
 				if (tValue < Math.PI && value - tValue > Math.PI) {
-					tValue += 2 * Math.PI;
+					value -= 2 * Math.PI;
 				} else if (tValue > Math.PI && tValue - value > Math.PI) {
-					tValue -= 2 * Math.PI;
+					value += 2 * Math.PI;
 				}
 
-				super.setSmooth(value, time);
+				super.setSmooth(currentValue - tValue + value, time);
 			}
 		};
 

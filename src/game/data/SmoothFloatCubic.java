@@ -4,12 +4,12 @@ import game.util.TimeUtil;
 
 public class SmoothFloatCubic implements SmoothFloat {
 
-	protected float tValue;
-	protected float targetValue;
-	protected long beginTime, targetTime;
-	protected float a, b, c, d;
-	protected boolean z;
-	protected boolean z2;
+	private float tValue;
+	private float targetValue;
+	private long beginTime, targetTime;
+	private float a, b, c, d;
+	private boolean z;
+	private boolean z2;
 
 	public SmoothFloatCubic(float value) {
 		tValue = value;
