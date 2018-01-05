@@ -42,7 +42,7 @@ public class ParticleSystem extends AbstractGameObject implements Drawable {
 
 	public void createParticle(ParticleType particle, float x, float y, float vx, float vy) {
 		if (particles.size() < MAX_PARTICLES)
-			particles.add(new Particle(particle, x, y, vx, vy, TimeUtil.getTime()));
+			particles.add(new Particle(particle, x - particle.getWidth() / 2, y - particle.getHeight() / 2, vx, vy, TimeUtil.getTime()));
 	}
 
 	@Override

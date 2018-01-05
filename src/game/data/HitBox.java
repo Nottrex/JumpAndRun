@@ -66,6 +66,14 @@ public class HitBox {
 		return distance;
 	}
 
+	public float getCenterX() {
+		return x + width/2;
+	}
+
+	public float getCenterY() {
+		return y + height/2;
+	}
+
 	@Override
 	public HitBox clone() {
 		return new HitBox(x, y, width, height);

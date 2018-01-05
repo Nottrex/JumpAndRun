@@ -13,9 +13,9 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class TextureHandler {
-	public static Map<String, BufferedImage> textures_png;
-	public static Map<String, Rectangle> textures_sprite_sheet;
-	public static Map<String, String> textures_sprite_sheet_texture;
+	private static Map<String, BufferedImage> textures_png;
+	private static Map<String, Rectangle> textures_sprite_sheet;
+	private static Map<String, String> textures_sprite_sheet_texture;
 
 	static {
 		textures_png = new HashMap<>();
@@ -46,24 +46,31 @@ public class TextureHandler {
 			int amount = Integer.valueOf(s.nextLine());
 
 			for (int i = 0; i < amount; i++) {
-				String[] line = s.nextLine().split(" ");
+				try {
+					String[] line = s.nextLine().split(" ");
 
-				String texture = line[0];
-				int x = Integer.valueOf(line[1]);
-				int y = Integer.valueOf(line[2]);
-				int width = Integer.valueOf(line[3]);
-				int height = Integer.valueOf(line[4]);
+					String texture = line[0];
+					int x = Integer.valueOf(line[1]);
+					int y = Integer.valueOf(line[2]);
+					int width = Integer.valueOf(line[3]);
+					int height = Integer.valueOf(line[4]);
 
-				textures_sprite_sheet.put(spriteSheetName + "_" + texture, new Rectangle(x, y, width, height));
-				textures_sprite_sheet_texture.put(spriteSheetName + "_" + texture, spriteSheetName);
+					textures_sprite_sheet.put(spriteSheetName + "_" + texture, new Rectangle(x, y, width, height));
+					textures_sprite_sheet_texture.put(spriteSheetName + "_" + texture, spriteSheetName);
+				} catch (Exception e) {
+					ErrorUtil.printError(String.format("Loading spriteSheet: %s in line %d (%s)", spriteSheetName, i + 2, e.toString()));
+				}
 			}
 		} catch (Exception e) {
-			ErrorUtil.printError(String.format("Loading spritesheet: %s", spriteSheetName));
+			ErrorUtil.printError(String.format("Loading spriteSheet: %s (%s)", spriteSheetName, e.toString()));
 		}
 	}
 
 	public static Rectangle getSpriteSheetBounds(String textureName) {
-		return textures_sprite_sheet.get(textureName);
+		if (textures_sprite_sheet.containsKey(textureName)) return textures_sprite_sheet.get(textureName);
+
+		ErrorUtil.printError(String.format("No such spriteSheet image: %s", textureName));
+		return null;
 	}
 
 	public static String getSpriteSheetImage(String textureName) {

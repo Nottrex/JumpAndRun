@@ -8,7 +8,7 @@ import game.window.light.Light;
 
 public class Player extends BasicWalkingEntity implements Light {
 
-	private Sprite walking = new Sprite(1000, "player", "player2");
+	private Sprite walking = new Sprite(1000, "player_idle_0");
 
 	public Player() {
 		super(new HitBox(3, -3, 1, 1));

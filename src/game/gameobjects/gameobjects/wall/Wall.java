@@ -20,14 +20,14 @@ public class Wall extends StaticDraw implements CollisionObject {
 
 
 		for (int i = -8; i <= 8; i++) {
-			hitBoxList.add(new Pair<>(new HitBox(i, -5, 1, 1), "wall"));
+			hitBoxList.add(new Pair<>(new HitBox(i, -5, 1, 1), "block_stone_middle"));
 		}
 
-		hitBoxList.add(new Pair<>(new HitBox(2, -4, 1, 1), "wall"));
-		hitBoxList.add(new Pair<>(new HitBox(2, -3, 1, 1), "wall"));
-		hitBoxList.add(new Pair<>(new HitBox(1, -4, 1, 1), "wall"));
-		hitBoxList.add(new Pair<>(new HitBox(1, -3, 1, 1), "wall"));
-		hitBoxList.add(new Pair<>(new HitBox(1, -2, 1, 1), "wall"));
+		hitBoxList.add(new Pair<>(new HitBox(2, -4, 1, 1), "block_stone_middle"));
+		hitBoxList.add(new Pair<>(new HitBox(2, -3, 1, 1), "block_stone_middle"));
+		hitBoxList.add(new Pair<>(new HitBox(1, -4, 1, 1), "block_stone_middle"));
+		hitBoxList.add(new Pair<>(new HitBox(1, -3, 1, 1), "block_stone_middle"));
+		hitBoxList.add(new Pair<>(new HitBox(1, -2, 1, 1), "block_stone_middle"));
 		super.updateContent(hitBoxList);
 
 		hitBoxes = hitBoxList.stream().map(Pair::getKey).collect(Collectors.toList());
