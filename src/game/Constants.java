@@ -6,30 +6,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Constants {
-	public static final Map<String, Integer> PRIMARY_CONTROLS = new HashMap<>();
-	public static final Map<String, Integer> SECONDARY_CONTROLS = new HashMap<>();
-	public static final Map<String, Integer> CONTROLLER_CONTROLS = new HashMap<>();
+	public static final Map<String, Integer> DEFAULT_CONTROLS = new HashMap<>();
 
 	static {
-		PRIMARY_CONTROLS.put("UP", Keyboard.KEY_W);
-		PRIMARY_CONTROLS.put("DOWN", Keyboard.KEY_S);
-		PRIMARY_CONTROLS.put("RIGHT", Keyboard.KEY_D);
-		PRIMARY_CONTROLS.put("LEFT", Keyboard.KEY_A);
-		PRIMARY_CONTROLS.put("SHAKE", Keyboard.KEY_X);
-		PRIMARY_CONTROLS.put("PARTICLE", Keyboard.KEY_Z);
+		DEFAULT_CONTROLS.put("UP0", Keyboard.KEY_W);
+		DEFAULT_CONTROLS.put("DOWN0", Keyboard.KEY_S);
+		DEFAULT_CONTROLS.put("RIGHT0", Keyboard.KEY_D);
+		DEFAULT_CONTROLS.put("LEFT0", Keyboard.KEY_A);
+		DEFAULT_CONTROLS.put("SHAKE0", Keyboard.KEY_X);
+		DEFAULT_CONTROLS.put("PARTICLE0", Keyboard.KEY_Z);
 
-		SECONDARY_CONTROLS.put("UP", Keyboard.KEY_UP);
-		SECONDARY_CONTROLS.put("DOWN", Keyboard.KEY_DOWN);
-		SECONDARY_CONTROLS.put("RIGHT", Keyboard.KEY_RIGHT);
-		SECONDARY_CONTROLS.put("LEFT", Keyboard.KEY_LEFT);
-		SECONDARY_CONTROLS.put("SHAKE", Keyboard.KEY_COMMA);
-		SECONDARY_CONTROLS.put("PARTICLE", Keyboard.KEY_PERIOD);
+		DEFAULT_CONTROLS.put("UP1", Keyboard.KEY_UP);
+		DEFAULT_CONTROLS.put("DOWN1", Keyboard.KEY_DOWN);
+		DEFAULT_CONTROLS.put("RIGHT1", Keyboard.KEY_RIGHT);
+		DEFAULT_CONTROLS.put("LEFT1", Keyboard.KEY_LEFT);
+		DEFAULT_CONTROLS.put("SHAKE1", Keyboard.KEY_COMMA);
+		DEFAULT_CONTROLS.put("PARTICLE1", Keyboard.KEY_PERIOD);
 
-		CONTROLLER_CONTROLS.put("UP", Keyboard.GAMEPAD_AXIS_LEFT_Y_RIGHT);
-		CONTROLLER_CONTROLS.put("DOWN", Keyboard.GAMEPAD_AXIS_LEFT_Y_LEFT);
-		CONTROLLER_CONTROLS.put("RIGHT", Keyboard.GAMEPAD_AXIS_LEFT_X_RIGHT);
-		CONTROLLER_CONTROLS.put("LEFT", Keyboard.GAMEPAD_AXIS_LEFT_X_LEFT);
-		CONTROLLER_CONTROLS.put("SHAKE", Keyboard.GAMEPAD_BUTTON_X);
-		CONTROLLER_CONTROLS.put("PARTICLE", Keyboard.GAMEPAD_BUTTON_Y);
+		for (int i = 0; i < 16; i++) {
+			DEFAULT_CONTROLS.put("UP" + (i+2), Keyboard.GAMEPAD_1_BUTTON_A + 30*i);
+			DEFAULT_CONTROLS.put("DOWN" + (i+2), Keyboard.GAMEPAD_1_LEFT_AXIS_DOWN + 30*i);
+			DEFAULT_CONTROLS.put("RIGHT" + (i+2), Keyboard.GAMEPAD_1_LEFT_AXIS_RIGHT + 30*i);
+			DEFAULT_CONTROLS.put("LEFT" + (i+2), Keyboard.GAMEPAD_1_LEFT_AXIS_LEFT + 30*i);
+			DEFAULT_CONTROLS.put("SHAKE" + (i+2), Keyboard.GAMEPAD_1_BUTTON_B + 30*i);
+			DEFAULT_CONTROLS.put("PARTICLE" + (i+2), Keyboard.GAMEPAD_1_BUTTON_Y + 30*i);
+		}
 	}
 }
