@@ -8,15 +8,19 @@ import game.window.light.Light;
 
 public class Player extends BasicWalkingEntity implements Light {
 
-	private Sprite attack = new Sprite(90, "player_sword_1", "player_sword_2", "player_sword_3", "player_sword_4", "player_sword_5", "player_sword_6", "player_sword_7");
-	private Sprite walking = new Sprite(100, "player_move_0", "player_move_1", "player_move_2", "player_move_3");
-	private Sprite idle = new Sprite(250, "player_idle_0", "player_idle_0", "player_idle_0", "player_idle_0", "player_idle_0", "player_idle_0", "player_idle_0", "player_idle_0", "player_idle_1");
-	private Sprite falling = new Sprite(250, "player_fall");
+	private Sprite attack_r = new Sprite(90, "player_r_sword_0", "player_r_sword_1", "player_r_sword_2", "player_r_sword_3", "player_r_sword_4", "player_r_sword_5", "player_r_sword_6");
+	private Sprite walking_r = new Sprite(100, "player_r_move_0", "player_r_move_1", "player_r_move_2", "player_r_move_3");
+	private Sprite idle_r = new Sprite(250, "player_r_idle_0", "player_r_idle_0", "player_r_idle_0", "player_r_idle_0", "player_r_idle_0", "player_r_idle_0", "player_r_idle_0", "player_r_idle_0", "player_r_idle_1");
+	private Sprite falling_r = new Sprite(250, "player_r_fall");
+	private Sprite attack_l = new Sprite(90, "player_l_sword_0", "player_l_sword_1", "player_l_sword_2", "player_l_sword_3", "player_l_sword_4", "player_l_sword_5", "player_l_sword_6");
+	private Sprite walking_l = new Sprite(100, "player_l_move_0", "player_l_move_1", "player_l_move_2", "player_l_move_3");
+	private Sprite idle_l = new Sprite(250, "player_l_idle_0", "player_l_idle_0", "player_l_idle_0", "player_l_idle_0", "player_l_idle_0", "player_l_idle_0", "player_l_idle_0", "player_l_idle_0", "player_l_idle_1");
+	private Sprite falling_l = new Sprite(250, "player_l_fall");
 
 	public Player() {
 		super(new HitBox(3, -3, 0.75f, 1f));
 
-		setSprite(idle);
+		setSprite(idle_r);
 	}
 
 	@Override
