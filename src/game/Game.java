@@ -1,6 +1,7 @@
 package game;
 
 import game.gameobjects.CollisionObject;
+import game.gameobjects.gameobjects.CameraController;
 import game.window.Drawable;
 import game.gameobjects.GameObject;
 import game.gameobjects.gameobjects.entities.entities.Player;
@@ -44,6 +45,7 @@ public class Game {
 
 		particleSystem = new ParticleSystem();
 
+		this.addGameObject(new CameraController());
 		this.addGameObject(new Wall());
 		this.addGameObject(particleSystem);
 	}
@@ -124,5 +126,9 @@ public class Game {
 
 	public ParticleSystem getParticleSystem() {
 		return particleSystem;
+	}
+
+	public List<Player> getPlayers() {
+		return players;
 	}
 }
