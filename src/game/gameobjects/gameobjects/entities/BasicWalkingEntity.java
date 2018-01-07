@@ -17,17 +17,19 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 	private static final float MAX_GRAVITY_SPEED = 0.3f;
 	private static final int MAX_JUMP_TICKS = 10;
 
-	private boolean onGround;
+	protected boolean onGround;
 	private int jumpTicks;
-
 	private boolean jumpingLastTick;
-	private float mx;
-	private boolean jumping;
-	private boolean down;
+
+	protected float lastMX;
+	protected float mx;
+	protected boolean jumping;
+	protected boolean down;
 
 	public BasicWalkingEntity(HitBox hitBox) {
 		super(hitBox);
 
+		lastMX = -1;
 		mx = 0;
 		jumping = false;
 		down = false;
@@ -40,6 +42,7 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 	@Override
 	public void update(Game game) {
 		vx = mx * SPEED;
+		if(Math.abs(mx) >= 0.2f) lastMX = mx;
 		if (-vy < MAX_GRAVITY_SPEED) vy = Math.max(vy - GRAVITY_ACCELERATION, -MAX_GRAVITY_SPEED);
 		if (down && -vy < MAX_DOWN_SPEED) vy = Math.max(vy - DOWN_ACCELERATION, -MAX_DOWN_SPEED);
 

@@ -15,7 +15,7 @@ import java.awt.*;
 public abstract class BasicDrawingEntity extends AbstractGameObject implements Drawable {
 	public static final int PIXEL_PER_TILE = 8;
 	protected HitBox hitBox;
-	private Sprite sprite;
+	protected Sprite sprite;
 	private long startTime;
 
 	public BasicDrawingEntity(HitBox hitBox) {
@@ -30,6 +30,7 @@ public abstract class BasicDrawingEntity extends AbstractGameObject implements D
 	@Override
 	public void draw(Window window, long time) {
 		if (sprite == null) return;
+		updateSprite();
 
 		Rectangle bounds = sprite.getTexture(startTime, time);
 
@@ -46,6 +47,8 @@ public abstract class BasicDrawingEntity extends AbstractGameObject implements D
 	public void cleanUp(Window window) {
 		window.getShaderHandler().unloadShader(ShaderType.BASIC_SHADER);
 	}
+
+	public abstract void updateSprite();
 
 	protected void setSprite(Sprite sprite) {
 		this.sprite = sprite;

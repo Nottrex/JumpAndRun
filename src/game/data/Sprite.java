@@ -23,4 +23,25 @@ public class Sprite {
 		return textures.get((int) (((currentTime - startTime) / time) % textures.size()));
 	}
 
+	@Override
+	public boolean equals(Object b) {
+
+		if(b instanceof Sprite){
+			Sprite s = (Sprite) b;
+			if(s.time != time) return false;
+			if(textures.size() != s.textures.size()) return false;
+
+			for(Rectangle r: textures) {
+				boolean has = false;
+				for(Rectangle r2: s.textures) {
+					if(r2.equals(r)) has = true;
+				}
+				if(!has) return false;
+			}
+			return true;
+		}
+
+		return false;
+	}
+
 }
