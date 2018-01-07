@@ -5,6 +5,7 @@ import game.Game;
 import game.data.HitBox;
 import game.data.HitBoxDirection;
 import game.gameobjects.CollisionObject;
+import game.gameobjects.GameObject;
 import game.gameobjects.gameobjects.particle.ParticleType;
 import game.util.MathUtil;
 
@@ -54,7 +55,7 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 	@Override
 	public void collide(CollisionObject gameObject, HitBoxDirection direction, float velocity) {
 		if (direction == HitBoxDirection.DOWN) {
-			if (velocity > Constants.MAX_GRAVITY_SPEED + Constants.GRAVITY_ACCELERATION) {
+			if (velocity > Constants.MAX_GRAVITY_SPEED + 0.01f) {
 				game.getCamera().addScreenshake(velocity / 15);
 
 				game.getParticleSystem().createParticle(ParticleType.EXPLOSION, hitBox.getCenterX(), hitBox.y, 0, 0);
