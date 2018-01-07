@@ -105,7 +105,7 @@ public abstract class StaticDraw extends AbstractGameObject implements Drawable 
 				locations.put(hitBox.x + v[0] * hitBox.width);
 				locations.put(hitBox.y + v[1] * hitBox.height);
 
-				texLocations.put(texture.x + (1 - v[0]) * texture.width);
+				texLocations.put(texture.x + v[0] * texture.width);
 				texLocations.put(texture.y + (1 - v[1]) * texture.height);
 			}
 

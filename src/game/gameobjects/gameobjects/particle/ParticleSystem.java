@@ -156,7 +156,7 @@ public class ParticleSystem extends AbstractGameObject implements Drawable {
 					locationBuffer.put(v[0] * particle.type.getWidth() + particle.x);
 					locationBuffer.put(v[1] * particle.type.getHeight() + particle.y);
 
-					texLocationBuffer.put((1 - v[0]) * texBounds.width + texBounds.x);
+					texLocationBuffer.put(v[0] * texBounds.width + texBounds.x);
 					texLocationBuffer.put((1 - v[1]) * texBounds.height + texBounds.y);
 				}
 

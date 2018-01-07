@@ -22,7 +22,6 @@ public class MapLoader {
 				int key = Integer.parseInt(line.substring(1,line.indexOf(" ")));
 				String textureName = line.substring(line.indexOf("_")+1);
 				textureDef.put(key, textureName);
-				System.out.println(key);
 				line = fileScanner.nextLine();
 			}
 			line = fileScanner.nextLine(); //TO-DO Fore- and Background
@@ -37,7 +36,7 @@ public class MapLoader {
 			for (int i = 0; i<x; i++) {
 				for (int j = 0; j<y; j++) {
 					int tile = Integer.parseInt(layerScanner.next().replace(",","").replace(";", "").replace("]", ""));
-					if (tile != 0) {hitBoxList.add(new Pair<>(new HitBox(-i, -j, 1, 1), textureDef.get(tile)));}
+					if (tile != 0) {hitBoxList.add(new Pair<>(new HitBox(i, -j, 1, 1), textureDef.get(tile)));}
 				}
 			}
 		} catch (FileNotFoundException e) {
