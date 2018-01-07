@@ -1,22 +1,14 @@
 package game.gameobjects.gameobjects.entities;
 
+import game.Constants;
 import game.Game;
 import game.data.HitBox;
 import game.data.HitBoxDirection;
 import game.gameobjects.CollisionObject;
-import game.gameobjects.GameObject;
 import game.gameobjects.gameobjects.particle.ParticleType;
 import game.util.MathUtil;
 
 public abstract class BasicWalkingEntity extends BasicMovingEntity {
-	private static final float SPEED = 0.175f;
-	private static final float JUMP_ACCELERATION = 0.3f;
-	private static final float DOWN_ACCELERATION = 0.04f;
-	private static final float MAX_DOWN_SPEED = 0.5f;
-	private static final float GRAVITY_ACCELERATION = 0.04f;
-	private static final float MAX_GRAVITY_SPEED = 0.3f;
-	private static final int MAX_JUMP_TICKS = 10;
-
 	protected boolean onGround;
 	private int jumpTicks;
 	private boolean jumpingLastTick;
@@ -41,13 +33,13 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 
 	@Override
 	public void update(Game game) {
-		vx = mx * SPEED;
+		vx = mx * Constants.MAX_WALKING_SPEED;
 		if(Math.abs(mx) >= 0.2f) lastMX = mx;
-		if (-vy < MAX_GRAVITY_SPEED) vy = Math.max(vy - GRAVITY_ACCELERATION, -MAX_GRAVITY_SPEED);
-		if (down && -vy < MAX_DOWN_SPEED) vy = Math.max(vy - DOWN_ACCELERATION, -MAX_DOWN_SPEED);
+		if (-vy < Constants.MAX_GRAVITY_SPEED) vy = Math.max(vy - Constants.GRAVITY_ACCELERATION, -Constants.MAX_GRAVITY_SPEED);
+		if (down && -vy < Constants.MAX_DOWN_SPEED) vy = Math.max(vy - Constants.DOWN_ACCELERATION, -Constants.MAX_DOWN_SPEED);
 
-		if (((onGround && !jumpingLastTick) || (jumpTicks < MAX_JUMP_TICKS && jumpTicks > 0)) && jumping) {
-			vy = JUMP_ACCELERATION;
+		if (((onGround && !jumpingLastTick) || (jumpTicks < Constants.MAX_JUMP_TICKS && jumpTicks > 0)) && jumping) {
+			vy = Constants.JUMP_ACCELERATION;
 			jumpTicks++;
 		} else {
 			jumpTicks = 0;
@@ -62,7 +54,7 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 	@Override
 	public void collide(CollisionObject gameObject, HitBoxDirection direction, float velocity) {
 		if (direction == HitBoxDirection.DOWN) {
-			if (velocity > MAX_GRAVITY_SPEED + GRAVITY_ACCELERATION) {
+			if (velocity > Constants.MAX_GRAVITY_SPEED + Constants.GRAVITY_ACCELERATION) {
 				game.getCamera().addScreenshake(velocity / 15);
 
 				game.getParticleSystem().createParticle(ParticleType.EXPLOSION, hitBox.getCenterX(), hitBox.y, 0, 0);

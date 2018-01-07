@@ -1,5 +1,6 @@
 package game.window;
 
+import game.Constants;
 import org.lwjgl.glfw.GLFW;
 
 import java.nio.ByteBuffer;
@@ -8,7 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Keyboard {
-	private static final float DEAD_ZONE = 0.2f;
 
 	private Map<Integer, Float> keys;
 
@@ -49,8 +49,8 @@ public class Keyboard {
 					if (j == GLFW.GLFW_GAMEPAD_AXIS_LEFT_TRIGGER || j == GLFW.GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER) {
 						keys.put(30*c + 15 + j, (values2.get(j) + 1) / 2);
 					} else {
-						keys.put(30*c + 15 + j, -Math.min(0, values2.get(j) + DEAD_ZONE) / (1 - DEAD_ZONE));
-						keys.put(30*c + 21 + j, Math.max(0, values2.get(j) - DEAD_ZONE) / (1 - DEAD_ZONE));
+						keys.put(30*c + 15 + j, -Math.min(0, values2.get(j) + Constants.DEAD_ZONE) / (1 - Constants.DEAD_ZONE));
+						keys.put(30*c + 21 + j, Math.max(0, values2.get(j) - Constants.DEAD_ZONE) / (1 - Constants.DEAD_ZONE));
 					}
 				}
 			}

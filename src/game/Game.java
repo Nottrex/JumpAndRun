@@ -19,7 +19,6 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Game {
-	public static final int TPS = 60;
 
 	private Window window;
 
@@ -97,7 +96,7 @@ public class Game {
 
 			long newTime = TimeUtil.getTime();
 
-			TimeUtil.sleep((int) (1000.0f / TPS - (newTime - time)));
+			TimeUtil.sleep((int) (1000.0f / Constants.TPS - (newTime - time)));
 		}
 
 		cleanUp();

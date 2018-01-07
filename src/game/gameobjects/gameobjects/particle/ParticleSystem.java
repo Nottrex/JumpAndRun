@@ -1,5 +1,6 @@
 package game.gameobjects.gameobjects.particle;
 
+import game.Constants;
 import game.Game;
 import game.gameobjects.AbstractGameObject;
 import game.window.Drawable;
@@ -21,13 +22,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ParticleSystem extends AbstractGameObject implements Drawable {
-	public static final int MAX_PARTICLES = 1000;
-	private static final int[] INDICES = new int[]{
-			0, 2, 1, 0, 3, 2
-	};
-	private static final float[][] VERTEX_POS = new float[][]{
-			{0, 0}, {0, 1}, {1, 1}, {1, 0}
-	};
 	private final List<Particle> particles;
 	private int vao, vao2;
 	private int locationVBO, texLocationVBO, indicesVBO;
@@ -41,7 +35,7 @@ public class ParticleSystem extends AbstractGameObject implements Drawable {
 	}
 
 	public void createParticle(ParticleType particle, float x, float y, float vx, float vy) {
-		if (particles.size() < MAX_PARTICLES)
+		if (particles.size() < Constants.MAX_PARTICLES)
 			particles.add(new Particle(particle, x - particle.getWidth() / 2, y - particle.getHeight() / 2, vx, vy, TimeUtil.getTime()));
 	}
 
@@ -68,9 +62,9 @@ public class ParticleSystem extends AbstractGameObject implements Drawable {
 		texLocationVBO = GL15.glGenBuffers();
 		indicesVBO = GL15.glGenBuffers();
 
-		locationBuffer = BufferUtils.createFloatBuffer(MAX_PARTICLES * VERTEX_POS.length * 2);
-		texLocationBuffer = BufferUtils.createFloatBuffer(MAX_PARTICLES * VERTEX_POS.length * 2);
-		indicesBuffer = BufferUtils.createIntBuffer(MAX_PARTICLES * INDICES.length);
+		locationBuffer = BufferUtils.createFloatBuffer(Constants.MAX_PARTICLES * Constants.VERTEX_POS.length * 2);
+		texLocationBuffer = BufferUtils.createFloatBuffer(Constants.MAX_PARTICLES * Constants.VERTEX_POS.length * 2);
+		indicesBuffer = BufferUtils.createIntBuffer(Constants.MAX_PARTICLES * Constants.INDICES.length);
 
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, locationVBO);
 		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, locationBuffer, GL15.GL_DYNAMIC_DRAW);
@@ -112,7 +106,7 @@ public class ParticleSystem extends AbstractGameObject implements Drawable {
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesVBO);
 		GL15.glBufferSubData(GL15.GL_ELEMENT_ARRAY_BUFFER, 0, indicesBuffer);
 
-		GL11.glDrawElements(GL11.GL_TRIANGLES, Math.min(MAX_PARTICLES, particles.size()) * INDICES.length, GL11.GL_UNSIGNED_INT, 0);
+		GL11.glDrawElements(GL11.GL_TRIANGLES, Math.min(Constants.MAX_PARTICLES, particles.size()) * Constants.INDICES.length, GL11.GL_UNSIGNED_INT, 0);
 
 		GL30.glBindVertexArray(vao2);
 	}
@@ -153,12 +147,12 @@ public class ParticleSystem extends AbstractGameObject implements Drawable {
 			texLocationBuffer.clear();
 			indicesBuffer.clear();
 
-			for (int i = 0; i < MAX_PARTICLES && i < particles.size(); i++) {
+			for (int i = 0; i < Constants.MAX_PARTICLES && i < particles.size(); i++) {
 				Particle particle = particles.get(i);
 
 				Rectangle texBounds = particle.type.getSprite().getTexture(particle.startTime, time);
 
-				for (float[] v : VERTEX_POS) {
+				for (float[] v : Constants.VERTEX_POS) {
 					locationBuffer.put(v[0] * particle.type.getWidth() + particle.x);
 					locationBuffer.put(v[1] * particle.type.getHeight() + particle.y);
 
@@ -166,8 +160,8 @@ public class ParticleSystem extends AbstractGameObject implements Drawable {
 					texLocationBuffer.put((1 - v[1]) * texBounds.height + texBounds.y);
 				}
 
-				for (int ind : INDICES) {
-					indicesBuffer.put(i * VERTEX_POS.length + ind);
+				for (int ind : Constants.INDICES) {
+					indicesBuffer.put(i * Constants.VERTEX_POS.length + ind);
 				}
 			}
 

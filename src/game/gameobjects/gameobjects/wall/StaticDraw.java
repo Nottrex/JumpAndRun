@@ -1,5 +1,6 @@
 package game.gameobjects.gameobjects.wall;
 
+import game.Constants;
 import game.data.HitBox;
 import game.gameobjects.AbstractGameObject;
 import game.window.Drawable;
@@ -20,12 +21,6 @@ import java.nio.IntBuffer;
 import java.util.List;
 
 public abstract class StaticDraw extends AbstractGameObject implements Drawable {
-	private static final int[] INDICES = new int[]{
-			0, 2, 1, 0, 3, 2
-	};
-	private static final float[][] VERTEX_POS = new float[][]{
-			{0, 0}, {0, 1}, {1, 1}, {1, 0}
-	};
 
 	private int rectangles;
 	private int vao, vao2;
@@ -65,7 +60,7 @@ public abstract class StaticDraw extends AbstractGameObject implements Drawable 
 
 		GL30.glBindVertexArray(vao);
 
-		GL11.glDrawElements(GL11.GL_TRIANGLES, rectangles * INDICES.length, GL11.GL_UNSIGNED_INT, 0);
+		GL11.glDrawElements(GL11.GL_TRIANGLES, rectangles * Constants.INDICES.length, GL11.GL_UNSIGNED_INT, 0);
 
 		GL30.glBindVertexArray(vao2);
 	}
@@ -98,15 +93,15 @@ public abstract class StaticDraw extends AbstractGameObject implements Drawable 
 	private void updateBuffers(StaticShader shader) {
 		rectangles = hitBoxList.size();
 
-		FloatBuffer locations = BufferUtils.createFloatBuffer(rectangles * 2 * VERTEX_POS.length);
-		FloatBuffer texLocations = BufferUtils.createFloatBuffer(rectangles * 2 * VERTEX_POS.length);
-		IntBuffer indices = BufferUtils.createIntBuffer(rectangles * INDICES.length);
+		FloatBuffer locations = BufferUtils.createFloatBuffer(rectangles * 2 * Constants.VERTEX_POS.length);
+		FloatBuffer texLocations = BufferUtils.createFloatBuffer(rectangles * 2 * Constants.VERTEX_POS.length);
+		IntBuffer indices = BufferUtils.createIntBuffer(rectangles * Constants.INDICES.length);
 
 		for (int i = 0; i < rectangles; i++) {
 			HitBox hitBox = hitBoxList.get(i).getKey();
 			Rectangle texture = TextureHandler.getSpriteSheetBounds("textures_" + hitBoxList.get(i).getValue());
 
-			for (float[] v : VERTEX_POS) {
+			for (float[] v : Constants.VERTEX_POS) {
 				locations.put(hitBox.x + v[0] * hitBox.width);
 				locations.put(hitBox.y + v[1] * hitBox.height);
 
@@ -114,8 +109,8 @@ public abstract class StaticDraw extends AbstractGameObject implements Drawable 
 				texLocations.put(texture.y + (1 - v[1]) * texture.height);
 			}
 
-			for (int ind : INDICES) {
-				indices.put(i * VERTEX_POS.length + ind);
+			for (int ind : Constants.INDICES) {
+				indices.put(i * Constants.VERTEX_POS.length + ind);
 			}
 		}
 

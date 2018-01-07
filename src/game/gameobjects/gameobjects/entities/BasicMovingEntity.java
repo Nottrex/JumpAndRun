@@ -1,5 +1,6 @@
 package game.gameobjects.gameobjects.entities;
 
+import game.Constants;
 import game.Game;
 import game.data.HitBox;
 import game.data.HitBoxDirection;
@@ -10,8 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BasicMovingEntity extends BasicDrawingEntity implements CollisionObject {
-	private static final float MAX_SPEED = 0.5f;
-
 	private List<HitBox> hitBoxList;
 	protected float vx, vy;
 
@@ -31,8 +30,8 @@ public abstract class BasicMovingEntity extends BasicDrawingEntity implements Co
 
 	@Override
 	public void update(Game game) {
-		vx = MathUtil.clamp(vx, -MAX_SPEED, MAX_SPEED);
-		vy = MathUtil.clamp(vy, -MAX_SPEED, MAX_SPEED);
+		vx = MathUtil.clamp(vx, -Constants.MAX_SPEED, Constants.MAX_SPEED);
+		vy = MathUtil.clamp(vy, -Constants.MAX_SPEED, Constants.MAX_SPEED);
 
 		float vx_ = vx;
 		vx = 0;

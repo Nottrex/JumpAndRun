@@ -3,6 +3,7 @@ package game.window;
 import com.joml.matrix.Matrix4f;
 import com.joml.utils.CamMath;
 import com.joml.vector.Vector3f;
+import game.Constants;
 import game.util.ErrorUtil;
 import game.util.TextureHandler;
 import game.util.TimeUtil;
@@ -26,9 +27,6 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Window {
-	private static final int WIDTH = 800, HEIGHT = 600;
-	private static final String WINDOW_NAME = "JumpAndRun";
-	private static final float FOV = 90, NEAR = 0.01f, FAR = 1000f;
 
 	private long window;
 	private Keyboard keyboard;
@@ -124,7 +122,7 @@ public class Window {
 	private void updateProjectionMatrix() {
 		float aspect = width * 1.0f / height;
 
-		CamMath.perspective(FOV, aspect, NEAR, FAR, projectionMatrix);
+		CamMath.perspective(Constants.FOV, aspect, Constants.NEAR, Constants.FAR, projectionMatrix);
 
 		shaderHandler.setProjectionMatrix(projectionMatrix);
 
@@ -201,7 +199,7 @@ public class Window {
 		GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_FALSE);
 		GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GLFW.GLFW_TRUE);
 
-		window = GLFW.glfwCreateWindow(WIDTH, HEIGHT, WINDOW_NAME, MemoryUtil.NULL, MemoryUtil.NULL);
+		window = GLFW.glfwCreateWindow(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, Constants.WINDOW_NAME, MemoryUtil.NULL, MemoryUtil.NULL);
 
 		if (window == MemoryUtil.NULL) ErrorUtil.printError("Creating window");
 

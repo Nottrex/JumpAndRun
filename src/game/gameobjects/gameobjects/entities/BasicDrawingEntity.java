@@ -1,5 +1,6 @@
 package game.gameobjects.gameobjects.entities;
 
+import game.Constants;
 import game.data.HitBox;
 import game.data.Sprite;
 import game.gameobjects.AbstractGameObject;
@@ -13,7 +14,6 @@ import org.lwjgl.opengl.GL11;
 import java.awt.*;
 
 public abstract class BasicDrawingEntity extends AbstractGameObject implements Drawable {
-	public static final int PIXEL_PER_TILE = 8;
 	protected HitBox hitBox;
 	protected Sprite sprite;
 	private long startTime;
@@ -38,7 +38,7 @@ public abstract class BasicDrawingEntity extends AbstractGameObject implements D
 
 		shader.start();
 		shader.setTextureSheetBounds(bounds.x, bounds.y, bounds.width, bounds.height);
-		shader.setBounds(hitBox.getCenterX() - bounds.width/(2 * (float)PIXEL_PER_TILE), hitBox.getCenterY() - bounds.height/(2*(float)PIXEL_PER_TILE), bounds.width/((float)PIXEL_PER_TILE), bounds.height/((float)PIXEL_PER_TILE));
+		shader.setBounds(hitBox.getCenterX() - bounds.width/(2 * (float) Constants.PIXEL_PER_TILE), hitBox.getCenterY() - bounds.height/(2*(float) Constants.PIXEL_PER_TILE), bounds.width/((float) Constants.PIXEL_PER_TILE), bounds.height/((float) Constants.PIXEL_PER_TILE));
 
 		GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, 4);
 	}

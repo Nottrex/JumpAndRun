@@ -1,5 +1,6 @@
 package game.window;
 
+import game.Constants;
 import game.data.SmoothFloat;
 import game.data.SmoothFloatCubic;
 import game.util.MathUtil;
@@ -9,9 +10,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Camera {
-	private static final int TIME_FRAC = 25;
-	private static final float MIN_AMP = 0.0001f;
-	private static final float DECAY = 0.8f;
 
 	private float zoom, x, y, rotation;
 	private SmoothFloat tZoom, tX, tY, tRotation;
@@ -62,9 +60,9 @@ public class Camera {
 		float sx = 0, sy = 0, sr = 0;
 		for (int i = 0; i < screenshakeList.size(); i++) {
 			Screenshake s = screenshakeList.get(i);
-			float t = 1.0f * (time - s.startTime) / TIME_FRAC;
+			float t = 1.0f * (time - s.startTime) / Constants.TIME_FRAC;
 			double d = Math.pow(s.decay, t);
-			if (d * s.amp_x < MIN_AMP && d * s.amp_y < MIN_AMP && d * s.amp_r < MIN_AMP) {
+			if (d * s.amp_x < Constants.MIN_AMP && d * s.amp_y < Constants.MIN_AMP && d * s.amp_r < Constants.MIN_AMP) {
 				screenshakeList.remove(s);
 			} else {
 				sx += d * s.amp_x * (MathUtil.noise((int) (10000 * s.phase_x), t, Math.round(s.freq_x)) * 2 - 1);
@@ -82,7 +80,7 @@ public class Camera {
 	}
 
 	public void addScreenshake(float strength) {
-		screenshakeList.add(new Screenshake(TimeUtil.getTime(), DECAY, strength, strength, strength, (float) (Math.random() * 2 * Math.PI), (float) (Math.random() * 2 * Math.PI), (float) (Math.random() * 2 * Math.PI), 1, 1, 1));
+		screenshakeList.add(new Screenshake(TimeUtil.getTime(), Constants.DECAY, strength, strength, strength, (float) (Math.random() * 2 * Math.PI), (float) (Math.random() * 2 * Math.PI), (float) (Math.random() * 2 * Math.PI), 1, 1, 1));
 	}
 
 	public void setZoom(float zoom) {
