@@ -33,7 +33,8 @@ public class Player extends BasicWalkingEntity implements Light {
 	@Override
 	public void updateSprite() {
 		Sprite newSprite = null;
-		if(!onGround) newSprite = (mx < 0? falling_l: falling_r);
+		if(!onGround && mx != 0) newSprite = (mx < 0? falling_l: falling_r);
+		if(!onGround && mx == 0) newSprite = (lastMX < 0? falling_l: falling_r);
 		if(onGround && mx == 0) newSprite = (lastMX < 0? idle_l: idle_r);
 		if(onGround && mx != 0) newSprite = (mx < 0? walking_l: walking_r);
 
