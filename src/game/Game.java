@@ -26,6 +26,7 @@ public class Game {
 	private List<GameObject> gameObjects;
 	private List<CollisionObject> collisionObjects;
 	private List<Player> players;
+	private List<Integer> inputs;
 
 	private Queue<GameObject> toRemove;
 	private Queue<GameObject> toAdd;
@@ -36,6 +37,7 @@ public class Game {
 		this.window = window;
 
 		players = new ArrayList<>();
+		inputs = new ArrayList<>();
 		gameObjects = new LinkedList<>();
 		collisionObjects = new LinkedList<>();
 		toRemove = new ConcurrentLinkedQueue<>();
@@ -44,7 +46,6 @@ public class Game {
 		particleSystem = new ParticleSystem();
 
 		this.addGameObject(new Wall());
-		this.addGameObject(new Player());
 		this.addGameObject(particleSystem);
 	}
 
@@ -54,12 +55,21 @@ public class Game {
 			time = TimeUtil.getTime();
 			Keyboard keyboard = window.getKeyboard();
 
+			for (int i = 0; i < 18; i++) {
+				if (keyboard.isPressed(Options.controls.get("UP"+i)) && !inputs.contains(i)) {
+					Player newPlayer = new Player();
+					this.addGameObject(newPlayer);
+					particleSystem.createParticle(ParticleType.EXPLOSION, newPlayer.getHitBox().getCenterX(), newPlayer.getHitBox().getCenterY(), 0, 0);
+					inputs.add(i);
+				}
+			}
 			for (int i = 0; i < players.size(); i++) {
 				Player player = players.get(i);
+				int input = inputs.get(i);
 
-				player.setJumping(keyboard.isPressed(Options.controls.get("UP" + i)));
-				player.setMx(keyboard.getPressed(Options.controls.get("RIGHT" + i)) - keyboard.getPressed(Options.controls.get("LEFT" + i)));
-				player.setDown(keyboard.getPressed(Options.controls.get("DOWN" + i)));
+				player.setJumping(keyboard.isPressed(Options.controls.get("UP" + input)));
+				player.setMx(keyboard.getPressed(Options.controls.get("RIGHT" + input)) - keyboard.getPressed(Options.controls.get("LEFT" + input)));
+				player.setDown(keyboard.getPressed(Options.controls.get("DOWN" + input)));
 			}
 
 			while (!toAdd.isEmpty()) {
