@@ -18,7 +18,7 @@ public class Player extends BasicWalkingEntity implements Light {
 	private Sprite falling_l = new Sprite(250, "player_l_fall");
 
 	public Player() {
-		super(new HitBox(3, -3, 0.75f, 1f));
+		super(new HitBox(-8, -8, 0.75f, 1f));
 
 		setSprite(idle_r);
 	}
