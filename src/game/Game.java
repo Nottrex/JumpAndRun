@@ -69,7 +69,7 @@ public class Game {
 
 				player.setJumping(keyboard.isPressed(Options.controls.get("UP" + input)));
 				player.setMx(keyboard.getPressed(Options.controls.get("RIGHT" + input)) - keyboard.getPressed(Options.controls.get("LEFT" + input)));
-				player.setDown(keyboard.getPressed(Options.controls.get("DOWN" + input)));
+				player.setDown(keyboard.isPressed(Options.controls.get("DOWN" + input)));
 			}
 
 			while (!toAdd.isEmpty()) {

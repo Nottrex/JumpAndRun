@@ -19,21 +19,21 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 
 	private boolean onGround;
 	private int jumpTicks;
-	private boolean jumpingLastTick;
 
+	private boolean jumpingLastTick;
 	private float mx;
 	private boolean jumping;
-	private float down;
+	private boolean down;
 
 	public BasicWalkingEntity(HitBox hitBox) {
 		super(hitBox);
 
 		mx = 0;
 		jumping = false;
-		down = 0;
+		down = false;
+		jumpingLastTick = false;
 
 		jumpTicks = 0;
-		jumpingLastTick = false;
 		onGround = false;
 	}
 
@@ -41,7 +41,7 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 	public void update(Game game) {
 		vx = mx * SPEED;
 		if (-vy < MAX_GRAVITY_SPEED) vy = Math.max(vy - GRAVITY_ACCELERATION, -MAX_GRAVITY_SPEED);
-		if (-vy < MAX_DOWN_SPEED) vy = Math.max(vy - down * DOWN_ACCELERATION, -MAX_DOWN_SPEED);
+		if (down && -vy < MAX_DOWN_SPEED) vy = Math.max(vy - DOWN_ACCELERATION, -MAX_DOWN_SPEED);
 
 		if (((onGround && !jumpingLastTick) || (jumpTicks < MAX_JUMP_TICKS && jumpTicks > 0)) && jumping) {
 			vy = JUMP_ACCELERATION;
@@ -59,7 +59,7 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 	@Override
 	public void collide(CollisionObject gameObject, HitBoxDirection direction, float velocity) {
 		if (direction == HitBoxDirection.DOWN) {
-			if (velocity > MAX_GRAVITY_SPEED) {
+			if (velocity > MAX_GRAVITY_SPEED + GRAVITY_ACCELERATION) {
 				game.getCamera().addScreenshake(velocity / 15);
 
 				game.getParticleSystem().createParticle(ParticleType.EXPLOSION, hitBox.getCenterX(), hitBox.y, 0, 0);
@@ -77,7 +77,7 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 		this.jumping = jumping;
 	}
 
-	public void setDown(float down) {
-		this.down = MathUtil.clamp(down, 0, 1);
+	public void setDown(boolean down) {
+		this.down = down;
 	}
 }
