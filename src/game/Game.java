@@ -2,6 +2,8 @@ package game;
 
 import game.gameobjects.CollisionObject;
 import game.gameobjects.gameobjects.CameraController;
+import game.gameobjects.gameobjects.wall.Background;
+import game.util.MapLoader;
 import game.window.Drawable;
 import game.gameobjects.GameObject;
 import game.gameobjects.gameobjects.entities.entities.Player;
@@ -27,6 +29,7 @@ public class Game {
 	private List<CollisionObject> collisionObjects;
 	private List<Player> players;
 	private List<Integer> inputs;
+	private GameMap map;
 
 	private Queue<GameObject> toRemove;
 	private Queue<GameObject> toAdd;
@@ -45,8 +48,18 @@ public class Game {
 
 		particleSystem = new ParticleSystem();
 
+		map = MapLoader.load("tutorial_1.map");
+		List<Wall> walls = map.getWalls();
+		for (Wall w: walls) {
+			this.addGameObject(w);
+		}
+		List<Background> backgrounds = map.getBackgrounds();
+		for (Background b: backgrounds) {
+			this.addGameObject(b);
+		}
+
+
 		this.addGameObject(new CameraController());
-		this.addGameObject(new Wall());
 		this.addGameObject(particleSystem);
 	}
 
@@ -58,7 +71,7 @@ public class Game {
 
 			for (int i = 0; i < 18; i++) {
 				if (keyboard.isPressed(Options.controls.get("UP"+i)) && !inputs.contains(i)) {
-					Player newPlayer = new Player();
+					Player newPlayer = new Player(map.getSpawnX(), map.getSpawnY());
 					this.addGameObject(newPlayer);
 					particleSystem.createParticle(ParticleType.EXPLOSION, newPlayer.getHitBox().getCenterX(), newPlayer.getHitBox().getCenterY(), 0, 0);
 					inputs.add(i);

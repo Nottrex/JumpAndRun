@@ -12,12 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Wall extends StaticDraw implements CollisionObject {
+public class Background extends StaticDraw {
 	private List<Pair<HitBox, String>> hitBoxList;
 	private List<HitBox> hitBoxes;
 	private float priority;
 
-	public Wall(List<Pair<HitBox, String>> hitBoxList, float priority) {
+	public Background(List<Pair<HitBox, String>> hitBoxList, float priority) {
 		this.hitBoxList = hitBoxList;
 		this.priority = priority;
 		super.updateContent(hitBoxList);
@@ -31,11 +31,6 @@ public class Wall extends StaticDraw implements CollisionObject {
 	}
 
 	@Override
-	public void collide(CollisionObject gameObject, HitBoxDirection direction, float velocity) {
-
-	}
-
-	@Override
 	public void update(Game game) {
 
 	}
@@ -43,10 +38,5 @@ public class Wall extends StaticDraw implements CollisionObject {
 	@Override
 	public float getDrawingPriority() {
 		return priority;
-	}
-
-	@Override
-	public List<HitBox> getCollisionBoxes() {
-		return hitBoxes;
 	}
 }
