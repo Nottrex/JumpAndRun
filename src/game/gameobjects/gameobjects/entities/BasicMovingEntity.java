@@ -77,7 +77,7 @@ public abstract class BasicMovingEntity extends BasicDrawingEntity implements Co
 						ax *= distance;
 						ay *= distance;
 
-						velocities.add((float) Math.sqrt(ax * ax + ay * ay));
+						velocities.add((float) Math.sqrt(vx * vx + vy * vy));
 
 						vx -= ax;
 						vy -= ay;
