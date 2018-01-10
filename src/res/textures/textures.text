@@ -1,4 +1,4 @@
-177
+172
 single_stone 0 32 8 8
 row_stone_left 8 32 8 8
 row_stone_middle 16 32 8 8
@@ -73,13 +73,8 @@ coin_idle1_0 208 144 8 8
 coin_idle1_1 216 144 8 8
 coin_idle1_2 208 152 8 8
 coin_idle1_3 216 152 8 8
-coin_idle2_0 208 120 8 8
-coin_idle2_1 216 120 8 8
-coin_idle2_2 200 128 8 8
-coin_idle2_3 208 128 8 8
-coin_idle2_4 216 128 8 8
-coin_idle2_5 200 136 8 8
-coin_idle2_6 208 136 8 8
+coin_idle2_0 208 136 8 8
+coin_idle2_1 216 136 8 8
 coin_high 160 0 8 8
 chest_closed 168 0 8 8
 chest_closed_high 176 0 8 8
