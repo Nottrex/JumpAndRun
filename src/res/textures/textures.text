@@ -115,10 +115,10 @@ bat_move_7 216 18 9 9
 bat_move_8 225 18 9 9
 player_r_idle_0 208 40 8 8
 player_r_idle_1 224 40 8 8
-player_r_move_0 208 56 8 8
-player_r_move_1 216 56 8 8
-player_r_move_2 224 56 8 8
-player_r_move_3 232 56 8 8
+player_r_move_0 208 48 8 8
+player_r_move_1 216 48 8 8
+player_r_move_2 224 48 8 8
+player_r_move_3 232 48 8 8
 player_r_fall 216 40 8 8
 player_r_sword_0 208 56 8 8
 player_r_sword_1 214 56 10 8
