@@ -2,6 +2,7 @@ package game;
 
 import game.gameobjects.CollisionObject;
 import game.gameobjects.gameobjects.CameraController;
+import game.gameobjects.gameobjects.entities.entities.Coin;
 import game.gameobjects.gameobjects.wall.Background;
 import game.util.MapLoader;
 import game.window.Drawable;
@@ -49,16 +50,10 @@ public class Game {
 		particleSystem = new ParticleSystem();
 
 		map = MapLoader.load("tutorial_1.map");
-		List<Wall> walls = map.getWalls();
-		for (Wall w: walls) {
-			this.addGameObject(w);
+		List<GameObject> objects = map.getObjects();
+		for (GameObject o: objects) {
+			this.addGameObject(o);
 		}
-		List<Background> backgrounds = map.getBackgrounds();
-		for (Background b: backgrounds) {
-			this.addGameObject(b);
-		}
-
-
 		this.addGameObject(new CameraController());
 		this.addGameObject(particleSystem);
 	}

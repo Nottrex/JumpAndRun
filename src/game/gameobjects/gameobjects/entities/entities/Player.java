@@ -1,5 +1,6 @@
 package game.gameobjects.gameobjects.entities.entities;
 
+import game.Game;
 import game.data.HitBox;
 import game.data.Sprite;
 import game.gameobjects.gameobjects.entities.BasicWalkingEntity;
@@ -31,7 +32,8 @@ public class Player extends BasicWalkingEntity implements Light {
 	}
 
 	@Override
-	public void updateSprite() {
+	public void update(Game game) {
+		super.update(game);
 		Sprite newSprite = null;
 		if(!onGround && mx != 0) newSprite = (mx < 0? falling_l: falling_r);
 		if(!onGround && mx == 0) newSprite = (lastMX < 0? falling_l: falling_r);

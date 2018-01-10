@@ -2,6 +2,7 @@ package game.util;
 
 import game.data.HitBox;
 import game.GameMap;
+import game.gameobjects.gameobjects.entities.entities.Coin;
 import game.gameobjects.gameobjects.wall.Background;
 import game.gameobjects.gameobjects.wall.Wall;
 import javafx.util.Pair;
@@ -42,8 +43,8 @@ public class MapLoader {
 						if (tile != 0) {hitBoxList.add(new Pair<>(new HitBox(i, -j, 1, 1), textureDef.get(tile)));}
 					}
 				}
-				if (z <= 0.55 && z >= 0.45) map.addWall(new Wall(hitBoxList, z));
-				else map.addBackground(new Background(hitBoxList, z));
+				if (z <= 0.55 && z >= 0.45) map.addObject(new Wall(hitBoxList, z));
+				else map.addObject(new Background(hitBoxList, z));
 				line = fileScanner.nextLine();
 			}
 			while (line.contains("put")) {
@@ -54,6 +55,7 @@ public class MapLoader {
 				float x = Float.parseFloat(putScanner.next().replace(";", ""));
 				float y = Float.parseFloat(putScanner.next().replace("]", ""));
 				if (textureDef.get(type).contains("player")) map.setSpawnpoint(x, -y);
+				if (textureDef.get(type).contains("coin")) map.addObject(new Coin(x, -y));
 				line = fileScanner.nextLine();
 			}
 		} catch (FileNotFoundException e) {

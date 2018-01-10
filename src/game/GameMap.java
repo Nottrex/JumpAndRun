@@ -1,27 +1,20 @@
 package game;
 
-import game.gameobjects.gameobjects.wall.Background;
-import game.gameobjects.gameobjects.wall.Wall;
+import game.gameobjects.GameObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GameMap {
-	private List<Wall> walls;
-	private List<Background> backgrounds;
+	private List<GameObject> objects;
 	private float spawnX, spawnY;
 
 	public GameMap() {
-		walls = new ArrayList<>();
-		backgrounds = new ArrayList<>();
+		objects = new ArrayList<>();
 	}
 
-	public void addWall(Wall wall) {
-		walls.add(wall);
-	}
-
-	public void addBackground(Background background) {
-		backgrounds.add(background);
+	public void addObject(GameObject object) {
+		objects.add(object);
 	}
 
 	public void setSpawnpoint(float x, float y) {
@@ -29,12 +22,8 @@ public class GameMap {
 		this.spawnY = y;
 	}
 
-	public List<Wall> getWalls() {
-		return walls;
-	}
-
-	public List<Background> getBackgrounds() {
-		return backgrounds;
+	public List<GameObject> getObjects() {
+		return objects;
 	}
 
 	public float getSpawnX() {
