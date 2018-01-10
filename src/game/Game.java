@@ -2,15 +2,12 @@ package game;
 
 import game.gameobjects.CollisionObject;
 import game.gameobjects.gameobjects.CameraController;
-import game.gameobjects.gameobjects.entities.entities.Coin;
-import game.gameobjects.gameobjects.wall.Background;
 import game.util.MapLoader;
 import game.window.Drawable;
 import game.gameobjects.GameObject;
 import game.gameobjects.gameobjects.entities.entities.Player;
 import game.gameobjects.gameobjects.particle.ParticleSystem;
 import game.gameobjects.gameobjects.particle.ParticleType;
-import game.gameobjects.gameobjects.wall.Wall;
 import game.util.TimeUtil;
 import game.window.Camera;
 import game.window.Keyboard;
@@ -23,8 +20,9 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Game {
-
 	private Window window;
+
+	private int gameTick;
 
 	private List<GameObject> gameObjects;
 	private List<CollisionObject> collisionObjects;
@@ -32,6 +30,7 @@ public class Game {
 	private List<Integer> inputs;
 	private GameMap map;
 
+	private GameMap newMap;
 	private Queue<GameObject> toRemove;
 	private Queue<GameObject> toAdd;
 
@@ -40,6 +39,8 @@ public class Game {
 	public Game(Window window) {
 		this.window = window;
 
+		gameTick = 0;
+
 		players = new ArrayList<>();
 		inputs = new ArrayList<>();
 		gameObjects = new LinkedList<>();
@@ -47,38 +48,37 @@ public class Game {
 		toRemove = new ConcurrentLinkedQueue<>();
 		toAdd = new ConcurrentLinkedQueue<>();
 
-		particleSystem = new ParticleSystem();
+		setGameMap("test2");
 
-		map = MapLoader.load("tutorial_1.map");
-		List<GameObject> objects = map.getObjects();
-		for (GameObject o: objects) {
-			this.addGameObject(o);
-		}
 		this.addGameObject(new CameraController());
-		this.addGameObject(particleSystem);
+		this.addGameObject(new ParticleSystem());
 	}
 
 	public void gameLoop() {
 		long time;
 		while (window.isRunning()) {
+			gameTick++;
 			time = TimeUtil.getTime();
-			Keyboard keyboard = window.getKeyboard();
 
-			for (int i = 0; i < 18; i++) {
-				if (keyboard.isPressed(Options.controls.get("UP"+i)) && !inputs.contains(i)) {
-					Player newPlayer = new Player(map.getSpawnX(), map.getSpawnY());
-					this.addGameObject(newPlayer);
-					particleSystem.createParticle(ParticleType.EXPLOSION, newPlayer.getHitBox().getCenterX(), newPlayer.getHitBox().getCenterY(), 0, 0);
-					inputs.add(i);
+			handleInput();
+
+			if (newMap != null) {
+				if (map != null) {
+					for (GameObject gameObject: map.getGameObjects()) {
+						this.removeGameObject(gameObject);
+					}
 				}
-			}
-			for (int i = 0; i < players.size(); i++) {
-				Player player = players.get(i);
-				int input = inputs.get(i);
 
-				player.setJumping(keyboard.isPressed(Options.controls.get("UP" + input)));
-				player.setMx(keyboard.getPressed(Options.controls.get("RIGHT" + input)) - keyboard.getPressed(Options.controls.get("LEFT" + input)));
-				player.setDown(keyboard.isPressed(Options.controls.get("DOWN" + input)));
+				for (GameObject gameObject: newMap.getGameObjects()) {
+					this.addGameObject(gameObject);
+				}
+
+				for (Player player: players) {
+					player.respawn(newMap.getSpawnX(), newMap.getSpawnY(), newMap.getPlayerDrawingPriority());
+				}
+
+				map = newMap;
+				newMap = null;
 			}
 
 			while (!toAdd.isEmpty()) {
@@ -90,12 +90,17 @@ public class Game {
 				if (gameObject instanceof CollisionObject) collisionObjects.add((CollisionObject) gameObject);
 				if (gameObject instanceof Drawable) window.addDrawable((Drawable) gameObject);
 				if (gameObject instanceof Player) players.add((Player) gameObject);
+				if (gameObject instanceof ParticleSystem) particleSystem = (ParticleSystem) gameObject;
 			}
 
 			while (!toRemove.isEmpty()) {
 				GameObject gameObject = toRemove.poll();
 				if (gameObject instanceof CollisionObject) collisionObjects.remove(gameObject);
 				if (gameObject instanceof Drawable) window.removeDrawable((Drawable) gameObject);
+				if (gameObject instanceof ParticleSystem) particleSystem = null;
+				if (gameObject instanceof Player) {
+					int id = players.indexOf((Player) gameObject);
+				}
 			}
 
 			gameObjects.sort((o1, o2) -> Float.compare(o2.getPriority(), o1.getPriority()));
@@ -112,16 +117,42 @@ public class Game {
 		cleanUp();
 	}
 
+	private void handleInput() {
+		Keyboard keyboard = window.getKeyboard();
+
+		for (int i = 0; i < 18; i++) {
+			if (keyboard.isPressed(Options.controls.get("UP"+i)) && !inputs.contains(i)) {
+				Player newPlayer = new Player(map.getSpawnX(), map.getSpawnY(), map.getPlayerDrawingPriority());
+				this.addGameObject(newPlayer);
+				inputs.add(i);
+			}
+		}
+		for (int i = 0; i < players.size(); i++) {
+			Player player = players.get(i);
+			int input = inputs.get(i);
+
+			player.setJumping(keyboard.isPressed(Options.controls.get("UP" + input)));
+			player.setMx(keyboard.getPressed(Options.controls.get("RIGHT" + input)) - keyboard.getPressed(Options.controls.get("LEFT" + input)));
+			player.setDown(keyboard.isPressed(Options.controls.get("DOWN" + input)));
+		}
+	}
+
 	private void cleanUp() {
 		Options.save();
 	}
 
+	public void setGameMap(String name) {
+		if (newMap == null) {
+			newMap = MapLoader.load(name);
+		}
+	}
+
 	public void addGameObject(GameObject gameObject) {
-		toAdd.add(gameObject);
+		if (!toAdd.contains(gameObject) && !gameObjects.contains(gameObject)) toAdd.add(gameObject);
 	}
 
 	public void removeGameObject(GameObject gameObject) {
-		toRemove.add(gameObject);
+		if (!toRemove.contains(gameObject) && gameObjects.contains(gameObject)) toRemove.add(gameObject);
 	}
 
 	public List<CollisionObject> getCollisionObjects() {
@@ -138,5 +169,9 @@ public class Game {
 
 	public List<Player> getPlayers() {
 		return players;
+	}
+
+	public int getGameTick() {
+		return gameTick;
 	}
 }

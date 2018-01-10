@@ -16,10 +16,12 @@ import java.awt.*;
 public abstract class BasicDrawingEntity extends AbstractGameObject implements Drawable {
 	protected HitBox hitBox;
 	protected Sprite sprite;
+	private float drawingPriority;
 	private long startTime;
 
-	public BasicDrawingEntity(HitBox hitBox) {
+	public BasicDrawingEntity(HitBox hitBox, float drawingPriority) {
 		this.hitBox = hitBox;
+		this.drawingPriority = drawingPriority;
 	}
 
 	@Override
@@ -47,8 +49,17 @@ public abstract class BasicDrawingEntity extends AbstractGameObject implements D
 		window.getShaderHandler().unloadShader(ShaderType.BASIC_SHADER);
 	}
 
+	@Override
+	public float getDrawingPriority() {
+		return drawingPriority;
+	}
+
 	protected void setSprite(Sprite sprite) {
 		this.sprite = sprite;
 		this.startTime = TimeUtil.getTime();
+	}
+
+	protected void setDrawingPriority(float drawingPriority) {
+		this.drawingPriority = drawingPriority;
 	}
 }

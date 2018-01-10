@@ -15,8 +15,8 @@ public abstract class BasicMovingEntity extends BasicDrawingEntity implements Co
 	protected float vx, vy;
 
 
-	public BasicMovingEntity(HitBox hitBox) {
-		super(hitBox);
+	public BasicMovingEntity(HitBox hitBox, float drawingPriority) {
+		super(hitBox, drawingPriority);
 		this.hitBoxList = new ArrayList<>();
 		hitBoxList.add(hitBox);
 

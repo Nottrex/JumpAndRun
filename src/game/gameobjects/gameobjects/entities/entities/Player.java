@@ -4,6 +4,7 @@ import game.Game;
 import game.data.HitBox;
 import game.data.Sprite;
 import game.gameobjects.gameobjects.entities.BasicWalkingEntity;
+import game.gameobjects.gameobjects.particle.ParticleType;
 import game.window.Window;
 import game.window.light.Light;
 
@@ -18,10 +19,17 @@ public class Player extends BasicWalkingEntity implements Light {
 	private Sprite idle_l = new Sprite(250, "player_l_idle_0", "player_l_idle_0", "player_l_idle_0", "player_l_idle_0", "player_l_idle_0", "player_l_idle_0", "player_l_idle_0", "player_l_idle_0", "player_l_idle_1");
 	private Sprite falling_l = new Sprite(250, "player_l_fall");
 
-	public Player(float x, float y) {
-		super(new HitBox(x, y, 0.75f, 1f));
+	public Player(float x, float y, float drawingPriority) {
+		super(new HitBox(x, y, 0.75f, 1f), drawingPriority);
 
 		setSprite(idle_r);
+	}
+
+	@Override
+	public void init(Game game) {
+		super.init(game);
+
+		game.getParticleSystem().createParticle(ParticleType.EXPLOSION, hitBox.getCenterX(), hitBox.getCenterY(), 0, 0);
 	}
 
 	@Override
@@ -56,11 +64,6 @@ public class Player extends BasicWalkingEntity implements Light {
 		return 1;
 	}
 
-	@Override
-	public float getDrawingPriority() {
-		return 0;
-	}
-
 
 	@Override
 	public void getLightColor(float[] values) {
@@ -79,5 +82,14 @@ public class Player extends BasicWalkingEntity implements Light {
 	@Override
 	public boolean updateLight() {
 		return true;
+	}
+
+	public void respawn(float x, float y, float drawingPriority) {
+		hitBox.x = x;
+		hitBox.y = y;
+		vx = 0;
+		vy = 0;
+		onGround = false;
+		setDrawingPriority(drawingPriority);
 	}
 }

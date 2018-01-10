@@ -6,24 +6,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameMap {
-	private List<GameObject> objects;
-	private float spawnX, spawnY;
+	private List<GameObject> gameObjects;
+	private float spawnX, spawnY, playerDrawingPriority;
 
 	public GameMap() {
-		objects = new ArrayList<>();
+		gameObjects = new ArrayList<>();
 	}
 
-	public void addObject(GameObject object) {
-		objects.add(object);
+	public void addGameObject(GameObject gameObject) {
+		gameObjects.add(gameObject);
 	}
 
-	public void setSpawnpoint(float x, float y) {
+	public void setSpawnPoint(float x, float y, float playerDrawingPriority) {
 		this.spawnX = x;
 		this.spawnY = y;
+		this.playerDrawingPriority = playerDrawingPriority;
 	}
 
-	public List<GameObject> getObjects() {
-		return objects;
+	public List<GameObject> getGameObjects() {
+		return gameObjects;
 	}
 
 	public float getSpawnX() {
@@ -32,5 +33,9 @@ public class GameMap {
 
 	public float getSpawnY() {
 		return spawnY;
+	}
+
+	public float getPlayerDrawingPriority() {
+		return playerDrawingPriority;
 	}
 }

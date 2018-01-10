@@ -19,8 +19,8 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 	protected boolean jumping;
 	protected boolean down;
 
-	public BasicWalkingEntity(HitBox hitBox) {
-		super(hitBox);
+	public BasicWalkingEntity(HitBox hitBox, float drawingPriority) {
+		super(hitBox, drawingPriority);
 
 		lastMX = -1;
 		mx = 0;
