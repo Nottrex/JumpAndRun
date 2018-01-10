@@ -63,7 +63,7 @@ public abstract class BasicMovingEntity extends BasicDrawingEntity implements Co
 						collides.add(collisionObject);
 						directions.add(direction);
 
-						if (direction == HitBoxDirection.COLLIDE) {
+						if (direction == HitBoxDirection.COLLIDE || collisionObject instanceof BasicStaticEntity) {
 							velocities.add(0f);
 							continue;
 						}
