@@ -9,7 +9,6 @@ import java.util.Map;
 
 public class ShaderHandler {
 	private Map<ShaderType, ShaderProgram> shaders;
-	private Map<ShaderType, Integer> shaderUse;
 
 	private FloatBuffer projectionMatrix, viewMatrix;
 	private float time;
@@ -22,54 +21,12 @@ public class ShaderHandler {
 
 	public ShaderHandler() {
 		shaders = new HashMap<>();
-		shaderUse = new HashMap<>();
-	}
 
-	public ShaderProgram loadShader(ShaderType shaderType) {
-		shaderUse.put(shaderType, shaderUse.getOrDefault(shaderType, 0) + 1);
-		if (!shaders.containsKey(shaderType)) {
+		for (ShaderType shaderType: ShaderType.values()) {
 			ShaderProgram shader = shaderType.createShader();
-
 			shaders.put(shaderType, shader);
-
-			shader.start();
-			shader.setMinimumBrightness(minimumBrightness);
-			shader.setLightAmount(lightAmount);
-			if (lights != null) {
-				lights.rewind();
-				shader.setLights(lights);
-			}
-			if (lightColors != null) {
-				lightColors.rewind();
-				shader.setLightColors(lightColors);
-			}
-			shader.setTexture(texture);
-			shader.setTextureTotalBounds(textureWidth, textureHeight);
-			shader.setTime(time);
-			if (viewMatrix != null) {
-				viewMatrix.rewind();
-				shader.setViewMatrix(viewMatrix);
-			}
-			if (projectionMatrix != null) {
-				projectionMatrix.rewind();
-				shader.setProjectionMatrix(projectionMatrix);
-			}
-			shader.stop();
-
-			return shader;
 		}
-		return shaders.get(shaderType);
-	}
 
-	public void unloadShader(ShaderType shaderType) {
-		shaderUse.put(shaderType, shaderUse.getOrDefault(shaderType, 0) - 1);
-		if (shaderUse.getOrDefault(shaderType, 0) <= 0) {
-			ShaderProgram shader = shaders.get(shaderType);
-
-			shader.cleanUp();
-			shaders.remove(shaderType);
-			shaderUse.remove(shaderType);
-		}
 	}
 
 	public void setProjectionMatrix(Matrix4f projectionMatrix) {

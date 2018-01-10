@@ -35,8 +35,6 @@ public abstract class StaticDraw extends AbstractGameObject implements Drawable 
 
 	@Override
 	public void setup(Window window) {
-		window.getShaderHandler().loadShader(ShaderType.STATIC_SHADER);
-
 		vao = GL30.glGenVertexArrays();
 		vao2 = GL30.glGenVertexArrays();
 
@@ -81,8 +79,6 @@ public abstract class StaticDraw extends AbstractGameObject implements Drawable 
 
 		GL30.glDeleteVertexArrays(vao);
 		GL30.glDeleteVertexArrays(vao2);
-
-		window.getShaderHandler().unloadShader(ShaderType.STATIC_SHADER);
 	}
 
 	protected void updateContent(List<Pair<HitBox, String>> hitBoxList) {

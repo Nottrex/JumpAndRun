@@ -54,7 +54,7 @@ public class ParticleSystem extends AbstractGameObject implements Drawable {
 
 	@Override
 	public void setup(Window window) {
-		ParticleShader shader = (ParticleShader) window.getShaderHandler().loadShader(ShaderType.PARTICLE_SHADER);
+		ParticleShader shader = (ParticleShader) window.getShaderHandler().getShader(ShaderType.PARTICLE_SHADER);
 		vao = GL30.glGenVertexArrays();
 		vao2 = GL30.glGenVertexArrays();
 
@@ -127,8 +127,6 @@ public class ParticleSystem extends AbstractGameObject implements Drawable {
 
 		GL30.glDeleteVertexArrays(vao);
 		GL30.glDeleteVertexArrays(vao2);
-
-		window.getShaderHandler().unloadShader(ShaderType.PARTICLE_SHADER);
 	}
 
 	@Override

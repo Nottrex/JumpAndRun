@@ -26,7 +26,7 @@ public abstract class BasicDrawingEntity extends AbstractGameObject implements D
 
 	@Override
 	public void setup(Window window) {
-		window.getShaderHandler().loadShader(ShaderType.BASIC_SHADER);
+
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public abstract class BasicDrawingEntity extends AbstractGameObject implements D
 
 	@Override
 	public void cleanUp(Window window) {
-		window.getShaderHandler().unloadShader(ShaderType.BASIC_SHADER);
+		
 	}
 
 	@Override
