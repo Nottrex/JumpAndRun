@@ -18,7 +18,7 @@ public class FileHandler {
 			reader.close();
 
 			return source.toString();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			ErrorUtil.printError(String.format("Loading file: %s", fileName));
 		}
 		return null;

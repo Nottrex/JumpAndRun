@@ -2,8 +2,8 @@
 
 uniform sampler2D tex;
 uniform int lightAmount;
-uniform vec3 lights[10];
-uniform vec3 lightColors[10];
+uniform vec3 lights[25];
+uniform vec3 lightColors[25];
 uniform float minBrightness;
 
 in vec2 fragTex;
@@ -12,7 +12,6 @@ in vec2 fragPos;
 out vec4 finalColor;
 
 void main() {
-
     vec3 brightness = vec3 (0, 0, 0);
     for (int i = 0; i < lightAmount; i++) {
         float distance = ((lights[i].x - fragPos.x)*(lights[i].x - fragPos.x) + (lights[i].y - fragPos.y)*(lights[i].y - fragPos.y));

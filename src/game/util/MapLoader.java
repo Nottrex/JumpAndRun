@@ -71,13 +71,26 @@ public class MapLoader {
 			}
 
 			if (line.startsWith("[put")) {
-				String[] values = line.substring("[put;".length(), line.length() - 1).split(";");
+				String[] values = line.substring("[put;".length(), line.length() - 1).replaceAll("\\[", "").replaceAll("]", "").split(";");
 
 				float drawingPriority = Float.parseFloat(values[0]);
 				String texture = textureReplacements.get(Integer.parseInt(values[1]));
 				Rectangle textureBounds = TextureHandler.getSpriteSheetBounds("textures_" + texture);
 				float x = Float.parseFloat(values[2]);
 				float y = -Float.parseFloat(values[3]) - textureBounds.height/tileSize;
+
+				Map<String, String> tags = new HashMap<>();
+
+				int i = 4;
+				while (i < values.length) {
+					if (values[i].equals("tag")) {
+						tags.put(values[i+1], values[i+2]);
+						i++;
+						i++;
+					}
+
+					i++;
+				}
 
 				switch (texture) {
 					case "player_r_idle_0":	case "player_r_idle_1":	case "player_r_move_0":	case "player_r_move_1": case "player_r_move_2":   case "player_r_move_3":   case "player_r_fall":   case "player_r_sword_0":   case "player_r_sword_1":   case "player_r_sword_2":   case "player_r_sword_3":   case "player_r_sword_4":   case "player_r_sword_5":   case "player_r_sword_6":   case "player_l_idle_0":   case "player_l_idle_1":   case "player_l_move_0":   case "player_l_move_1":   case "player_l_move_2":   case "player_l_move_3":   case "player_l_fall":   case "player_l_sword_0":   case "player_l_sword_1":   case "player_l_sword_2":   case "player_l_sword_3":   case "player_l_sword_4":   case "player_l_sword_5":   case "player_l_sword_6":
@@ -87,7 +100,7 @@ public class MapLoader {
 						map.addGameObject(new Coin(x, y, drawingPriority));
 						break;
 					case "door_side": case "door_side_open_0": case "door_side_open_1": case "door_side_open":
-						map.addGameObject(new Door(x, y, drawingPriority));
+						map.addGameObject(new Door(x, y, drawingPriority, tags.getOrDefault("target", "test2")));
 						break;
 					default:
 						if (layers.containsKey(drawingPriority)) {
