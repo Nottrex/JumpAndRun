@@ -12,7 +12,7 @@ import game.window.light.Light;
 
 public class Coin extends BasicMovingEntity implements Light {
 
-	private Sprite idle = new Sprite(100, "coin");
+	private Sprite idle = new Sprite(100, "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin","coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin_idle1_0", "coin_idle1_1", "coin_idle1_2", "coin_idle1_3", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin","coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin_idle2_0", "coin_idle2_1", "coin_idle2_2", "coin_idle2_3", "coin_idle2_4", "coin_idle2_5", "coin_idle2_6");
 	private boolean collected = false;
 
 	public Coin(float x, float y) {

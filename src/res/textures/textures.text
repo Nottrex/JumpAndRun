@@ -1,4 +1,4 @@
-166
+177
 single_stone 0 32 8 8
 row_stone_left 8 32 8 8
 row_stone_middle 16 32 8 8
@@ -69,6 +69,17 @@ block_grass_bottom_left_3 56 24 8 8
 block_grass_bottom_3 64 24 8 8
 block_grass_bottom_right_3 72 24 8 8
 coin 152 0 8 8
+coin_idle1_0 208 144 8 8
+coin_idle1_1 216 144 8 8
+coin_idle1_2 208 152 8 8
+coin_idle1_3 216 152 8 8
+coin_idle2_0 208 120 8 8
+coin_idle2_1 216 120 8 8
+coin_idle2_2 200 128 8 8
+coin_idle2_3 208 128 8 8
+coin_idle2_4 216 128 8 8
+coin_idle2_5 200 136 8 8
+coin_idle2_6 208 136 8 8
 coin_high 160 0 8 8
 chest_closed 168 0 8 8
 chest_closed_high 176 0 8 8
@@ -104,10 +115,10 @@ bat_move_7 216 18 9 9
 bat_move_8 225 18 9 9
 player_r_idle_0 208 40 8 8
 player_r_idle_1 224 40 8 8
-player_r_move_0 208 48 8 8
-player_r_move_1 216 48 8 8
-player_r_move_2 224 48 8 8
-player_r_move_3 232 48 8 8
+player_r_move_0 208 56 8 8
+player_r_move_1 216 56 8 8
+player_r_move_2 224 56 8 8
+player_r_move_3 232 56 8 8
 player_r_fall 216 40 8 8
 player_r_sword_0 208 56 8 8
 player_r_sword_1 214 56 10 8
