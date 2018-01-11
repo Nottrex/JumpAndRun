@@ -49,9 +49,6 @@ public class Game {
 		toAdd = new ConcurrentLinkedQueue<>();
 
 		setGameMap("test2");
-
-		this.addGameObject(new CameraController());
-		this.addGameObject(new ParticleSystem());
 	}
 
 	public void gameLoop() {
@@ -81,6 +78,20 @@ public class Game {
 				newMap = null;
 			}
 
+			while (!toRemove.isEmpty()) {
+				GameObject gameObject = toRemove.poll();
+
+				gameObjects.remove(gameObject);
+				if (gameObject instanceof CollisionObject) collisionObjects.remove(gameObject);
+				if (gameObject instanceof Drawable) window.removeDrawable((Drawable) gameObject);
+				if (gameObject instanceof ParticleSystem) particleSystem = null;
+				if (gameObject instanceof Player) {
+					int id = players.indexOf((Player) gameObject);
+					players.remove(id);
+					inputs.remove(id);
+				}
+			}
+
 			while (!toAdd.isEmpty()) {
 				GameObject gameObject = toAdd.poll();
 
@@ -89,18 +100,8 @@ public class Game {
 				gameObjects.add(gameObject);
 				if (gameObject instanceof CollisionObject) collisionObjects.add((CollisionObject) gameObject);
 				if (gameObject instanceof Drawable) window.addDrawable((Drawable) gameObject);
-				if (gameObject instanceof Player) players.add((Player) gameObject);
 				if (gameObject instanceof ParticleSystem) particleSystem = (ParticleSystem) gameObject;
-			}
-
-			while (!toRemove.isEmpty()) {
-				GameObject gameObject = toRemove.poll();
-				if (gameObject instanceof CollisionObject) collisionObjects.remove(gameObject);
-				if (gameObject instanceof Drawable) window.removeDrawable((Drawable) gameObject);
-				if (gameObject instanceof ParticleSystem) particleSystem = null;
-				if (gameObject instanceof Player) {
-					int id = players.indexOf((Player) gameObject);
-				}
+				if (gameObject instanceof Player) players.add((Player) gameObject);
 			}
 
 			gameObjects.sort((o1, o2) -> Float.compare(o2.getPriority(), o1.getPriority()));
@@ -134,6 +135,10 @@ public class Game {
 			player.setJumping(keyboard.isPressed(Options.controls.get("UP" + input)));
 			player.setMx(keyboard.getPressed(Options.controls.get("RIGHT" + input)) - keyboard.getPressed(Options.controls.get("LEFT" + input)));
 			player.setDown(keyboard.isPressed(Options.controls.get("DOWN" + input)));
+		}
+
+		if(keyboard.isPressed(Keyboard.GAMEPAD_1_BUTTON_Y)) {
+			getCamera().setRotationSmooth((float) Math.random() * 2 * (float) Math.PI, 200);
 		}
 	}
 

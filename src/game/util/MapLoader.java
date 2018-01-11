@@ -2,6 +2,7 @@ package game.util;
 
 import game.GameMap;
 import game.data.HitBox;
+import game.gameobjects.gameobjects.Area;
 import game.gameobjects.gameobjects.entities.entities.Coin;
 import game.gameobjects.gameobjects.entities.entities.Door;
 import game.gameobjects.gameobjects.wall.Background;
@@ -70,7 +71,7 @@ public class MapLoader {
 
 			}
 
-			if (line.startsWith("[put")) {
+			if (line.startsWith("[put;")) {
 				String[] values = line.substring("[put;".length(), line.length() - 1).replaceAll("\\[", "").replaceAll("]", "").split(";");
 
 				float drawingPriority = Float.parseFloat(values[0]);
@@ -95,6 +96,7 @@ public class MapLoader {
 				switch (texture) {
 					case "player_r_idle_0":	case "player_r_idle_1":	case "player_r_move_0":	case "player_r_move_1": case "player_r_move_2":   case "player_r_move_3":   case "player_r_fall":   case "player_r_sword_0":   case "player_r_sword_1":   case "player_r_sword_2":   case "player_r_sword_3":   case "player_r_sword_4":   case "player_r_sword_5":   case "player_r_sword_6":   case "player_l_idle_0":   case "player_l_idle_1":   case "player_l_move_0":   case "player_l_move_1":   case "player_l_move_2":   case "player_l_move_3":   case "player_l_fall":   case "player_l_sword_0":   case "player_l_sword_1":   case "player_l_sword_2":   case "player_l_sword_3":   case "player_l_sword_4":   case "player_l_sword_5":   case "player_l_sword_6":
 						map.setSpawnPoint(x, y, drawingPriority);
+						map.getCameraController().setSpawn(x, y);
 						break;
 					case "coin":
 						map.addGameObject(new Coin(x, y, drawingPriority));
@@ -111,6 +113,30 @@ public class MapLoader {
 							layers.put(drawingPriority, layer);
 						}
 				}
+			}
+
+			if (line.startsWith("[area;")) {
+				String[] values = line.substring("[area;".length(), line.length() - 1).replaceAll("\\[", "").replaceAll("]", "").split(";");
+
+				float x1 = Float.parseFloat(values[0]);
+				float y2 = -Float.parseFloat(values[1]);
+				float x2 = Float.parseFloat(values[2]);
+				float y1 = -Float.parseFloat(values[3]);
+
+				Map<String, String> tags = new HashMap<>();
+
+				int i = 4;
+				while (i < values.length) {
+					if (values[i].equals("tag")) {
+						tags.put(values[i+1], values[i+2]);
+						i++;
+						i++;
+					}
+
+					i++;
+				}
+
+				map.getCameraController().addCameraArea(new Area(x1, y1, x2, y2));
 			}
 		}
 
