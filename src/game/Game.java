@@ -48,7 +48,7 @@ public class Game {
 		toRemove = new ConcurrentLinkedQueue<>();
 		toAdd = new ConcurrentLinkedQueue<>();
 
-		setGameMap("test2");
+		setGameMap("twoRooms");
 	}
 
 	public void gameLoop() {

@@ -1,8 +1,12 @@
 package game.gameobjects.gameobjects;
 
 import game.Game;
+import game.data.HitBox;
 import game.gameobjects.AbstractGameObject;
 import game.gameobjects.gameobjects.entities.entities.Player;
+import game.gameobjects.gameobjects.wall.Background;
+import game.window.Window;
+import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +15,7 @@ public class CameraController extends AbstractGameObject {
 	private List<Area> cameraAreas;
 	private float spawnX, spawnY;
 
-	private float lastMinX, lastMinY, lastMaxX, lastMaxY;
+	private float lastX, lastY, lastZoom;
 	private boolean start;
 
 	public CameraController() {
@@ -20,20 +24,18 @@ public class CameraController extends AbstractGameObject {
 		spawnX = 0;
 		spawnY = 0;
 
-		lastMinX = 0;
-		lastMinY = 0;
-		lastMaxX = 0;
-		lastMaxY = 0;
-
+		lastX = 0;
+		lastY = 0;
+		lastZoom = 0.1f;
 		start = true;
 	}
 
 	@Override
 	public void update(Game game) {
-		float minX = Float.MAX_VALUE;
-		float minY = Float.MAX_VALUE;
-		float maxX = Float.MIN_VALUE;
-		float maxY = Float.MIN_VALUE;
+		float minX = 10000000;
+		float minY = 10000000;
+		float maxX = -10000000;
+		float maxY = -10000000;
 
 		List<Player> players = game.getPlayers();
 
@@ -61,6 +63,7 @@ public class CameraController extends AbstractGameObject {
 						maxX = area.getX2();
 					if (maxY < area.getY2())
 						maxY = area.getY2();
+
 				}
 			}
 		} else {
@@ -89,18 +92,29 @@ public class CameraController extends AbstractGameObject {
 			}
 		}
 
-		if (minX != lastMinX || minY != lastMinY || maxX != lastMaxX || maxY != lastMaxY) {
+		float posX = (maxX + minX) / 2.0f;
+		float posY = (maxY + minY) / 2.0f;
+
+		float width = (maxX - minX) * 1.25f;
+		float height = (maxY - minY) * 1.25f;
+
+		float zoom = Math.min(2 / height, 2 * Window.aspect / width);
+
+		if (posX != lastX || posY != lastY || zoom != lastZoom) {
 			if (start) {
-				game.getCamera().setPosition((minX + maxX)/2.0f, (minY + maxY)/2.0f);
+				game.getCamera().setPosition(spawnX, spawnY);
+				game.getCamera().setZoom(0.2f);
+				game.getCamera().setPositionSmooth(posX, posY, 1000);
+				game.getCamera().setZoomSmooth(zoom, 1000);
 				start = false;
 			} else {
-				game.getCamera().setPositionSmooth((minX + maxX)/2.0f, (minY + maxY)/2.0f, 300);
+				game.getCamera().setPositionSmooth(posX, posY, 500);
+				game.getCamera().setZoomSmooth(zoom, 500);
 			}
 
-			lastMinX = minX;
-			lastMinY = minY;
-			lastMaxX = maxX;
-			lastMaxY = maxY;
+			lastX = posX;
+			lastY = posY;
+			lastZoom = zoom;
 		}
 	}
 

@@ -8,6 +8,18 @@ public class Area {
 		this.y1 = y1;
 		this.x2 = x2;
 		this.y2 = y2;
+
+		if (this.x2 < this.x1) {
+			float c = this.x2;
+			this.x2 = this.x1;
+			this.x1 = c;
+		}
+
+		if (this.y2 < this.y1) {
+			float c = this.y2;
+			this.y2 = y1;
+			this.y1 = c;
+		}
 	}
 
 	public boolean contains(float x, float y) {
