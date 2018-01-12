@@ -1,0 +1,11 @@
+#version 130
+uniform mat4 projectionMatrix;
+uniform mat4 viewMatrix;
+
+uniform float x, y, width, height;
+
+void main() {
+    vec4 pos = vec4(((gl_VertexID & 2)/2)*width + x, (gl_VertexID & 1)*height+y, 0, 1);
+
+    gl_Position = projectionMatrix * viewMatrix * pos;
+}

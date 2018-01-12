@@ -83,6 +83,10 @@ public abstract class ShaderProgram {
 		GL20.glUniform3fv(location, buffer);
 	}
 
+	protected void setUniform4f(int location, float x, float y, float z, float w) {
+		GL20.glUniform4f(location, x, y, z, w);
+	}
+
 	protected void setUniform2f(int location, FloatBuffer buffer) {
 		GL20.glUniform2fv(location, buffer);
 	}

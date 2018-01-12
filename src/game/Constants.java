@@ -17,6 +17,8 @@ public class Constants {
 	public static final float FAR = 1000f;
 	public static final int TPS = 60;
 
+	public static final String COLOR_VERTEX_FILE = "colorVertexShader";
+	public static final String COLOR_FRAGMENT_FILE = "colorFragmentShader";
 	public static final String BASIC_VERTEX_FILE = "basicVertexShader";
 	public static final String BASIC_FRAGMENT_FILE = "basicFragmentShader";
 	public static final String PARTICLE_VERTEX_FILE = "particleVertexShader";

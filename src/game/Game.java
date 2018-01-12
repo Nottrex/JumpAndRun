@@ -1,7 +1,12 @@
 package game;
 
+import game.data.HitBox;
+import game.data.Sprite;
+import game.gameobjects.AbstractGameObject;
 import game.gameobjects.CollisionObject;
 import game.gameobjects.gameobjects.CameraController;
+import game.gameobjects.gameobjects.Fade;
+import game.gameobjects.gameobjects.entities.BasicDrawingEntity;
 import game.util.MapLoader;
 import game.window.Drawable;
 import game.gameobjects.GameObject;
@@ -30,6 +35,7 @@ public class Game {
 	private List<Integer> inputs;
 	private GameMap map;
 
+	private int fadeStart;
 	private GameMap newMap;
 	private Queue<GameObject> toRemove;
 	private Queue<GameObject> toAdd;
@@ -59,7 +65,8 @@ public class Game {
 
 			handleInput();
 
-			if (newMap != null) {
+			if (newMap != null && gameTick - fadeStart >= 30) {
+
 				if (map != null) {
 					for (GameObject gameObject: map.getGameObjects()) {
 						this.removeGameObject(gameObject);
@@ -136,10 +143,6 @@ public class Game {
 			player.setMx(keyboard.getPressed(Options.controls.get("RIGHT" + input)) - keyboard.getPressed(Options.controls.get("LEFT" + input)));
 			player.setDown(keyboard.isPressed(Options.controls.get("DOWN" + input)));
 		}
-
-		if(keyboard.isPressed(Keyboard.GAMEPAD_1_BUTTON_Y)) {
-			getCamera().setRotationSmooth((float) Math.random() * 2 * (float) Math.PI, 200);
-		}
 	}
 
 	private void cleanUp() {
@@ -149,6 +152,9 @@ public class Game {
 	public void setGameMap(String name) {
 		if (newMap == null) {
 			newMap = MapLoader.load(name);
+
+			this.addGameObject(new Fade());
+			fadeStart = gameTick;
 		}
 	}
 
