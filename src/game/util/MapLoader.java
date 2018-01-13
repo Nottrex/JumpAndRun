@@ -3,8 +3,7 @@ package game.util;
 import game.GameMap;
 import game.data.HitBox;
 import game.gameobjects.gameobjects.Area;
-import game.gameobjects.gameobjects.entities.entities.Coin;
-import game.gameobjects.gameobjects.entities.entities.Door;
+import game.gameobjects.gameobjects.entities.entities.*;
 import game.gameobjects.gameobjects.wall.Background;
 import game.gameobjects.gameobjects.wall.Wall;
 import javafx.util.Pair;
@@ -103,6 +102,15 @@ public class MapLoader {
 						break;
 					case "door_side": case "door_side_open_0": case "door_side_open_1": case "door_side_open":
 						map.addGameObject(new Door(x, y, drawingPriority, tags.getOrDefault("target", "test2")));
+						break;
+					case "lantern":
+						map.addGameObject(new Lantern(x, y, drawingPriority));
+						break;
+					case "box":
+						map.addGameObject(new Box(x, y, drawingPriority));
+						break;
+					case "spikes_bot":
+						map.addGameObject(new Spikes(x, y, drawingPriority));
 						break;
 					default:
 						if (layers.containsKey(drawingPriority)) {

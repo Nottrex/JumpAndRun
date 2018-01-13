@@ -9,19 +9,18 @@ import game.gameobjects.gameobjects.entities.BasicStaticEntity;
 import game.window.Window;
 import game.window.light.Light;
 
-public class Coin extends BasicStaticEntity implements Light {
+public class Lantern extends BasicStaticEntity implements Light{
+	private Sprite idle = new Sprite(100, "lantern");
 
-	private Sprite idle = new Sprite(100, "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin","coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin_idle1_0", "coin_idle1_1", "coin_idle1_2", "coin_idle1_3", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin","coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin_idle2_0", "coin_idle2_1", "coin_idle2_0");
-
-	public Coin(float x, float y, float drawingPriority) {
-		super(new HitBox(x, y, 0.75f, 1f), drawingPriority);
+	public Lantern(float x, float y, float drawingPriority) {
+		super(new HitBox(x, y, 1f, 2f), drawingPriority);
 
 		setSprite(idle);
 	}
 
 	@Override
 	public void collide(CollisionObject gameObject, HitBoxDirection direction, float velocity) {
-		game.removeGameObject(this);
+
 	}
 
 	@Override
@@ -51,16 +50,16 @@ public class Coin extends BasicStaticEntity implements Light {
 
 	@Override
 	public void getLightColor(float[] values) {
-		values[0] = 0.25f;
-		values[1] = 0.25f;
+		values[0] = 1f;
+		values[1] = 1f;
 		values[2] = 0f;
 	}
 
 	@Override
 	public void getLightPosition(float[] values) {
 		values[0] = hitBox.x + hitBox.width / 2;
-		values[1] = hitBox.y + hitBox.height / 2;
-		values[2] = 0.85f;
+		values[1] = hitBox.y + hitBox.height * 4 / 5;
+		values[2] = 0.95f;
 	}
 
 	@Override
