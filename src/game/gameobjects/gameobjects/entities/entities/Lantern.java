@@ -50,9 +50,9 @@ public class Lantern extends BasicStaticEntity implements Light{
 
 	@Override
 	public void getLightColor(float[] values) {
-		values[0] = 1f;
-		values[1] = 1f;
-		values[2] = 0f;
+		values[0] = 255.0f/255.0f;
+		values[1] = 231.0f/255.0f;
+		values[2] = 98.0f/255.0f;
 	}
 
 	@Override

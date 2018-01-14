@@ -13,7 +13,7 @@ public class Box extends BasicWalkingEntity {
 	private Sprite idle = new Sprite(100, "box");
 
 	public Box(float x, float y, float drawingPriority) {
-		super(new HitBox(x, y, 0.75f, 1f), drawingPriority);
+		super(new HitBox(x, y, 1f, 1f), drawingPriority);
 
 		setSprite(idle);
 	}

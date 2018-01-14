@@ -12,7 +12,7 @@ public class Spikes extends BasicStaticEntity {
 	private Sprite idle = new Sprite(100, "spikes_bot");
 
 	public Spikes(float x, float y, float drawingPriority) {
-		super(new HitBox(x, y, 0.75f, 1f), drawingPriority);
+		super(new HitBox(x, y, 1f, 1f), drawingPriority);
 
 		setSprite(idle);
 	}
