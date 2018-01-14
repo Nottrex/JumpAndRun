@@ -1,11 +1,12 @@
 package game;
 
+import game.gamemap.GameMap;
+import game.gamemap.MapLoader;
 import game.gameobjects.CollisionObject;
 import game.gameobjects.GameObject;
 import game.gameobjects.gameobjects.Fade;
 import game.gameobjects.gameobjects.entities.entities.Player;
 import game.gameobjects.gameobjects.particle.ParticleSystem;
-import game.util.MapLoader;
 import game.util.TimeUtil;
 import game.window.Camera;
 import game.window.Drawable;

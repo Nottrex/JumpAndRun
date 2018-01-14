@@ -1,18 +1,18 @@
-package game.util;
+package game.gamemap;
 
-import game.GameMap;
 import game.data.HitBox;
-import game.gameobjects.gameobjects.Area;
+import game.gameobjects.gameobjects.CameraController.Area;
 import game.gameobjects.gameobjects.entities.entities.*;
 import game.gameobjects.gameobjects.wall.Background;
 import game.gameobjects.gameobjects.wall.Wall;
-import javafx.util.Pair;
+import game.util.ErrorUtil;
+import game.util.FileHandler;
+import game.util.TextureHandler;
 
 import java.awt.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.*;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
 public class MapLoader {
 
@@ -20,7 +20,7 @@ public class MapLoader {
 	public static GameMap load(String mapName) {
 		GameMap map = new GameMap();
 		Map<Integer, String> textureReplacements = new HashMap<>();
-		Map<Float, List<Pair<HitBox, String>>> layers = new HashMap<>();
+		Map<Float, Map<HitBox, String>> layers = new HashMap<>();
 
 		Scanner fileScanner = new Scanner(FileHandler.loadFile("maps/" + mapName + ".map"));
 		float tileSize = Integer.valueOf(fileScanner.nextLine());
@@ -46,11 +46,11 @@ public class MapLoader {
 				int width = Integer.parseInt(values[1]);
 				int height = Integer.parseInt(values[2]);
 
-				List<Pair<HitBox, String>> hitBoxList;
+				Map<HitBox, String> hitBoxList;
 				if (layers.containsKey(drawingPriority)) {
 					hitBoxList = layers.get(drawingPriority);
 				} else {
-					hitBoxList = new ArrayList<>();
+					hitBoxList = new HashMap<>();
 					layers.put(drawingPriority, hitBoxList);
 				}
 
@@ -63,7 +63,7 @@ public class MapLoader {
 							String texture = textureReplacements.get(tile);
 							Rectangle textureBounds = TextureHandler.getSpriteSheetBounds("textures_" + texture);
 
-							hitBoxList.add(new Pair<>(new HitBox(x, -y - textureBounds.height/tileSize, textureBounds.width / tileSize, textureBounds.height / tileSize), texture));
+							hitBoxList.put(new HitBox(x, -y - textureBounds.height / tileSize, textureBounds.width / tileSize, textureBounds.height / tileSize), texture);
 						}
 					}
 				}
@@ -77,14 +77,14 @@ public class MapLoader {
 				String texture = textureReplacements.get(Integer.parseInt(values[1]));
 				Rectangle textureBounds = TextureHandler.getSpriteSheetBounds("textures_" + texture);
 				float x = Float.parseFloat(values[2]);
-				float y = -Float.parseFloat(values[3]) - textureBounds.height/tileSize;
+				float y = -Float.parseFloat(values[3]) - textureBounds.height / tileSize;
 
 				Map<String, String> tags = new HashMap<>();
 
 				int i = 4;
 				while (i < values.length) {
 					if (values[i].equals("tag")) {
-						tags.put(values[i+1], values[i+2]);
+						tags.put(values[i + 1], values[i + 2]);
 						i++;
 						i++;
 					}
@@ -93,14 +93,44 @@ public class MapLoader {
 				}
 
 				switch (texture) {
-					case "player_r_idle_0":	case "player_r_idle_1":	case "player_r_move_0":	case "player_r_move_1": case "player_r_move_2":   case "player_r_move_3":   case "player_r_fall":   case "player_r_sword_0":   case "player_r_sword_1":   case "player_r_sword_2":   case "player_r_sword_3":   case "player_r_sword_4":   case "player_r_sword_5":   case "player_r_sword_6":   case "player_l_idle_0":   case "player_l_idle_1":   case "player_l_move_0":   case "player_l_move_1":   case "player_l_move_2":   case "player_l_move_3":   case "player_l_fall":   case "player_l_sword_0":   case "player_l_sword_1":   case "player_l_sword_2":   case "player_l_sword_3":   case "player_l_sword_4":   case "player_l_sword_5":   case "player_l_sword_6":
+					case "player_r_idle_0":
+					case "player_r_idle_1":
+					case "player_r_move_0":
+					case "player_r_move_1":
+					case "player_r_move_2":
+					case "player_r_move_3":
+					case "player_r_fall":
+					case "player_r_sword_0":
+					case "player_r_sword_1":
+					case "player_r_sword_2":
+					case "player_r_sword_3":
+					case "player_r_sword_4":
+					case "player_r_sword_5":
+					case "player_r_sword_6":
+					case "player_l_idle_0":
+					case "player_l_idle_1":
+					case "player_l_move_0":
+					case "player_l_move_1":
+					case "player_l_move_2":
+					case "player_l_move_3":
+					case "player_l_fall":
+					case "player_l_sword_0":
+					case "player_l_sword_1":
+					case "player_l_sword_2":
+					case "player_l_sword_3":
+					case "player_l_sword_4":
+					case "player_l_sword_5":
+					case "player_l_sword_6":
 						map.setSpawnPoint(x, y, drawingPriority);
 						map.getCameraController().setSpawn(x, y);
 						break;
 					case "coin":
 						map.addGameObject(new Coin(x, y, drawingPriority));
 						break;
-					case "door_side": case "door_side_open_0": case "door_side_open_1": case "door_side_open":
+					case "door_side":
+					case "door_side_open_0":
+					case "door_side_open_1":
+					case "door_side_open":
 						map.addGameObject(new Door(x, y, drawingPriority, tags.getOrDefault("target", "test2")));
 						break;
 					case "lantern":
@@ -114,10 +144,10 @@ public class MapLoader {
 						break;
 					default:
 						if (layers.containsKey(drawingPriority)) {
-							layers.get(drawingPriority).add(new Pair<>(new HitBox(x, y, textureBounds.width/tileSize, textureBounds.height/tileSize), texture));
+							layers.get(drawingPriority).put(new HitBox(x, y, textureBounds.width / tileSize, textureBounds.height / tileSize), texture);
 						} else {
-							List<Pair<HitBox, String>> layer = new ArrayList<>();
-							layer.add(new Pair<>(new HitBox(x, y, textureBounds.width/tileSize, textureBounds.height/tileSize), texture));
+							Map<HitBox, String> layer = new HashMap<>();
+							layer.put(new HitBox(x, y, textureBounds.width / tileSize, textureBounds.height / tileSize), texture);
 							layers.put(drawingPriority, layer);
 						}
 				}
@@ -136,7 +166,7 @@ public class MapLoader {
 				int i = 4;
 				while (i < values.length) {
 					if (values[i].equals("tag")) {
-						tags.put(values[i+1], values[i+2]);
+						tags.put(values[i + 1], values[i + 2]);
 						i++;
 						i++;
 					}
@@ -148,8 +178,8 @@ public class MapLoader {
 			}
 		}
 
-		for (float drawingPriority: layers.keySet()) {
-			List<Pair<HitBox, String>> layer = layers.get(drawingPriority);
+		for (float drawingPriority : layers.keySet()) {
+			Map<HitBox, String> layer = layers.get(drawingPriority);
 
 			if (drawingPriority <= 0.55 && drawingPriority >= 0.45) map.addGameObject(new Wall(layer, drawingPriority));
 			else map.addGameObject(new Background(layer, drawingPriority));

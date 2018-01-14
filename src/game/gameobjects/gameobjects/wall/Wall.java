@@ -4,25 +4,49 @@ import game.Game;
 import game.data.HitBox;
 import game.data.HitBoxDirection;
 import game.gameobjects.CollisionObject;
-import game.gameobjects.GameObject;
-import game.util.MapLoader;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Wall extends StaticDraw implements CollisionObject {
-	private List<Pair<HitBox, String>> hitBoxList;
 	private List<HitBox> hitBoxes;
 	private float priority;
 
-	public Wall(List<Pair<HitBox, String>> hitBoxList, float priority) {
-		this.hitBoxList = hitBoxList;
+	public Wall(Map<HitBox, String> hitBoxList, float priority) {
 		this.priority = priority;
 		super.updateContent(hitBoxList);
 
-		hitBoxes = hitBoxList.stream().map(Pair::getKey).collect(Collectors.toList());
+		hitBoxes = new ArrayList<>(hitBoxList.keySet());
+
+		boolean merge;
+
+		do {
+			merge = false;
+
+			for (int i = 0; i < hitBoxes.size()-1; i++) {
+				HitBox hitBox1 = hitBoxes.get(i);
+				for (int j = i+1; j < hitBoxes.size(); j++) {
+					HitBox hitBox2 = hitBoxes.get(j);
+
+					if ((hitBox1.y == hitBox2.y && hitBox1.height == hitBox2.height && ((hitBox1.x + hitBox1.width) >= hitBox2.x && (hitBox2.x + hitBox2.width) >= hitBox1.x)) || (hitBox1.x == hitBox2.x && hitBox1.width == hitBox2.width && ((hitBox1.y + hitBox1.height) >= hitBox2.y && (hitBox2.y + hitBox2.height) >= hitBox1.y))) {
+						float x = Math.min(hitBox1.x, hitBox2.x);
+						float y = Math.min(hitBox1.y, hitBox2.y);
+
+						HitBox merged = new HitBox(x, y, Math.max(hitBox2.x + hitBox2.width - x, hitBox1.x + hitBox1.width - x), Math.max(hitBox2.y + hitBox2.height - y, hitBox1.y + hitBox1.height - y));
+						hitBoxes.remove(hitBox1);
+						hitBoxes.remove(hitBox2);
+						hitBoxes.add(merged);
+
+						merge = true;
+						i--;
+						break;
+					}
+				}
+			}
+		} while (merge);
 	}
 
 	@Override

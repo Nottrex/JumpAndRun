@@ -1,13 +1,10 @@
-package game.gameobjects.gameobjects;
+package game.gameobjects.gameobjects.CameraController;
 
 import game.Constants;
 import game.Game;
-import game.data.HitBox;
 import game.gameobjects.AbstractGameObject;
 import game.gameobjects.gameobjects.entities.entities.Player;
-import game.gameobjects.gameobjects.wall.Background;
 import game.window.Window;
-import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;

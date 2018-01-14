@@ -19,13 +19,14 @@ import java.awt.*;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.List;
+import java.util.Map;
 
 public abstract class StaticDraw extends AbstractGameObject implements Drawable {
 
 	private int rectangles;
 	private int vao, vao2;
 	private int locationVBO, texLocationVBO, indicesVBO;
-	private List<Pair<HitBox, String>> hitBoxList;
+	private Map<HitBox, String> hitBoxList;
 
 	private boolean update;
 
@@ -81,7 +82,7 @@ public abstract class StaticDraw extends AbstractGameObject implements Drawable 
 		GL30.glDeleteVertexArrays(vao2);
 	}
 
-	protected void updateContent(List<Pair<HitBox, String>> hitBoxList) {
+	protected void updateContent(Map<HitBox, String> hitBoxList) {
 		this.hitBoxList = hitBoxList;
 		update = true;
 	}
@@ -93,9 +94,9 @@ public abstract class StaticDraw extends AbstractGameObject implements Drawable 
 		FloatBuffer texLocations = BufferUtils.createFloatBuffer(rectangles * 2 * Constants.VERTEX_POS.length);
 		IntBuffer indices = BufferUtils.createIntBuffer(rectangles * Constants.INDICES.length);
 
-		for (int i = 0; i < rectangles; i++) {
-			HitBox hitBox = hitBoxList.get(i).getKey();
-			Rectangle texture = TextureHandler.getSpriteSheetBounds("textures_" + hitBoxList.get(i).getValue());
+		int i = 0;
+		for (HitBox hitBox: hitBoxList.keySet()) {
+			Rectangle texture = TextureHandler.getSpriteSheetBounds("textures_" + hitBoxList.get(hitBox));
 
 			for (float[] v : Constants.VERTEX_POS) {
 				locations.put(hitBox.x + v[0] * hitBox.width);
@@ -108,6 +109,8 @@ public abstract class StaticDraw extends AbstractGameObject implements Drawable 
 			for (int ind : Constants.INDICES) {
 				indices.put(i * Constants.VERTEX_POS.length + ind);
 			}
+
+			i++;
 		}
 
 		locations.flip();
