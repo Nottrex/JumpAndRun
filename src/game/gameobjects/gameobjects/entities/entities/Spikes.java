@@ -43,4 +43,9 @@ public class Spikes extends BasicStaticEntity {
 	public float getPriority() {
 		return 1;
 	}
+
+	@Override
+	public float getCollisionPriority() {
+		return -5;
+	}
 }

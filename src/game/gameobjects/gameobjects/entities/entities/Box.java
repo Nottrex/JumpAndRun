@@ -19,25 +19,22 @@ public class Box extends BasicWalkingEntity {
 	}
 
 	@Override
-	public void collide(CollisionObject gameObject, HitBoxDirection direction, float velocity) {
-		if (gameObject instanceof Player) {
-			this.setMx(direction.invert().getXDirection()*0.1f);
-		} else this.setMx(0);
-	}
-
-	@Override
-	public void setup(Window window) {
-		super.setup(window);
-	}
-
-	@Override
 	public void update(Game game) {
 		super.update(game);
+
+		this.setMx(0);
 	}
 
 	@Override
-	public void cleanUp(Window window) {
-		super.cleanUp(window);
+	public void collide(CollisionObject gameObject, HitBoxDirection direction, float velocity) {
+		if (gameObject instanceof Player && (direction == HitBoxDirection.LEFT || direction == HitBoxDirection.RIGHT)) {
+			this.setMx(direction.invert().getXDirection()*0.1f);
+		}
+	}
+
+	@Override
+	public float getCollisionPriority() {
+		return 1;
 	}
 
 	@Override

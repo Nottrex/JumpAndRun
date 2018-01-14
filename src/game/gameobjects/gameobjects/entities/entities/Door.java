@@ -9,6 +9,7 @@ import game.gameobjects.gameobjects.entities.BasicStaticEntity;
 
 public class Door extends BasicStaticEntity {
 	private Sprite door = new Sprite(1, "door_side");
+	private Sprite doorOpen = new Sprite(100, "door_side_open_0", "door_side_open_1", "door_side_open_2", "door_side_open_2", "door_side_open_2", "door_side_open_2");
 
 	private String targetMap;
 
@@ -33,7 +34,14 @@ public class Door extends BasicStaticEntity {
 	@Override
 	public void collide(CollisionObject gameObject, HitBoxDirection direction, float velocity) {
 		if (gameObject instanceof Player) {
-			game.setGameMap(targetMap);
+			if (game.setGameMap(targetMap, true)) {
+				setSprite(doorOpen);
+			}
 		}
+	}
+
+	@Override
+	public float getCollisionPriority() {
+		return -1;
 	}
 }

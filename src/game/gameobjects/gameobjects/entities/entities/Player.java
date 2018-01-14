@@ -92,4 +92,9 @@ public class Player extends BasicWalkingEntity implements Light {
 		onGround = false;
 		setDrawingPriority(drawingPriority);
 	}
+
+	@Override
+	public float getCollisionPriority() {
+		return -10;
+	}
 }

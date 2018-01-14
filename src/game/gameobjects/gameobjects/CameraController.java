@@ -1,5 +1,6 @@
 package game.gameobjects.gameobjects;
 
+import game.Constants;
 import game.Game;
 import game.data.HitBox;
 import game.gameobjects.AbstractGameObject;
@@ -98,7 +99,7 @@ public class CameraController extends AbstractGameObject {
 		float width = (maxX - minX) * 1.25f;
 		float height = (maxY - minY) * 1.25f;
 
-		float zoom = Math.min(2 / height, 2 * Window.aspect / width);
+		float zoom = Math.min(Math.min(2 / height, 2 * Window.aspect / width), Constants.MIN_CAMERA_ZOOM);
 
 		if (posX != lastX || posY != lastY || zoom != lastZoom) {
 			if (start) {

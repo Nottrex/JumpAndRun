@@ -50,6 +50,9 @@ public class Constants {
 	public static final float MIN_AMP = 0.0001f;
 	public static final float DECAY = 0.8f;
 
+	public static final float MIN_CAMERA_ZOOM = 0.125f;
+	public static final int FADE_TIME = 60;
+
 	public static final String DATA_PATH = System.getProperty("user.dir") + File.separator + "src" + File.separator;
 	public static final String DATA_FILE_PATH = DATA_PATH + "options.yml";
 

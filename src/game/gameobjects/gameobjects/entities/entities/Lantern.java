@@ -66,4 +66,9 @@ public class Lantern extends BasicStaticEntity implements Light{
 	public boolean updateLight() {
 		return true;
 	}
+
+	@Override
+	public float getCollisionPriority() {
+		return -1;
+	}
 }

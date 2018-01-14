@@ -1,20 +1,14 @@
 package game;
 
-import game.data.HitBox;
-import game.data.Sprite;
-import game.gameobjects.AbstractGameObject;
 import game.gameobjects.CollisionObject;
-import game.gameobjects.gameobjects.CameraController;
-import game.gameobjects.gameobjects.Fade;
-import game.gameobjects.gameobjects.entities.BasicDrawingEntity;
-import game.util.MapLoader;
-import game.window.Drawable;
 import game.gameobjects.GameObject;
+import game.gameobjects.gameobjects.Fade;
 import game.gameobjects.gameobjects.entities.entities.Player;
 import game.gameobjects.gameobjects.particle.ParticleSystem;
-import game.gameobjects.gameobjects.particle.ParticleType;
+import game.util.MapLoader;
 import game.util.TimeUtil;
 import game.window.Camera;
+import game.window.Drawable;
 import game.window.Keyboard;
 import game.window.Window;
 
@@ -36,7 +30,7 @@ public class Game {
 	private GameMap map;
 
 	private int fadeStart;
-	private GameMap newMap;
+	private String newMap;
 	private Queue<GameObject> toRemove;
 	private Queue<GameObject> toAdd;
 
@@ -54,7 +48,7 @@ public class Game {
 		toRemove = new ConcurrentLinkedQueue<>();
 		toAdd = new ConcurrentLinkedQueue<>();
 
-		setGameMap("twoRooms");
+		setGameMap("twoRooms", false);
 	}
 
 	public void gameLoop() {
@@ -65,23 +59,23 @@ public class Game {
 
 			handleInput();
 
-			if (newMap != null && gameTick - fadeStart >= 30) {
-
+			if (newMap != null && gameTick - fadeStart >= Constants.FADE_TIME/2) {
+				GameMap newGameMap = MapLoader.load(newMap);
 				if (map != null) {
-					for (GameObject gameObject: map.getGameObjects()) {
+					for (GameObject gameObject : map.getGameObjects()) {
 						this.removeGameObject(gameObject);
 					}
 				}
 
-				for (GameObject gameObject: newMap.getGameObjects()) {
+				for (GameObject gameObject : newGameMap.getGameObjects()) {
 					this.addGameObject(gameObject);
 				}
 
-				for (Player player: players) {
-					player.respawn(newMap.getSpawnX(), newMap.getSpawnY(), newMap.getPlayerDrawingPriority());
+				for (Player player : players) {
+					player.respawn(newGameMap.getSpawnX(), newGameMap.getSpawnY(), newGameMap.getPlayerDrawingPriority());
 				}
 
-				map = newMap;
+				map = newGameMap;
 				newMap = null;
 			}
 
@@ -111,6 +105,7 @@ public class Game {
 				if (gameObject instanceof Player) players.add((Player) gameObject);
 			}
 
+			collisionObjects.sort((o1, o2) -> Float.compare(o2.getCollisionPriority(), o1.getCollisionPriority()));
 			gameObjects.sort((o1, o2) -> Float.compare(o2.getPriority(), o1.getPriority()));
 
 			for (GameObject gameObject : gameObjects) {
@@ -129,7 +124,7 @@ public class Game {
 		Keyboard keyboard = window.getKeyboard();
 
 		for (int i = 0; i < 18; i++) {
-			if (keyboard.isPressed(Options.controls.get("UP"+i)) && !inputs.contains(i)) {
+			if (keyboard.isPressed(Options.controls.get("UP" + i)) && !inputs.contains(i)) {
 				Player newPlayer = new Player(map.getSpawnX(), map.getSpawnY(), map.getPlayerDrawingPriority());
 				this.addGameObject(newPlayer);
 				inputs.add(i);
@@ -149,13 +144,21 @@ public class Game {
 		Options.save();
 	}
 
-	public void setGameMap(String name) {
+	public boolean setGameMap(String name, boolean fade) {
 		if (newMap == null) {
-			newMap = MapLoader.load(name);
+			newMap = name;
 
-			this.addGameObject(new Fade());
-			fadeStart = gameTick;
+			if (fade) {
+				this.addGameObject(new Fade());
+				fadeStart = gameTick;
+			} else {
+				fadeStart = gameTick - Constants.FADE_TIME;
+			}
+
+			return true;
 		}
+
+		return false;
 	}
 
 	public void addGameObject(GameObject gameObject) {

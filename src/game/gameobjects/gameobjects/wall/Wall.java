@@ -46,6 +46,11 @@ public class Wall extends StaticDraw implements CollisionObject {
 	}
 
 	@Override
+	public float getCollisionPriority() {
+		return 10;
+	}
+
+	@Override
 	public List<HitBox> getCollisionBoxes() {
 		return hitBoxes;
 	}
