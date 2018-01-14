@@ -1,4 +1,4 @@
-171
+172
 column_grass_left_1 39 87 8 8
 block_stone_top 126 246 8 8
 column_wood_right 50 111 8 8
@@ -155,6 +155,7 @@ column_stone_left 247 247 8 8
 door_1 247 10 8 8
 door_4 5 219 8 8
 door_3 127 215 8 8
+player_dead 118 88 8 8
 player_r_move_0 247 67 8 8
 player_r_move_2 82 12 8 8
 player_r_move_1 247 47 8 8

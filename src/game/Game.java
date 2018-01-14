@@ -5,6 +5,7 @@ import game.gamemap.MapLoader;
 import game.gameobjects.CollisionObject;
 import game.gameobjects.GameObject;
 import game.gameobjects.gameobjects.Fade;
+import game.gameobjects.gameobjects.entities.entities.DeadBody;
 import game.gameobjects.gameobjects.entities.entities.Player;
 import game.gameobjects.gameobjects.particle.ParticleSystem;
 import game.util.TimeUtil;
@@ -168,6 +169,10 @@ public class Game {
 
 	public void removeGameObject(GameObject gameObject) {
 		if (!toRemove.contains(gameObject) && gameObjects.contains(gameObject)) toRemove.add(gameObject);
+		if(gameObject instanceof Player) {
+			Player p = (Player) gameObject;
+			this.addGameObject(new DeadBody(p.getHitBox().x, p.getHitBox().y, "player"));
+		}
 	}
 
 	public List<CollisionObject> getCollisionObjects() {
