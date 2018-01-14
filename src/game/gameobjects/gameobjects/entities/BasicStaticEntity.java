@@ -13,6 +13,8 @@ public abstract class BasicStaticEntity extends BasicDrawingEntity implements Co
 	public BasicStaticEntity(HitBox hitBox, float drawingPriority) {
 		super(hitBox, drawingPriority);
 
+		hitBox.type = HitBox.HitBoxType.NOT_BLOCKING;
+
 		hitBoxes = new ArrayList<>();
 		hitBoxes.add(hitBox);
 	}

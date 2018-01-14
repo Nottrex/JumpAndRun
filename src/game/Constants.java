@@ -38,7 +38,7 @@ public class Constants {
 	public static final Map<String, Integer> DEFAULT_CONTROLS = new HashMap<>();
 	public static final float DEAD_ZONE = 0.2f;
 
-	public static final int PIXEL_PER_TILE = 8;
+	public static int PIXEL_PER_TILE = 8;
 	public static final int MAX_PARTICLES = 1000;
 	public static final int[] INDICES = new int[]{0, 2, 1, 0, 3, 2};
 	public static final float[][] VERTEX_POS = new float[][]{{0, 0}, {0, 1}, {1, 1}, {1, 0}};

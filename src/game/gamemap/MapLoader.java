@@ -1,7 +1,8 @@
 package game.gamemap;
 
+import game.Constants;
 import game.data.HitBox;
-import game.gameobjects.gameobjects.CameraController.Area;
+import game.gameobjects.gameobjects.cameracontroller.Area;
 import game.gameobjects.gameobjects.entities.entities.*;
 import game.gameobjects.gameobjects.wall.Background;
 import game.gameobjects.gameobjects.wall.Wall;
@@ -23,7 +24,8 @@ public class MapLoader {
 		Map<Float, Map<HitBox, String>> layers = new HashMap<>();
 
 		Scanner fileScanner = new Scanner(FileHandler.loadFile("maps/" + mapName + ".map"));
-		float tileSize = Integer.valueOf(fileScanner.nextLine());
+		Constants.PIXEL_PER_TILE = Integer.valueOf(fileScanner.nextLine());
+		float tileSize = Constants.PIXEL_PER_TILE;
 
 		while (fileScanner.hasNextLine()) {
 			String line = fileScanner.nextLine();
@@ -63,12 +65,24 @@ public class MapLoader {
 							String texture = textureReplacements.get(tile);
 							Rectangle textureBounds = TextureHandler.getSpriteSheetBounds("textures_" + texture);
 
-							hitBoxList.put(new HitBox(x, -y - textureBounds.height / tileSize, textureBounds.width / tileSize, textureBounds.height / tileSize), texture);
+							HitBox hitBox = new HitBox(x, -y - textureBounds.height / tileSize, textureBounds.width / tileSize, textureBounds.height / tileSize);
+
+							switch (texture) {
+								case "platform":
+								case "platform_left":
+								case "platform_middle":
+								case "platform_right":
+									hitBox.type = HitBox.HitBoxType.HALF_BLOCKING;
+									break;
+
+							}
+
+							hitBoxList.put(hitBox, texture);
 						}
 					}
 				}
-
 			}
+
 
 			if (line.startsWith("[put;")) {
 				String[] values = line.substring("[put;".length(), line.length() - 1).replaceAll("\\[", "").replaceAll("]", "").split(";");
@@ -93,44 +107,14 @@ public class MapLoader {
 				}
 
 				switch (texture) {
-					case "player_r_idle_0":
-					case "player_r_idle_1":
-					case "player_r_move_0":
-					case "player_r_move_1":
-					case "player_r_move_2":
-					case "player_r_move_3":
-					case "player_r_fall":
-					case "player_r_sword_0":
-					case "player_r_sword_1":
-					case "player_r_sword_2":
-					case "player_r_sword_3":
-					case "player_r_sword_4":
-					case "player_r_sword_5":
-					case "player_r_sword_6":
-					case "player_l_idle_0":
-					case "player_l_idle_1":
-					case "player_l_move_0":
-					case "player_l_move_1":
-					case "player_l_move_2":
-					case "player_l_move_3":
-					case "player_l_fall":
-					case "player_l_sword_0":
-					case "player_l_sword_1":
-					case "player_l_sword_2":
-					case "player_l_sword_3":
-					case "player_l_sword_4":
-					case "player_l_sword_5":
-					case "player_l_sword_6":
+					case "player_r_idle_0": case "player_r_idle_1": case "player_r_move_0": case "player_r_move_1": case "player_r_move_2": case "player_r_move_3": case "player_r_fall": case "player_r_sword_0": case "player_r_sword_1": case "player_r_sword_2": case "player_r_sword_3": case "player_r_sword_4": case "player_r_sword_5": case "player_r_sword_6": case "player_l_idle_0": case "player_l_idle_1": case "player_l_move_0": case "player_l_move_1": case "player_l_move_2": case "player_l_move_3": case "player_l_fall": case "player_l_sword_0": case "player_l_sword_1": case "player_l_sword_2": case "player_l_sword_3": case "player_l_sword_4": case "player_l_sword_5": case "player_l_sword_6":
 						map.setSpawnPoint(x, y, drawingPriority);
 						map.getCameraController().setSpawn(x, y);
 						break;
 					case "coin":
 						map.addGameObject(new Coin(x, y, drawingPriority));
 						break;
-					case "door_side":
-					case "door_side_open_0":
-					case "door_side_open_1":
-					case "door_side_open":
+					case "door_side": case "door_side_open_0": case "door_side_open_1": case "door_side_open":
 						map.addGameObject(new Door(x, y, drawingPriority, tags.getOrDefault("target", "test2")));
 						break;
 					case "lantern":

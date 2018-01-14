@@ -1,4 +1,4 @@
-package game.gameobjects.gameobjects.CameraController;
+package game.gameobjects.gameobjects.cameracontroller;
 
 public class Area {
 	private float x1, y1, x2, y2;

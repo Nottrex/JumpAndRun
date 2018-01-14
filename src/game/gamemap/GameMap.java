@@ -1,7 +1,7 @@
 package game.gamemap;
 
 import game.gameobjects.GameObject;
-import game.gameobjects.gameobjects.CameraController.CameraController;
+import game.gameobjects.gameobjects.cameracontroller.CameraController;
 import game.gameobjects.gameobjects.particle.ParticleSystem;
 
 import java.util.ArrayList;

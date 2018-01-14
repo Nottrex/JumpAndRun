@@ -2,12 +2,22 @@ package game.data;
 
 public class HitBox {
 	public float x, y, width, height;
+	public HitBoxType type;
 
 	public HitBox(float x, float y, float width, float height) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		this.type = HitBoxType.BLOCKING;
+	}
+
+	public HitBox(float x, float y, float width, float height, HitBoxType type) {
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+		this.type = type;
 	}
 
 	public void move(float mx, float my) {
@@ -82,5 +92,10 @@ public class HitBox {
 	@Override
 	public String toString() {
 		return String.format("[(%f, %f), (%f, %f)]", x, y, x + width, y + height);
+	}
+
+	public enum HitBoxType {
+		BLOCKING, HALF_BLOCKING, NOT_BLOCKING
+
 	}
 }

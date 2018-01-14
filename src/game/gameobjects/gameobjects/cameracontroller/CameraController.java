@@ -1,4 +1,4 @@
-package game.gameobjects.gameobjects.CameraController;
+package game.gameobjects.gameobjects.cameracontroller;
 
 import game.Constants;
 import game.Game;

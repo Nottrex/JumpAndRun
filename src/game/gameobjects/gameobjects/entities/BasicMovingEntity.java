@@ -51,6 +51,8 @@ public abstract class BasicMovingEntity extends BasicDrawingEntity implements Co
 		HitBox targetLocation = hitBox.clone();
 		targetLocation.move(vx, vy);
 
+		boolean fallThroughBlock = fallThroughBlock();
+
 		boolean collision;
 		do {
 			collision = false;
@@ -63,7 +65,7 @@ public abstract class BasicMovingEntity extends BasicDrawingEntity implements Co
 						collides.add(collisionObject);
 						directions.add(direction);
 
-						if (direction == HitBoxDirection.COLLIDE || collisionObject instanceof BasicStaticEntity) {
+						if (direction == HitBoxDirection.COLLIDE || hitBox2.type == HitBox.HitBoxType.NOT_BLOCKING || (hitBox2.type == HitBox.HitBoxType.HALF_BLOCKING && (direction != HitBoxDirection.DOWN || fallThroughBlock))) {
 							velocities.add(0f);
 							continue;
 						}
@@ -99,6 +101,8 @@ public abstract class BasicMovingEntity extends BasicDrawingEntity implements Co
 			collisionObject.collide(this, direction.invert(), velocity);
 		}
 	}
+
+	protected abstract boolean fallThroughBlock();
 
 	@Override
 	public final List<HitBox> getCollisionBoxes() {
