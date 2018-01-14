@@ -21,8 +21,8 @@ public class Box extends BasicWalkingEntity {
 	@Override
 	public void collide(CollisionObject gameObject, HitBoxDirection direction, float velocity) {
 		if (gameObject instanceof Player) {
-			hitBox.move(direction.invert().getXDirection()*0.1f, direction.invert().getYDirection()*0.1f);
-		}
+			this.setMx(direction.invert().getXDirection()*0.1f);
+		} else this.setMx(0);
 	}
 
 	@Override
