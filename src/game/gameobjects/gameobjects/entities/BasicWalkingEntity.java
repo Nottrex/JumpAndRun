@@ -10,7 +10,7 @@ import game.gameobjects.gameobjects.particle.ParticleType;
 import game.util.MathUtil;
 
 public abstract class BasicWalkingEntity extends BasicMovingEntity {
-	protected boolean onGround, onLadder;
+	protected boolean onGround, onLadder, isInteracting;
 	private int jumpTicks;
 	private boolean jumpingLastTick;
 
@@ -81,6 +81,14 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 
 	public void setDown(boolean down) {
 		this.down = down;
+	}
+
+	public void setInteracting(boolean isInteracting) {
+		this.isInteracting = isInteracting;
+	}
+
+	public boolean isInteracting() {
+		return isInteracting;
 	}
 
 	@Override

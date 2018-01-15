@@ -46,6 +46,7 @@ public class Player extends BasicWalkingEntity implements Light {
 		if(!onGround && mx == 0) newSprite = (lastMX < 0? falling_l: falling_r);
 		if(onGround && mx == 0) newSprite = (lastMX < 0? idle_l: idle_r);
 		if(onGround && mx != 0) newSprite = (mx < 0? walking_l: walking_r);
+		if (isInteracting) newSprite = (lastMX < 0? attack_l: attack_r);
 
 		if(sprite.equals(newSprite)) return;
 		setSprite(newSprite);
