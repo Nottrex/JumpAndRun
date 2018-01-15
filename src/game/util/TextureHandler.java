@@ -25,7 +25,7 @@ public class TextureHandler {
 	}
 
 	static {
-		TextureHandler.loadImagePngSpriteSheet("textures", "textures_unpacked");
+		TextureHandler.loadImagePngSpriteSheet("textures", "textures");
 	}
 
 	private TextureHandler() {
