@@ -8,7 +8,7 @@ import game.gameobjects.CollisionObject;
 import game.gameobjects.gameobjects.entities.BasicWalkingEntity;
 
 public class Box extends BasicWalkingEntity {
-	private Sprite idle = new Sprite(100, "box");
+	private static Sprite idle = new Sprite(100, "box");
 
 	public Box(float x, float y, float drawingPriority) {
 		super(new HitBox(x, y, 1f, 1f), drawingPriority);

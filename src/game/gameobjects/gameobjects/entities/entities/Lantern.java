@@ -10,7 +10,7 @@ import game.window.Window;
 import game.window.light.Light;
 
 public class Lantern extends BasicStaticEntity implements Light{
-	private Sprite idle = new Sprite(100, "lantern");
+	private static Sprite idle = new Sprite(100, "lantern");
 
 	public Lantern(float x, float y, float drawingPriority) {
 		super(new HitBox(x, y, 1f, 2f), drawingPriority);

@@ -37,11 +37,14 @@ public class CameraController extends AbstractGameObject {
 
 		List<Player> players = game.getPlayers();
 
+		boolean outside = false;
+
 		if (players.size() > 0) {
 			for (Player p: players) {
 				Area area = getAreaAt(p.getHitBox().getCenterX(), p.getHitBox().getCenterY());
 
 				if (area == null) {
+					outside = true;
 					if (minX > p.getHitBox().getCenterX())
 						minX = p.getHitBox().getCenterX();
 					if (minY > p.getHitBox().getCenterY())
@@ -68,6 +71,7 @@ public class CameraController extends AbstractGameObject {
 			Area area = getAreaAt(spawnX, spawnY);
 
 			if (area == null) {
+				outside = true;
 				if (minX > spawnX)
 					minX = spawnX;
 				if (minY > spawnY)
@@ -99,7 +103,10 @@ public class CameraController extends AbstractGameObject {
 		float zoom = Math.min(Math.min(2 / height, 2 * Window.aspect / width), Constants.MIN_CAMERA_ZOOM);
 
 		if (posX != lastX || posY != lastY || zoom != lastZoom) {
-			if (start) {
+			if (outside) {
+				game.getCamera().setZoom(zoom);
+				game.getCamera().setPosition(posX, posY);
+			} else if (start) {
 				game.getCamera().setPosition(spawnX, spawnY);
 				game.getCamera().setZoom(0.2f);
 				game.getCamera().setPositionSmooth(posX, posY, 1000);

@@ -2,6 +2,7 @@ package game.gamemap;
 
 import game.Constants;
 import game.data.hitbox.HitBox;
+import game.data.script.Parser;
 import game.gameobjects.gameobjects.cameracontroller.Area;
 import game.gameobjects.gameobjects.entities.entities.*;
 import game.gameobjects.gameobjects.wall.Background;
@@ -117,7 +118,7 @@ public class MapLoader {
 						map.addGameObject(new Coin(x, y, drawingPriority));
 						break;
 					case "door_side": case "door_side_open_0": case "door_side_open_1": case "door_side_open":
-						map.addGameObject(new Door(x, y, drawingPriority, tags.getOrDefault("target", "lobby")));
+						map.addGameObject(new Exit(x, y, drawingPriority, tags.getOrDefault("target", "lobby")));
 						break;
 					case "lantern":
 						map.addGameObject(new Lantern(x, y, drawingPriority));
@@ -128,12 +129,30 @@ public class MapLoader {
 					case "spikes_bot":
 						map.addGameObject(new Spikes(x, y, drawingPriority));
 						break;
+					case "lever_left": case "lever_right": case "lever_middle":
+						map.addGameObject(new Lever(x, y, drawingPriority, Parser.loadScript(Parser.VAR, tags.getOrDefault("tag", "lever"))));
+						break;
+					case "door_6": case "door_5": case "door_4": case "door_3": case "door_2": case "door_1":
+						map.addGameObject(new Door(x, y, drawingPriority, Parser.loadScript(Parser.BOOLEAN, tags.getOrDefault("condition", "#lever"))));
+						break;
 					default:
+						HitBox hitBox = new HitBox(x, y, textureBounds.width / tileSize, textureBounds.height / tileSize);
+
+						switch (texture) {
+							case "platform":
+							case "platform_left":
+							case "platform_middle":
+							case "platform_right":
+								hitBox.type = HitBox.HitBoxType.HALF_BLOCKING;
+								break;
+
+						}
+
 						if (layers.containsKey(drawingPriority)) {
-							layers.get(drawingPriority).put(new HitBox(x, y, textureBounds.width / tileSize, textureBounds.height / tileSize), texture);
+							layers.get(drawingPriority).put(hitBox, texture);
 						} else {
 							Map<HitBox, String> layer = new HashMap<>();
-							layer.put(new HitBox(x, y, textureBounds.width / tileSize, textureBounds.height / tileSize), texture);
+							layer.put(hitBox, texture);
 							layers.put(drawingPriority, layer);
 						}
 				}
@@ -191,7 +210,7 @@ public class MapLoader {
 			hitBoxList.put(new HitBox(i * 9 + 4, 3, 1f, 1f), "block_wood_middle");
 			hitBoxList.put(new HitBox(i * 9 + 5, 3, 1f, 1f), "block_wood_middle");
 			map.addGameObject(new Wall(hitBoxList, 0.5f));
-			map.addGameObject(new Door(i * 9 + 4, 4, 1f, mapNames[i]));
+			map.addGameObject(new Exit(i * 9 + 4, 4, 1f, mapNames[i]));
 			map.addGameObject(new Lantern(i* 9 + 2, 1, 1f));
 			map.addGameObject(new Lantern(i* 9 + 6, 1, 1f));
 			map.getCameraController().addCameraArea(new Area(i*9, -2, i*9+9, 6));

@@ -6,7 +6,6 @@ import game.data.hitbox.HitBoxDirection;
 import game.data.Sprite;
 import game.gameobjects.CollisionObject;
 import game.gameobjects.gameobjects.entities.BasicStaticEntity;
-import game.window.Window;
 
 public class Spikes extends BasicStaticEntity {
 	private Sprite idle = new Sprite(100, "spikes_bot");
@@ -23,20 +22,9 @@ public class Spikes extends BasicStaticEntity {
 			game.removeGameObject((Player) gameObject);
 		}
 	}
-
-	@Override
-	public void setup(Window window) {
-		super.setup(window);
-	}
-
 	@Override
 	public void update(Game game) {
 
-	}
-
-	@Override
-	public void cleanUp(Window window) {
-		super.cleanUp(window);
 	}
 
 	@Override
