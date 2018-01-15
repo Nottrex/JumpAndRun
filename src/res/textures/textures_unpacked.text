@@ -1,4 +1,4 @@
-178
+181
 single_stone 0 32 8 8
 row_stone_left 8 32 8 8
 row_stone_middle 16 32 8 8
@@ -79,6 +79,8 @@ coin_high 160 0 8 8
 chest_closed 168 0 8 8
 chest_closed_high 176 0 8 8
 chest_opened 176 8 8 8
+wood_ladder 184 0 8 8
+steel_ladder 184 8 8 8
 lever_left 152 8 8 8
 lever_middle 160 8 8 8
 lever_right 168 8 8 8
@@ -177,4 +179,5 @@ explosion_7 184 232 24 24
 explosion_8 208 232 24 24
 explosion_9 232 232 24 24
 player_dead 241 40 8 8
+texture_error 248 0 8 8
 missing: SpikeTrap, Other Wood

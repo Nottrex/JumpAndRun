@@ -1,7 +1,5 @@
 package game;
 
-import game.data.script.Parser;
-import game.data.script.Tree;
 import game.gamemap.GameMap;
 import game.gamemap.MapLoader;
 import game.gameobjects.CollisionObject;
@@ -92,7 +90,7 @@ public class Game {
 				if (gameObject instanceof Drawable) window.removeDrawable((Drawable) gameObject);
 				if (gameObject instanceof ParticleSystem) particleSystem = null;
 				if (gameObject instanceof Player) {
-					int id = players.indexOf((Player) gameObject);
+					int id = players.indexOf(gameObject);
 					players.remove(id);
 					inputs.remove(id);
 				}

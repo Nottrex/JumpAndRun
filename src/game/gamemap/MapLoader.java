@@ -211,9 +211,12 @@ public class MapLoader {
 			hitBoxList.put(new HitBox(i * 9 + 5, 3, 1f, 1f), "block_wood_middle");
 			map.addGameObject(new Wall(hitBoxList, 0.5f));
 			map.addGameObject(new Exit(i * 9 + 4, 4, 1f, mapNames[i]));
-			map.addGameObject(new Lantern(i* 9 + 2, 1, 1f));
-			map.addGameObject(new Lantern(i* 9 + 6, 1, 1f));
-			map.getCameraController().addCameraArea(new Area(i*9, -2, i*9+9, 6));
+			map.addGameObject(new Lantern(i * 9 + 2, 1, 1f));
+			map.addGameObject(new Ladder(i * 9 + 6, 1, 1f));
+			map.addGameObject(new Ladder(i * 9 + 6, 2, 1f));
+			map.addGameObject(new Ladder(i * 9 + 6, 3, 1f));
+			map.addGameObject(new Ladder(i * 9 + 6, 4, 1f));
+			map.getCameraController().addCameraArea(new Area(i*9, -2, i*9+9, 9));
 		}
 		map.setSpawnPoint(0,1,0.5f);
 

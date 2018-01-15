@@ -25,7 +25,7 @@ public class TextureHandler {
 	}
 
 	static {
-		TextureHandler.loadImagePngSpriteSheet("textures", "textures");
+		TextureHandler.loadImagePngSpriteSheet("textures", "textures_unpacked");
 	}
 
 	private TextureHandler() {
@@ -69,9 +69,8 @@ public class TextureHandler {
 
 	public static Rectangle getSpriteSheetBounds(String textureName) {
 		if (textures_sprite_sheet.containsKey(textureName)) return textures_sprite_sheet.get(textureName);
-
-		ErrorUtil.printError(String.format("No such spriteSheet image: %s", textureName));
-		return null;
+		System.out.println(String.format("No such spriteSheet image: %s", textureName));
+		return textures_sprite_sheet.get("textures_texture_error");
 	}
 
 	public static String getSpriteSheetImage(String textureName) {

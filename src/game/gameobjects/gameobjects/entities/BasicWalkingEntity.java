@@ -5,11 +5,12 @@ import game.Game;
 import game.data.hitbox.HitBox;
 import game.data.hitbox.HitBoxDirection;
 import game.gameobjects.CollisionObject;
+import game.gameobjects.gameobjects.entities.entities.Ladder;
 import game.gameobjects.gameobjects.particle.ParticleType;
 import game.util.MathUtil;
 
 public abstract class BasicWalkingEntity extends BasicMovingEntity {
-	protected boolean onGround;
+	protected boolean onGround, onLadder;
 	private int jumpTicks;
 	private boolean jumpingLastTick;
 
@@ -29,6 +30,7 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 
 		jumpTicks = 0;
 		onGround = false;
+		onLadder = false;
 	}
 
 	@Override
@@ -44,10 +46,14 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 		} else {
 			jumpTicks = 0;
 		}
+		if (onLadder) {
+			vy = (jumping? 0.1f: -0.1f);
+		}
 
 		jumpingLastTick = jumping;
 
 		onGround = false;
+		onLadder = false;
 		super.update(game);
 	}
 
@@ -62,6 +68,7 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 
 			onGround = true;
 		}
+		onLadder = gameObject instanceof Ladder;
 	}
 
 	public void setMx(float mx) {

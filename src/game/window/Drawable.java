@@ -1,7 +1,5 @@
 package game.window;
 
-import game.window.Window;
-
 public interface Drawable {
 	float getDrawingPriority();
 
