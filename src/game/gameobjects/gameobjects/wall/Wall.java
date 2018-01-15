@@ -13,10 +13,10 @@ import java.util.stream.Collectors;
 
 public class Wall extends StaticDraw implements CollisionObject {
 	private List<HitBox> hitBoxes;
-	private float priority;
 
 	public Wall(Map<HitBox, String> hitBoxList, float priority) {
-		this.priority = priority;
+		super(priority);
+
 		super.updateContent(hitBoxList);
 
 		hitBoxes = new ArrayList<>(hitBoxList.keySet());
@@ -62,11 +62,6 @@ public class Wall extends StaticDraw implements CollisionObject {
 	@Override
 	public void update(Game game) {
 
-	}
-
-	@Override
-	public float getDrawingPriority() {
-		return priority;
 	}
 
 	@Override

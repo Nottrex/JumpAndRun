@@ -10,10 +10,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Background extends StaticDraw {
-	private float priority;
+	public Background(Map<HitBox, String> hitBoxList, float drawingPriority) {
+		super(drawingPriority);
 
-	public Background(Map<HitBox, String> hitBoxList, float priority) {
-		this.priority = priority;
 		super.updateContent(hitBoxList);
 	}
 
@@ -25,10 +24,5 @@ public class Background extends StaticDraw {
 	@Override
 	public void update(Game game) {
 
-	}
-
-	@Override
-	public float getDrawingPriority() {
-		return priority;
 	}
 }

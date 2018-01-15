@@ -28,9 +28,12 @@ public abstract class StaticDraw extends AbstractGameObject implements Drawable 
 	private int locationVBO, texLocationVBO, indicesVBO;
 	private Map<HitBox, String> hitBoxList;
 
+	private float drawingPriority;
+
 	private boolean update;
 
-	public StaticDraw() {
+	public StaticDraw(float drawingPriority) {
+		this.drawingPriority = drawingPriority;
 		update = false;
 	}
 
@@ -137,5 +140,10 @@ public abstract class StaticDraw extends AbstractGameObject implements Drawable 
 		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indices, GL15.GL_STATIC_DRAW);
 
 		GL30.glBindVertexArray(vao2);
+	}
+
+	@Override
+	public float getDrawingPriority() {
+		return drawingPriority;
 	}
 }
