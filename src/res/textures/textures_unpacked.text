@@ -1,4 +1,4 @@
-177
+178
 single_stone 0 32 8 8
 row_stone_left 8 32 8 8
 row_stone_middle 16 32 8 8
@@ -162,11 +162,11 @@ door_side 144 40 8 8
 door_side_open_0 152 40 8 8
 door_side_open_1 160 40 8 8
 door_side_open_2 168 40 8 8
-explanation_a_c 80 160 32 16
-explanation_b_c 112 160 32 16
-explanation_x_c 80 176 32 16
-explanation_y_c 112 176 32 16
-explanation_l_c 80 192 32 16
+explanation_a_c 64 192 32 16
+explanation_b_c 96 192 32 16
+explanation_x_c 64 208 32 16
+explanation_y_c 96 208 32 16
+explanation_l_c 64 224 32 16
 explosion_1 184 184 24 24
 explosion_2 208 184 24 24
 explosion_3 232 184 24 24
@@ -176,4 +176,5 @@ explosion_6 232 208 24 24
 explosion_7 184 232 24 24
 explosion_8 208 232 24 24
 explosion_9 232 232 24 24
+player_dead 241 40 8 8
 missing: SpikeTrap, Other Wood
