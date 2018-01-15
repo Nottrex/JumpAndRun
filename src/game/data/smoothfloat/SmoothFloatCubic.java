@@ -1,4 +1,4 @@
-package game.data;
+package game.data.smoothfloat;
 
 import game.util.TimeUtil;
 

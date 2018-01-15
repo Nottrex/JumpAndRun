@@ -1,7 +1,7 @@
 package game.gamemap;
 
 import game.Constants;
-import game.data.HitBox;
+import game.data.hitbox.HitBox;
 import game.gameobjects.gameobjects.cameracontroller.Area;
 import game.gameobjects.gameobjects.entities.entities.*;
 import game.gameobjects.gameobjects.wall.Background;

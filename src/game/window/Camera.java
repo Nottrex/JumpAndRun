@@ -1,8 +1,8 @@
 package game.window;
 
 import game.Constants;
-import game.data.SmoothFloat;
-import game.data.SmoothFloatCubic;
+import game.data.smoothfloat.SmoothFloat;
+import game.data.smoothfloat.SmoothFloatCubic;
 import game.util.MathUtil;
 import game.util.TimeUtil;
 

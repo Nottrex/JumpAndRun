@@ -1,5 +1,7 @@
 package game;
 
+import game.data.script.Parser;
+import game.data.script.Tree;
 import game.gamemap.GameMap;
 import game.gamemap.MapLoader;
 import game.gameobjects.CollisionObject;
@@ -14,10 +16,7 @@ import game.window.Drawable;
 import game.window.Keyboard;
 import game.window.Window;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Game {
@@ -38,6 +37,8 @@ public class Game {
 
 	private ParticleSystem particleSystem;
 
+	private Map<String, Integer> values;
+
 	public Game(Window window) {
 		this.window = window;
 
@@ -49,6 +50,8 @@ public class Game {
 		collisionObjects = new LinkedList<>();
 		toRemove = new ConcurrentLinkedQueue<>();
 		toAdd = new ConcurrentLinkedQueue<>();
+
+		values = new HashMap<>();
 
 		setGameMap("lobby", false);
 	}
@@ -193,5 +196,13 @@ public class Game {
 
 	public int getGameTick() {
 		return gameTick;
+	}
+
+	public int getValue(String key) {
+		return values.getOrDefault(key, 0);
+	}
+
+	public void setValue(String key, int value) {
+		values.put(key, value);
 	}
 }

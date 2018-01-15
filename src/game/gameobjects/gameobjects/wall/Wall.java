@@ -1,15 +1,13 @@
 package game.gameobjects.gameobjects.wall;
 
 import game.Game;
-import game.data.HitBox;
-import game.data.HitBoxDirection;
+import game.data.hitbox.HitBox;
+import game.data.hitbox.HitBoxDirection;
 import game.gameobjects.CollisionObject;
-import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class Wall extends StaticDraw implements CollisionObject {
 	private List<HitBox> hitBoxes;

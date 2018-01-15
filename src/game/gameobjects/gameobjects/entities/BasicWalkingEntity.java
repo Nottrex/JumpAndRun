@@ -2,10 +2,9 @@ package game.gameobjects.gameobjects.entities;
 
 import game.Constants;
 import game.Game;
-import game.data.HitBox;
-import game.data.HitBoxDirection;
+import game.data.hitbox.HitBox;
+import game.data.hitbox.HitBoxDirection;
 import game.gameobjects.CollisionObject;
-import game.gameobjects.GameObject;
 import game.gameobjects.gameobjects.particle.ParticleType;
 import game.util.MathUtil;
 

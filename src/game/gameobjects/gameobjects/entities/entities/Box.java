@@ -1,13 +1,11 @@
 package game.gameobjects.gameobjects.entities.entities;
 
 import game.Game;
-import game.data.HitBox;
-import game.data.HitBoxDirection;
+import game.data.hitbox.HitBox;
+import game.data.hitbox.HitBoxDirection;
 import game.data.Sprite;
 import game.gameobjects.CollisionObject;
-import game.gameobjects.gameobjects.entities.BasicMovingEntity;
 import game.gameobjects.gameobjects.entities.BasicWalkingEntity;
-import game.window.Window;
 
 public class Box extends BasicWalkingEntity {
 	private Sprite idle = new Sprite(100, "box");

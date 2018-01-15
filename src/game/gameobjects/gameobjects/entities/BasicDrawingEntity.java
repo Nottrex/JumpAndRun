@@ -1,7 +1,7 @@
 package game.gameobjects.gameobjects.entities;
 
 import game.Constants;
-import game.data.HitBox;
+import game.data.hitbox.HitBox;
 import game.data.Sprite;
 import game.gameobjects.AbstractGameObject;
 import game.window.Drawable;

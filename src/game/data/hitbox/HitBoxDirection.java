@@ -1,4 +1,4 @@
-package game.data;
+package game.data.hitbox;
 
 public enum HitBoxDirection {
 	LEFT(-1, 0), UP(0, 1), RIGHT(1, 0), DOWN(0, -1), COLLIDE(0, 0);

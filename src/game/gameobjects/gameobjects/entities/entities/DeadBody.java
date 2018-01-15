@@ -1,6 +1,6 @@
 package game.gameobjects.gameobjects.entities.entities;
 
-import game.data.HitBox;
+import game.data.hitbox.HitBox;
 import game.data.Sprite;
 import game.gameobjects.gameobjects.entities.BasicWalkingEntity;
 

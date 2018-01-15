@@ -1,4 +1,4 @@
-package game.data;
+package game.data.smoothfloat;
 
 public interface SmoothFloat {
 	void set(float value);

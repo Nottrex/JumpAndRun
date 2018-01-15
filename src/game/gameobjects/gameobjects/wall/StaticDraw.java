@@ -1,16 +1,15 @@
 package game.gameobjects.gameobjects.wall;
 
 import game.Constants;
-import game.data.HitBox;
-import game.data.SmoothFloat;
-import game.data.SmoothFloatCubic;
+import game.data.hitbox.HitBox;
+import game.data.smoothfloat.SmoothFloat;
+import game.data.smoothfloat.SmoothFloatCubic;
 import game.gameobjects.AbstractGameObject;
 import game.window.Drawable;
 import game.util.TextureHandler;
 import game.window.Window;
 import game.window.shader.ShaderType;
 import game.window.shader.shader.StaticShader;
-import javafx.util.Pair;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
@@ -20,7 +19,6 @@ import org.lwjgl.opengl.GL30;
 import java.awt.*;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.util.List;
 import java.util.Map;
 
 public abstract class StaticDraw extends AbstractGameObject implements Drawable {

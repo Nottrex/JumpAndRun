@@ -1,6 +1,6 @@
 package game.gameobjects.gameobjects.entities;
 
-import game.data.HitBox;
+import game.data.hitbox.HitBox;
 import game.gameobjects.CollisionObject;
 
 import java.util.ArrayList;

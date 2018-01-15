@@ -1,7 +1,7 @@
 package game.gameobjects;
 
-import game.data.HitBox;
-import game.data.HitBoxDirection;
+import game.data.hitbox.HitBox;
+import game.data.hitbox.HitBoxDirection;
 
 import java.util.List;
 
