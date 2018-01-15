@@ -16,7 +16,6 @@ public class StaticShader extends ShaderProgram {
 	protected void getUniformLocations() {
 		super.getUniformLocations();
 		alphaLocation = getUniformLocation("alpha");
-		System.out.println(alphaLocation);
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package game;
 
-import game.gamemap.GameLobby;
 import game.gamemap.GameMap;
 import game.gamemap.MapLoader;
 import game.gameobjects.CollisionObject;
@@ -51,11 +50,7 @@ public class Game {
 		toRemove = new ConcurrentLinkedQueue<>();
 		toAdd = new ConcurrentLinkedQueue<>();
 
-		GameLobby lobby = new GameLobby("twoRooms", "threeRooms", "tutorial_1");
-		map = lobby.getMap();
-		for (GameObject gameObject : map.getGameObjects()) {
-			this.addGameObject(gameObject);
-		}
+		setGameMap("lobby", false);
 	}
 
 	public void gameLoop() {

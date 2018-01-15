@@ -19,6 +19,8 @@ public class MapLoader {
 
 
 	public static GameMap load(String mapName) {
+		if ("lobby".equals(mapName)) return createLobby("twoRooms", "threeRooms", "tutorial_1");
+
 		GameMap map = new GameMap();
 		Map<Integer, String> textureReplacements = new HashMap<>();
 		Map<Float, Map<HitBox, String>> layers = new HashMap<>();
@@ -115,7 +117,7 @@ public class MapLoader {
 						map.addGameObject(new Coin(x, y, drawingPriority));
 						break;
 					case "door_side": case "door_side_open_0": case "door_side_open_1": case "door_side_open":
-						map.addGameObject(new Door(x, y, drawingPriority, tags.getOrDefault("target", "test2")));
+						map.addGameObject(new Door(x, y, drawingPriority, tags.getOrDefault("target", "lobby")));
 						break;
 					case "lantern":
 						map.addGameObject(new Lantern(x, y, drawingPriority));
@@ -169,6 +171,33 @@ public class MapLoader {
 			else map.addGameObject(new Background(layer, drawingPriority));
 
 		}
+		return map;
+	}
+
+	private static GameMap createLobby(String... mapNames) {
+		GameMap map = new GameMap();
+		for (int i = 0; i < mapNames.length; i++) {
+			Map<HitBox, String> hitBoxList = new HashMap<>();
+			hitBoxList.put(new HitBox(i * 9, 0, 1f, 1f), "block_stone_middle");
+			hitBoxList.put(new HitBox(i * 9 + 1, 0, 1f, 1f), "block_stone_middle");
+			hitBoxList.put(new HitBox(i * 9 + 2, 0, 1f, 1f), "block_stone_middle");
+			hitBoxList.put(new HitBox(i * 9 + 3, 0, 1f, 1f), "block_stone_middle");
+			hitBoxList.put(new HitBox(i * 9 + 4, 0, 1f, 1f), "block_stone_middle");
+			hitBoxList.put(new HitBox(i * 9 + 5, 0, 1f, 1f), "block_stone_middle");
+			hitBoxList.put(new HitBox(i * 9 + 6, 0, 1f, 1f), "block_stone_middle");
+			hitBoxList.put(new HitBox(i * 9 + 7, 0, 1f, 1f), "block_stone_middle");
+			hitBoxList.put(new HitBox(i * 9 + 8, 0, 1f, 1f), "block_stone_middle");
+			hitBoxList.put(new HitBox(i * 9 + 3, 3, 1f, 1f), "block_wood_middle");
+			hitBoxList.put(new HitBox(i * 9 + 4, 3, 1f, 1f), "block_wood_middle");
+			hitBoxList.put(new HitBox(i * 9 + 5, 3, 1f, 1f), "block_wood_middle");
+			map.addGameObject(new Wall(hitBoxList, 0.5f));
+			map.addGameObject(new Door(i * 9 + 4, 4, 1f, mapNames[i]));
+			map.addGameObject(new Lantern(i* 9 + 2, 1, 1f));
+			map.addGameObject(new Lantern(i* 9 + 6, 1, 1f));
+			map.getCameraController().addCameraArea(new Area(i*9, -2, i*9+9, 6));
+		}
+		map.setSpawnPoint(0,1,0.5f);
+
 		return map;
 	}
 }
