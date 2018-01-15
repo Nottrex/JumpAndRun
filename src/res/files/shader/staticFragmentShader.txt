@@ -5,6 +5,7 @@ uniform int lightAmount;
 uniform vec3 lights[25];
 uniform vec3 lightColors[25];
 uniform float minBrightness;
+uniform float alpha;
 
 in vec2 fragTex;
 in vec2 fragPos;
@@ -20,5 +21,5 @@ void main() {
     brightness = vec3(clamp(brightness.r, 0, 1),clamp(brightness.g, 0, 1),clamp(brightness.b, 0, 1));
 
     finalColor = texture2D(tex, fragTex);
-    finalColor = vec4(finalColor.r * (brightness.r*(1-minBrightness) + minBrightness), finalColor.g * (brightness.g*(1-minBrightness) + minBrightness), finalColor.b * (brightness.b*(1-minBrightness) + minBrightness), finalColor.a);
+    finalColor = vec4(finalColor.r * (brightness.r*(1-minBrightness) + minBrightness), finalColor.g * (brightness.g*(1-minBrightness) + minBrightness), finalColor.b * (brightness.b*(1-minBrightness) + minBrightness), finalColor.a * alpha);
 }

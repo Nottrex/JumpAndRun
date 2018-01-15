@@ -92,7 +92,10 @@ public abstract class BasicMovingEntity extends BasicDrawingEntity implements Co
 
 		hitBox.move(vx, vy);
 
-		for (HitBoxDirection direction: directions) {
+		for (int i = 0; i < directions.size(); i++) {
+			HitBoxDirection direction = directions.get(i);
+			if (velocities.get(i) == 0) continue;
+
 			if (direction == HitBoxDirection.LEFT || direction == HitBoxDirection.RIGHT) vx = 0;
 			else if (direction == HitBoxDirection.UP ||direction == HitBoxDirection.DOWN) vy = 0;
 		}

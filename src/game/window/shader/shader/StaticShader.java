@@ -6,6 +6,7 @@ import game.window.shader.ShaderProgram;
 public class StaticShader extends ShaderProgram {
 
 	private int locationLocation, texLocationLocation;
+	private int alphaLocation;
 
 	public StaticShader() {
 		super(Constants.STATIC_VERTEX_FILE, Constants.STATIC_FRAGMENT_FILE);
@@ -14,6 +15,8 @@ public class StaticShader extends ShaderProgram {
 	@Override
 	protected void getUniformLocations() {
 		super.getUniformLocations();
+		alphaLocation = getUniformLocation("alpha");
+		System.out.println(alphaLocation);
 	}
 
 	@Override
@@ -28,5 +31,9 @@ public class StaticShader extends ShaderProgram {
 
 	public int getTexLocationLocation() {
 		return texLocationLocation;
+	}
+
+	public void setAlpha(float alpha) {
+		setUniform1f(alphaLocation, alpha);
 	}
 }

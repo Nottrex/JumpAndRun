@@ -2,6 +2,8 @@ package game.gameobjects.gameobjects.wall;
 
 import game.Constants;
 import game.data.HitBox;
+import game.data.SmoothFloat;
+import game.data.SmoothFloatCubic;
 import game.gameobjects.AbstractGameObject;
 import game.window.Drawable;
 import game.util.TextureHandler;
@@ -22,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class StaticDraw extends AbstractGameObject implements Drawable {
-
+	private SmoothFloat alpha;
 	private int rectangles;
 	private int vao, vao2;
 	private int locationVBO, texLocationVBO, indicesVBO;
@@ -34,7 +36,10 @@ public abstract class StaticDraw extends AbstractGameObject implements Drawable 
 
 	public StaticDraw(float drawingPriority) {
 		this.drawingPriority = drawingPriority;
+
 		update = false;
+
+		alpha = new SmoothFloatCubic(1);
 	}
 
 	@Override
@@ -52,6 +57,9 @@ public abstract class StaticDraw extends AbstractGameObject implements Drawable 
 		StaticShader shader = (StaticShader) window.getShaderHandler().getShader(ShaderType.STATIC_SHADER);
 
 		shader.start();
+
+		alpha.update(time);
+		shader.setAlpha(alpha.get());
 
 		if (update) {
 			updateBuffers(shader);
@@ -145,5 +153,13 @@ public abstract class StaticDraw extends AbstractGameObject implements Drawable 
 	@Override
 	public float getDrawingPriority() {
 		return drawingPriority;
+	}
+
+	protected void setAlpha(float alpha) {
+		this.alpha.set(alpha);
+	}
+
+	protected void setAlphaSmooth(float alpha, int time) {
+		this.alpha.setSmooth(alpha, time);
 	}
 }
