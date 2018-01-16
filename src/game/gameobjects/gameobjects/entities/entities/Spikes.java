@@ -22,6 +22,12 @@ public class Spikes extends BasicStaticEntity {
 			game.removeGameObject((Player) gameObject);
 		}
 	}
+
+	@Override
+	public void interact(CollisionObject gameObject, HitBox hitBox, InteractionType interactionType) {
+
+	}
+
 	@Override
 	public void update(Game game) {
 

@@ -25,6 +25,11 @@ public class Coin extends BasicStaticEntity implements Light {
 	}
 
 	@Override
+	public void interact(CollisionObject gameObject, HitBox hitBox, InteractionType interactionType) {
+		game.removeGameObject(this);
+	}
+
+	@Override
 	public void setup(Window window) {
 		super.setup(window);
 

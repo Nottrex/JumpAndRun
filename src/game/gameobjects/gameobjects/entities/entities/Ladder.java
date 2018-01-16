@@ -23,6 +23,11 @@ public class Ladder extends BasicStaticEntity {
 	}
 
 	@Override
+	public void interact(CollisionObject gameObject, HitBox hitBox, InteractionType interactionType) {
+
+	}
+
+	@Override
 	public void update(Game game) {
 
 	}

@@ -24,6 +24,11 @@ public class Lantern extends BasicStaticEntity implements Light{
 	}
 
 	@Override
+	public void interact(CollisionObject gameObject, HitBox hitBox, InteractionType interactionType) {
+
+	}
+
+	@Override
 	public void setup(Window window) {
 		super.setup(window);
 

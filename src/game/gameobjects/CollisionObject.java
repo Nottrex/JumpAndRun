@@ -11,4 +11,9 @@ public interface CollisionObject {
 	float getCollisionPriority();
 
 	void collide(CollisionObject gameObject, HitBoxDirection direction, float velocity);
+	void interact(CollisionObject gameObject, HitBox hitBox, InteractionType interactionType);
+
+	enum InteractionType {
+		ATTACK, INTERACT
+	}
 }

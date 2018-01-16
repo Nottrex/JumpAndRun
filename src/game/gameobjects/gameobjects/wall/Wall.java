@@ -58,6 +58,11 @@ public class Wall extends StaticDraw implements CollisionObject {
 	}
 
 	@Override
+	public void interact(CollisionObject gameObject, HitBox hitBox, InteractionType interactionType) {
+
+	}
+
+	@Override
 	public void update(Game game) {
 
 	}

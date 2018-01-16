@@ -34,6 +34,11 @@ public class Door extends BasicStaticEntity {
 	}
 
 	@Override
+	public void interact(CollisionObject gameObject, HitBox hitBox, InteractionType interactionType) {
+
+	}
+
+	@Override
 	public void init(Game game) {
 		super.init(game);
 

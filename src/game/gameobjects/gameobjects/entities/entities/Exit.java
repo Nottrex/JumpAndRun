@@ -33,7 +33,12 @@ public class Exit extends BasicStaticEntity {
 
 	@Override
 	public void collide(CollisionObject gameObject, HitBoxDirection direction, float velocity) {
-		if (gameObject instanceof Player && ((Player) gameObject).isInteracting()) {
+
+	}
+
+	@Override
+	public void interact(CollisionObject gameObject, HitBox hitBox, InteractionType interactionType) {
+		if (gameObject instanceof Player && interactionType == InteractionType.INTERACT) {
 			if (game.setGameMap(targetMap, true)) {
 				setSprite(doorOpen);
 			}

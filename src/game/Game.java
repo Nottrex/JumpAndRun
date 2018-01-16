@@ -141,6 +141,7 @@ public class Game {
 			player.setMx(keyboard.getPressed(Options.controls.get("RIGHT" + input)) - keyboard.getPressed(Options.controls.get("LEFT" + input)));
 			player.setDown(keyboard.isPressed(Options.controls.get("DOWN" + input)));
 			player.setInteracting(keyboard.isPressed(Options.controls.get("INTERACT" + input)));
+			player.setAttacking(keyboard.isPressed(Options.controls.get("ATTACK" + input)));
 		}
 	}
 

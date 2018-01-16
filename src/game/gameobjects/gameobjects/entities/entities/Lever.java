@@ -31,7 +31,12 @@ public class Lever extends BasicStaticEntity {
 
 	@Override
 	public void collide(CollisionObject gameObject, HitBoxDirection direction, float velocity) {
-		if (gameObject instanceof Player && ((Player) gameObject).isInteracting()) {
+
+	}
+
+	@Override
+	public void interact(CollisionObject gameObject, HitBox hitBox, InteractionType interactionType) {
+		if (gameObject instanceof Player) {
 			if (!turning) {
 				turning = true;
 				startTick = game.getGameTick();

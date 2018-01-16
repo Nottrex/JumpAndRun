@@ -5,6 +5,7 @@ import game.Game;
 import game.data.hitbox.HitBox;
 import game.data.hitbox.HitBoxDirection;
 import game.gameobjects.CollisionObject;
+import game.gameobjects.gameobjects.entities.entities.Player;
 import game.util.MathUtil;
 
 import java.util.ArrayList;
@@ -107,6 +108,13 @@ public abstract class BasicMovingEntity extends BasicDrawingEntity implements Co
 
 			collide(collisionObject, direction, velocity);
 			collisionObject.collide(this, direction.invert(), velocity);
+		}
+	}
+
+	@Override
+	public void interact(CollisionObject gameObject, HitBox hitBox, InteractionType interactionType) {
+		if (gameObject instanceof Player && interactionType == InteractionType.ATTACK) {
+			//TODO: knockback
 		}
 	}
 
