@@ -39,6 +39,8 @@ public class Constants {
 	public static final float DEAD_ZONE = 0.2f;
 
 	public static int PIXEL_PER_TILE = 8;
+	public static final float FONT_WIDTH = 0.3125f;
+	public static final float FONT_SPACING = 0.375f; //FONT_WIDTH * 1.2 looks preferably
 	public static final int MAX_PARTICLES = 1000;
 	public static final int[] INDICES = new int[]{0, 2, 1, 0, 3, 2};
 	public static final float[][] VERTEX_POS = new float[][]{{0, 0}, {0, 1}, {1, 1}, {1, 0}};

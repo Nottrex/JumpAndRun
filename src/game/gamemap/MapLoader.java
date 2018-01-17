@@ -5,8 +5,7 @@ import game.data.hitbox.HitBox;
 import game.data.script.Parser;
 import game.gameobjects.gameobjects.cameracontroller.Area;
 import game.gameobjects.gameobjects.entities.entities.*;
-import game.gameobjects.gameobjects.wall.Background;
-import game.gameobjects.gameobjects.wall.Wall;
+import game.gameobjects.gameobjects.wall.*;
 import game.util.ErrorUtil;
 import game.util.FileHandler;
 import game.util.TextureHandler;
@@ -20,7 +19,7 @@ public class MapLoader {
 
 
 	public static GameMap load(String mapName) {
-		if ("lobby".equals(mapName)) return createLobby("twoRooms", "threeRooms", "tutorial_1");
+		if ("lobby".equals(mapName)) return createLobby("twoRooms", "tutorial_1");
 
 		GameMap map = new GameMap();
 		Map<Integer, String> textureReplacements = new HashMap<>();
@@ -211,6 +210,7 @@ public class MapLoader {
 			hitBoxList.put(new HitBox(i * 9 + 5, 3, 1f, 1f), "block_wood_middle");
 			map.addGameObject(new Wall(hitBoxList, 0.5f));
 			map.addGameObject(new Exit(i * 9 + 4, 4, 1f, mapNames[i]));
+			map.addGameObject(new Sign(i * 9 + 4.5f, 6, mapNames[i], 1f));
 			map.addGameObject(new Lantern(i * 9 + 2, 1, 1f));
 			map.addGameObject(new Ladder(i * 9 + 6, 1, 1f));
 			map.addGameObject(new Ladder(i * 9 + 6, 2, 1f));
