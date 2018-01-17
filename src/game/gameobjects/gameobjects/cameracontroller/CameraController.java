@@ -30,10 +30,10 @@ public class CameraController extends AbstractGameObject {
 
 	@Override
 	public void update(Game game) {
-		float minX = 10000000;
-		float minY = 10000000;
-		float maxX = -10000000;
-		float maxY = -10000000;
+		float minX = Float.MAX_VALUE;
+		float minY = Float.MAX_VALUE;
+		float maxX = -Float.MAX_VALUE;
+		float maxY = -Float.MAX_VALUE;
 
 		List<Player> players = game.getPlayers();
 
@@ -100,7 +100,7 @@ public class CameraController extends AbstractGameObject {
 		float width = (maxX - minX) * 1.25f;
 		float height = (maxY - minY) * 1.25f;
 
-		float zoom = Math.min(Math.min(2 / height, 2 * Window.aspect / width), Constants.MIN_CAMERA_ZOOM);
+		float zoom = Math.min(Math.min(2 / height, 2 * game.getAspectRatio() / width), Constants.MIN_CAMERA_ZOOM);
 
 		if (posX != lastX || posY != lastY || zoom != lastZoom) {
 			if (outside) {

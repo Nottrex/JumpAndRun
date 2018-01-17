@@ -1,14 +1,11 @@
 package game.window.shader;
 
-import game.window.shader.shader.BasicShader;
-import game.window.shader.shader.ColorShader;
-import game.window.shader.shader.ParticleShader;
-import game.window.shader.shader.StaticShader;
+import game.window.shader.shader.*;
 
 import java.util.function.Supplier;
 
 public enum ShaderType {
-	BASIC_SHADER(BasicShader::new), STATIC_SHADER(StaticShader::new), PARTICLE_SHADER(ParticleShader::new), COLOR_SHADER(ColorShader::new);
+	BASIC_SHADER(BasicShader::new), STATIC_SHADER(StaticShader::new), PARTICLE_SHADER(ParticleShader::new), COLOR_SHADER(ColorShader::new), TEXT_SHADER(TextShader::new);
 
 	private Supplier<ShaderProgram> shader;
 

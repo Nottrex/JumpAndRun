@@ -25,6 +25,8 @@ public class Constants {
 	public static final String PARTICLE_FRAGMENT_FILE = "particleFragmentShader";
 	public static final String STATIC_VERTEX_FILE = "staticVertexShader";
 	public static final String STATIC_FRAGMENT_FILE = "staticFragmentShader";
+	public static final String TEXT_VERTEX_FILE = "textVertexShader";
+	public static final String TEXT_FRAGMENT_FILE = "textFragmentShader";
 
 	public static final float JUMP_ACCELERATION = 0.3f;
 	public static final float MAX_WALKING_SPEED = 0.175f;

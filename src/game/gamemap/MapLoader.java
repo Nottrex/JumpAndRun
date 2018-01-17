@@ -3,6 +3,7 @@ package game.gamemap;
 import game.Constants;
 import game.data.hitbox.HitBox;
 import game.data.script.Parser;
+import game.gameobjects.gameobjects.Text;
 import game.gameobjects.gameobjects.cameracontroller.Area;
 import game.gameobjects.gameobjects.entities.entities.*;
 import game.gameobjects.gameobjects.wall.*;
@@ -210,7 +211,7 @@ public class MapLoader {
 			hitBoxList.put(new HitBox(i * 9 + 5, 3, 1f, 1f), "block_wood_middle");
 			map.addGameObject(new Wall(hitBoxList, 0.5f));
 			map.addGameObject(new Exit(i * 9 + 4, 4, 1f, mapNames[i]));
-			map.addGameObject(new Sign(i * 9 + 4.5f, 6, mapNames[i], 1f));
+			map.addGameObject(new Text(1f, mapNames[i], i * 9 + 4.5f, 6, 1, true));
 			map.addGameObject(new Lantern(i * 9 + 2, 1, 1f));
 			map.addGameObject(new Ladder(i * 9 + 6, 1, 1f));
 			map.addGameObject(new Ladder(i * 9 + 6, 2, 1f));
@@ -218,6 +219,7 @@ public class MapLoader {
 			map.addGameObject(new Ladder(i * 9 + 6, 4, 1f));
 			map.getCameraController().addCameraArea(new Area(i*9, -2, i*9+9, 9));
 		}
+		map.addGameObject(new Text(-100, "test", -1, 1, 0.1f, false, 0, 1));
 		map.setSpawnPoint(0,1,0.5f);
 
 		return map;

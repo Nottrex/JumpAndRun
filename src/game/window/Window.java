@@ -27,8 +27,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Window {
-	public static float aspect = Constants.WINDOW_WIDTH / Constants.WINDOW_HEIGHT;
-
+	private float aspect = Constants.WINDOW_WIDTH / Constants.WINDOW_HEIGHT;
 	private long window;
 	private Keyboard keyboard;
 	private Camera camera;
@@ -121,9 +120,7 @@ public class Window {
 	}
 
 	private void updateProjectionMatrix() {
-		float aspect = width * 1.0f / height;
-
-		Window.aspect = aspect;
+		aspect = width * 1.0f / height;
 
 		CamMath.perspective(Constants.FOV, aspect, Constants.NEAR, Constants.FAR, projectionMatrix);
 
@@ -260,7 +257,12 @@ public class Window {
 		return camera;
 	}
 
+	public float getAspectRatio() {
+		return aspect;
+	}
+
 	public boolean isRunning() {
 		return running;
 	}
+
 }

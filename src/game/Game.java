@@ -186,6 +186,10 @@ public class Game {
 		return window.getCamera();
 	}
 
+	public float getAspectRatio() {
+		return window.getAspectRatio();
+	}
+
 	public ParticleSystem getParticleSystem() {
 		return particleSystem;
 	}

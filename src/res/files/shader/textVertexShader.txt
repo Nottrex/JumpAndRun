@@ -1,0 +1,21 @@
+#version 130
+in vec2 location;
+in vec2 texLocation;
+
+uniform mat4 projectionMatrix;
+uniform mat4 viewMatrix;
+uniform float time;
+uniform int texTW;
+uniform int texTH;
+uniform float useCamera;
+
+out vec2 fragTex;
+out vec2 fragPos;
+
+void main() {
+    fragTex = vec2(texLocation.x / texTW, texLocation.y / texTH);
+
+    vec4 pos = vec4(location.x, location.y, 0, 1);
+
+    gl_Position = (mat4(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1)*(1-useCamera) + projectionMatrix*viewMatrix*useCamera) * pos;
+}
