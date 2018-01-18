@@ -12,21 +12,31 @@ import game.window.light.Light;
 public class Coin extends BasicStaticEntity implements Light {
 
 	private static Sprite idle = new Sprite(100, "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin","coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin_idle1_0", "coin_idle1_1", "coin_idle1_2", "coin_idle1_3", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin","coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin_idle2_0", "coin_idle2_1", "coin_idle2_0");
+	private boolean collectable;
 
 	public Coin(float x, float y, float drawingPriority) {
 		super(new HitBox(x, y, 0.75f, 1f), drawingPriority);
+		collectable = true;
 
 		setSprite(idle);
 	}
 
 	@Override
 	public void collide(CollisionObject gameObject, HitBoxDirection direction, float velocity) {
-		game.removeGameObject(this);
+		if (collectable) {
+			game.removeGameObject(this);
+			game.setValue("coins", game.getValue("coins") + 1);
+			collectable = false;
+		}
 	}
 
 	@Override
 	public void interact(CollisionObject gameObject, HitBox hitBox, InteractionType interactionType) {
-		game.removeGameObject(this);
+		if (collectable) {
+			game.removeGameObject(this);
+			game.setValue("coins", game.getValue("coins") + 1);
+			collectable = false;
+		}
 	}
 
 	@Override

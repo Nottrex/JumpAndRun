@@ -5,6 +5,7 @@ import game.gamemap.MapLoader;
 import game.gameobjects.CollisionObject;
 import game.gameobjects.GameObject;
 import game.gameobjects.gameobjects.Fade;
+import game.gameobjects.gameobjects.Text;
 import game.gameobjects.gameobjects.entities.entities.DeadBody;
 import game.gameobjects.gameobjects.entities.entities.Player;
 import game.gameobjects.gameobjects.particle.ParticleSystem;
@@ -36,6 +37,7 @@ public class Game {
 	private ParticleSystem particleSystem;
 
 	private Map<String, Integer> values;
+	private Text coinCounter;
 
 	public Game(Window window) {
 		this.window = window;
@@ -50,14 +52,17 @@ public class Game {
 		toAdd = new ConcurrentLinkedQueue<>();
 
 		values = new HashMap<>();
+		coinCounter = new Text(0f, "0", 1, 1, 0.1f, false, 1, 1);
+		addGameObject(coinCounter);
 
-		setGameMap("lobby", false);
+		setGameMap("menu", false);
 	}
 
 	public void gameLoop() {
 		long time;
 		while (window.isRunning()) {
 			gameTick++;
+			coinCounter.setText(values.getOrDefault("coins", 0).toString());
 			time = TimeUtil.getTime();
 
 			handleInput();

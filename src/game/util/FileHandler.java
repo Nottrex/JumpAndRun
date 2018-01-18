@@ -1,6 +1,7 @@
 package game.util;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 
 public class FileHandler {
@@ -21,5 +22,10 @@ public class FileHandler {
 			ErrorUtil.printError(String.format("Loading file: %s", fileName));
 		}
 		return null;
+	}
+
+	public static boolean fileExists(String fileName) {
+		File file = new File("src/res/files/" + fileName);
+		return file.exists();
 	}
 }

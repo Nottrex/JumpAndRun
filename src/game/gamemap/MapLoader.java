@@ -12,15 +12,23 @@ import game.util.FileHandler;
 import game.util.TextureHandler;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.io.File;
+import java.util.*;
 
 public class MapLoader {
 
 
 	public static GameMap load(String mapName) {
-		if ("lobby".equals(mapName)) return createLobby("twoRooms", "tutorial_1");
+		if (mapName.equals("menu")) return createLobby("lobby", "shop", "options");
+		if (mapName.equals("lobby")) return createLobby(getMaps().toArray(new String[0]));
+		if (mapName.equals("shop")) return createLobby("menu");
+		if (mapName.equals("options")) return createLobby("menu");
+
+		if (!FileHandler.fileExists("maps/" + mapName + ".map")) {
+			GameMap map = load("menu");
+			map.addGameObject(new Text(-100, "Something went wrong. We send you back to Menu", 0, 0, 0.05f, false, 0.5f, 0));
+			return map;
+		}
 
 		GameMap map = new GameMap();
 		Map<Integer, String> textureReplacements = new HashMap<>();
@@ -197,32 +205,40 @@ public class MapLoader {
 		GameMap map = new GameMap();
 		for (int i = 0; i < mapNames.length; i++) {
 			Map<HitBox, String> hitBoxList = new HashMap<>();
-			hitBoxList.put(new HitBox(i * 9, 0, 1f, 1f), "block_stone_middle");
-			hitBoxList.put(new HitBox(i * 9 + 1, 0, 1f, 1f), "block_stone_middle");
-			hitBoxList.put(new HitBox(i * 9 + 2, 0, 1f, 1f), "block_stone_middle");
-			hitBoxList.put(new HitBox(i * 9 + 3, 0, 1f, 1f), "block_stone_middle");
-			hitBoxList.put(new HitBox(i * 9 + 4, 0, 1f, 1f), "block_stone_middle");
-			hitBoxList.put(new HitBox(i * 9 + 5, 0, 1f, 1f), "block_stone_middle");
-			hitBoxList.put(new HitBox(i * 9 + 6, 0, 1f, 1f), "block_stone_middle");
-			hitBoxList.put(new HitBox(i * 9 + 7, 0, 1f, 1f), "block_stone_middle");
-			hitBoxList.put(new HitBox(i * 9 + 8, 0, 1f, 1f), "block_stone_middle");
-			hitBoxList.put(new HitBox(i * 9 + 3, 3, 1f, 1f), "block_wood_middle");
-			hitBoxList.put(new HitBox(i * 9 + 4, 3, 1f, 1f), "block_wood_middle");
-			hitBoxList.put(new HitBox(i * 9 + 5, 3, 1f, 1f), "block_wood_middle");
+			for (int j = 0; j < 9; j++) {
+				hitBoxList.put(new HitBox(i * 9 + j, 0, 1f, 1f), "block_stone_middle");
+				if (j < 6 && j > 2) {
+					hitBoxList.put(new HitBox(i * 9 + j, 3, 1f, 1f), "block_wood_middle");
+					map.addGameObject(new Ladder(i * 9 + 6, j - 2, 1f));
+				}
+			}
 			map.addGameObject(new Wall(hitBoxList, 0.5f));
 			map.addGameObject(new Exit(i * 9 + 4, 4, 1f, mapNames[i]));
-			map.addGameObject(new Text(1f, mapNames[i], i * 9 + 4.5f, 6, 0.5f, true, 0.5f, 0));
+			map.addGameObject(new Text(1f, mapNames[i].substring(mapNames[i].indexOf(File.separator) + 1), i * 9 + 4.5f, 6, 0.5f, true, 0.5f, 0));
+			System.out.println(mapNames[i].substring(mapNames[i].indexOf(File.separator)+1));
 			map.addGameObject(new Lantern(i * 9 + 2, 1, 1f));
-			map.addGameObject(new Ladder(i * 9 + 6, 1, 1f));
-			map.addGameObject(new Ladder(i * 9 + 6, 2, 1f));
-			map.addGameObject(new Ladder(i * 9 + 6, 3, 1f));
-			map.addGameObject(new Ladder(i * 9 + 6, 4, 1f));
 			map.getCameraController().addCameraArea(new Area(i*9, -2, i*9+9, 9));
 		}
-		map.addGameObject(new Text(-100, "test", 0.99f, 0.99f, 0.05f, false, 1, 1));
-		map.addGameObject(new Text(-100, "test", -0.99f, 0.99f, 0.05f, false, 0, 1));
 		map.setSpawnPoint(0,1,0.5f);
 
 		return map;
+	}
+
+	private static java.util.List<String> getMaps() {
+		File folder = new File("src/res/files/maps");
+		File[] listOfFiles = folder.listFiles();
+		java.util.List<String> maps = new ArrayList<>();
+
+		for (File f: listOfFiles) {
+			if (f.isFile() && f.getName().endsWith(".map")) {
+				maps.add(f.getName().replaceAll(".map", ""));
+			} else if (f.isDirectory()) {
+				File mapFile = new File(f.getPath() + File.separator + f.getName() + ".map");
+				if (mapFile.exists() && mapFile.isFile()) {
+					maps.add(f.getName() + File.separator + f.getName());
+				}
+			}
+		}
+		return maps;
 	}
 }
