@@ -17,5 +17,7 @@ void main() {
 
     vec4 pos = vec4(location.x, location.y, 0, 1);
 
+    fragPos = location;
+
     gl_Position = (mat4(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1)*(1-useCamera) + projectionMatrix*viewMatrix*useCamera) * pos;
 }

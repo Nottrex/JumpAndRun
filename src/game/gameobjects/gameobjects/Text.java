@@ -46,8 +46,8 @@ public class Text implements GameObject, Drawable {
 		update = false;
 		letters = 0;
 		anchorY = 0;
-		anchorX = 0.5f;
-		color = Color.WHITE;
+		anchorX = 0f;
+		color = Color.RED;
 		setText(text);
 	}
 
@@ -124,9 +124,9 @@ public class Text implements GameObject, Drawable {
 		Map<HitBox, String> hitBoxList = new HashMap<>();
 		char[] chars = text.replaceAll("_", " ").toLowerCase().toCharArray();
 
-		float fontWidth = Constants.FONT_WIDTH*size ;
-		float fontHeight = fontWidth * 1.4f * (useCamera ? 1 : aspectRatio);
-		float fontSpacing = Constants.FONT_SPACING*size;
+		float fontHeight = size;
+		float fontWidth =  fontHeight / Constants.FONT_ASPECT  / (useCamera ? 1 : aspectRatio);
+		float fontSpacing = fontWidth * Constants.FONT_SPACING;
 
 		float width = (chars.length-1) * fontSpacing + fontWidth;
 		float height = fontHeight;
@@ -237,17 +237,27 @@ public class Text implements GameObject, Drawable {
 	public static float getWidth(String text, float size) {
 		char[] chars = text.replaceAll("_", " ").toLowerCase().toCharArray();
 
-		float fontWidth = Constants.FONT_WIDTH*size;
-		float fontSpacing = Constants.FONT_SPACING*size;
+
+		float fontHeight = size;
+		float fontWidth =  fontHeight / Constants.FONT_ASPECT;
+		float fontSpacing = fontWidth * Constants.FONT_SPACING;
+
+		return (chars.length-1) * fontSpacing + fontWidth;
+	}
+
+	public static float getWidth(String text, float size, float aspectRatio) {
+		char[] chars = text.replaceAll("_", " ").toLowerCase().toCharArray();
+
+
+		float fontHeight = size;
+		float fontWidth =  fontHeight / Constants.FONT_ASPECT / aspectRatio;
+		float fontSpacing = fontWidth * Constants.FONT_SPACING;
 
 		return (chars.length-1) * fontSpacing + fontWidth;
 	}
 
 	public static float getHeight(String text, float size) {
-		float fontWidth = Constants.FONT_WIDTH*size;
-		float fontHeight = fontWidth * 1.4f;
-
-		return fontHeight;
+		return size;
 	}
 }
 
