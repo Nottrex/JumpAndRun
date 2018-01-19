@@ -4,6 +4,7 @@ import game.Game;
 import game.data.hitbox.HitBox;
 import game.data.hitbox.HitBoxDirection;
 import game.data.Sprite;
+import game.data.script.Tree;
 import game.gameobjects.CollisionObject;
 import game.gameobjects.gameobjects.entities.BasicStaticEntity;
 import game.window.Window;
@@ -14,30 +15,39 @@ public class Coin extends BasicStaticEntity implements Light {
 	private static Sprite idle = new Sprite(100, "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin","coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin_idle1_0", "coin_idle1_1", "coin_idle1_2", "coin_idle1_3", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin","coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin_idle2_0", "coin_idle2_1", "coin_idle2_0");
 	private static Sprite ghost_idle = new Sprite(100, "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost","coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost_idle1_0", "coin_ghost_idle1_1", "coin_ghost_idle1_2", "coin_ghost_idle1_3", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost","coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost_idle2_0", "coin_ghost_idle2_1", "coin_ghost_idle2_0");
 
-	private boolean collectable;
+	private boolean collected, ghost;
+	private Tree onFirstCollect, onReCollect;
 
-	public Coin(float x, float y, float drawingPriority) {
+	public Coin(float x, float y, float drawingPriority, boolean wasCollected, Tree onFirstCollect, Tree onReCollect) {
 		super(new HitBox(x, y, 0.75f, 1f), drawingPriority);
-		collectable = true;
 
-		setSprite(idle);
+		collected = false;
+		ghost = wasCollected;
+		this.onFirstCollect = onFirstCollect;
+		this.onReCollect = onReCollect;
+
+		setSprite(ghost ? ghost_idle : idle);
 	}
 
 	@Override
 	public void collide(CollisionObject gameObject, HitBoxDirection direction, float velocity) {
-		if (collectable) {
-			game.removeGameObject(this);
-			game.setValue("coins", game.getValue("coins") + 1);
-			collectable = false;
-		}
+		collect();
 	}
 
 	@Override
 	public void interact(CollisionObject gameObject, HitBox hitBox, InteractionType interactionType) {
-		if (collectable) {
+		collect();
+	}
+
+	private void collect() {
+		if (!collected) {
 			game.removeGameObject(this);
-			game.setValue("coins", game.getValue("coins") + 1);
-			collectable = false;
+			if (ghost) {
+				if (onReCollect != null) onReCollect.get(game);
+			} else {
+				if (onFirstCollect != null) onFirstCollect.get(game);
+			}
+			collected = true;
 		}
 	}
 

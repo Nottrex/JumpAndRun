@@ -2,6 +2,7 @@ package game.gamemap;
 
 import game.Ability;
 import game.Constants;
+import game.Game;
 import game.data.hitbox.HitBox;
 import game.data.script.Parser;
 import game.data.script.Tree;
@@ -20,14 +21,14 @@ import java.util.*;
 public class MapLoader {
 
 
-	public static GameMap load(String mapName) {
-		if (mapName.equals("menu")) return createLobby("lobby", "shop", "options");
-		if (mapName.equals("lobby")) return createLobby(getMaps().toArray(new String[0]));
-		if (mapName.equals("shop")) return createShop();
-		if (mapName.equals("options")) return createLobby("menu");
+	public static GameMap load(Game g, String mapName) {
+		if (mapName.equals("menu")) return createLobby(g, "lobby", "shop", "options");
+		if (mapName.equals("lobby")) return createLobby(g, getMaps().toArray(new String[0]));
+		if (mapName.equals("shop")) return createShop(g);
+		if (mapName.equals("options")) return createLobby(g, "menu");
 
 		if (!FileHandler.fileExists("maps/" + mapName + ".map")) {
-			GameMap map = load("menu");
+			GameMap map = load(g, "menu");
 			map.addGameObject(new Text(-100, "Something went wrong. We send you back to Menu", 0, 0, 0.05f, false, 0.5f, 0));
 			return map;
 		}
@@ -125,7 +126,14 @@ public class MapLoader {
 						map.getCameraController().setSpawn(x, y);
 						break;
 					case "coin":
-						map.addGameObject(new Coin(x, y, drawingPriority));
+						String tag2 = String.format("%s_coin_%f_%f", mapName, x, y);
+						String mapCoins = String.format("%s_coin", mapName);
+						map.addGameObject(new Coin(x, y, drawingPriority,g.getValue(tag2) > 0, new Tree((tree, game) -> {
+							game.setValue(tag2, 1);											//Mark this coin as collected
+							game.setValue(mapCoins, game.getValue(mapCoins) + 1);			//Raise the amount of collected coins in this map
+							game.setValue("coins", game.getValue("coins") + 1);			//Raise the total amount of collected coins
+							return null;
+						}), null));
 						break;
 					case "door_side": case "door_side_open_0": case "door_side_open_1": case "door_side_open":
 						map.addGameObject(new Exit(x, y, drawingPriority, tags.getOrDefault("target", "lobby")));
@@ -141,7 +149,7 @@ public class MapLoader {
 						break;
 					case "lever_left": case "lever_right": case "lever_middle":
 						String tag = tags.getOrDefault("tag", "lever");
-						map.addGameObject(new Lever(x, y, drawingPriority, new Tree((t,g) -> g.getValue(tag) > 0), Parser.loadScript(Parser.COMMAND, String.format("#%s=(#%s+1);", tag, tag)), Parser.loadScript(Parser.COMMAND, String.format("#%s=(#%s-1);", tag, tag)), null));
+						map.addGameObject(new Lever(x, y, drawingPriority, g.getValue(tag) > 0, Parser.loadScript(Parser.COMMAND, String.format("#%s=(#%s+1);", tag, tag)), Parser.loadScript(Parser.COMMAND, String.format("#%s=(#%s-1);", tag, tag)), null));
 						break;
 					case "door_6": case "door_5": case "door_4": case "door_3": case "door_2": case "door_1":
 						map.addGameObject(new Door(x, y, drawingPriority, Parser.loadScript(Parser.BOOLEAN, tags.getOrDefault("condition", "#lever"))));
@@ -196,7 +204,7 @@ public class MapLoader {
 
 		for (float drawingPriority : layers.keySet()) {
 			Map<HitBox, String> layer = layers.get(drawingPriority);
-
+			System.out.println(drawingPriority);
 			if (drawingPriority <= 0.55 && drawingPriority >= 0.45) map.addGameObject(new Wall(layer, drawingPriority));
 			else map.addGameObject(new Background(layer, drawingPriority));
 
@@ -204,7 +212,7 @@ public class MapLoader {
 		return map;
 	}
 
-	private static GameMap createLobby(String... mapNames) {
+	private static GameMap createLobby(Game g, String... mapNames) {
 		GameMap map = new GameMap();
 		for (int i = 0; i < mapNames.length; i++) {
 			Map<HitBox, String> hitBoxList = new HashMap<>();
@@ -218,6 +226,7 @@ public class MapLoader {
 			map.addGameObject(new Wall(hitBoxList, 0.5f));
 			map.addGameObject(new Exit(i * 9 + 4, 4, 1f, mapNames[i]));
 			map.addGameObject(new Text(1f, mapNames[i].substring(mapNames[i].indexOf(File.separator) + 1), i * 9 + 4.5f, 6, 0.5f, true, 0.5f, 0));
+			map.addGameObject(new Text(1f, g.getValue(mapNames[i].substring(mapNames[i].indexOf(File.separator) + 1) + "_coin") + "", i * 9 + 4.5f, 7, 0.5f, true, 0.5f, 0));
 			map.addGameObject(new Lantern(i * 9 + 2, 1, 1f));
 			map.getCameraController().addCameraArea(new Area(i*9, -2, i*9+9, 9));
 		}
@@ -227,7 +236,7 @@ public class MapLoader {
 		return map;
 	}
 
-	private static GameMap createShop() {
+	private static GameMap createShop(Game g) {
 		GameMap map = new GameMap();
 		Ability[] abilities = Ability.values();
 		Map<HitBox, String> hitBoxList = new HashMap<>();
@@ -240,7 +249,7 @@ public class MapLoader {
 			final int j = i;
 			//The default state for the lever depends, if the game has this ability
 			//The lever is enabled if the game doesn't have this ability and the player has enough money
-			Lever lever = new Lever(i * 5 + 2, 1, 1f, new Tree((tree, game) -> game.hasAbility(abilities[j])), null, null, new Tree((tree, game) -> !game.hasAbility(abilities[j]) && game.getValue("coins") >= abilities[j].getCost()));
+			Lever lever = new Lever(i * 5 + 2, 1, 1f, g.hasAbility(abilities[j]), null, null, new Tree((tree, game) -> !game.hasAbility(abilities[j]) && game.getValue("coins") >= abilities[j].getCost()));
 
 			//When the lever is pressed the coins have to be removed and the ability has to be set
 			lever.setOnActivate(new Tree((tree, game) -> {

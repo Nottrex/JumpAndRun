@@ -71,7 +71,7 @@ public class Game {
 			handleInput();
 
 			if (newMap != null && gameTick - fadeStart >= Constants.FADE_TIME/2) {
-				GameMap newGameMap = MapLoader.load(newMap);
+				GameMap newGameMap = MapLoader.load(this, newMap);
 				if (map != null) {
 					for (GameObject gameObject : map.getGameObjects()) {
 						this.removeGameObject(gameObject);

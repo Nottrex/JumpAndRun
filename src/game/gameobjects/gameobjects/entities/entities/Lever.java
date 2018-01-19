@@ -18,12 +18,14 @@ public class Lever extends BasicStaticEntity {
 	private boolean turning;
 	private int startTick;
 
-	private Tree onActivate, onDeactivate, tagValue, enabled;
+	private Tree onActivate, onDeactivate, enabled;
 
-	public Lever(float x, float y, float drawingPriority, Tree tagValue, Tree onActivate, Tree onDeactivate, Tree enabled) {
+	public Lever(float x, float y, float drawingPriority, boolean activated, Tree onActivate, Tree onDeactivate, Tree enabled) {
 		super(new HitBox(x, y, 1f, 1f), drawingPriority);
 
-		this.tagValue = tagValue;
+		this.activated = activated;
+		setSprite(activated ? left : right);
+
 		this.onActivate = onActivate;
 		this.onDeactivate = onDeactivate;
 		this.enabled = enabled;
@@ -47,15 +49,6 @@ public class Lever extends BasicStaticEntity {
 				setSprite(activated ? changingRight : changingLeft);
 			}
 		}
-	}
-
-	@Override
-	public void init(Game game) {
-		super.init(game);
-
-		activated = tagValue != null && (boolean) tagValue.get(game);
-
-		setSprite(activated ? left : right);
 	}
 
 	@Override
