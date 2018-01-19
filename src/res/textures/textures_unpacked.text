@@ -1,4 +1,4 @@
-233
+255
 single_stone 0 32 8 8
 row_stone_left 8 32 8 8
 row_stone_middle 16 32 8 8
@@ -75,21 +75,40 @@ coin_idle1_2 216 120 8 8
 coin_idle1_3 224 120 8 8
 coin_idle2_0 216 104 8 8
 coin_idle2_1 224 104 8 8
-coin_high 160 0 8 8
+coin_ghost 208 128 8 8
+coin_ghost_idle1_0 216 136 8 8
+coin_ghost_idle1_1 224 136 8 8
+coin_ghost_idle1_2 216 144 8 8
+coin_ghost_idle1_3 224 144 8 8
+coin_ghost_idle2_0 216 128 8 8
+coin_ghost_idle2_1 224 128 8 8
 chest_closed 168 0 8 8
 chest_closed_high 176 0 8 8
 chest_opened 176 8 8 8
 wood_ladder 184 0 8 8
 steel_ladder 184 8 8 8
-lever_left 152 8 8 8
-lever_middle 160 8 8 8
-lever_right 168 8 8 8
+lever_left 128 24 8 8
+lever_left_2 136 24 8 8
+lever_middle 144 24 8 8
+lever_right_2 128 32 8 8
+lever_right 136 32 8 8
 door_1 152 16 8 8
 door_2 160 16 8 8
 door_3 168 16 8 8
 door_4 152 24 8 8
 door_5 160 24 8 8
 door_6 168 24 8 8
+arrow_up 193 25 7 7
+arrow_down 200 25 7 7
+arrow_left 193 32 7 7
+arrow_right 200 32 7 7
+wood_ladder 184 0 8 8
+steel_ladder 184 8 8 8
+torch_orange 198 10 1 4
+torch_red 180 10 1 4
+torch_darkRed 182 10 1 4
+pressureplate 152 0 8 8
+pressureplate_pressed 160 0 8 8
 lantern 176 16 8 16
 platform 152 32 8 8
 platform_left 160 32 8 8
@@ -160,11 +179,6 @@ door_side 144 40 8 8
 door_side_open_0 152 40 8 8
 door_side_open_1 160 40 8 8
 door_side_open_2 168 40 8 8
-explanation_a_c 64 192 32 16
-explanation_b_c 96 192 32 16
-explanation_x_c 64 208 32 16
-explanation_y_c 96 208 32 16
-explanation_l_c 64 224 32 16
 explosion_1 184 184 24 24
 explosion_2 208 184 24 24
 explosion_3 232 184 24 24
@@ -232,4 +246,11 @@ text_mid_right 64 120 8 8
 text_bot_left 48 128 8 8
 text_bot_mid 56 128 8 8
 text_bot_right 64 128 8 8
-missing: SpikeTrap, Other Wood
+chain_top_right 120 24 8 8
+chain_top 112 24 8 8
+chain_top_left 104 24 8 8
+chain_left 104 32 8 8
+chain_right 120 32 8 8
+chain_bot_left 104 40 8 8
+chain_bot 112 40 8 8
+chain_bot_right 120 40 8 8

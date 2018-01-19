@@ -47,7 +47,7 @@ public class Text implements GameObject, Drawable {
 		letters = 0;
 		anchorY = 0;
 		anchorX = 0f;
-		color = Color.RED;
+		color = Color.CYAN.brighter();
 		setText(text);
 	}
 
