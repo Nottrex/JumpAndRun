@@ -18,6 +18,14 @@ public class Tree {
 		this.constant = constant;
 	}
 
+	public Tree(TreeValue value) {
+		this.childs = new Tree[0];
+		this.value = value;
+		this.childAmount = 0;
+		this.parent = null;
+		this.constant = false;
+	}
+
 	public Tree getChild(int id) {
 		return childs[id];
 	}

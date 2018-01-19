@@ -4,6 +4,7 @@ import game.Ability;
 import game.Constants;
 import game.data.hitbox.HitBox;
 import game.data.script.Parser;
+import game.data.script.Tree;
 import game.gameobjects.gameobjects.Text;
 import game.gameobjects.gameobjects.cameracontroller.Area;
 import game.gameobjects.gameobjects.entities.entities.*;
@@ -139,7 +140,8 @@ public class MapLoader {
 						map.addGameObject(new Spikes(x, y, drawingPriority));
 						break;
 					case "lever_left": case "lever_right": case "lever_middle":
-						map.addGameObject(new Lever(x, y, drawingPriority, Parser.loadScript(Parser.VAR, tags.getOrDefault("tag", "lever"))));
+						String tag = tags.getOrDefault("tag", "lever");
+						map.addGameObject(new Lever(x, y, drawingPriority, new Tree((t,g) -> g.getValue(tag) > 0), Parser.loadScript(Parser.COMMAND, String.format("#%s=(#%s+1);", tag, tag)), Parser.loadScript(Parser.COMMAND, String.format("#%s=(#%s-1);", tag, tag)), null));
 						break;
 					case "door_6": case "door_5": case "door_4": case "door_3": case "door_2": case "door_1":
 						map.addGameObject(new Door(x, y, drawingPriority, Parser.loadScript(Parser.BOOLEAN, tags.getOrDefault("condition", "#lever"))));
@@ -234,7 +236,24 @@ public class MapLoader {
 			for (int j = 0; j < 5; j++) {
 				hitBoxList.put(new HitBox(i * 5 + j, 0, 1f, 1f), "block_stone_middle");
 			}
-			map.addGameObject(new Lever(i * 5 + 2, 1, 1f, Parser.loadScript(Parser.VAR, abilities[i].name())));
+
+			final int j = i;
+			//The default state for the lever depends, if the game has this ability
+			//The lever is enabled if the game doesn't have this ability and the player has enough money
+			Lever lever = new Lever(i * 5 + 2, 1, 1f, new Tree((tree, game) -> game.hasAbility(abilities[j])), null, null, new Tree((tree, game) -> !game.hasAbility(abilities[j]) && game.getValue("coins") >= abilities[j].getCost()));
+
+			//When the lever is pressed the coins have to be removed and the ability has to be set
+			lever.setOnActivate(new Tree((tree, game) -> {
+				if (!game.hasAbility(abilities[j]) && game.getValue("coins") >= abilities[j].getCost()) {
+					game.addAbility(abilities[j]);
+					game.setValue("coins", game.getValue("coins") - abilities[j].getCost());
+				}
+
+				return null;
+			}));
+
+			map.addGameObject(lever);
+
 			map.addGameObject(new Text(1f, abilities[i].name(), i * 5 + 2.5f, 3, 0.5f, true, 0.5f, 0));
 			map.addGameObject(new Text(1f, String.valueOf(abilities[i].getCost()) + " coins", i * 5 + 2.5f, 4, 0.5f, true, 0.5f, 0));
 		}

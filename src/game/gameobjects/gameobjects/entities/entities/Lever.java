@@ -18,13 +18,15 @@ public class Lever extends BasicStaticEntity {
 	private boolean turning;
 	private int startTick;
 
-	private Tree tagValue;
-	private String tag;
+	private Tree onActivate, onDeactivate, tagValue, enabled;
 
-	public Lever(float x, float y, float drawingPriority, Tree tagValue) {
+	public Lever(float x, float y, float drawingPriority, Tree tagValue, Tree onActivate, Tree onDeactivate, Tree enabled) {
 		super(new HitBox(x, y, 1f, 1f), drawingPriority);
 
 		this.tagValue = tagValue;
+		this.onActivate = onActivate;
+		this.onDeactivate = onDeactivate;
+		this.enabled = enabled;
 		turning = false;
 		startTick = 0;
 	}
@@ -36,6 +38,8 @@ public class Lever extends BasicStaticEntity {
 
 	@Override
 	public void interact(CollisionObject gameObject, HitBox hitBox, InteractionType interactionType) {
+		if (enabled != null && !(boolean)enabled.get(game)) return;
+
 		if (gameObject instanceof Player) {
 			if (!turning) {
 				turning = true;
@@ -49,8 +53,8 @@ public class Lever extends BasicStaticEntity {
 	public void init(Game game) {
 		super.init(game);
 
-		this.tag = (String) tagValue.get(game);
-		activated = game.getValue(tag) > 0;
+		activated = tagValue != null && (boolean) tagValue.get(game);
+
 		setSprite(activated ? left : right);
 	}
 
@@ -61,7 +65,9 @@ public class Lever extends BasicStaticEntity {
 				activated = !activated;
 				turning = false;
 
-				game.setValue(tag, game.getValue(tag) + (activated ? 1 : -1));
+				if(activated && onActivate!=null) onActivate.get(game);
+				if(!activated && onDeactivate!=null) onDeactivate.get(game);
+
 				setSprite(activated ? left : right);
 			}
 		}
@@ -75,5 +81,17 @@ public class Lever extends BasicStaticEntity {
 	@Override
 	public float getCollisionPriority() {
 		return -5;
+	}
+
+	public void setEnabled(Tree enabled) {
+		this.enabled = enabled;
+	}
+
+	public void setOnActivate(Tree onActivate) {
+		this.onActivate = onActivate;
+	}
+
+	public void setOnDeactivate(Tree onDeactivate) {
+		this.onDeactivate = onDeactivate;
 	}
 }

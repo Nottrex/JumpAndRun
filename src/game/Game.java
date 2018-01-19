@@ -2,7 +2,6 @@ package game;
 
 import game.gamemap.GameMap;
 import game.gamemap.MapLoader;
-import game.gamemap.TagListener;
 import game.gameobjects.CollisionObject;
 import game.gameobjects.GameObject;
 import game.gameobjects.gameobjects.Fade;
@@ -67,7 +66,6 @@ public class Game {
 		while (window.isRunning()) {
 			gameTick++;
 			coinCounter.setText(values.getOrDefault("coins", 0).toString());
-			TagListener.saveAbilities(this);
 			time = TimeUtil.getTime();
 
 			handleInput();
