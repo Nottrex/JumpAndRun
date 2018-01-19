@@ -5,6 +5,8 @@ uniform int lightAmount;
 uniform vec3 lights[25];
 uniform vec3 lightColors[25];
 uniform float minBrightness;
+uniform float useCamera;
+uniform vec4 color;
 
 in vec2 fragTex;
 in vec2 fragPos;
@@ -13,13 +15,14 @@ out vec4 finalColor;
 
 void main() {
 
-    vec3 brightness = vec3 (0, 0, 0);
-    for (int i = 0; i < lightAmount; i++) {
+    vec3 brightness = vec3 (1-useCamera, 1-useCamera, 1-useCamera);
+    for (int i = 0; i < useCamera*lightAmount; i++) {
         float distance = ((lights[i].x - fragPos.x)*(lights[i].x - fragPos.x) + (lights[i].y - fragPos.y)*(lights[i].y - fragPos.y));
         brightness += lightColors[i] * clamp(pow(lights[i].z, distance), 0, 1);
     }
     brightness = vec3(clamp(brightness.r, 0, 1),clamp(brightness.g, 0, 1),clamp(brightness.b, 0, 1));
 
     finalColor = texture2D(tex, fragTex);
+    finalColor = mix(finalColor, finalColor.a*color, step(finalColor.r+finalColor.g+finalColor.b, 0.01));
     finalColor = vec4(finalColor.r * (brightness.r*(1-minBrightness) + minBrightness), finalColor.g * (brightness.g*(1-minBrightness) + minBrightness), finalColor.b * (brightness.b*(1-minBrightness) + minBrightness), finalColor.a);
 }

@@ -5,7 +5,7 @@ import game.window.shader.ShaderProgram;
 
 public class BasicShader extends ShaderProgram {
 	private int xLocation, yLocation, widthLocation, heightLocation;
-	private int texXLocation, texYLocation, texWLocation, texHLocation;
+	private int texXLocation, texYLocation, texWLocation, texHLocation, colorLocation, useCameraLocation;
 
 	public BasicShader() {
 		super(Constants.BASIC_VERTEX_FILE, Constants.BASIC_FRAGMENT_FILE);
@@ -29,6 +29,9 @@ public class BasicShader extends ShaderProgram {
 		texYLocation = getUniformLocation("texY");
 		texHLocation = getUniformLocation("texH");
 		texWLocation = getUniformLocation("texW");
+
+		colorLocation = getUniformLocation("color");
+		useCameraLocation = getUniformLocation("useCamera");
 	}
 
 	public void setBounds(float x, float y, float width, float height) {
@@ -43,5 +46,13 @@ public class BasicShader extends ShaderProgram {
 		setUniform1i(texYLocation, y);
 		setUniform1i(texWLocation, width);
 		setUniform1i(texHLocation, height);
+	}
+
+	public void setUseCamera(boolean useCamera) {
+		setUniform1f(useCameraLocation, useCamera ? 1 : 0);
+	}
+
+	public void setColor(float r, float g, float b, float a) {
+		setUniform4f(colorLocation, r, g, b, a);
 	}
 }

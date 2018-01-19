@@ -15,7 +15,10 @@ import game.window.Drawable;
 import game.window.Keyboard;
 import game.window.Window;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
+import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Game {
@@ -27,6 +30,7 @@ public class Game {
 	private List<CollisionObject> collisionObjects;
 	private List<Player> players;
 	private List<Integer> inputs;
+	private List<Color> playerColors;
 	private GameMap map;
 
 	private int fadeStart;
@@ -47,6 +51,7 @@ public class Game {
 
 		players = new ArrayList<>();
 		inputs = new ArrayList<>();
+		playerColors = new ArrayList<>();
 		gameObjects = new LinkedList<>();
 		collisionObjects = new LinkedList<>();
 		toRemove = new ConcurrentLinkedQueue<>();
@@ -55,7 +60,7 @@ public class Game {
 		values = new HashMap<>();
 		values.put("coins", 10);
 		abilities = new ArrayList<>();
-		coinCounter = new Text(0f, "0", 1, 1, 0.1f, false, 1, 1);
+		coinCounter = new Text(-1000f, "0", 1, 1, 0.1f, false, 1, 1);
 		addGameObject(coinCounter);
 
 		setGameMap("menu", false);
@@ -70,7 +75,7 @@ public class Game {
 
 			handleInput();
 
-			if (newMap != null && gameTick - fadeStart >= Constants.FADE_TIME/2) {
+			if (newMap != null && gameTick - fadeStart >= Constants.FADE_TIME / 2) {
 				GameMap newGameMap = MapLoader.load(this, newMap);
 				if (map != null) {
 					for (GameObject gameObject : map.getGameObjects()) {
@@ -101,6 +106,7 @@ public class Game {
 					int id = players.indexOf(gameObject);
 					players.remove(id);
 					inputs.remove(id);
+					playerColors.remove(id);
 				}
 			}
 
@@ -113,7 +119,10 @@ public class Game {
 				if (gameObject instanceof CollisionObject) collisionObjects.add((CollisionObject) gameObject);
 				if (gameObject instanceof Drawable) window.addDrawable((Drawable) gameObject);
 				if (gameObject instanceof ParticleSystem) particleSystem = (ParticleSystem) gameObject;
-				if (gameObject instanceof Player) players.add((Player) gameObject);
+				if (gameObject instanceof Player) {
+					players.add((Player) gameObject);
+					((Player) gameObject).setColor(playerColors.get(players.size() - 1));
+				}
 			}
 
 			collisionObjects.sort((o1, o2) -> Float.compare(o2.getCollisionPriority(), o1.getCollisionPriority()));
@@ -139,6 +148,7 @@ public class Game {
 				Player newPlayer = new Player(map.getSpawnX(), map.getSpawnY(), map.getPlayerDrawingPriority());
 				this.addGameObject(newPlayer);
 				inputs.add(i);
+				playerColors.add(new Color((float) Math.random(), (float) Math.random(), (float) Math.random(), 1));
 			}
 		}
 		for (int i = 0; i < players.size(); i++) {
@@ -180,7 +190,7 @@ public class Game {
 
 	public void removeGameObject(GameObject gameObject) {
 		if (!toRemove.contains(gameObject) && gameObjects.contains(gameObject)) toRemove.add(gameObject);
-		if(gameObject instanceof Player) {
+		if (gameObject instanceof Player) {
 			Player p = (Player) gameObject;
 			this.addGameObject(new DeadBody(p.getHitBox().x, p.getHitBox().y, "player"));
 		}
