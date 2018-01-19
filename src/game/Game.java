@@ -1,13 +1,17 @@
 package game;
 
+import game.data.Sprite;
+import game.data.hitbox.HitBox;
 import game.gamemap.GameMap;
 import game.gamemap.MapLoader;
 import game.gameobjects.CollisionObject;
 import game.gameobjects.GameObject;
 import game.gameobjects.gameobjects.Fade;
 import game.gameobjects.gameobjects.Text;
+import game.gameobjects.gameobjects.entities.entities.Coin;
 import game.gameobjects.gameobjects.entities.entities.DeadBody;
 import game.gameobjects.gameobjects.entities.entities.Player;
+import game.gameobjects.gameobjects.entities.entities.ScreenEntity;
 import game.gameobjects.gameobjects.particle.ParticleSystem;
 import game.util.TimeUtil;
 import game.window.Camera;
@@ -42,6 +46,8 @@ public class Game {
 
 	private Map<String, Integer> values;
 	private List<Ability> abilities;
+
+	private ScreenEntity coinCounterCoin;
 	private Text coinCounter;
 
 	public Game(Window window) {
@@ -60,8 +66,11 @@ public class Game {
 		values = new HashMap<>();
 		values.put("coins", 10);
 		abilities = new ArrayList<>();
-		coinCounter = new Text(-1000f, "0", 1, 1, 0.1f, false, 1, 1);
+
+		coinCounter = new Text(-1000f, "0", 1, 1-(0.1f/6), 0.1f, false, 1, 1);
+		coinCounterCoin = new ScreenEntity(new HitBox(1, 1, 0.4f/3, 0.4f/3), -1000, Coin.idle, 1, 1);
 		addGameObject(coinCounter);
+		addGameObject(coinCounterCoin);
 
 		setGameMap("menu", false);
 	}
@@ -71,6 +80,7 @@ public class Game {
 		while (window.isRunning()) {
 			gameTick++;
 			coinCounter.setText(values.getOrDefault("coins", 0).toString());
+			coinCounter.setPosition(1 - coinCounterCoin.getWidth(), 1-(0.1f/6), 0.1f);
 			time = TimeUtil.getTime();
 
 			handleInput();

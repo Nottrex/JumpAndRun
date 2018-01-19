@@ -204,7 +204,6 @@ public class MapLoader {
 
 		for (float drawingPriority : layers.keySet()) {
 			Map<HitBox, String> layer = layers.get(drawingPriority);
-			System.out.println(drawingPriority);
 			if (drawingPriority <= 0.55 && drawingPriority >= 0.45) map.addGameObject(new Wall(layer, drawingPriority));
 			else map.addGameObject(new Background(layer, drawingPriority));
 

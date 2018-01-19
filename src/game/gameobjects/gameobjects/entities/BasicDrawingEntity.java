@@ -48,7 +48,11 @@ public abstract class BasicDrawingEntity extends AbstractGameObject implements D
 		shader.setUseCamera(useCamera);
 		shader.setColor(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
 		shader.setTextureSheetBounds(bounds.x, bounds.y, bounds.width, bounds.height);
-		shader.setBounds(hitBox.getCenterX() - bounds.width / (2 * (float) Constants.PIXEL_PER_TILE), hitBox.getCenterY() - bounds.height / (2 * (float) Constants.PIXEL_PER_TILE), bounds.width / ((float) Constants.PIXEL_PER_TILE), bounds.height / ((float) Constants.PIXEL_PER_TILE));
+		if (useCamera) {
+			shader.setBounds(hitBox.getCenterX() - bounds.width / (2 * (float) Constants.PIXEL_PER_TILE), hitBox.getCenterY() - bounds.height / (2 * (float) Constants.PIXEL_PER_TILE), bounds.width / ((float) Constants.PIXEL_PER_TILE), bounds.height / ((float) Constants.PIXEL_PER_TILE));
+		} else {
+			shader.setBounds(hitBox.x, hitBox.y, hitBox.width, hitBox.height);
+		}
 
 		GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, 4);
 	}
