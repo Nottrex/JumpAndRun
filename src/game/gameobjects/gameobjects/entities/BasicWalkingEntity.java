@@ -1,5 +1,6 @@
 package game.gameobjects.gameobjects.entities;
 
+import game.Ability;
 import game.Constants;
 import game.Game;
 import game.data.hitbox.HitBox;
@@ -38,8 +39,7 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 		vx = mx * Constants.MAX_WALKING_SPEED;
 		if(Math.abs(mx) >= 0.2f) lastMX = mx;
 		if (-vy < Constants.MAX_GRAVITY_SPEED) vy = Math.max(vy - Constants.GRAVITY_ACCELERATION, -Constants.MAX_GRAVITY_SPEED);
-		if (down && -vy < Constants.MAX_DOWN_SPEED) vy = Math.max(vy - Constants.DOWN_ACCELERATION, -Constants.MAX_DOWN_SPEED);
-
+		if (game.hasAbility(Ability.STOMP) && down && -vy < Constants.MAX_DOWN_SPEED) vy = Math.max(vy - Constants.DOWN_ACCELERATION, -Constants.MAX_DOWN_SPEED);
 		if (((onGround && !jumpingLastTick) || (jumpTicks < Constants.MAX_JUMP_TICKS && jumpTicks > 0)) && jumping) {
 			vy = Constants.JUMP_ACCELERATION;
 			jumpTicks++;

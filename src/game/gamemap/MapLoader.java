@@ -1,5 +1,6 @@
 package game.gamemap;
 
+import game.Ability;
 import game.Constants;
 import game.data.hitbox.HitBox;
 import game.data.script.Parser;
@@ -21,7 +22,7 @@ public class MapLoader {
 	public static GameMap load(String mapName) {
 		if (mapName.equals("menu")) return createLobby("lobby", "shop", "options");
 		if (mapName.equals("lobby")) return createLobby(getMaps().toArray(new String[0]));
-		if (mapName.equals("shop")) return createLobby("menu");
+		if (mapName.equals("shop")) return createShop();
 		if (mapName.equals("options")) return createLobby("menu");
 
 		if (!FileHandler.fileExists("maps/" + mapName + ".map")) {
@@ -134,7 +135,7 @@ public class MapLoader {
 					case "box":
 						map.addGameObject(new Box(x, y, drawingPriority));
 						break;
-					case "spikes_bot":
+					case "spikes_bot_blood":
 						map.addGameObject(new Spikes(x, y, drawingPriority));
 						break;
 					case "lever_left": case "lever_right": case "lever_middle":
@@ -215,12 +216,32 @@ public class MapLoader {
 			map.addGameObject(new Wall(hitBoxList, 0.5f));
 			map.addGameObject(new Exit(i * 9 + 4, 4, 1f, mapNames[i]));
 			map.addGameObject(new Text(1f, mapNames[i].substring(mapNames[i].indexOf(File.separator) + 1), i * 9 + 4.5f, 6, 0.5f, true, 0.5f, 0));
-			System.out.println(mapNames[i].substring(mapNames[i].indexOf(File.separator)+1));
 			map.addGameObject(new Lantern(i * 9 + 2, 1, 1f));
 			map.getCameraController().addCameraArea(new Area(i*9, -2, i*9+9, 9));
 		}
 		map.setSpawnPoint(0,1,0.5f);
+		map.addGameObject(new Exit(0, 1, 1f, "menu"));
 
+		return map;
+	}
+
+	private static GameMap createShop() {
+		GameMap map = new GameMap();
+		Ability[] abilities = Ability.values();
+		Map<HitBox, String> hitBoxList = new HashMap<>();
+
+		for (int i = 0; i < abilities.length; i++) {
+			for (int j = 0; j < 5; j++) {
+				hitBoxList.put(new HitBox(i * 5 + j, 0, 1f, 1f), "block_stone_middle");
+			}
+			map.addGameObject(new Lever(i * 5 + 2, 1, 1f, Parser.loadScript(Parser.VAR, abilities[i].name())));
+			map.addGameObject(new Text(1f, abilities[i].name(), i * 5 + 2.5f, 3, 0.5f, true, 0.5f, 0));
+			map.addGameObject(new Text(1f, String.valueOf(abilities[i].getCost()) + " coins", i * 5 + 2.5f, 4, 0.5f, true, 0.5f, 0));
+		}
+		hitBoxList.put(new HitBox(-1, 0, 1f, 1f), "block_stone_middle");
+		map.addGameObject(new Exit(-1, 1, 1, "menu"));
+		map.addGameObject(new Wall(hitBoxList, 1f));
+		map.setSpawnPoint(-1, 1, 0.5f);
 		return map;
 	}
 

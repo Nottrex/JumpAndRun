@@ -2,6 +2,7 @@ package game;
 
 import game.gamemap.GameMap;
 import game.gamemap.MapLoader;
+import game.gamemap.TagListener;
 import game.gameobjects.CollisionObject;
 import game.gameobjects.GameObject;
 import game.gameobjects.gameobjects.Fade;
@@ -37,6 +38,7 @@ public class Game {
 	private ParticleSystem particleSystem;
 
 	private Map<String, Integer> values;
+	private List<Ability> abilities;
 	private Text coinCounter;
 
 	public Game(Window window) {
@@ -52,6 +54,8 @@ public class Game {
 		toAdd = new ConcurrentLinkedQueue<>();
 
 		values = new HashMap<>();
+		values.put("coins", 10);
+		abilities = new ArrayList<>();
 		coinCounter = new Text(0f, "0", 1, 1, 0.1f, false, 1, 1);
 		addGameObject(coinCounter);
 
@@ -63,6 +67,7 @@ public class Game {
 		while (window.isRunning()) {
 			gameTick++;
 			coinCounter.setText(values.getOrDefault("coins", 0).toString());
+			TagListener.saveAbilities(this);
 			time = TimeUtil.getTime();
 
 			handleInput();
@@ -213,5 +218,13 @@ public class Game {
 
 	public void setValue(String key, int value) {
 		values.put(key, value);
+	}
+
+	public boolean hasAbility(Ability ability) {
+		return abilities.contains(ability);
+	}
+
+	public void addAbility(Ability ability) {
+		if (!abilities.contains(ability)) abilities.add(ability);
 	}
 }
