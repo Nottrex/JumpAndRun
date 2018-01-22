@@ -24,7 +24,7 @@ import java.util.Map;
 public class Text implements GameObject, Drawable {
 	private float x, y, size, drawingPriority;
 	private boolean useCamera;
-	private int letters;
+	private int letters, timer;
 	private String text;
 	private Color color;
 
@@ -47,7 +47,8 @@ public class Text implements GameObject, Drawable {
 		letters = 0;
 		anchorY = 0;
 		anchorX = 0f;
-		color = Color.CYAN.brighter();
+		color = Color.WHITE;
+		timer = -1;
 		setText(text);
 	}
 
@@ -99,6 +100,9 @@ public class Text implements GameObject, Drawable {
 		GL11.glDrawElements(GL11.GL_TRIANGLES, letters * Constants.INDICES.length, GL11.GL_UNSIGNED_INT, 0);
 
 		GL30.glBindVertexArray(vao2);
+
+		if (timer == 0) setText("");
+		else if (timer > 0) timer--;
 	}
 
 	@Override
@@ -232,6 +236,10 @@ public class Text implements GameObject, Drawable {
 
 	public void setColor(Color color) {
 		this.color = color;
+	}
+
+	public void setTimer(int ticks) {
+		this.timer = ticks;
 	}
 
 	public static float getWidth(String text, float size) {

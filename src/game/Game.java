@@ -72,7 +72,7 @@ public class Game {
 		addGameObject(coinCounter);
 		addGameObject(coinCounterCoin);
 
-		setGameMap("menu", false);
+		setGameMap(Constants.SYS_PREFIX + "menu", false);
 	}
 
 	public void gameLoop() {
@@ -232,6 +232,23 @@ public class Game {
 
 	public int getValue(String key) {
 		return values.getOrDefault(key, 0);
+	}
+
+	public int getKeyAmount(String key, int... value) {
+		String[] keySet = values.keySet().toArray(new String[0]);
+		int amount = 0;
+		for (String s: keySet) {
+			if (s.contains(key)) {
+				if (value.length == 0) {
+					amount++;
+				} else {
+					for (int v : value) {
+						if (v == values.get(s)) amount++;
+					}
+				}
+			}
+		}
+		return amount;
 	}
 
 	public void setValue(String key, int value) {

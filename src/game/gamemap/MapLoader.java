@@ -22,14 +22,18 @@ public class MapLoader {
 
 
 	public static GameMap load(Game g, String mapName) {
-		if (mapName.equals("menu")) return createLobby(g, "lobby", "shop", "options");
-		if (mapName.equals("lobby")) return createLobby(g, getMaps().toArray(new String[0]));
-		if (mapName.equals("shop")) return createShop(g);
-		if (mapName.equals("options")) return createLobby(g, "menu");
+		if (mapName.startsWith(Constants.SYS_PREFIX)) {
+			if (mapName.endsWith("menu")) return createLobby(g, Constants.SYS_PREFIX + "lobby", Constants.SYS_PREFIX + "shop", Constants.SYS_PREFIX + "options");
+			if (mapName.endsWith("lobby")) return createLobby(g, getMaps().toArray(new String[0]));
+			if (mapName.endsWith("shop")) return createShop(g);
+			if (mapName.endsWith("options")) return createLobby(g, "menu");
+		}
 
 		if (!FileHandler.fileExists("maps/" + mapName + ".map")) {
-			GameMap map = load(g, "menu");
-			map.addGameObject(new Text(-100, "Something went wrong. We send you back to Menu", 0, 0, 0.05f, false, 0.5f, 0));
+			GameMap map = load(g, Constants.SYS_PREFIX + "menu");
+			Text text = new Text(-100, "Something went wrong. We send you back to Menu", -0.9f, -0.9f, 0.05f, false, 0, 0);
+			text.setTimer(300);
+			map.addGameObject(text);
 			return map;
 		}
 
@@ -126,17 +130,16 @@ public class MapLoader {
 						map.getCameraController().setSpawn(x, y);
 						break;
 					case "coin":
-						String tag2 = String.format("%s_coin_%f_%f", mapName, x, y);
-						String mapCoins = String.format("%s_coin", mapName);
-						map.addGameObject(new Coin(x, y, drawingPriority,g.getValue(tag2) > 0, new Tree((tree, game) -> {
-							game.setValue(tag2, 1);											//Mark this coin as collected
-							game.setValue(mapCoins, game.getValue(mapCoins) + 1);			//Raise the amount of collected coins in this map
+						String coinID = String.format("%s_coin_%f_%f", mapName, x, y);
+						if (g.getValue(coinID) == 0) g.setValue(coinID, 0);
+						map.addGameObject(new Coin(x, y, drawingPriority,g.getValue(coinID) > 0, new Tree((tree, game) -> {
+							game.setValue(coinID, 1);											//Mark this coin as collected
 							game.setValue("coins", game.getValue("coins") + 1);			//Raise the total amount of collected coins
 							return null;
 						}), null));
 						break;
 					case "door_side": case "door_side_open_0": case "door_side_open_1": case "door_side_open":
-						map.addGameObject(new Exit(x, y, drawingPriority, tags.getOrDefault("target", "lobby")));
+						map.addGameObject(new Exit(x, y, drawingPriority, tags.getOrDefault("target", Constants.SYS_PREFIX + "lobby")));
 						break;
 					case "lantern":
 						map.addGameObject(new Lantern(x, y, drawingPriority));
@@ -224,8 +227,10 @@ public class MapLoader {
 			}
 			map.addGameObject(new Wall(hitBoxList, 0.5f));
 			map.addGameObject(new Exit(i * 9 + 4, 4, 1f, mapNames[i]));
-			map.addGameObject(new Text(1f, mapNames[i].substring(mapNames[i].indexOf(File.separator) + 1), i * 9 + 4.5f, 6, 0.5f, true, 0.5f, 0));
-			map.addGameObject(new Text(1f, g.getValue(mapNames[i].substring(mapNames[i].indexOf(File.separator) + 1) + "_coin") + "", i * 9 + 4.5f, 7, 0.5f, true, 0.5f, 0));
+			map.addGameObject(new Text(1f, mapNames[i].replaceAll(Constants.SYS_PREFIX, ""), i * 9 + 4.5f, 6, 0.5f, true, 0.5f, 0));
+			if (!mapNames[i].contains(Constants.SYS_PREFIX)) {
+				map.addGameObject(new Text(1f, String.valueOf(g.getKeyAmount(mapNames[i] + "_coin_", 1)) + "/" + String.valueOf(g.getKeyAmount(mapNames[i] + "_coin_")), i * 9 + 4.5f, 7, 0.5f, true, 0.5f, 0));
+			}
 			map.addGameObject(new Lantern(i * 9 + 2, 1, 1f));
 			map.getCameraController().addCameraArea(new Area(i*9, -2, i*9+9, 9));
 		}
@@ -280,11 +285,6 @@ public class MapLoader {
 		for (File f: listOfFiles) {
 			if (f.isFile() && f.getName().endsWith(".map")) {
 				maps.add(f.getName().replaceAll(".map", ""));
-			} else if (f.isDirectory()) {
-				File mapFile = new File(f.getPath() + File.separator + f.getName() + ".map");
-				if (mapFile.exists() && mapFile.isFile()) {
-					maps.add(f.getName() + File.separator + f.getName());
-				}
 			}
 		}
 		return maps;

@@ -59,6 +59,7 @@ public class Constants {
 
 	public static final String DATA_PATH = System.getProperty("user.dir") + File.separator + "src" + File.separator;
 	public static final String DATA_FILE_PATH = DATA_PATH + "options.yml";
+	public static final String SYS_PREFIX = String.valueOf(Math.random());
 
 	static {
 		DEFAULT_CONTROLS.put("UP0", Keyboard.KEY_W);
