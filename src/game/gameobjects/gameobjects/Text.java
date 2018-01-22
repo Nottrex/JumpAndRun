@@ -100,9 +100,6 @@ public class Text implements GameObject, Drawable {
 		GL11.glDrawElements(GL11.GL_TRIANGLES, letters * Constants.INDICES.length, GL11.GL_UNSIGNED_INT, 0);
 
 		GL30.glBindVertexArray(vao2);
-
-		if (timer == 0) setText("");
-		else if (timer > 0) timer--;
 	}
 
 	@Override
@@ -212,7 +209,8 @@ public class Text implements GameObject, Drawable {
 
 	@Override
 	public void update(Game game) {
-
+		if (timer == 0) game.removeGameObject(this);
+		else if (timer > 0) timer--;
 	}
 
 	public void setPosition(float x, float y, float size) {

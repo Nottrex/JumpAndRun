@@ -1,14 +1,16 @@
 package game.window.shader.shader;
 
-import game.Constants;
 import game.window.shader.ShaderProgram;
 
 public class BasicShader extends ShaderProgram {
+	private static final String BASIC_FRAGMENT_FILE = "basicFragmentShader";
+	private static final String BASIC_VERTEX_FILE = "basicVertexShader";
+
 	private int xLocation, yLocation, widthLocation, heightLocation;
 	private int texXLocation, texYLocation, texWLocation, texHLocation, colorLocation, useCameraLocation;
 
 	public BasicShader() {
-		super(Constants.BASIC_VERTEX_FILE, Constants.BASIC_FRAGMENT_FILE);
+		super(BASIC_VERTEX_FILE, BASIC_FRAGMENT_FILE);
 	}
 
 	@Override

@@ -1,15 +1,16 @@
 package game.window.shader.shader;
 
-import game.Constants;
 import game.window.shader.ShaderProgram;
 
 public class StaticShader extends ShaderProgram {
+	private static final String STATIC_VERTEX_FILE = "staticVertexShader";
+	private static final String STATIC_FRAGMENT_FILE = "staticFragmentShader";
 
 	private int locationLocation, texLocationLocation;
 	private int alphaLocation;
 
 	public StaticShader() {
-		super(Constants.STATIC_VERTEX_FILE, Constants.STATIC_FRAGMENT_FILE);
+		super(STATIC_VERTEX_FILE, STATIC_FRAGMENT_FILE);
 	}
 
 	@Override

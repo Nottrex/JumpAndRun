@@ -72,7 +72,7 @@ public class Game {
 		addGameObject(coinCounter);
 		addGameObject(coinCounterCoin);
 
-		setGameMap(Constants.SYS_PREFIX + "menu", false);
+		setGameMap(Constants.SYS_PREFIX + "lobby", false);
 	}
 
 	public void gameLoop() {

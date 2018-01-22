@@ -1,15 +1,16 @@
 package game.window.shader.shader;
 
-import game.Constants;
 import game.window.shader.ShaderProgram;
 
 public class TextShader extends ShaderProgram {
+	private static final String TEXT_VERTEX_FILE = "textVertexShader";
+	private static final String TEXT_FRAGMENT_FILE = "textFragmentShader";
 
 	private int locationLocation, texLocationLocation;
 	private int colorLocation, useCameraLocation;
 
 	public TextShader() {
-		super(Constants.TEXT_VERTEX_FILE, Constants.TEXT_FRAGMENT_FILE);
+		super(TEXT_VERTEX_FILE, TEXT_FRAGMENT_FILE);
 	}
 
 	@Override

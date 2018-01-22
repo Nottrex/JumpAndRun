@@ -17,17 +17,6 @@ public class Constants {
 	public static final float FAR = 1000f;
 	public static final int TPS = 60;
 
-	public static final String COLOR_VERTEX_FILE = "colorVertexShader";
-	public static final String COLOR_FRAGMENT_FILE = "colorFragmentShader";
-	public static final String BASIC_VERTEX_FILE = "basicVertexShader";
-	public static final String BASIC_FRAGMENT_FILE = "basicFragmentShader";
-	public static final String PARTICLE_VERTEX_FILE = "particleVertexShader";
-	public static final String PARTICLE_FRAGMENT_FILE = "particleFragmentShader";
-	public static final String STATIC_VERTEX_FILE = "staticVertexShader";
-	public static final String STATIC_FRAGMENT_FILE = "staticFragmentShader";
-	public static final String TEXT_VERTEX_FILE = "textVertexShader";
-	public static final String TEXT_FRAGMENT_FILE = "textFragmentShader";
-
 	public static final float JUMP_ACCELERATION = 0.3f;
 	public static final float MAX_WALKING_SPEED = 0.175f;
 	public static final float DOWN_ACCELERATION = 0.04f;
@@ -36,9 +25,6 @@ public class Constants {
 	public static final float MAX_GRAVITY_SPEED = 0.3f;
 	public static final int MAX_JUMP_TICKS = 10;
 	public static final float MAX_SPEED = 0.5f;
-
-	public static final Map<String, Integer> DEFAULT_CONTROLS = new HashMap<>();
-	public static final float DEAD_ZONE = 0.2f;
 
 	public static int PIXEL_PER_TILE = 8;
 	public static final float FONT_ASPECT = 1.4f; 		//FONT_HEIGHT / FONT_WIDTH
@@ -60,6 +46,9 @@ public class Constants {
 	public static final String DATA_PATH = System.getProperty("user.dir") + File.separator + "src" + File.separator;
 	public static final String DATA_FILE_PATH = DATA_PATH + "options.yml";
 	public static final String SYS_PREFIX = String.valueOf(Math.random());
+
+	public static final Map<String, Integer> DEFAULT_CONTROLS = new HashMap<>();
+	public static final float DEAD_ZONE = 0.2f;
 
 	static {
 		DEFAULT_CONTROLS.put("UP0", Keyboard.KEY_W);

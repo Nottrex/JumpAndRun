@@ -1,6 +1,5 @@
 package game.gamemap;
 
-import game.Ability;
 import game.Constants;
 import game.Game;
 import game.data.hitbox.HitBox;
@@ -9,28 +8,28 @@ import game.data.script.Tree;
 import game.gameobjects.gameobjects.Text;
 import game.gameobjects.gameobjects.cameracontroller.Area;
 import game.gameobjects.gameobjects.entities.entities.*;
-import game.gameobjects.gameobjects.wall.*;
+import game.gameobjects.gameobjects.wall.Background;
+import game.gameobjects.gameobjects.wall.Wall;
 import game.util.ErrorUtil;
 import game.util.FileHandler;
 import game.util.TextureHandler;
 
 import java.awt.*;
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
 public class MapLoader {
 
 
 	public static GameMap load(Game g, String mapName) {
-		if (mapName.startsWith(Constants.SYS_PREFIX)) {
-			if (mapName.endsWith("menu")) return createLobby(g, Constants.SYS_PREFIX + "lobby", Constants.SYS_PREFIX + "shop", Constants.SYS_PREFIX + "options");
-			if (mapName.endsWith("lobby")) return createLobby(g, getMaps().toArray(new String[0]));
-			if (mapName.endsWith("shop")) return createShop(g);
-			if (mapName.endsWith("options")) return createLobby(g, "menu");
-		}
+		if (mapName.equals(Constants.SYS_PREFIX + "lobby")) return createLobby(g, getMaps().toArray(new String[0]));
+		if (mapName.equals(Constants.SYS_PREFIX + "options")) return createLobby(g, "menu");
 
 		if (!FileHandler.fileExists("maps/" + mapName + ".map")) {
-			GameMap map = load(g, Constants.SYS_PREFIX + "menu");
+			GameMap map = load(g, Constants.SYS_PREFIX + "lobby");
 			Text text = new Text(-100, "Something went wrong. We send you back to Menu", -0.9f, -0.9f, 0.05f, false, 0, 0);
 			text.setTimer(300);
 			map.addGameObject(text);
@@ -125,20 +124,50 @@ public class MapLoader {
 				}
 
 				switch (texture) {
-					case "player_r_idle_0": case "player_r_idle_1": case "player_r_move_0": case "player_r_move_1": case "player_r_move_2": case "player_r_move_3": case "player_r_fall": case "player_r_sword_0": case "player_r_sword_1": case "player_r_sword_2": case "player_r_sword_3": case "player_r_sword_4": case "player_r_sword_5": case "player_r_sword_6": case "player_l_idle_0": case "player_l_idle_1": case "player_l_move_0": case "player_l_move_1": case "player_l_move_2": case "player_l_move_3": case "player_l_fall": case "player_l_sword_0": case "player_l_sword_1": case "player_l_sword_2": case "player_l_sword_3": case "player_l_sword_4": case "player_l_sword_5": case "player_l_sword_6":
+					case "player_r_idle_0":
+					case "player_r_idle_1":
+					case "player_r_move_0":
+					case "player_r_move_1":
+					case "player_r_move_2":
+					case "player_r_move_3":
+					case "player_r_fall":
+					case "player_r_sword_0":
+					case "player_r_sword_1":
+					case "player_r_sword_2":
+					case "player_r_sword_3":
+					case "player_r_sword_4":
+					case "player_r_sword_5":
+					case "player_r_sword_6":
+					case "player_l_idle_0":
+					case "player_l_idle_1":
+					case "player_l_move_0":
+					case "player_l_move_1":
+					case "player_l_move_2":
+					case "player_l_move_3":
+					case "player_l_fall":
+					case "player_l_sword_0":
+					case "player_l_sword_1":
+					case "player_l_sword_2":
+					case "player_l_sword_3":
+					case "player_l_sword_4":
+					case "player_l_sword_5":
+					case "player_l_sword_6":
 						map.setSpawnPoint(x, y, drawingPriority);
 						map.getCameraController().setSpawn(x, y);
 						break;
 					case "coin":
 						String coinID = String.format("%s_coin_%f_%f", mapName, x, y);
 						if (g.getValue(coinID) == 0) g.setValue(coinID, 0);
-						map.addGameObject(new Coin(x, y, drawingPriority,g.getValue(coinID) > 0, new Tree((tree, game) -> {
-							game.setValue(coinID, 1);											//Mark this coin as collected
-							game.setValue("coins", game.getValue("coins") + 1);			//Raise the total amount of collected coins
+						map.addGameObject(new Coin(x, y, drawingPriority, g.getValue(coinID) > 0, new Tree((tree, game) -> {
+							game.setValue(coinID, 1);                                            //Mark this coin as collected
+							game.setValue("coins", game.getValue("coins") + 1);            //Raise the total amount of collected coins
 							return null;
 						}), null));
 						break;
-					case "door_side": case "door_side_open_0": case "door_side_open_1": case "door_side_open":
+					case "door_side":
+					case "door_side_open_0":
+					case "door_side_open_1":
+					case "door_side_open":
 						map.addGameObject(new Exit(x, y, drawingPriority, tags.getOrDefault("target", Constants.SYS_PREFIX + "lobby")));
 						break;
 					case "lantern":
@@ -150,11 +179,18 @@ public class MapLoader {
 					case "spikes_bot_blood":
 						map.addGameObject(new Spikes(x, y, drawingPriority));
 						break;
-					case "lever_left": case "lever_right": case "lever_middle":
+					case "lever_left":
+					case "lever_right":
+					case "lever_middle":
 						String tag = tags.getOrDefault("tag", "lever");
 						map.addGameObject(new Lever(x, y, drawingPriority, g.getValue(tag) > 0, Parser.loadScript(Parser.COMMAND, String.format("#%s=(#%s+1);", tag, tag)), Parser.loadScript(Parser.COMMAND, String.format("#%s=(#%s-1);", tag, tag)), null));
 						break;
-					case "door_6": case "door_5": case "door_4": case "door_3": case "door_2": case "door_1":
+					case "door_6":
+					case "door_5":
+					case "door_4":
+					case "door_3":
+					case "door_2":
+					case "door_1":
 						map.addGameObject(new Door(x, y, drawingPriority, Parser.loadScript(Parser.BOOLEAN, tags.getOrDefault("condition", "#lever"))));
 						break;
 					default:
@@ -170,13 +206,7 @@ public class MapLoader {
 
 						}
 
-						if (layers.containsKey(drawingPriority)) {
-							layers.get(drawingPriority).put(hitBox, texture);
-						} else {
-							Map<HitBox, String> layer = new HashMap<>();
-							layer.put(hitBox, texture);
-							layers.put(drawingPriority, layer);
-						}
+						add(layers, hitBox, texture, drawingPriority);
 				}
 			}
 
@@ -216,65 +246,66 @@ public class MapLoader {
 
 	private static GameMap createLobby(Game g, String... mapNames) {
 		GameMap map = new GameMap();
-		for (int i = 0; i < mapNames.length; i++) {
-			Map<HitBox, String> hitBoxList = new HashMap<>();
+		Map<Float, Map<HitBox, String>> layers = new HashMap<>();
+
+		{
 			for (int j = 0; j < 9; j++) {
-				hitBoxList.put(new HitBox(i * 9 + j, 0, 1f, 1f), "block_stone_middle");
+				for (int k = 0; k < 8; k++) {
+					add(layers, new HitBox(j, k, 1f, 1f), "block_stone_middle", 1);
+					add(layers, new HitBox(j, k, 1f, 1f), "black_5", 0.75f);
+				}
+
+				add(layers, new HitBox(j, 0, 1f, 1f), "block_stone_middle", 0.5f);
 				if (j < 6 && j > 2) {
-					hitBoxList.put(new HitBox(i * 9 + j, 3, 1f, 1f), "block_wood_middle");
-					map.addGameObject(new Ladder(i * 9 + 6, j - 2, 1f));
+					add(layers, new HitBox(j, 3, 1f, 1f), "block_wood_middle", 0.5f);
+					map.addGameObject(new Ladder(6, j - 2, 0.7f));
 				}
 			}
-			map.addGameObject(new Wall(hitBoxList, 0.5f));
-			map.addGameObject(new Exit(i * 9 + 4, 4, 1f, mapNames[i]));
-			map.addGameObject(new Text(1f, mapNames[i].replaceAll(Constants.SYS_PREFIX, ""), i * 9 + 4.5f, 6, 0.5f, true, 0.5f, 0));
-			if (!mapNames[i].contains(Constants.SYS_PREFIX)) {
-				map.addGameObject(new Text(1f, String.valueOf(g.getKeyAmount(mapNames[i] + "_coin_", 1)) + "/" + String.valueOf(g.getKeyAmount(mapNames[i] + "_coin_")), i * 9 + 4.5f, 7, 0.5f, true, 0.5f, 0));
-			}
-			map.addGameObject(new Lantern(i * 9 + 2, 1, 1f));
-			map.getCameraController().addCameraArea(new Area(i*9, -2, i*9+9, 9));
+			map.addGameObject(new Exit(4, 4, 0.7f, Constants.SYS_PREFIX + "options"));
+			map.addGameObject(new Text(0.7f, "options", 4.5f, 6, 0.5f, true, 0.5f, 0));
+			map.addGameObject(new Lantern(2, 1, 0.7f));
+			map.getCameraController().addCameraArea(new Area(0, -2, 9, 9));
 		}
-		map.setSpawnPoint(0,1,0.5f);
-		map.addGameObject(new Exit(0, 1, 1f, "menu"));
+
+		for (int i = 1; i <= mapNames.length; i++) {
+			for (int j = 0; j < 9; j++) {
+				for (int k = 0; k < 8; k++) {
+					add(layers, new HitBox(i * 9 + j, k, 1f, 1f), "block_stone_middle", 1);
+					add(layers, new HitBox(i * 9 + j, k, 1f, 1f), "black_5", 0.75f);
+				}
+
+				add(layers, new HitBox(i * 9 + j, 0, 1f, 1f), "block_stone_middle", 0.5f);
+				if (j < 6 && j > 2) {
+					add(layers, new HitBox(i * 9 + j, 3, 1f, 1f), "block_wood_middle", 0.5f);
+					map.addGameObject(new Ladder(i * 9 + 6, j - 2, 0.7f));
+				}
+			}
+			map.addGameObject(new Exit(i * 9 + 4, 4, 0.7f, mapNames[i - 1]));
+			map.addGameObject(new Text(0.7f, mapNames[i - 1], i * 9 + 4.5f, 6, 0.5f, true, 0.5f, 0));
+			map.addGameObject(new Text(0.7f, String.valueOf(g.getKeyAmount(mapNames[i - 1] + "_coin_", 1)) + "/" + String.valueOf(g.getKeyAmount(mapNames[i - 1] + "_coin_")), i * 9 + 4.5f, 7, 0.5f, true, 0.5f, 0));
+			map.addGameObject(new Lantern(i * 9 + 2, 1, 0.7f));
+			map.getCameraController().addCameraArea(new Area(i * 9, -2, i * 9 + 9, 9));
+		}
+		map.setSpawnPoint(0, 1, 0.5f);
+
+		for (float drawingPriority : layers.keySet()) {
+			Map<HitBox, String> layer = layers.get(drawingPriority);
+			if (drawingPriority <= 0.55 && drawingPriority >= 0.45) map.addGameObject(new Wall(layer, drawingPriority));
+			else map.addGameObject(new Background(layer, drawingPriority));
+
+		}
 
 		return map;
 	}
 
-	private static GameMap createShop(Game g) {
-		GameMap map = new GameMap();
-		Ability[] abilities = Ability.values();
-		Map<HitBox, String> hitBoxList = new HashMap<>();
-
-		for (int i = 0; i < abilities.length; i++) {
-			for (int j = 0; j < 5; j++) {
-				hitBoxList.put(new HitBox(i * 5 + j, 0, 1f, 1f), "block_stone_middle");
-			}
-
-			final int j = i;
-			//The default state for the lever depends, if the game has this ability
-			//The lever is enabled if the game doesn't have this ability and the player has enough money
-			Lever lever = new Lever(i * 5 + 2, 1, 1f, g.hasAbility(abilities[j]), null, null, new Tree((tree, game) -> !game.hasAbility(abilities[j]) && game.getValue("coins") >= abilities[j].getCost()));
-
-			//When the lever is pressed the coins have to be removed and the ability has to be set
-			lever.setOnActivate(new Tree((tree, game) -> {
-				if (!game.hasAbility(abilities[j]) && game.getValue("coins") >= abilities[j].getCost()) {
-					game.addAbility(abilities[j]);
-					game.setValue("coins", game.getValue("coins") - abilities[j].getCost());
-				}
-
-				return null;
-			}));
-
-			map.addGameObject(lever);
-
-			map.addGameObject(new Text(1f, abilities[i].name(), i * 5 + 2.5f, 3, 0.5f, true, 0.5f, 0));
-			map.addGameObject(new Text(1f, String.valueOf(abilities[i].getCost()) + " coins", i * 5 + 2.5f, 4, 0.5f, true, 0.5f, 0));
+	private static void add(Map<Float, Map<HitBox, String>> layers, HitBox hitBox, String texture, float drawingPriority) {
+		if (layers.containsKey(drawingPriority)) {
+			layers.get(drawingPriority).put(hitBox, texture);
+		} else {
+			Map<HitBox, String> layer = new HashMap<>();
+			layer.put(hitBox, texture);
+			layers.put(drawingPriority, layer);
 		}
-		hitBoxList.put(new HitBox(-1, 0, 1f, 1f), "block_stone_middle");
-		map.addGameObject(new Exit(-1, 1, 1, "menu"));
-		map.addGameObject(new Wall(hitBoxList, 1f));
-		map.setSpawnPoint(-1, 1, 0.5f);
-		return map;
 	}
 
 	private static java.util.List<String> getMaps() {
@@ -282,7 +313,7 @@ public class MapLoader {
 		File[] listOfFiles = folder.listFiles();
 		java.util.List<String> maps = new ArrayList<>();
 
-		for (File f: listOfFiles) {
+		for (File f : listOfFiles) {
 			if (f.isFile() && f.getName().endsWith(".map")) {
 				maps.add(f.getName().replaceAll(".map", ""));
 			}

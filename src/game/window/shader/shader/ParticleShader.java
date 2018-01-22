@@ -1,14 +1,15 @@
 package game.window.shader.shader;
 
-import game.Constants;
 import game.window.shader.ShaderProgram;
 
 public class ParticleShader extends ShaderProgram {
+	private static final String PARTICLE_VERTEX_FILE = "particleVertexShader";
+	private static final String PARTICLE_FRAGMENT_FILE = "particleFragmentShader";
 
 	private int locationLocation, texLocationLocation;
 
 	public ParticleShader() {
-		super(Constants.PARTICLE_VERTEX_FILE, Constants.PARTICLE_FRAGMENT_FILE);
+		super(PARTICLE_VERTEX_FILE, PARTICLE_FRAGMENT_FILE);
 	}
 
 	@Override

@@ -1,14 +1,16 @@
 package game.window.shader.shader;
 
-import game.Constants;
 import game.window.shader.ShaderProgram;
 
 public class ColorShader extends ShaderProgram {
+	private static final String COLOR_VERTEX_FILE = "colorVertexShader";
+	private static final String COLOR_FRAGMENT_FILE = "colorFragmentShader";
+
 	private int xLocation, yLocation, widthLocation, heightLocation;
 	private int colorLocation;
 
 	public ColorShader() {
-		super(Constants.COLOR_VERTEX_FILE, Constants.COLOR_FRAGMENT_FILE);
+		super(COLOR_VERTEX_FILE, COLOR_FRAGMENT_FILE);
 	}
 
 	@Override
