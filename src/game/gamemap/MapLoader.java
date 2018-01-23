@@ -22,13 +22,20 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class MapLoader {
-
+	private static String directory;
 
 	public static GameMap load(Game g, String mapName) {
-		if (mapName.equals(Constants.SYS_PREFIX + "lobby")) return createLobby(g, getMaps().toArray(new String[0]));
-		if (mapName.equals(Constants.SYS_PREFIX + "options")) return createLobby(g, "menu");
+		if (mapName.startsWith(Constants.SYS_PREFIX)) {
+			directory = "";
+			if (mapName.endsWith("menu")) return createLobby(g, Constants.SYS_PREFIX + "load", Constants.SYS_PREFIX + "new", Constants.SYS_PREFIX + "options");
+			if (mapName.endsWith("load")) return createLobby(g, Constants.SYS_PREFIX + "world");
+			if (mapName.endsWith("new")) return createLobby(g, Constants.SYS_PREFIX + "world");
+			if (mapName.endsWith("options")) return createLobby(g, Constants.SYS_PREFIX + "menu");
+			if (mapName.endsWith("world")) return createLobby(g, getMaps());
+			if (mapName.endsWith("save")) return createLobby(g, Constants.SYS_PREFIX + "menu");
+		}
 
-		if (!FileHandler.fileExists("maps/" + mapName + ".map")) {
+		if (!FileHandler.fileExists("maps/" + directory + File.separator + mapName + ".map")) {
 			GameMap map = load(g, Constants.SYS_PREFIX + "lobby");
 			Text text = new Text(-100, "Something went wrong. We send you back to Menu", -0.9f, -0.9f, 0.05f, false, 0, 0, Color.RED);
 			text.setTimer(300);
@@ -40,9 +47,10 @@ public class MapLoader {
 		Map<Integer, String> textureReplacements = new HashMap<>();
 		Map<Float, Map<HitBox, String>> layers = new HashMap<>();
 
-		Scanner fileScanner = new Scanner(FileHandler.loadFile("maps/" + mapName + ".map"));
+		Scanner fileScanner = new Scanner(FileHandler.loadFile("maps/" + directory + File.separator + mapName + ".map"));
 		Constants.PIXEL_PER_TILE = Integer.valueOf(fileScanner.nextLine());
 		float tileSize = Constants.PIXEL_PER_TILE;
+		if (directory.equals("")) directory = mapName;
 
 		while (fileScanner.hasNextLine()) {
 			String line = fileScanner.nextLine();
@@ -156,7 +164,7 @@ public class MapLoader {
 						map.getCameraController().setSpawn(x, y);
 						break;
 					case "coin":
-						String coinID = String.format("%s_coin_%f_%f", mapName, x, y);
+						String coinID = String.format("%s_coin_%f_%f", directory, x, y);
 						if (g.getValue(coinID) == 0) g.setValue(coinID, 0);
 						map.addGameObject(new Coin(x, y, drawingPriority, g.getValue(coinID) > 0, new Tree((tree, game) -> {
 							game.setValue(coinID, 1);                                            //Mark this coin as collected
@@ -168,7 +176,7 @@ public class MapLoader {
 					case "door_side_open_0":
 					case "door_side_open_1":
 					case "door_side_open":
-						map.addGameObject(new Exit(x, y, drawingPriority, tags.getOrDefault("target", Constants.SYS_PREFIX + "lobby")));
+						map.addGameObject(new Exit(x, y, drawingPriority, tags.getOrDefault("target", Constants.SYS_PREFIX + "world")));
 						break;
 					case "lantern":
 						map.addGameObject(new Lantern(x, y, drawingPriority));
@@ -248,26 +256,7 @@ public class MapLoader {
 		GameMap map = new GameMap();
 		Map<Float, Map<HitBox, String>> layers = new HashMap<>();
 
-		{
-			for (int j = 0; j < 9; j++) {
-				for (int k = 0; k < 8; k++) {
-					add(layers, new HitBox(j, k, 1f, 1f), "block_stone_middle", 1);
-					add(layers, new HitBox(j, k, 1f, 1f), "black_5", 0.75f);
-				}
-
-				add(layers, new HitBox(j, 0, 1f, 1f), "block_stone_middle", 0.5f);
-				if (j < 6 && j > 2) {
-					add(layers, new HitBox(j, 3, 1f, 1f), "block_wood_middle", 0.5f);
-					map.addGameObject(new Ladder(6, j - 2, 0.7f));
-				}
-			}
-			map.addGameObject(new Exit(4, 4, 0.7f, Constants.SYS_PREFIX + "options"));
-			map.addGameObject(new Text(0.7f, "options", 4.5f, 6, 0.5f, true, 0.5f, 0));
-			map.addGameObject(new Lantern(2, 1, 0.7f));
-			map.getCameraController().addCameraArea(new Area(0, -2, 9, 9));
-		}
-
-		for (int i = 1; i <= mapNames.length; i++) {
+		for (int i = 0; i < mapNames.length; i++) {
 			for (int j = 0; j < 9; j++) {
 				for (int k = 0; k < 8; k++) {
 					add(layers, new HitBox(i * 9 + j, k, 1f, 1f), "block_stone_middle", 1);
@@ -280,9 +269,9 @@ public class MapLoader {
 					map.addGameObject(new Ladder(i * 9 + 6, j - 2, 0.7f));
 				}
 			}
-			map.addGameObject(new Exit(i * 9 + 4, 4, 0.7f, mapNames[i - 1]));
-			map.addGameObject(new Text(0.7f, mapNames[i - 1], i * 9 + 4.5f, 6, 0.5f, true, 0.5f, 0));
-			map.addGameObject(new Text(0.7f, String.valueOf(g.getKeyAmount(mapNames[i - 1] + "_coin_", 1)) + "/" + String.valueOf(g.getKeyAmount(mapNames[i - 1] + "_coin_")), i * 9 + 4.5f, 7, 0.5f, true, 0.5f, 0));
+			map.addGameObject(new Exit(i * 9 + 4, 4, 0.7f, mapNames[i]));
+			map.addGameObject(new Text(0.7f, mapNames[i].replace(Constants.SYS_PREFIX, ""), i * 9 + 4.5f, 6, 0.5f, true, 0.5f, 0));
+			if (!mapNames[i].startsWith(Constants.SYS_PREFIX)) map.addGameObject(new Text(0.7f, String.valueOf(g.getKeyAmount(mapNames[i] + "_coin_", 1)) + "/" + String.valueOf(g.getKeyAmount(mapNames[i] + "_coin_")), i * 9 + 4.5f, 7, 0.5f, true, 0.5f, 0));
 			map.addGameObject(new Lantern(i * 9 + 2, 1, 0.7f));
 			map.getCameraController().addCameraArea(new Area(i * 9, -2, i * 9 + 9, 9));
 		}
@@ -308,16 +297,18 @@ public class MapLoader {
 		}
 	}
 
-	private static java.util.List<String> getMaps() {
+	private static String[] getMaps() {
 		File folder = new File("src/res/files/maps");
 		File[] listOfFiles = folder.listFiles();
+
 		java.util.List<String> maps = new ArrayList<>();
+		maps.add(Constants.SYS_PREFIX + "save");
 
 		for (File f : listOfFiles) {
 			if (f.isFile() && f.getName().endsWith(".map")) {
 				maps.add(f.getName().replaceAll(".map", ""));
 			}
 		}
-		return maps;
+		return maps.toArray(new String[0]);
 	}
 }
