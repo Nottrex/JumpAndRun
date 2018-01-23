@@ -30,7 +30,7 @@ public class MapLoader {
 
 		if (!FileHandler.fileExists("maps/" + mapName + ".map")) {
 			GameMap map = load(g, Constants.SYS_PREFIX + "lobby");
-			Text text = new Text(-100, "Something went wrong. We send you back to Menu", -0.9f, -0.9f, 0.05f, false, 0, 0);
+			Text text = new Text(-100, "Something went wrong. We send you back to Menu", -0.9f, -0.9f, 0.05f, false, 0, 0, Color.RED);
 			text.setTimer(300);
 			map.addGameObject(text);
 			return map;

@@ -58,6 +58,8 @@ public class Game {
 		players = new ArrayList<>();
 		inputs = new ArrayList<>();
 		playerColors = new ArrayList<>();
+		addPlayerColors("#193D3f", "#327345", "#63c64d", "#ffe762", "#fb922b", "#e53b44", "#9e2835", "#2ce8f4", "#0484d1", "#124e89", "#68386c", "#b55088", "#f6757a", "#181425", "#181425", "#e8b796", "#3a4466", "#c0cbdc");
+		Collections.shuffle(playerColors);
 		gameObjects = new LinkedList<>();
 		collisionObjects = new LinkedList<>();
 		toRemove = new ConcurrentLinkedQueue<>();
@@ -158,7 +160,6 @@ public class Game {
 				Player newPlayer = new Player(map.getSpawnX(), map.getSpawnY(), map.getPlayerDrawingPriority());
 				this.addGameObject(newPlayer);
 				inputs.add(i);
-				playerColors.add(new Color((float) Math.random(), (float) Math.random(), (float) Math.random(), 1));
 			}
 		}
 		for (int i = 0; i < players.size(); i++) {
@@ -261,5 +262,9 @@ public class Game {
 
 	public void addAbility(Ability ability) {
 		if (!abilities.contains(ability)) abilities.add(ability);
+	}
+
+	private void addPlayerColors(String... colors) {
+		for(String s: colors) playerColors.add(Color.decode(s));
 	}
 }

@@ -52,11 +52,21 @@ public class Text implements GameObject, Drawable {
 		setText(text);
 	}
 
+	public Text(float drawingPriority, String text, float x, float y, float size, boolean useCamera, Color c) {
+		this(drawingPriority, text, x, y, size, useCamera);
+		color = c;
+	}
+
 	public Text(float drawingPriority, String text, float x, float y, float size, boolean useCamera, float anchorX, float anchorY) {
 		this(drawingPriority, text, x, y, size, useCamera);
 
 		this.anchorX = anchorX;
 		this.anchorY = anchorY;
+	}
+
+	public Text(float drawingPriority, String text, float x, float y, float size, boolean useCamera, float anchorX, float anchorY, Color c) {
+		this(drawingPriority, text, x, y, size, useCamera, anchorX, anchorY);
+		color = c;
 	}
 
 	public void setText(String text) {
