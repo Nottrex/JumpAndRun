@@ -41,6 +41,7 @@ public class Coin extends BasicStaticEntity implements Light {
 
 	private void collect() {
 		if (!collected) {
+			game.getAudioPlayer().playAudio("Pickup_Coin11");
 			game.removeGameObject(this);
 			if (ghost) {
 				if (onReCollect != null) onReCollect.get(game);

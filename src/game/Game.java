@@ -1,6 +1,6 @@
 package game;
 
-import game.data.Sprite;
+import game.audio.AudioPlayer;
 import game.data.hitbox.HitBox;
 import game.gamemap.GameMap;
 import game.gamemap.MapLoader;
@@ -19,6 +19,7 @@ import game.window.Drawable;
 import game.window.Keyboard;
 import game.window.Window;
 
+import javax.sound.sampled.Clip;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -27,6 +28,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Game {
 	private Window window;
+	private AudioPlayer audioPlayer;
 
 	private int gameTick;
 
@@ -75,6 +77,9 @@ public class Game {
 		addGameObject(coinCounterCoin);
 
 		setGameMap(Constants.SYS_PREFIX + "menu", false);
+
+		audioPlayer = new AudioPlayer();
+		audioPlayer.loopAudio("EP", Clip.LOOP_CONTINUOUSLY);
 	}
 
 	public void gameLoop() {
@@ -213,6 +218,10 @@ public class Game {
 
 	public Camera getCamera() {
 		return window.getCamera();
+	}
+
+	public AudioPlayer getAudioPlayer() {
+		return audioPlayer;
 	}
 
 	public float getAspectRatio() {
