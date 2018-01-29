@@ -1,6 +1,7 @@
 package game;
 
 import game.audio.AudioPlayer;
+import game.audio.Sound;
 import game.data.hitbox.HitBox;
 import game.gamemap.GameMap;
 import game.gamemap.MapLoader;
@@ -78,8 +79,9 @@ public class Game {
 
 		setGameMap(Constants.SYS_PREFIX + "menu", false);
 
-		audioPlayer = new AudioPlayer();
-		audioPlayer.loopAudio("EP", Clip.LOOP_CONTINUOUSLY);
+		audioPlayer = new AudioPlayer(Sound.EP.fileName);
+		audioPlayer.addMusic("EP", Clip.LOOP_CONTINUOUSLY);
+		audioPlayer.start();
 	}
 
 	public void gameLoop() {

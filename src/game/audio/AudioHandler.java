@@ -20,18 +20,10 @@ public class AudioHandler {
 	}
 
 	private static void loadMusicWav() {
-		File folder = new File("src/res/files/audio");
-		java.util.List<String> clipNames = new ArrayList<>();
-		File[] listOfFiles = folder.listFiles();
+		Sound[] sounds = Sound.values();
 
-		for (File f : listOfFiles) {
-			if (f.isFile() && f.getName().endsWith(".wav")) {
-				clipNames.add(f.getName().replaceAll(".wav", ""));
-			}
-		}
-
-		for (String s: clipNames) {
-			System.out.println(s);
+		for (Sound sound: sounds) {
+			String s = sound.fileName;
 			Clip clip = null;
 			try {
 				clip = AudioSystem.getClip(null);
