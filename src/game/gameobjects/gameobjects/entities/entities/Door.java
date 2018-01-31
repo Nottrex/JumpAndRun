@@ -56,6 +56,8 @@ public class Door extends BasicStaticEntity {
 				hitBox.type = isOpen ? HitBox.HitBoxType.NOT_BLOCKING : HitBox.HitBoxType.BLOCKING;
 				turning = false;
 			}
+
+			game.getCamera().addScreenshake(0.004f);
 		} else if ((boolean) condition.get(game) != isOpen){
 			turning = true;
 			startTick = game.getGameTick();

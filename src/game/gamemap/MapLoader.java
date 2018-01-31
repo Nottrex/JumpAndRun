@@ -16,13 +16,33 @@ import game.util.TextureHandler;
 
 import java.awt.*;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class MapLoader {
 	private static String directory;
+	private static final File mapFolder = new File("src/res/files/maps");
+
+	public static void loadAllMaps(Game game) {
+		ArrayList<String> maps = new ArrayList<String>(Arrays.asList(getMaps(mapFolder, true)));
+
+		while (!maps.isEmpty()) {
+			File file = new File(mapFolder, maps.get(0));
+			if (!file.isDirectory()) {
+				boolean b = !maps.get(0).contains("/");
+
+				directory = b ? "" : maps.get(0).substring(0, maps.get(0).lastIndexOf("/"));
+				load(game, b ? maps.get(0) : maps.get(0).substring(maps.get(0).lastIndexOf("/")+1));
+			} else {
+				for (String newFile: getMaps(file, true)) {
+					maps.add(maps.get(0) + "/" + newFile);
+				}
+			}
+
+			maps.remove(0);
+		}
+
+		directory = "";
+	}
 
 	public static GameMap load(Game g, String mapName) {
 		if (mapName.startsWith(Constants.SYS_PREFIX)) {
@@ -31,7 +51,7 @@ public class MapLoader {
 			if (mapName.endsWith("load")) return createLobby(g, Constants.SYS_PREFIX + "world");
 			if (mapName.endsWith("new")) return createLobby(g, Constants.SYS_PREFIX + "world");
 			if (mapName.endsWith("options")) return createLobby(g, Constants.SYS_PREFIX + "menu");
-			if (mapName.endsWith("world")) return createLobby(g, getMaps());
+			if (mapName.endsWith("world")) return createLobby(g, getMaps(mapFolder, false));
 			if (mapName.endsWith("save")) return createLobby(g, Constants.SYS_PREFIX + "menu");
 		}
 
@@ -297,15 +317,14 @@ public class MapLoader {
 		}
 	}
 
-	private static String[] getMaps() {
-		File folder = new File("src/res/files/maps");
+	private static String[] getMaps(File folder, boolean folders) {
 		File[] listOfFiles = folder.listFiles();
 
 		java.util.List<String> maps = new ArrayList<>();
 		maps.add(Constants.SYS_PREFIX + "save");
 
 		for (File f : listOfFiles) {
-			if (f.isFile() && f.getName().endsWith(".map")) {
+			if (folders || (f.isFile() && f.getName().endsWith(".map"))) {
 				maps.add(f.getName().replaceAll(".map", ""));
 			}
 		}

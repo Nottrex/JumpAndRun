@@ -69,7 +69,6 @@ public class Game {
 		toAdd = new ConcurrentLinkedQueue<>();
 
 		values = new HashMap<>();
-		values.put("coins", 10);
 		abilities = new ArrayList<>();
 
 		coinCounter = new Text(-1000f, "0", 1, 1-(0.1f/6), 0.1f, false, 1, 1);
@@ -85,6 +84,8 @@ public class Game {
 	}
 
 	public void gameLoop() {
+		MapLoader.loadAllMaps(this);
+
 		long time;
 		while (window.isRunning()) {
 			gameTick++;
@@ -125,7 +126,9 @@ public class Game {
 					int id = players.indexOf(gameObject);
 					players.remove(id);
 					inputs.remove(id);
+					Color color = playerColors.get(id);
 					playerColors.remove(id);
+					playerColors.add(color);
 				}
 			}
 
