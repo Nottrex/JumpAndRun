@@ -11,8 +11,8 @@ import game.gameobjects.gameobjects.entities.BasicStaticEntity;
 public class Lever extends BasicStaticEntity {
 	private static Sprite right = new Sprite(100, "lever_right");
 	private static Sprite left = new Sprite(100, "lever_left");
-	private static Sprite changingLeft = new Sprite(350, "lever_middle", "lever_left");
-	private static Sprite changingRight = new Sprite(350, "lever_middle", "lever_right");
+	private static Sprite changingLeft = new Sprite(350, "lever_right_2", "lever_middle", "lever_left_2", "lever_left");
+	private static Sprite changingRight = new Sprite(350, "lever_left_2","lever_middle","lever_right_2", "lever_right");
 
 	private boolean activated;
 	private boolean turning;
