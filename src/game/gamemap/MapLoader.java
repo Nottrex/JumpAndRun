@@ -12,6 +12,7 @@ import game.gameobjects.gameobjects.wall.Background;
 import game.gameobjects.gameobjects.wall.Wall;
 import game.util.ErrorUtil;
 import game.util.FileHandler;
+import game.util.SaveHandler;
 import game.util.TextureHandler;
 
 import java.awt.*;
@@ -48,15 +49,15 @@ public class MapLoader {
 		if (mapName.startsWith(Constants.SYS_PREFIX)) {
 			directory = "";
 			if (mapName.endsWith("menu")) return createLobby(g, Constants.SYS_PREFIX + "load", Constants.SYS_PREFIX + "new", Constants.SYS_PREFIX + "options");
-			if (mapName.endsWith("load")) return createLobby(g, Constants.SYS_PREFIX + "world");
+			if (mapName.endsWith("load")) return createLoad(g);
 			if (mapName.endsWith("new")) return createLobby(g, Constants.SYS_PREFIX + "world");
 			if (mapName.endsWith("options")) return createLobby(g, Constants.SYS_PREFIX + "menu");
 			if (mapName.endsWith("world")) return createLobby(g, getMaps(mapFolder, false));
-			if (mapName.endsWith("save")) return createLobby(g, Constants.SYS_PREFIX + "menu");
+			if (mapName.endsWith("save")) return createSave(g);
 		}
 
 		if (!FileHandler.fileExists("maps/" + directory + File.separator + mapName + ".map")) {
-			GameMap map = load(g, Constants.SYS_PREFIX + "lobby");
+			GameMap map = load(g, Constants.SYS_PREFIX + "menu");
 			Text text = new Text(-100, "Something went wrong. We send you back to Menu", -0.9f, -0.9f, 0.05f, false, 0, 0, Color.RED);
 			text.setTimer(300);
 			map.addGameObject(text);
@@ -196,7 +197,7 @@ public class MapLoader {
 					case "door_side_open_0":
 					case "door_side_open_1":
 					case "door_side_open":
-						map.addGameObject(new Exit(x, y, drawingPriority, tags.getOrDefault("target", Constants.SYS_PREFIX + "world")));
+						map.addGameObject(new Exit(x, y, drawingPriority, tags.getOrDefault("target", Constants.SYS_PREFIX + "world"), null));
 						break;
 					case "lantern":
 						map.addGameObject(new Lantern(x, y, drawingPriority));
@@ -289,7 +290,63 @@ public class MapLoader {
 					map.addGameObject(new Ladder(i * 9 + 6, j - 2, 0.7f));
 				}
 			}
-			map.addGameObject(new Exit(i * 9 + 4, 4, 0.7f, mapNames[i]));
+			map.addGameObject(new Exit(i * 9 + 4, 4, 0.7f, mapNames[i], null));
+			map.addGameObject(new Text(0.7f, mapNames[i].replace(Constants.SYS_PREFIX, ""), i * 9 + 4.5f, 6, 0.5f, true, 0.5f, 0));
+			if (!mapNames[i].startsWith(Constants.SYS_PREFIX)) map.addGameObject(new Text(0.7f, String.valueOf(g.getKeyAmount(mapNames[i] + "_coin_", 1)) + "/" + String.valueOf(g.getKeyAmount(mapNames[i] + "_coin_")), i * 9 + 4.5f, 7, 0.5f, true, 0.5f, 0));
+			map.addGameObject(new Lantern(i * 9 + 2, 1, 0.7f));
+			map.getCameraController().addCameraArea(new Area(i * 9, -2, i * 9 + 9, 9));
+		}
+		map.setSpawnPoint(0, 1, 0.5f);
+
+		for (float drawingPriority : layers.keySet()) {
+			Map<HitBox, String> layer = layers.get(drawingPriority);
+			if (drawingPriority <= 0.55 && drawingPriority >= 0.45) map.addGameObject(new Wall(layer, drawingPriority));
+			else map.addGameObject(new Background(layer, drawingPriority));
+
+		}
+
+		return map;
+	}
+
+	private static GameMap createSave(Game g) {
+		GameMap map = new GameMap();
+		Map<HitBox, String> layer = new HashMap<>();
+
+		layer.put(new HitBox(0, 0, 1, 1), "block_stone_middle");
+		map.addGameObject(new Wall(layer, 1f));
+		map.setSpawnPoint(0, 2, 0.5f);
+		map.addGameObject(new Exit(0, 1, 1, Constants.SYS_PREFIX + "menu", new Tree((tree, game) -> {
+			game.saveValues(String.valueOf(System.currentTimeMillis()));
+			game.clearValues();
+			return null;
+		})));
+
+		return map;
+	}
+
+	private static GameMap createLoad(Game g) {
+		String[] mapNames = SaveHandler.getSaves();
+		GameMap map = new GameMap();
+		Map<Float, Map<HitBox, String>> layers = new HashMap<>();
+
+		for (int i = 0; i < mapNames.length; i++) {
+			for (int j = 0; j < 9; j++) {
+				for (int k = 0; k < 8; k++) {
+					add(layers, new HitBox(i * 9 + j, k, 1f, 1f), "block_stone_middle", 1);
+					add(layers, new HitBox(i * 9 + j, k, 1f, 1f), "black_5", 0.75f);
+				}
+
+				add(layers, new HitBox(i * 9 + j, 0, 1f, 1f), "block_stone_middle", 0.5f);
+				if (j < 6 && j > 2) {
+					add(layers, new HitBox(i * 9 + j, 3, 1f, 1f), "block_wood_middle", 0.5f);
+					map.addGameObject(new Ladder(i * 9 + 6, j - 2, 0.7f));
+				}
+			}
+			String saveName = mapNames[i];
+			map.addGameObject(new Exit(i * 9 + 4, 4, 0.7f, Constants.SYS_PREFIX + "world", new Tree((tree, game) -> {
+				game.loadValues(saveName);
+				return null;
+			})));
 			map.addGameObject(new Text(0.7f, mapNames[i].replace(Constants.SYS_PREFIX, ""), i * 9 + 4.5f, 6, 0.5f, true, 0.5f, 0));
 			if (!mapNames[i].startsWith(Constants.SYS_PREFIX)) map.addGameObject(new Text(0.7f, String.valueOf(g.getKeyAmount(mapNames[i] + "_coin_", 1)) + "/" + String.valueOf(g.getKeyAmount(mapNames[i] + "_coin_")), i * 9 + 4.5f, 7, 0.5f, true, 0.5f, 0));
 			map.addGameObject(new Lantern(i * 9 + 2, 1, 0.7f));

@@ -4,6 +4,7 @@ import game.Game;
 import game.data.hitbox.HitBox;
 import game.data.hitbox.HitBoxDirection;
 import game.data.Sprite;
+import game.data.script.Tree;
 import game.gameobjects.CollisionObject;
 import game.gameobjects.gameobjects.entities.BasicStaticEntity;
 
@@ -12,11 +13,13 @@ public class Exit extends BasicStaticEntity {
 	private static Sprite doorOpen = new Sprite(100, "door_side_open_0", "door_side_open_1", "door_side_open_2", "door_side_open_2", "door_side_open_2", "door_side_open_2");
 
 	private String targetMap;
+	private Tree onEntrance;
 
-	public Exit(float x, float y, float drawingPriority, String targetMap) {
+	public Exit(float x, float y, float drawingPriority, String targetMap, Tree onEntrance) {
 		super(new HitBox(x, y, 0.75f, 1), drawingPriority);
 
 		this.targetMap = targetMap;
+		this.onEntrance = onEntrance;
 
 		setSprite(door);
 	}
@@ -41,6 +44,7 @@ public class Exit extends BasicStaticEntity {
 		if (gameObject instanceof Player && interactionType == InteractionType.INTERACT) {
 			if (game.setGameMap(targetMap, true)) {
 				setSprite(doorOpen);
+				if (onEntrance != null) onEntrance.get(game);
 			}
 		}
 	}

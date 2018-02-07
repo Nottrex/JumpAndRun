@@ -14,6 +14,7 @@ import game.gameobjects.gameobjects.entities.entities.DeadBody;
 import game.gameobjects.gameobjects.entities.entities.Player;
 import game.gameobjects.gameobjects.entities.entities.ScreenEntity;
 import game.gameobjects.gameobjects.particle.ParticleSystem;
+import game.util.SaveHandler;
 import game.util.TimeUtil;
 import game.window.Camera;
 import game.window.Drawable;
@@ -280,5 +281,17 @@ public class Game {
 
 	private void addPlayerColors(String... colors) {
 		for(String s: colors) playerColors.add(Color.decode(s));
+	}
+
+	public void loadValues(String saveName) {
+		values = SaveHandler.readSave(saveName);
+	}
+
+	public void saveValues(String saveName) {
+		SaveHandler.writeSave(values, saveName);
+	}
+
+	public void clearValues() {
+		values.clear();
 	}
 }
