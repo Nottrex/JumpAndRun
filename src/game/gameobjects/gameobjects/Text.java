@@ -3,6 +3,7 @@ package game.gameobjects.gameobjects;
 import game.Constants;
 import game.Game;
 import game.data.hitbox.HitBox;
+import game.gameobjects.AbstractGameObject;
 import game.gameobjects.GameObject;
 import game.util.TextureHandler;
 import game.window.Drawable;
@@ -21,7 +22,7 @@ import java.nio.IntBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Text implements GameObject, Drawable {
+public class Text extends AbstractGameObject implements Drawable {
 	private float x, y, size, drawingPriority;
 	private boolean useCamera;
 	private int letters, timer;

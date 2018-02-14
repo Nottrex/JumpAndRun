@@ -9,4 +9,9 @@ public abstract class AbstractGameObject implements GameObject {
 	public void init(Game game) {
 		this.game = game;
 	}
+
+	@Override
+	public void remove(Game game) {
+
+	}
 }

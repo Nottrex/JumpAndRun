@@ -14,6 +14,7 @@ import java.util.List;
 public abstract class BasicMovingEntity extends BasicDrawingEntity implements CollisionObject {
 	private List<HitBox> hitBoxList;
 	protected float vx, vy;
+	protected float kx, ky;
 
 
 	public BasicMovingEntity(HitBox hitBox, float drawingPriority) {

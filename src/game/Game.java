@@ -9,10 +9,7 @@ import game.gameobjects.CollisionObject;
 import game.gameobjects.GameObject;
 import game.gameobjects.gameobjects.Fade;
 import game.gameobjects.gameobjects.Text;
-import game.gameobjects.gameobjects.entities.entities.Coin;
-import game.gameobjects.gameobjects.entities.entities.DeadBody;
-import game.gameobjects.gameobjects.entities.entities.Player;
-import game.gameobjects.gameobjects.entities.entities.ScreenEntity;
+import game.gameobjects.gameobjects.entities.entities.*;
 import game.gameobjects.gameobjects.particle.ParticleSystem;
 import game.util.SaveHandler;
 import game.util.TimeUtil;
@@ -47,6 +44,7 @@ public class Game {
 	private Queue<GameObject> toAdd;
 
 	private ParticleSystem particleSystem;
+	private DeadBodyHandler deadBodyHandler;
 
 	private Map<String, Integer> values;
 	private List<Ability> abilities;
@@ -119,10 +117,12 @@ public class Game {
 			while (!toRemove.isEmpty()) {
 				GameObject gameObject = toRemove.poll();
 
+				gameObject.remove(this);
 				gameObjects.remove(gameObject);
 				if (gameObject instanceof CollisionObject) collisionObjects.remove(gameObject);
 				if (gameObject instanceof Drawable) window.removeDrawable((Drawable) gameObject);
 				if (gameObject instanceof ParticleSystem) particleSystem = null;
+				if (gameObject instanceof DeadBodyHandler) deadBodyHandler = null;
 				if (gameObject instanceof Player) {
 					int id = players.indexOf(gameObject);
 					players.remove(id);
@@ -142,6 +142,7 @@ public class Game {
 				if (gameObject instanceof CollisionObject) collisionObjects.add((CollisionObject) gameObject);
 				if (gameObject instanceof Drawable) window.addDrawable((Drawable) gameObject);
 				if (gameObject instanceof ParticleSystem) particleSystem = (ParticleSystem) gameObject;
+				if (gameObject instanceof DeadBodyHandler) deadBodyHandler = (DeadBodyHandler) gameObject;
 				if (gameObject instanceof Player) {
 					players.add((Player) gameObject);
 					((Player) gameObject).setColor(playerColors.get(players.size() - 1));
@@ -212,10 +213,6 @@ public class Game {
 
 	public void removeGameObject(GameObject gameObject) {
 		if (!toRemove.contains(gameObject) && gameObjects.contains(gameObject)) toRemove.add(gameObject);
-		if (gameObject instanceof Player) {
-			Player p = (Player) gameObject;
-			this.addGameObject(new DeadBody(p.getHitBox().x, p.getHitBox().y, "player"));
-		}
 	}
 
 	public List<CollisionObject> getCollisionObjects() {
@@ -236,6 +233,10 @@ public class Game {
 
 	public ParticleSystem getParticleSystem() {
 		return particleSystem;
+	}
+
+	public DeadBodyHandler getDeadBodyHandler() {
+		return deadBodyHandler;
 	}
 
 	public List<Player> getPlayers() {

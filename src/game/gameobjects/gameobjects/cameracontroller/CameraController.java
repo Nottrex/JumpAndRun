@@ -2,12 +2,16 @@ package game.gameobjects.gameobjects.cameracontroller;
 
 import game.Constants;
 import game.Game;
+import game.data.hitbox.HitBox;
 import game.gameobjects.AbstractGameObject;
+import game.gameobjects.gameobjects.entities.entities.DeadBody;
 import game.gameobjects.gameobjects.entities.entities.Player;
 import game.window.Window;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CameraController extends AbstractGameObject {
 	private List<Area> cameraAreas;
@@ -35,25 +39,28 @@ public class CameraController extends AbstractGameObject {
 		float maxX = -Float.MAX_VALUE;
 		float maxY = -Float.MAX_VALUE;
 
-		List<Player> players = game.getPlayers();
+		List<HitBox> visibleObjects = game.getPlayers().stream().map(Player::getHitBox).collect(Collectors.toList());
+
+		List<HitBox> deadBodies = game.getDeadBodyHandler().getDeadBodies().entrySet().stream().filter(e -> e.getValue() >= game.getGameTick() - 60).map(e -> e.getKey().getHitBox()).collect(Collectors.toList());
+		visibleObjects.addAll(deadBodies);
 
 		boolean outside = false;
 
-		if (players.size() > 0) {
-			for (Player p: players) {
-				Area area = getAreaAt(p.getHitBox().getCenterX(), p.getHitBox().getCenterY());
+		if (visibleObjects.size() > 0) {
+			for (HitBox h: visibleObjects) {
+				Area area = getAreaAt(h.getCenterX(), h.getCenterY());
 
 				if (area == null) {
 					outside = true;
-					if (minX > p.getHitBox().getCenterX())
-						minX = p.getHitBox().getCenterX();
-					if (minY > p.getHitBox().getCenterY())
-						minY = p.getHitBox().getCenterY();
+					if (minX > h.getCenterX())
+						minX = h.getCenterX();
+					if (minY > h.getCenterY())
+						minY = h.getCenterY();
 
-					if (maxX < p.getHitBox().getCenterX())
-						maxX = p.getHitBox().getCenterX();
-					if (maxY < p.getHitBox().getCenterY())
-						maxY = p.getHitBox().getCenterY();
+					if (maxX < h.getCenterX())
+						maxX = h.getCenterX();
+					if (maxY < h.getCenterY())
+						maxY = h.getCenterY();
 				} else {
 					if (minX > area.getX1())
 						minX = area.getX1();

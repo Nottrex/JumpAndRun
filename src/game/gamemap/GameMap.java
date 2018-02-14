@@ -2,6 +2,7 @@ package game.gamemap;
 
 import game.gameobjects.GameObject;
 import game.gameobjects.gameobjects.cameracontroller.CameraController;
+import game.gameobjects.gameobjects.entities.entities.DeadBodyHandler;
 import game.gameobjects.gameobjects.particle.ParticleSystem;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ public class GameMap {
 		cameraController = new CameraController();
 		this.addGameObject(cameraController);
 		this.addGameObject(new ParticleSystem());
+		this.addGameObject(new DeadBodyHandler());
 	}
 
 	public void addGameObject(GameObject gameObject) {

@@ -28,6 +28,10 @@ public class Box extends BasicWalkingEntity {
 		if (gameObject instanceof Player && (direction == HitBoxDirection.LEFT || direction == HitBoxDirection.RIGHT)) {
 			this.setMx(direction.invert().getXDirection()*0.1f);
 		}
+
+		if (direction == HitBoxDirection.DOWN && velocity > 0.15f) {
+			game.getCamera().addScreenshake(0.01f);
+		}
 	}
 
 	@Override

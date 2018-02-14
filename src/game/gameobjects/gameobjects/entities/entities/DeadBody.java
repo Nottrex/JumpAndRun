@@ -4,10 +4,13 @@ import game.data.hitbox.HitBox;
 import game.data.Sprite;
 import game.gameobjects.gameobjects.entities.BasicWalkingEntity;
 
+import java.awt.*;
+
 public class DeadBody extends BasicWalkingEntity {
 
-	public DeadBody(float x, float y, String entity) {
+	public DeadBody(float x, float y, String entity, Color color) {
 		super(new HitBox(x, y, 0.75f, 1f, HitBox.HitBoxType.NOT_BLOCKING), 0f);
+		setColor(color == null ? Color.BLACK : color);
 		Sprite idle = new Sprite(100, entity + "_dead");
 		setSprite(idle);
 	}

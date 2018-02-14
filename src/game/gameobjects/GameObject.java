@@ -8,4 +8,6 @@ public interface GameObject {
 	void update(Game game);
 
 	void init(Game game);
+
+	void remove(Game game);
 }

@@ -16,7 +16,7 @@ import java.awt.*;
 public abstract class BasicDrawingEntity extends AbstractGameObject implements Drawable {
 	protected HitBox hitBox;
 	protected Sprite sprite;
-	private Color color;
+	protected Color color;
 	private boolean useCamera;
 
 	private float drawingPriority;
