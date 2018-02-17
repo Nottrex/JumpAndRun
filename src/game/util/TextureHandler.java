@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL14;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
@@ -26,6 +27,7 @@ public class TextureHandler {
 
 	static {
 		TextureHandler.loadImagePngSpriteSheet("textures", "textures");
+		//exportTexturePng();
 	}
 
 	private TextureHandler() {
@@ -114,5 +116,27 @@ public class TextureHandler {
 		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, image.getWidth(), image.getHeight(), 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, buffer);
 
 		return texture;
+	}
+
+	private static void exportTexturePng() {
+		for (String s: textures_sprite_sheet.keySet()) {
+			try {
+				BufferedImage i = getImagePng(s);
+				int width = i.getWidth();
+				int height = i.getHeight();
+				while(width < 100 && height < 100) {
+					width *= 2;
+					height *=2;
+				}
+
+				BufferedImage ni = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+				ni.getGraphics().drawImage(i, 0, 0, width, height, null);
+
+				ImageIO.write(ni, "png", new File(System.getProperty("user.dir") + File.separator + "wiki_textures"  + File.separator + s + ".png"));
+				System.out.println( new File(System.getProperty("user.dir") + s + ".png").getAbsolutePath());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
