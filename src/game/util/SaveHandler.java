@@ -1,7 +1,5 @@
 package game.util;
 
-import game.Constants;
-
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -10,24 +8,30 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class SaveHandler {
-	public static String[] getSaves() {
-		File[] listOfFiles = new File("src/res/files/saves").listFiles();
+	private static String saveDirectory = System.getProperty("user.dir") + File.separator + "saves";
 
-		java.util.List<String> saves = new ArrayList<>();
+	static {
+		new File(saveDirectory).mkdir();
+	}
+
+	public static Map<Integer, String> getSaves() {
+		File[] listOfFiles = new File(saveDirectory).listFiles();
+
+		Map<Integer, String> saves = new HashMap<>();
 
 		for (File f : listOfFiles) {
 			if (f.isFile() && f.getName().endsWith(".save")) {
-				saves.add(f.getName().replaceAll(".save", ""));
+				saves.put(Integer.valueOf(f.getName().split("-")[0]), f.getName().split("-")[1].replaceAll(".save", ""));
 			}
 		}
-		return saves.toArray(new String[0]);
+		return saves;
 	}
 
 	public static Map<String, Integer> readSave(String saveName) {
 		Map<String, Integer> values = new HashMap<>();
 
 		try {
-			Scanner scanner = new Scanner(new File("src/res/files/saves/" + saveName + ".save"));
+			Scanner scanner = new Scanner(new File(saveDirectory + File.separator + saveName + ".save"));
 			while (scanner.hasNextLine()) {
 				String[] line = scanner.nextLine().split("~");
 				values.put(line[0], Integer.parseInt(line[1]));
@@ -40,7 +44,7 @@ public class SaveHandler {
 
 	public static void writeSave(Map<String, Integer> values, String saveName) {
 		try {
-			PrintWriter writer = new PrintWriter(new File("src/res/files/saves/" + saveName + ".save"));
+			PrintWriter writer = new PrintWriter(new File(saveDirectory + File.separator + saveName + ".save"));
 			for (String key: values.keySet()) {
 				writer.println(key + "~" + values.get(key));
 			}

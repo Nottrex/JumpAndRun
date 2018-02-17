@@ -17,6 +17,8 @@ import game.util.TextureHandler;
 
 import java.awt.*;
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class MapLoader {
@@ -309,58 +311,43 @@ public class MapLoader {
 	}
 
 	private static GameMap createSave(Game g) {
-		GameMap map = new GameMap();
-		Map<HitBox, String> layer = new HashMap<>();
+		GameMap map = load(g, "hidden/saves");
+		Map<Integer, String> saves = SaveHandler.getSaves();
 
-		layer.put(new HitBox(0, 0, 1, 1), "block_stone_middle");
-		map.addGameObject(new Wall(layer, 1f));
-		map.setSpawnPoint(0, 2, 0.5f);
-		map.addGameObject(new Exit(0, 1, 1, Constants.SYS_PREFIX + "menu", new Tree((tree, game) -> {
-			game.saveValues(String.valueOf(System.currentTimeMillis()));
-			game.clearValues();
-			return null;
-		})));
-
+		for (int i = 1; i < 4; i++) {
+			final int slot = i;
+			DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH.mm");
+			map.addGameObject(new Text(1, saves.getOrDefault(i, "empty"), i * 8 - 0.5f, -11, 0.5f, true, 0.5f, 0f));
+			map.addGameObject(new Text(1, "slot " + i, i * 8 - 0.5f, -10, 0.5f, true, 0.5f, 0f));
+			map.addGameObject(new Exit(i * 8 - 1, -13, 1, Constants.SYS_PREFIX + "menu", new Tree((tree, game) -> {
+				game.saveValues(slot + "-" + dateFormat.format(new Date()));
+				game.clearValues();
+				return null;
+			})));
+		}
+		map.setSpawnPoint(15, -15, 0.5f);
 		return map;
 	}
 
 	private static GameMap createLoad(Game g) {
-		String[] mapNames = SaveHandler.getSaves();
-		GameMap map = new GameMap();
-		Map<Float, Map<HitBox, String>> layers = new HashMap<>();
+		GameMap map = load(g, "hidden/saves");
+		Map<Integer, String> saves = SaveHandler.getSaves();
 
-		for (int i = 0; i < mapNames.length; i++) {
-			for (int j = 0; j < 9; j++) {
-				for (int k = 0; k < 8; k++) {
-					add(layers, new HitBox(i * 9 + j, k, 1f, 1f), "block_stone_middle", 1);
-					add(layers, new HitBox(i * 9 + j, k, 1f, 1f), "black_5", 0.75f);
-				}
-
-				add(layers, new HitBox(i * 9 + j, 0, 1f, 1f), "block_stone_middle", 0.5f);
-				if (j < 6 && j > 2) {
-					add(layers, new HitBox(i * 9 + j, 3, 1f, 1f), "block_wood_middle", 0.5f);
-					map.addGameObject(new Ladder(i * 9 + 6, j - 2, 0.7f));
-				}
+		for (int i = 1; i < 4; i++) {
+			map.addGameObject(new Text(1, saves.getOrDefault(i, "empty"), i * 8 - 0.5f, -11, 0.5f, true, 0.5f, 0f));
+			map.addGameObject(new Text(1, "slot " + i, i * 8 - 0.5f, -10, 0.5f, true, 0.5f, 0f));
+			if (saves.containsKey(i)) {
+				final int slot = i;
+				final String date = saves.get(i);
+				map.addGameObject(new Exit(i * 8 - 1, -13, 1, Constants.SYS_PREFIX + "world", new Tree((tree, game) -> {
+					game.loadValues(slot + "-" + date);
+					return null;
+				})));
+			} else {
+				//locked door
 			}
-			String saveName = mapNames[i];
-			map.addGameObject(new Exit(i * 9 + 4, 4, 0.7f, Constants.SYS_PREFIX + "world", new Tree((tree, game) -> {
-				game.loadValues(saveName);
-				return null;
-			})));
-			map.addGameObject(new Text(0.7f, mapNames[i].replace(Constants.SYS_PREFIX, ""), i * 9 + 4.5f, 6, 0.5f, true, 0.5f, 0));
-			if (!mapNames[i].startsWith(Constants.SYS_PREFIX)) map.addGameObject(new Text(0.7f, String.valueOf(g.getKeyAmount(mapNames[i] + "_coin_", 1)) + "/" + String.valueOf(g.getKeyAmount(mapNames[i] + "_coin_")), i * 9 + 4.5f, 7, 0.5f, true, 0.5f, 0));
-			map.addGameObject(new Lantern(i * 9 + 2, 1, 0.7f));
-			map.getCameraController().addCameraArea(new Area(i * 9, -2, i * 9 + 9, 9));
 		}
-		map.setSpawnPoint(0, 1, 0.5f);
-
-		for (float drawingPriority : layers.keySet()) {
-			Map<HitBox, String> layer = layers.get(drawingPriority);
-			if (drawingPriority <= 0.55 && drawingPriority >= 0.45) map.addGameObject(new Wall(layer, drawingPriority));
-			else map.addGameObject(new Background(layer, drawingPriority));
-
-		}
-
+		map.setSpawnPoint(15, -15, 0.5f);
 		return map;
 	}
 
