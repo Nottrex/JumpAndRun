@@ -52,7 +52,7 @@ public class MapLoader {
 			directory = "";
 			if (mapName.endsWith("menu")) return createLobby(g, Constants.SYS_PREFIX + "load", Constants.SYS_PREFIX + "new", Constants.SYS_PREFIX + "options");
 			if (mapName.endsWith("load")) return createLoad(g);
-			if (mapName.endsWith("new")) return createLobby(g, Constants.SYS_PREFIX + "world");
+			if (mapName.endsWith("new")) return createNew(g);
 			if (mapName.endsWith("options")) return createLobby(g, Constants.SYS_PREFIX + "menu");
 			if (mapName.endsWith("world")) return createLobby(g, getMaps(mapFolder, false));
 			if (mapName.endsWith("save")) return createSave(g);
@@ -216,6 +216,11 @@ public class MapLoader {
 						String tag = tags.getOrDefault("tag", "lever");
 						map.addGameObject(new Lever(x, y, drawingPriority, g.getValue(tag) > 0, Parser.loadScript(Parser.COMMAND, String.format("#%s=(#%s+1);", tag, tag)), Parser.loadScript(Parser.COMMAND, String.format("#%s=(#%s-1);", tag, tag)), null));
 						break;
+					case "pressureplate":
+					case "pressureplate_pressed":
+						tag = tags.getOrDefault("tag", "pressureplate");
+						map.addGameObject(new Pressure_Plate(x, y, drawingPriority, Parser.loadScript(Parser.COMMAND, String.format("#%s=(#%s+1);", tag, tag)), Parser.loadScript(Parser.COMMAND, String.format("#%s=(#%s-1);", tag, tag))));
+						break;
 					case "door_6":
 					case "door_5":
 					case "door_4":
@@ -325,7 +330,8 @@ public class MapLoader {
 				return null;
 			})));
 		}
-		map.setSpawnPoint(15, -15, 0.5f);
+		map.setSpawnPoint(15, -16, 0.5f);
+		map.addGameObject(new Exit(15, -16, 0.6f, Constants.SYS_PREFIX + "world", null));
 		return map;
 	}
 
@@ -347,7 +353,17 @@ public class MapLoader {
 				//locked door
 			}
 		}
-		map.setSpawnPoint(15, -15, 0.5f);
+		map.setSpawnPoint(15, -16, 0.5f);
+		map.addGameObject(new Exit(15, -16, 0.6f, Constants.SYS_PREFIX + "menu", null));
+		return map;
+	}
+
+	private static GameMap createNew(Game g) {
+		GameMap map = load(g, "hidden/saves");
+		map.addGameObject(new Exit(0, 0, 1, Constants.SYS_PREFIX + "world", new Tree((tree, game) -> {
+			//game.loadAllMaps();
+			return null;
+		})));
 		return map;
 	}
 

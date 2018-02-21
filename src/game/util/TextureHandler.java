@@ -36,7 +36,7 @@ public class TextureHandler {
 	/** Loads texture and saves it
 	*   @param textureName the name of texture
 	*   @param fileName name of the PNG-file with the texture
-	*//
+	**/
 	public static void loadImagePng(String textureName, String fileName) {
 		try {
 			textures_png.put(textureName, ImageIO.read(ClassLoader.getSystemResource("res/textures/" + fileName + ".png")));
@@ -115,7 +115,7 @@ public class TextureHandler {
 	/** Converts BufferedImage to OpenGL image
 	*   @param image image to be converted
 	*   @return 
-	*//
+	**/
 	public static int createImage(BufferedImage image) {
 		int[] pixels = new int[image.getWidth() * image.getHeight()];
 		image.getRGB(0, 0, image.getWidth(), image.getHeight(), pixels, 0, image.getWidth());
