@@ -26,31 +26,31 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Game {
-	private Window window;
-	private AudioPlayer audioPlayer;
+	private Window window;				//displays the game
+	private AudioPlayer audioPlayer;		//used to play Audio
 
-	private int gameTick;
+	private int gameTick;				//current tick of the game (starts at 0) -> 60 Ticks Per Second
 
-	private List<GameObject> gameObjects;
-	private List<CollisionObject> collisionObjects;
-	private List<Player> players;
-	private List<Integer> inputs;
-	private List<Color> playerColors;
-	private GameMap map;
+	private List<GameObject> gameObjects;		//list of gameobjects, that are updated every tick
+	private List<CollisionObject> collisionObjects;	//list of collisionobjects, that are used when calculating collision
+	private List<Player> players;			//list of players, that are current
+	private List<Integer> inputs;			//list of inputs, that are used by the players
+	private List<Color> playerColors;		//list of playerColors, that are used to recolor the Player
+	private GameMap map;				//current GameMap
 
-	private int fadeStart;
-	private String newMap;
-	private Queue<GameObject> toRemove;
-	private Queue<GameObject> toAdd;
+	private int fadeStart;				//The startTick of a transition between maps
+	private String newMap;				//The target map for a map change
+	private Queue<GameObject> toRemove;		//list of gameobjects, that are removed next Tick
+	private Queue<GameObject> toAdd;		//list of gameobjects, that are added next Tick
 
-	private ParticleSystem particleSystem;
-	private DeadBodyHandler deadBodyHandler;
+	private ParticleSystem particleSystem;		//display and store all particles
+	private DeadBodyHandler deadBodyHandler;	//display and store all deadBodies
 
-	private Map<String, Integer> values;
-	private List<Ability> abilities;
+	private Map<String, Integer> values;		//store all in game variables -> SaveGame
+	private List<Ability> abilities;		//TODO: Remove this!
 
-	private ScreenEntity coinCounterCoin;
-	private Text coinCounter;
+	private ScreenEntity coinCounterCoin;		//display coin icon on the screen
+	private Text coinCounter;			//display coin amount on the screeen
 
 	public Game(Window window) {
 		this.window = window;
@@ -75,6 +75,7 @@ public class Game {
 		addGameObject(coinCounter);
 		addGameObject(coinCounterCoin);
 
+		//Start the game in the "menu" map
 		setGameMap(Constants.SYS_PREFIX + "menu", false);
 
 		audioPlayer = new AudioPlayer(Sound.EP.fileName);
@@ -82,18 +83,23 @@ public class Game {
 		audioPlayer.start();
 	}
 
+	/**
+	 * Update the game 60 times per second
+	**/
 	public void gameLoop() {
 		MapLoader.loadAllMaps(this);
 
 		long time;
 		while (window.isRunning()) {
 			gameTick++;
+			time = TimeUtil.getTime();
+			handleInput();		
+			
+			//update coinCounter
 			coinCounter.setText(values.getOrDefault("coins", 0).toString());
 			coinCounter.setPosition(1 - coinCounterCoin.getWidth(), 1-(0.1f/6), 0.1f);
-			time = TimeUtil.getTime();
-
-			handleInput();
-
+				
+			//change map
 			if (newMap != null && gameTick - fadeStart >= Constants.FADE_TIME / 2) {
 				GameMap newGameMap = MapLoader.load(this, newMap);
 				if (map != null) {
@@ -114,6 +120,7 @@ public class Game {
 				newMap = null;
 			}
 
+			//Remove gameobjects
 			while (!toRemove.isEmpty()) {
 				GameObject gameObject = toRemove.poll();
 
@@ -133,6 +140,7 @@ public class Game {
 				}
 			}
 
+			//Add gameobjects
 			while (!toAdd.isEmpty()) {
 				GameObject gameObject = toAdd.poll();
 
@@ -149,24 +157,30 @@ public class Game {
 				}
 			}
 
+			//Sort gameobjects for priority
 			collisionObjects.sort((o1, o2) -> Float.compare(o2.getCollisionPriority(), o1.getCollisionPriority()));
 			gameObjects.sort((o1, o2) -> Float.compare(o2.getPriority(), o1.getPriority()));
 
+			//Update every gameObject
 			for (GameObject gameObject : gameObjects) {
 				gameObject.update(this);
 			}
 
+			//Sync the updates to TPS
 			long newTime = TimeUtil.getTime();
-
 			TimeUtil.sleep((int) (1000.0f / Constants.TPS - (newTime - time)));
 		}
 
 		cleanUp();
 	}
 
+	/**
+	 * update the Keyboard and Controller Inputs
+	**/
 	private void handleInput() {
 		Keyboard keyboard = window.getKeyboard();
 
+		//spawn new players
 		for (int i = 0; i < 18; i++) {
 			if (keyboard.isPressed(Options.controls.get("UP" + i)) && !inputs.contains(i)) {
 				Player newPlayer = new Player(map.getSpawnX(), map.getSpawnY(), map.getPlayerDrawingPriority());
@@ -174,6 +188,8 @@ public class Game {
 				inputs.add(i);
 			}
 		}
+		
+		//update the pressed keys for the players
 		for (int i = 0; i < players.size(); i++) {
 			Player player = players.get(i);
 			int input = inputs.get(i);
@@ -186,10 +202,19 @@ public class Game {
 		}
 	}
 
+	/**
+	 * executed when the window closes -> Save Options
+	**/
 	private void cleanUp() {
 		Options.save();
 	}
 
+	/**
+	 * starts transition into a new map
+	 * @param name the target map
+	 * @param fade if the transition should include a fade effect
+	 * @return true, if the map can be changed | false, if the map is changing currently
+	**/
 	public boolean setGameMap(String name, boolean fade) {
 		if (newMap == null) {
 			newMap = name;
@@ -207,50 +232,92 @@ public class Game {
 		return false;
 	}
 
+	/**
+	 * add a new GameObject to the Game
+	 * @param gameObject the gameobject to be added
+	**/
 	public void addGameObject(GameObject gameObject) {
 		if (!toAdd.contains(gameObject) && !gameObjects.contains(gameObject)) toAdd.add(gameObject);
 	}
 
+	/**
+	 * remove a GameObject from the Game
+	 * @param gameObject the gameobject to be removed
+	**/
 	public void removeGameObject(GameObject gameObject) {
 		if (!toRemove.contains(gameObject) && gameObjects.contains(gameObject)) toRemove.add(gameObject);
 	}
 
+	/**
+	 * @return a list of all CollisionObjects in the game
+	**/
 	public List<CollisionObject> getCollisionObjects() {
 		return collisionObjects;
 	}
 
+	/**
+	 * @return the camera used to display the game
+	**/
 	public Camera getCamera() {
 		return window.getCamera();
 	}
 
+	/**
+	 * @return the AudioPlayer used to play the audio of the game
+	**/
 	public AudioPlayer getAudioPlayer() {
 		return audioPlayer;
 	}
 
+	/**
+	 * @return the width of the window divided by the height
+	**/
 	public float getAspectRatio() {
 		return window.getAspectRatio();
 	}
 
+	/**
+	 * @return the particlesystem used to display and store particles
+	**/
 	public ParticleSystem getParticleSystem() {
 		return particleSystem;
 	}
 
+	/**
+	 * @return the DeadBodyHandler used to store DeadBodies
+	**/
 	public DeadBodyHandler getDeadBodyHandler() {
 		return deadBodyHandler;
 	}
 
+	/**
+	 * @return a list of all Player in the game
+	**/
 	public List<Player> getPlayers() {
 		return players;
 	}
 
+	/**
+	 * @return the current gameTick
+	**/
 	public int getGameTick() {
 		return gameTick;
 	}
 
+	/**
+	 * @param key the key of the value to be returned
+	 * @return the value of the given key in the game savestate
+	**/
 	public int getValue(String key) {
 		return values.getOrDefault(key, 0);
 	}
 
+	/**
+	 * searches for all set values in the savegame, where the key cointains the given string and where the value is one of the given values or anything when given no values
+	 * @param key the String that every key has to contain
+	 * @param value that the found values may be, or nothing to allow every value
+	 * @return the amount of keys found in the savestate
+	**/
 	public int getKeyAmount(String key, int... value) {
 		String[] keySet = values.keySet().toArray(new String[0]);
 		int amount = 0;
@@ -268,30 +335,50 @@ public class Game {
 		return amount;
 	}
 
+	/**
+	 * @param key the key to be set in the saveGame
+	 * @param the value that should be assigned to the key in the current saveGame
+	**/
 	public void setValue(String key, int value) {
 		values.put(key, value);
 	}
 
+	//TODO: Remove
 	public boolean hasAbility(Ability ability) {
 		return abilities.contains(ability);
 	}
 
+	//TODO: remove
 	public void addAbility(Ability ability) {
 		if (!abilities.contains(ability)) abilities.add(ability);
 	}
 
+	/**
+	 * @param colors the colors that should become available as colors for the player
+	**/
 	private void addPlayerColors(String... colors) {
 		for(String s: colors) playerColors.add(Color.decode(s));
 	}
 
+	/**
+	 * loads all values from a saveGame with the given name
+	 * @param saveName the name of the save that should be loade
+	**/
 	public void loadValues(String saveName) {
 		values = SaveHandler.readSave(saveName);
 	}
 
+	/**
+	 * saves all values of the current saveGame to the save with the given name
+	 * @param saveName name of the save
+	**/
 	public void saveValues(String saveName) {
 		SaveHandler.writeSave(values, saveName);
 	}
 
+	/**
+	 * removes all values from the loaded saveGame
+	**/
 	public void clearValues() {
 		values.clear();
 	}
