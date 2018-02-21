@@ -111,8 +111,8 @@ torch_yellow 176 10 1 4
 torch_orange 178 10 1 4
 torch_red 180 10 1 4
 torch_darkRed 182 10 1 4
-pressureplate 152 0 8 8
-pressureplate_pressed 160 0 8 8
+pressureplate 152 6 8 2
+pressureplate_pressed 160 6 8 2
 lantern 176 16 8 16
 lantern_off 184 16 8 16
 platform 152 32 8 8

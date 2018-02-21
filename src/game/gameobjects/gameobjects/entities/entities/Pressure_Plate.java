@@ -17,7 +17,7 @@ public class Pressure_Plate extends BasicStaticEntity {
 	private boolean pressed;
 
 	public Pressure_Plate(float x, float y, float drawingPriority, Tree onActivate, Tree onDeactivate) {
-		super(new HitBox(x, y, 1f, 1f), drawingPriority);
+		super(new HitBox(x, y, 1f, 0.25f), drawingPriority);
 
 		pressed = false;
 		setSprite(up);

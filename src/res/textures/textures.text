@@ -310,9 +310,9 @@ arrow_left 1 11 7 7
 player_l_move_2 107 147 8 8
 player_l_move_1 103 136 8 8
 player_l_move_0 34 201 8 8
-pressureplate_pressed 175 234 8 8
+pressureplate_pressed 175 240 8 2
 column_grass_right_1 142 236 8 8
 banner_big_blue_mid 192 123 8 8
 block_stone_middle 70 228 8 8
-pressureplate 1 247 8 8
+pressureplate 1 253 8 2
 banner_big_red_mid 185 91 8 8
