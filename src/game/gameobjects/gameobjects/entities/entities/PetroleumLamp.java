@@ -81,16 +81,16 @@ public class PetroleumLamp extends BasicStaticEntity implements Light {
 
 	@Override
 	public void getLightColor(float[] values) {
-		values[0] = color.getColor().getRed()/255.0f;
-		values[1] = color.getColor().getGreen()/255.0f;
-		values[2] = color.getColor().getBlue()/255.0f;
+		values[0] = 1.3f*color.getColor().getRed()/255.0f;
+		values[1] = 1.3f*color.getColor().getGreen()/255.0f;
+		values[2] = 1.3f*color.getColor().getBlue()/255.0f;
 	}
 
 	@Override
 	public void getLightPosition(float[] values) {
 		values[0] = hitBox.getCenterX();
 		values[1] = hitBox.getCenterY();
-		values[2] = 0.8f;
+		values[2] = 0.7f;
 	}
 
 	@Override
