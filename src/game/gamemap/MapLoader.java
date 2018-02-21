@@ -5,6 +5,7 @@ import game.Game;
 import game.data.hitbox.HitBox;
 import game.data.script.Parser;
 import game.data.script.Tree;
+import game.gameobjects.GameObject;
 import game.gameobjects.gameobjects.Text;
 import game.gameobjects.gameobjects.cameracontroller.Area;
 import game.gameobjects.gameobjects.entities.entities.*;
@@ -20,6 +21,8 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class MapLoader {
 	private static String directory;
@@ -53,14 +56,14 @@ public class MapLoader {
 			if (mapName.endsWith("menu")) return createLobby(g, Constants.SYS_PREFIX + "load", Constants.SYS_PREFIX + "new", Constants.SYS_PREFIX + "options");
 			if (mapName.endsWith("load")) return createLoad(g);
 			if (mapName.endsWith("new")) return createNew(g);
-			if (mapName.endsWith("options")) return createLobby(g, Constants.SYS_PREFIX + "menu");
+			if (mapName.endsWith("options")) return createOptions(g);
 			if (mapName.endsWith("world")) return createLobby(g, getMaps(mapFolder, false));
 			if (mapName.endsWith("save")) return createSave(g);
 		}
 
 		if (!FileHandler.fileExists("maps/" + directory + File.separator + mapName + ".map")) {
 			GameMap map = load(g, Constants.SYS_PREFIX + "menu");
-			Text text = new Text(-100, "Something went wrong. We send you back to Menu", -0.9f, -0.9f, 0.05f, false, 0, 0, Color.RED);
+			Text text = new Text(-100, "Something went wrong. We send you back to the Menu", -0.9f, -0.9f, 0.05f, false, 0, 0, Color.RED);
 			text.setTimer(300);
 			map.addGameObject(text);
 			return map;
@@ -229,6 +232,25 @@ public class MapLoader {
 					case "door_1":
 						map.addGameObject(new Door(x, y, drawingPriority, Parser.loadScript(Parser.BOOLEAN, tags.getOrDefault("condition", "#lever"))));
 						break;
+					case "wood_ladder":
+					case "steel_ladder":
+						map.addGameObject(new Ladder(x, y, drawingPriority));
+						break;
+					case "piano":
+						map.addGameObject(new Piano(x, y, drawingPriority));
+						break;
+					case "petroleum_yellow":
+						map.addGameObject(new PetroleumLamp(x, y, drawingPriority, PetroleumLamp.PetroleumColor.YELLOW));
+						break;
+					case "petroleum_orange":
+						map.addGameObject(new PetroleumLamp(x, y, drawingPriority, PetroleumLamp.PetroleumColor.ORANGE));
+						break;
+					case "petroleum_red":
+						map.addGameObject(new PetroleumLamp(x, y, drawingPriority, PetroleumLamp.PetroleumColor.RED));
+						break;
+					case "petroleum_darkRed":
+						map.addGameObject(new PetroleumLamp(x, y, drawingPriority, PetroleumLamp.PetroleumColor.DARK_RED));
+						break;
 					default:
 						HitBox hitBox = new HitBox(x, y, textureBounds.width / tileSize, textureBounds.height / tileSize);
 
@@ -335,6 +357,38 @@ public class MapLoader {
 		return map;
 	}
 
+	private static GameMap createOptions(Game g) {
+		GameMap map = load(g, "hidden/options");
+
+		List<GameObject> lever = map.getGameObjects().stream().filter(go -> go instanceof Lever).sorted((g1, g2) -> Float.compare(((Lever) g1).getCollisionBoxes().get(0).y, ((Lever) g2).getCollisionBoxes().get(0).y)).collect(Collectors.toList());
+
+		{
+			Lever lever1 = (Lever) lever.get(0);
+
+			lever1.setEnabled(new Tree((t, g2) -> true));
+			lever1.setOnActivate(new Tree((t, g2) -> {
+				//TODO: Maximize
+				return null;
+			}));
+			lever1.setOnDeactivate(new Tree((t, g2) -> {
+				//TODO: Don't maximize
+				return null;
+			}));
+
+			HitBox textBox = lever1.getCollisionBoxes().get(0).clone();
+			textBox.move(0, 1f);
+			map.addGameObject(new Text(0, "MAXIMIZE", textBox.getCenterX(), textBox.getCenterY(), 0.5f, true,  0.5f, 0.5f, Color.RED));
+		}
+		for (int i = 1; i < lever.size(); i++) {
+			Lever leveri = (Lever) lever.get(i);
+			leveri.setEnabled(new Tree((t,g2) -> false));
+		}
+
+		((Exit) map.getGameObjects().stream().filter(go -> go instanceof Exit).findAny().get()).setTargetMap(Constants.SYS_PREFIX + "menu");
+
+		return map;
+	}
+
 	private static GameMap createLoad(Game g) {
 		GameMap map = load(g, "hidden/saves");
 		Map<Integer, String> saves = SaveHandler.getSaves();
@@ -361,7 +415,7 @@ public class MapLoader {
 	private static GameMap createNew(Game g) {
 		GameMap map = load(g, "hidden/saves");
 		map.addGameObject(new Exit(0, 0, 1, Constants.SYS_PREFIX + "world", new Tree((tree, game) -> {
-			//game.loadAllMaps();
+			loadAllMaps(g);
 			return null;
 		})));
 		return map;

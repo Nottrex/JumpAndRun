@@ -138,8 +138,8 @@ public class Player extends BasicWalkingEntity implements Light {
 
 	@Override
 	public void getLightColor(float[] values) {
-		values[0] = 1f;
-		values[1] = 1f;
+		values[0] = 0.5f;
+		values[1] = 0.5f;
 		values[2] = 0f;
 	}
 
@@ -147,7 +147,7 @@ public class Player extends BasicWalkingEntity implements Light {
 	public void getLightPosition(float[] values) {
 		values[0] = hitBox.x + hitBox.width / 2;
 		values[1] = hitBox.y + hitBox.height / 2;
-		values[2] = 0.95f;
+		values[2] = 0.9f;
 	}
 
 	@Override

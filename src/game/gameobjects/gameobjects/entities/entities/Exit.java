@@ -53,4 +53,8 @@ public class Exit extends BasicStaticEntity {
 	public float getCollisionPriority() {
 		return -1;
 	}
+
+	public void setTargetMap(String targetMap) {
+		this.targetMap = targetMap;
+	}
 }

@@ -19,7 +19,7 @@ public class LightHandler {
 		changed = true;
 
 		lights = new ArrayList<>();
-		minimumBrightness = 0.5f;
+		minimumBrightness = 0.4f;
 		tMinimumBrightness = new SmoothFloatCubic(minimumBrightness);
 	}
 

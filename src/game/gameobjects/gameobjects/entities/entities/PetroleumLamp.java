@@ -1,21 +1,47 @@
 package game.gameobjects.gameobjects.entities.entities;
 
 import game.Game;
+import game.data.Sprite;
 import game.data.hitbox.HitBox;
 import game.data.hitbox.HitBoxDirection;
-import game.data.Sprite;
 import game.gameobjects.CollisionObject;
 import game.gameobjects.gameobjects.entities.BasicStaticEntity;
 import game.window.Window;
 import game.window.light.Light;
 
-public class Lantern extends BasicStaticEntity implements Light{
-	private static Sprite idle = new Sprite(100, "lantern");
+import java.awt.*;
 
-	public Lantern(float x, float y, float drawingPriority) {
-		super(new HitBox(x, y, 1f, 2f), drawingPriority);
+public class PetroleumLamp extends BasicStaticEntity implements Light {
+	public enum PetroleumColor{
+		YELLOW(new Sprite(100, "petroleum_yellow"), new Color(255, 255, 0)),
+		ORANGE(new Sprite(100, "petroleum_orange"), new Color(255, 153, 0)),
+		RED(new Sprite(100, "petroleum_red"), new Color(255, 0, 0)),
+		DARK_RED(new Sprite(100, "petroleum_darkRed"), new Color(102, 0, 0));
 
-		setSprite(idle);
+		private Sprite sprite;
+		private Color color;
+
+		PetroleumColor(Sprite sprite, Color color) {
+			this.sprite = sprite;
+			this.color = color;
+		}
+
+		public Sprite getSprite() {
+			return sprite;
+		}
+
+		public Color getColor() {
+			return color;
+		}
+	}
+
+	private PetroleumColor color;
+
+	public PetroleumLamp(float x, float y, float drawingPriority, PetroleumColor color) {
+		super(new HitBox(x, y, 0.375f, 0.625f), drawingPriority);
+
+		this.color = color;
+		setSprite(color.getSprite());
 	}
 
 	@Override
@@ -55,16 +81,16 @@ public class Lantern extends BasicStaticEntity implements Light{
 
 	@Override
 	public void getLightColor(float[] values) {
-		values[0] = 1.35f*255.0f/255.0f;
-		values[1] = 1.35f*231.0f/255.0f;
-		values[2] = 1.35f*98.0f/255.0f;
+		values[0] = color.getColor().getRed()/255.0f;
+		values[1] = color.getColor().getGreen()/255.0f;
+		values[2] = color.getColor().getBlue()/255.0f;
 	}
 
 	@Override
 	public void getLightPosition(float[] values) {
-		values[0] = hitBox.x + hitBox.width / 2;
-		values[1] = hitBox.y + hitBox.height * 4 / 5;
-		values[2] = 0.91f;
+		values[0] = hitBox.getCenterX();
+		values[1] = hitBox.getCenterY();
+		values[2] = 0.8f;
 	}
 
 	@Override
