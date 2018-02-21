@@ -16,7 +16,7 @@ public class Exit extends BasicStaticEntity {
 	private Tree onEntrance;
 
 	public Exit(float x, float y, float drawingPriority, String targetMap, Tree onEntrance) {
-		super(new HitBox(x, y, 0.75f, 1), drawingPriority);
+		super(new HitBox(x+0.125f, y, 0.75f, 1), drawingPriority);
 
 		this.targetMap = targetMap;
 		this.onEntrance = onEntrance;
