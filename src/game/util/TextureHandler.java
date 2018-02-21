@@ -15,9 +15,9 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class TextureHandler {
-	private static Map<String, BufferedImage> textures_png;
-	private static Map<String, Rectangle> textures_sprite_sheet;
-	private static Map<String, String> textures_sprite_sheet_texture;
+	private static Map<String, BufferedImage> textures_png;			//saved images with name
+	private static Map<String, Rectangle> textures_sprite_sheet;		//coordinates on spritesheet from given texture name
+	private static Map<String, String> textures_sprite_sheet_texture;	//corresponding spritesheet names from given texture names
 
 	static {
 		textures_png = new HashMap<>();
@@ -33,6 +33,10 @@ public class TextureHandler {
 	private TextureHandler() {
 	}
 
+	/** Loads texture and saves it
+	*   @param textureName the name of texture
+	*   @param fileName name of the PNG-file with the texture
+	*//
 	public static void loadImagePng(String textureName, String fileName) {
 		try {
 			textures_png.put(textureName, ImageIO.read(ClassLoader.getSystemResource("res/textures/" + fileName + ".png")));
@@ -41,13 +45,19 @@ public class TextureHandler {
 		}
 	}
 
+	/** Loads spritesheet and saves if with all subimages
+	*   @param spriteSheetName name of the spritesheet
+	*   @param fileName name of the text-file with spritesheet 
+	**/
 	public static void loadImagePngSpriteSheet(String spriteSheetName, String fileName) {
 		try {
+			//loading spritesheet.png and reading number of subimages
 			loadImagePng(spriteSheetName, fileName);
 			Scanner s = new Scanner(ClassLoader.getSystemResourceAsStream("res/textures/" + fileName + ".text"));
 
 			int amount = Integer.valueOf(s.nextLine());
 
+			//Reading and saving of subimages
 			for (int i = 0; i < amount; i++) {
 				try {
 					String[] line = s.nextLine().split(" ");
@@ -69,16 +79,28 @@ public class TextureHandler {
 		}
 	}
 
+	/** Gets the coordinates on spritesheet of given texture name
+	*   @param textureName name of the texture 
+	*   @return the corresponding coordinates on the spritesheet
+	**/
 	public static Rectangle getSpriteSheetBounds(String textureName) {
 		if (textures_sprite_sheet.containsKey(textureName)) return textures_sprite_sheet.get(textureName);
 		System.out.println(String.format("No such spriteSheet image: %s", textureName));
 		return textures_sprite_sheet.get("textures_texture_error");
 	}
 
+	/** Gets the spritesheet of given texture name
+	*   @param textureName name of the texture 
+	*   @return the corresponding spritesheet name
+	**/
 	public static String getSpriteSheetImage(String textureName) {
 		return textures_sprite_sheet_texture.get(textureName);
 	}
 
+	/** Gets Image of the texture name
+	*   @param textureName name of the texture
+	*   @return texture of the texture name
+	**/
 	public static BufferedImage getImagePng(String textureName) {
 		if (textures_png.containsKey(textureName))
 			return textures_png.get(textureName);
@@ -90,6 +112,10 @@ public class TextureHandler {
 		return null;
 	}
 
+	/** Converts BufferedImage to OpenGL image
+	*   @param image image to be converted
+	*   @return 
+	*//
 	public static int createImage(BufferedImage image) {
 		int[] pixels = new int[image.getWidth() * image.getHeight()];
 		image.getRGB(0, 0, image.getWidth(), image.getHeight(), pixels, 0, image.getWidth());
@@ -118,6 +144,8 @@ public class TextureHandler {
 		return texture;
 	}
 
+	/** Exports every texture in bigger scale => used for wiki textures
+	**/
 	private static void exportTexturePng() {
 		for (String s: textures_sprite_sheet.keySet()) {
 			try {
