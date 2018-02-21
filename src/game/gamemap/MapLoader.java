@@ -53,7 +53,7 @@ public class MapLoader {
 	public static GameMap load(Game g, String mapName) {
 		if (mapName.startsWith(Constants.SYS_PREFIX)) {
 			directory = "";
-			if (mapName.endsWith("menu")) return createLobby(g, Constants.SYS_PREFIX + "load", Constants.SYS_PREFIX + "new", Constants.SYS_PREFIX + "options");
+			if (mapName.endsWith("menu")) return createMenu(g);
 			if (mapName.endsWith("load")) return createLoad(g);
 			if (mapName.endsWith("new")) return createNew(g);
 			if (mapName.endsWith("options")) return createOptions(g);
@@ -385,6 +385,27 @@ public class MapLoader {
 		}
 
 		((Exit) map.getGameObjects().stream().filter(go -> go instanceof Exit).findAny().get()).setTargetMap(Constants.SYS_PREFIX + "menu");
+
+		return map;
+	}
+
+	private static GameMap createMenu(Game g) {
+		GameMap map = load(g, "hidden/menu");
+
+		Exit exitLoad = (Exit) map.getGameObjects().stream().filter(go -> go instanceof Exit).filter(go -> ((Exit) go).getTargetMap().equals("2")).findAny().get();
+		exitLoad.setTargetMap(Constants.SYS_PREFIX + "load");
+		Text textLoad = new Text(-0.25f, "LOAD", exitLoad.getCollisionBoxes().get(0).getCenterX(), exitLoad.getCollisionBoxes().get(0).y + 2, 0.5f, true, 0.5f, 0.5f, Color.RED);
+		map.addGameObject(textLoad);
+
+		Exit exitNew = (Exit) map.getGameObjects().stream().filter(go -> go instanceof Exit).filter(go -> ((Exit) go).getTargetMap().equals("3")).findAny().get();
+		exitNew.setTargetMap(Constants.SYS_PREFIX + "new");
+		Text textNew = new Text(-0.25f, "NEW", exitNew.getCollisionBoxes().get(0).getCenterX(), exitNew.getCollisionBoxes().get(0).y + 2, 0.5f, true, 0.5f, 0.5f, Color.RED);
+		map.addGameObject(textNew);
+
+		Exit exitOptions = (Exit) map.getGameObjects().stream().filter(go -> go instanceof Exit).filter(go -> ((Exit) go).getTargetMap().equals("1")).findAny().get();
+		exitOptions.setTargetMap(Constants.SYS_PREFIX + "options");
+		Text textOptions = new Text(-0.25f, "OPTIONS", exitOptions.getCollisionBoxes().get(0).getCenterX(), exitOptions.getCollisionBoxes().get(0).y + 2, 0.5f, true, 0.5f, 0.5f, Color.RED);
+		map.addGameObject(textOptions);
 
 		return map;
 	}

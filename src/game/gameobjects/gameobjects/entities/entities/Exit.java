@@ -54,6 +54,10 @@ public class Exit extends BasicStaticEntity {
 		return -1;
 	}
 
+	public String getTargetMap() {
+		return targetMap;
+	}
+
 	public void setTargetMap(String targetMap) {
 		this.targetMap = targetMap;
 	}
