@@ -1,12 +1,10 @@
 package game.gameobjects.gameobjects.entities;
 
-import game.Constants;
 import game.Game;
 import game.data.hitbox.HitBox;
 import game.data.hitbox.HitBoxDirection;
 import game.gameobjects.CollisionObject;
 import game.gameobjects.gameobjects.entities.entities.Player;
-import game.util.MathUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +30,6 @@ public abstract class BasicMovingEntity extends BasicDrawingEntity implements Co
 
 	@Override
 	public void update(Game game) {
-		vx = MathUtil.clamp(vx, -Constants.MAX_SPEED, Constants.MAX_SPEED);
-		vy = MathUtil.clamp(vy, -Constants.MAX_SPEED, Constants.MAX_SPEED);
-
 		float vx_ = vx;
 		vx = 0;
 		move(game);

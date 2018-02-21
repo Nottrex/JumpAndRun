@@ -8,7 +8,7 @@ import game.data.script.Tree;
 import game.gameobjects.CollisionObject;
 import game.gameobjects.gameobjects.entities.BasicStaticEntity;
 
-public class Pressure_Plate extends BasicStaticEntity {
+public class PressurePlate extends BasicStaticEntity {
 	private static Sprite up = new Sprite(100, "pressureplate");
 	private static Sprite down = new Sprite(100, "pressureplate_pressed");
 
@@ -16,7 +16,7 @@ public class Pressure_Plate extends BasicStaticEntity {
 	private int timeActivated, timeDeactivated;
 	private boolean pressed;
 
-	public Pressure_Plate(float x, float y, float drawingPriority, Tree onActivate, Tree onDeactivate) {
+	public PressurePlate(float x, float y, float drawingPriority, Tree onActivate, Tree onDeactivate) {
 		super(new HitBox(x, y, 1f, 0.25f), drawingPriority);
 
 		pressed = false;

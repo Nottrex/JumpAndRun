@@ -219,7 +219,7 @@ public class MapLoader {
 					case "pressureplate":
 					case "pressureplate_pressed":
 						tag = tags.getOrDefault("tag", "pressureplate");
-						map.addGameObject(new Pressure_Plate(x, y, drawingPriority, Parser.loadScript(Parser.COMMAND, String.format("#%s=(#%s+1);", tag, tag)), Parser.loadScript(Parser.COMMAND, String.format("#%s=(#%s-1);", tag, tag))));
+						map.addGameObject(new PressurePlate(x, y, drawingPriority, Parser.loadScript(Parser.COMMAND, String.format("#%s=(#%s+1);", tag, tag)), Parser.loadScript(Parser.COMMAND, String.format("#%s=(#%s-1);", tag, tag))));
 						break;
 					case "door_6":
 					case "door_5":

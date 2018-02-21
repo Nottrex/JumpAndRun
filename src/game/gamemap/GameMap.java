@@ -31,6 +31,8 @@ public class GameMap {
 		this.spawnX = x;
 		this.spawnY = y;
 		this.playerDrawingPriority = playerDrawingPriority;
+
+		cameraController.setSpawn(x, y);
 	}
 
 	public CameraController getCameraController() {
