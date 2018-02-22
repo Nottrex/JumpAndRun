@@ -47,7 +47,6 @@ public class Game {
 	private DeadBodyHandler deadBodyHandler;	//display and store all deadBodies
 
 	private Map<String, Integer> values;		//store all in game variables -> SaveGame
-	private List<Ability> abilities;		//TODO: Remove this!
 
 	private ScreenEntity coinCounterCoin;		//display coin icon on the screen
 	private Text coinCounter;			//display coin amount on the screeen
@@ -68,7 +67,6 @@ public class Game {
 		toAdd = new ConcurrentLinkedQueue<>();
 
 		values = new HashMap<>();
-		abilities = new ArrayList<>();
 
 		coinCounter = new Text(-1000f, "0", 1, 1-(0.1f/6), 0.1f, false, 1, 1);
 		coinCounterCoin = new ScreenEntity(new HitBox(1, 1, 0.4f/3, 0.4f/3), -1000, Coin.idle, 1, 1);
@@ -225,6 +223,7 @@ public class Game {
 			} else {
 				fadeStart = gameTick - Constants.FADE_TIME;
 			}
+			for (Player p: players) p.removeAllAbilities();
 
 			return true;
 		}
@@ -337,20 +336,10 @@ public class Game {
 
 	/**
 	 * @param key the key to be set in the saveGame
-	 * @param the value that should be assigned to the key in the current saveGame
+	 * @param value the value that should be assigned to the key in the current saveGame
 	**/
 	public void setValue(String key, int value) {
 		values.put(key, value);
-	}
-
-	//TODO: Remove
-	public boolean hasAbility(Ability ability) {
-		return abilities.contains(ability);
-	}
-
-	//TODO: remove
-	public void addAbility(Ability ability) {
-		if (!abilities.contains(ability)) abilities.add(ability);
 	}
 
 	/**

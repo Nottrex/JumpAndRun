@@ -1,5 +1,6 @@
 package game.gamemap;
 
+import game.Ability;
 import game.Constants;
 import game.Game;
 import game.data.hitbox.HitBox;
@@ -188,6 +189,12 @@ public class MapLoader {
 					case "player_l_sword_6":
 						map.setSpawnPoint(x, y, drawingPriority);
 						map.getCameraController().setSpawn(x, y);
+						break;
+					case "ability_gate":
+						Map<Ability, Boolean> abilities = new HashMap<>();
+						if (tags.containsKey("add")) abilities.put(Ability.valueOf(tags.get("add").toUpperCase()), true);
+						if (tags.containsKey("remove")) abilities.put(Ability.valueOf(tags.get("remove").toUpperCase()), false);
+						map.addGameObject(new AbilityGate(x, y, drawingPriority, abilities));
 						break;
 					case "coin":
 						String coinID = String.format("%s_coin_%f_%f", directory, x, y);

@@ -1,5 +1,6 @@
 package game.gameobjects.gameobjects.entities.entities;
 
+import game.Ability;
 import game.Game;
 import game.data.hitbox.HitBox;
 import game.data.Sprite;
@@ -12,6 +13,11 @@ import game.gameobjects.gameobjects.particle.ParticleType;
 import game.gameobjects.gameobjects.wall.Wall;
 import game.window.Window;
 import game.window.light.Light;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class Player extends BasicWalkingEntity implements Light {
 	private static final int ATTACK_TICKS = 37;
@@ -26,6 +32,7 @@ public class Player extends BasicWalkingEntity implements Light {
 	private static Sprite idle_l = new Sprite(250, "player_l_idle_0", "player_l_idle_0", "player_l_idle_0", "player_l_idle_0", "player_l_idle_0", "player_l_idle_0", "player_l_idle_0", "player_l_idle_0", "player_l_idle_1");
 	private static Sprite falling_l = new Sprite(250, "player_l_fall");
 
+	private Set<Ability> abilities;
 	private boolean attackingLastTick, interactingLastTick;
 	private boolean attacking, interacting;
 	private int attack, interact;
@@ -34,6 +41,7 @@ public class Player extends BasicWalkingEntity implements Light {
 	public Player(float x, float y, float drawingPriority) {
 		super(new HitBox(x, y, 0.75f, 1f), drawingPriority);
 
+		abilities = new HashSet<>();
 		attacking = false;
 		interacting = false;
 		attackingLastTick = false;
@@ -183,5 +191,21 @@ public class Player extends BasicWalkingEntity implements Light {
 
 	public void setInteracting(boolean interacting) {
 		this.interacting = interacting;
+	}
+
+	public void addAbility(Ability ability) {
+		abilities.add(ability);
+	}
+
+	public void removeAbility(Ability ability) {
+		abilities.remove(ability);
+	}
+
+	public void removeAllAbilities() {
+		abilities = new HashSet<>();
+	}
+
+	public boolean hasAbility(Ability ability) {
+		return abilities.contains(ability);
 	}
 }
