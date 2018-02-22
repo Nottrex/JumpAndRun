@@ -53,7 +53,7 @@ public class Wall extends StaticDraw implements CollisionObject {
 	}
 
 	@Override
-	public void collide(CollisionObject gameObject, HitBoxDirection direction, float velocity) {
+	public void collide(CollisionObject gameObject, HitBoxDirection direction, float velocity, boolean source) {
 
 	}
 

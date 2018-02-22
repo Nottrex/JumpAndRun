@@ -24,10 +24,12 @@ public class Box extends BasicWalkingEntity {
 	}
 
 	@Override
-	public void collide(CollisionObject gameObject, HitBoxDirection direction, float velocity) {
-		if (gameObject instanceof Player && (direction == HitBoxDirection.LEFT || direction == HitBoxDirection.RIGHT)) {
+	public void collide(CollisionObject gameObject, HitBoxDirection direction, float velocity, boolean source) {
+		super.collide(gameObject, direction, velocity, source);
+
+		/*if (gameObject instanceof Player && (direction == HitBoxDirection.LEFT || direction == HitBoxDirection.RIGHT)) {
 			this.setMx(direction.invert().getXDirection()*0.1f);
-		}
+		}*/
 
 		if (direction == HitBoxDirection.DOWN && velocity > 0.15f) {
 			game.getCamera().addScreenshake(0.01f);

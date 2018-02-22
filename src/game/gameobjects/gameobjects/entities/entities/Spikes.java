@@ -17,7 +17,7 @@ public class Spikes extends BasicStaticEntity {
 	}
 
 	@Override
-	public void collide(CollisionObject gameObject, HitBoxDirection direction, float velocity) {
+	public void collide(CollisionObject gameObject, HitBoxDirection direction, float velocity, boolean source) {
 		if (gameObject instanceof Player) {
 			game.removeGameObject((Player) gameObject);
 		}

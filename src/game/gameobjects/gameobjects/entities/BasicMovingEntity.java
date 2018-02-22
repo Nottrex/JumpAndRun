@@ -32,13 +32,20 @@ public abstract class BasicMovingEntity extends BasicDrawingEntity implements Co
 	public void update(Game game) {
 		float vx_ = vx;
 		vx = 0;
+		vy += ky;
 		move(game);
 		vx += vx_;
+		vy -= ky;
 
 		float vy_ = vy;
 		vy = 0;
+		vx += kx;
 		move(game);
 		vy += vy_;
+		vx -= kx;
+
+		kx *= 0.95f;
+		ky *= 0.95f;
 	}
 
 	private void move(Game game) {
@@ -93,8 +100,15 @@ public abstract class BasicMovingEntity extends BasicDrawingEntity implements Co
 			HitBoxDirection direction = directions.get(i);
 			if (velocities.get(i) == 0) continue;
 
-			if (direction == HitBoxDirection.LEFT || direction == HitBoxDirection.RIGHT) vx = 0;
-			else if (direction == HitBoxDirection.UP ||direction == HitBoxDirection.DOWN) vy = 0;
+			if (direction == HitBoxDirection.LEFT || direction == HitBoxDirection.RIGHT) {
+				vx = 0;
+				ky *= 0.75f;
+				kx = 0;
+			} else if (direction == HitBoxDirection.UP ||direction == HitBoxDirection.DOWN) {
+				vy = 0;
+				kx *= 0.75f;
+				ky = 0;
+			}
 		}
 
 		for (int i = 0; i < collides.size(); i++) {
@@ -102,15 +116,30 @@ public abstract class BasicMovingEntity extends BasicDrawingEntity implements Co
 			HitBoxDirection direction = directions.get(i);
 			float velocity = velocities.get(i);
 
-			collide(collisionObject, direction, velocity);
-			collisionObject.collide(this, direction.invert(), velocity);
+			collide(collisionObject, direction, velocity, true);
+			collisionObject.collide(this, direction.invert(), velocity, false);
+		}
+	}
+
+	private int lastAttackKnockBack = -MIN_TIME_BETWEEN_ATTACK_KNOCK_BACK;
+	private static final int MIN_TIME_BETWEEN_ATTACK_KNOCK_BACK = 30;
+	@Override
+	public void interact(CollisionObject gameObject, HitBox hitBox, InteractionType interactionType) {
+		if (game.getGameTick() - lastAttackKnockBack > MIN_TIME_BETWEEN_ATTACK_KNOCK_BACK && gameObject instanceof Player && interactionType == InteractionType.ATTACK) {
+			float dx = (this.hitBox.getCenterX() - hitBox.getCenterX());
+			float dy = (this.hitBox.getCenterY() - hitBox.getCenterY());
+			double l = Math.sqrt(dx*dx+dy*dy);
+			dx /= l;
+			dy /= l;
+			addKnockBack(0.4f*dx, 0.4f*dy);
+			lastAttackKnockBack = game.getGameTick();
 		}
 	}
 
 	@Override
-	public void interact(CollisionObject gameObject, HitBox hitBox, InteractionType interactionType) {
-		if (gameObject instanceof Player && interactionType == InteractionType.ATTACK) {
-			//TODO: knockback
+	public void collide(CollisionObject gameObject, HitBoxDirection direction, float velocity, boolean source) {
+		if (source && this.hitBox.type == HitBox.HitBoxType.BLOCKING && gameObject instanceof BasicMovingEntity) {
+			((BasicMovingEntity) gameObject).addKnockBack(direction.getXDirection() * velocity / 20, direction.getYDirection() * velocity / 4);
 		}
 	}
 
@@ -120,4 +149,11 @@ public abstract class BasicMovingEntity extends BasicDrawingEntity implements Co
 	public final List<HitBox> getCollisionBoxes() {
 		return hitBoxList;
 	}
+
+	public void addKnockBack(float kx, float ky) {
+		this.kx += kx;
+		this.ky += ky;
+	}
+
+
 }

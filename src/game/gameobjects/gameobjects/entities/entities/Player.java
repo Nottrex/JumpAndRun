@@ -3,9 +3,13 @@ package game.gameobjects.gameobjects.entities.entities;
 import game.Game;
 import game.data.hitbox.HitBox;
 import game.data.Sprite;
+import game.data.hitbox.HitBoxDirection;
 import game.gameobjects.CollisionObject;
+import game.gameobjects.gameobjects.entities.BasicMovingEntity;
+import game.gameobjects.gameobjects.entities.BasicStaticEntity;
 import game.gameobjects.gameobjects.entities.BasicWalkingEntity;
 import game.gameobjects.gameobjects.particle.ParticleType;
+import game.gameobjects.gameobjects.wall.Wall;
 import game.window.Window;
 import game.window.light.Light;
 
@@ -78,12 +82,15 @@ public class Player extends BasicWalkingEntity implements Light {
 
 		if (attack > 0) {
 			if (attack > 20) {
-				HitBox attackHitBox = new HitBox(hitBox.getCenterX() + (attackLeft ? -0.75f : 0), hitBox.y, 0.75f, 0.75f);
+				HitBox attackHitBox = new HitBox(hitBox.getCenterX() + (attackLeft ? -0.875f : 0), hitBox.y, 0.875f, 0.875f);
 
 				for (CollisionObject collisionObject: game.getCollisionObjects()) {
+					if (collisionObject.equals(this)) continue;
 					for (HitBox hitBox: collisionObject.getCollisionBoxes()) {
 						if (hitBox.collides(attackHitBox)) {
 							collisionObject.interact(this, attackHitBox, InteractionType.ATTACK);
+							if (hitBox.type == HitBox.HitBoxType.BLOCKING) game.getCamera().addScreenshake(0.003f);
+							break;
 						}
 					}
 				}
@@ -101,6 +108,7 @@ public class Player extends BasicWalkingEntity implements Light {
 
 		if (interact > 0) {
 			for (CollisionObject collisionObject: game.getCollisionObjects()) {
+				if (collisionObject.equals(this)) continue;
 				for (HitBox hitBox2: collisionObject.getCollisionBoxes()) {
 					if (hitBox2.collides(hitBox)) {
 						collisionObject.interact(this, hitBox, InteractionType.INTERACT);

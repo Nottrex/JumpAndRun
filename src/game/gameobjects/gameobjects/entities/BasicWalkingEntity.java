@@ -58,7 +58,9 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 	}
 
 	@Override
-	public void collide(CollisionObject gameObject, HitBoxDirection direction, float velocity) {
+	public void collide(CollisionObject gameObject, HitBoxDirection direction, float velocity, boolean source) {
+		super.collide(gameObject, direction, velocity, source);
+
 		if (direction == HitBoxDirection.DOWN && velocity != 0) {
 			if (velocity > Constants.MAX_GRAVITY_SPEED + 0.01f) {
 				game.getCamera().addScreenshake(velocity / 15);
