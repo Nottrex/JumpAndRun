@@ -197,7 +197,8 @@ explosion_6 232 208 24 24
 explosion_7 184 232 24 24
 explosion_8 208 232 24 24
 explosion_9 232 232 24 24
-player_dead 241 40 8 8
+player_r_dead 241 40 8 8
+player_l_dead 232 32 8 8
 texture_error 248 0 8 8
 a 100 144 5 7
 b 105 144 5 7
@@ -322,3 +323,4 @@ chair_left 189 171 3 5
 chair_right 199 171 3 5
 table 192 172 7 4 
 beer 194 169 3 3
+circle_saw 136 144 12 12
