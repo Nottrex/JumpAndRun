@@ -17,14 +17,13 @@ public class Constants {
 	public static final float FAR = 1000f;					//maximum distance of objects to camera
 	public static final int TPS = 60;					//ticks per second
 
-	public static final float JUMP_ACCELERATION = 0.3f;
+	public static final float JUMP_ACCELERATION = 0.355f;
 	public static final float MAX_WALKING_SPEED = 0.175f;
 	public static final float DOWN_ACCELERATION = 0.04f;
 	public static final float MAX_DOWN_SPEED = 0.5f;
 	public static final float GRAVITY_ACCELERATION = 0.04f;
+	public static final float GRAVITY_ACCELERATION_JUMPING = GRAVITY_ACCELERATION / 2;
 	public static final float MAX_GRAVITY_SPEED = 0.3f;
-	public static final int MAX_JUMP_TICKS = 10;
-	public static final float MAX_SPEED = 0.5f;
 
 	public static int PIXEL_PER_TILE = 8;
 	public static final float FONT_ASPECT = 1.4f; 				//font height : font width

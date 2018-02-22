@@ -39,14 +39,21 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 	public void update(Game game) {
 		vx = mx * Constants.MAX_WALKING_SPEED;
 		if(Math.abs(mx) >= 0.2f) lastMX = mx;
-		if (-vy < Constants.MAX_GRAVITY_SPEED) vy = Math.max(vy - Constants.GRAVITY_ACCELERATION, -Constants.MAX_GRAVITY_SPEED);
-		if (this instanceof Player && ((Player) this).hasAbility(Ability.STOMP) && down && -vy < Constants.MAX_DOWN_SPEED) vy = Math.max(vy - Constants.DOWN_ACCELERATION, -Constants.MAX_DOWN_SPEED);
-		if (((onGround && !jumpingLastTick) || (jumpTicks < Constants.MAX_JUMP_TICKS && jumpTicks > 0)) && jumping) {
+
+		if ((onGround && !jumpingLastTick) && jumping) {
 			vy = Constants.JUMP_ACCELERATION;
+			jumpTicks = 1;
+		} else if (jumpTicks > 0 && jumping && vy > 0) {
 			jumpTicks++;
+
+			vy -= Constants.GRAVITY_ACCELERATION_JUMPING;
 		} else {
 			jumpTicks = 0;
+
+			if (-vy < Constants.MAX_GRAVITY_SPEED) vy = Math.max(vy - Constants.GRAVITY_ACCELERATION, -Constants.MAX_GRAVITY_SPEED);
+			if (this instanceof Player && ((Player) this).hasAbility(Ability.STOMP) && down && -vy < Constants.MAX_DOWN_SPEED) vy = Math.max(vy - Constants.DOWN_ACCELERATION, -Constants.MAX_DOWN_SPEED);
 		}
+
 		if (onLadder) {
 			vy = (jumping? 0.1f: -0.1f);
 		}
