@@ -76,6 +76,10 @@ public class HitBox {
 		return distance;
 	}
 
+	public float distance(HitBox hitBox2) {
+		return (float) Math.sqrt(Math.pow(hitBox2.getCenterX()-getCenterX(), 2) + Math.pow(hitBox2.getCenterY()-getCenterY(), 2));
+	}
+
 	public float getCenterX() {
 		return x + width/2;
 	}

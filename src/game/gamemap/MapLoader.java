@@ -258,6 +258,20 @@ public class MapLoader {
 					case "petroleum_darkRed":
 						map.addGameObject(new PetroleumLamp(x, y, drawingPriority, PetroleumLamp.PetroleumColor.DARK_RED));
 						break;
+					case "zombie_l_move_0":
+					case "zombie_l_move_1":
+					case "zombie_l_move_2":
+					case "zombie_l_move_3":
+					case "zombie_r_move_0":
+					case "zombie_r_move_1":
+					case "zombie_r_move_2":
+					case "zombie_r_move_3":
+					case "zombie_l_fall":
+					case "zombie_l_idle_0":
+					case "zombie_r_fall":
+					case "zombie_r_idle_0":
+						map.addGameObject(new Zombie(x, y, drawingPriority));
+						break;
 					default:
 						HitBox hitBox = new HitBox(x, y, textureBounds.width / tileSize, textureBounds.height / tileSize);
 

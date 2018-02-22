@@ -11,7 +11,7 @@ public abstract class AbstractGameObject implements GameObject {
 	}
 
 	@Override
-	public void remove(Game game) {
+	public void remove(Game game, boolean mapChange) {
 
 	}
 }

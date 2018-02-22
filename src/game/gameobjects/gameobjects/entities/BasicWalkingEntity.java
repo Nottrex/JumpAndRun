@@ -13,13 +13,16 @@ import game.util.MathUtil;
 
 public abstract class BasicWalkingEntity extends BasicMovingEntity {
 	protected boolean onGround, onLadder;
-	private int jumpTicks;
+	protected int jumpTicks;
 	private boolean jumpingLastTick;
 
 	protected float lastMX;
 	protected float mx;
 	protected boolean jumping;
 	protected boolean down;
+
+	private float maxSpeed = 1;
+	private float maxJumpHeight = 1;
 
 	public BasicWalkingEntity(HitBox hitBox, float drawingPriority) {
 		super(hitBox, drawingPriority);
@@ -37,11 +40,11 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 
 	@Override
 	public void update(Game game) {
-		vx = mx * Constants.MAX_WALKING_SPEED;
+		vx = mx * Constants.MAX_WALKING_SPEED * maxSpeed;
 		if(Math.abs(mx) >= 0.2f) lastMX = mx;
 
 		if ((onGround && !jumpingLastTick) && jumping) {
-			vy = Constants.JUMP_ACCELERATION;
+			vy = Constants.JUMP_ACCELERATION * maxJumpHeight;
 			jumpTicks = 1;
 		} else if (jumpTicks > 0 && jumping && vy > 0) {
 			jumpTicks++;
@@ -94,6 +97,14 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 
 	public void setDown(boolean down) {
 		this.down = down;
+	}
+
+	public void setMaxSpeed(float maxSpeed) {
+		this.maxSpeed = maxSpeed;
+	}
+
+	public void setMaxJumpHeight(float maxJumpHeight) {
+		this.maxJumpHeight = maxJumpHeight;
 	}
 
 	@Override
