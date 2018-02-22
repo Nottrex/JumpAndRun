@@ -1,4 +1,4 @@
-319
+323
 single_stone 0 32 8 8
 row_stone_left 8 32 8 8
 row_stone_middle 16 32 8 8
@@ -318,3 +318,7 @@ banner_small_yellow_left 176 120 8 8
 banner_small_yellow_mid 180 120 8 8
 banner_small_yellow_right 184 120 8 8
 banner_small_yellow 184 112 4 5
+chair_left 189 171 3 5
+chair_right 199 171 3 5
+table 192 172 7 4 
+beer 194 169 3 3
