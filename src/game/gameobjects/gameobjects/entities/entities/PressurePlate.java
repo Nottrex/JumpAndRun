@@ -15,11 +15,13 @@ public class PressurePlate extends BasicStaticEntity {
 	private Tree onActivate, onDeactivate;
 	private int timeActivated, timeDeactivated;
 	private boolean pressed;
+	private boolean pressedREAL;
 
 	public PressurePlate(float x, float y, float drawingPriority, Tree onActivate, Tree onDeactivate) {
 		super(new HitBox(x, y, 1f, 0.25f), drawingPriority);
 
 		pressed = false;
+		pressedREAL = pressed;
 		setSprite(up);
 
 		this.onActivate = onActivate;
@@ -46,10 +48,16 @@ public class PressurePlate extends BasicStaticEntity {
 			timeActivated = 0;
 		}
 
-		if (timeActivated > 60 && onActivate != null) onActivate.get(game);
-		else if (timeActivated > 60 && onDeactivate != null) onDeactivate.get(game);
+		if (timeActivated == 10 && onActivate != null) {
+			onActivate.get(game);
+			pressedREAL = true;
+		}
+		else if (timeDeactivated == 10 && onDeactivate != null) {
+			onDeactivate.get(game);
+			pressedREAL = false;
+		}
 
-		setSprite(pressed ? down : up);
+		setSprite(pressedREAL ? down : up);
 		pressed = false;
 	}
 

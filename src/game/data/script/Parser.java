@@ -1,5 +1,7 @@
 package game.data.script;
 
+import game.util.ErrorUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -164,8 +166,14 @@ public class Parser {
 	}
 
 	public static Tree loadScript(char start, String value) {
-		value = value.replaceAll("\n", "").replaceAll(" ", "");
 
-		return PARSER.optimizeTree(PARSER.toTree(PARSER.parse(start + "", value)));
+		try {
+			value = value.replaceAll("\n", "").replaceAll(" ", "");
+
+			return PARSER.optimizeTree(PARSER.toTree(PARSER.parse(start + "", value)));
+		} catch (Exception e) {
+			ErrorUtil.printError("Loading Script: " + value + " as "+ start);
+			return null;
+		}
 	}
 }

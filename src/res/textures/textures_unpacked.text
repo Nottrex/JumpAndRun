@@ -1,4 +1,4 @@
-339
+341
 single_stone 0 32 8 8
 row_stone_left 8 32 8 8
 row_stone_middle 16 32 8 8
@@ -338,3 +338,5 @@ zombie_l_fall 184 57 8 7
 zombie_l_idle_0 184 57 8 7 
 zombie_r_fall 192 57 8 7
 zombie_r_idle_0 192 57 8 7 
+ability_gate_right 228 160 4 8
+ability_gate_left 224 160 4 8

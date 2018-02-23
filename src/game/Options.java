@@ -56,8 +56,8 @@ public class Options {
 				}
 				if (data.containsKey("startWithTutorial")) startWithTutorial = (Boolean) data.get("startWithTutorial");
 				if (data.containsKey("fullscreen")) fullscreen = (Boolean) data.get("fullscreen");
-				if (data.containsKey("effectVolume")) effectVolume = (Float) data.get("effectVolume");
-				if (data.containsKey("musicVolume")) musicVolume = (Float) data.get("musicVolume");
+				if (data.containsKey("effectVolume")) effectVolume = (float) ((double) data.get("effectVolume"));
+				if (data.containsKey("musicVolume")) musicVolume = (float) ((double) data.get("musicVolume"));
 			
 			} catch (FileNotFoundException e) {
 				ErrorUtil.printError("Loading options: " + e.toString());

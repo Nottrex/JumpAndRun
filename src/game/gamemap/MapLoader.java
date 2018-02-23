@@ -38,7 +38,11 @@ public class MapLoader {
 				boolean b = !maps.get(0).contains("/");
 
 				directory = b ? "" : maps.get(0).substring(0, maps.get(0).lastIndexOf("/"));
-				load(game, b ? maps.get(0) : maps.get(0).substring(maps.get(0).lastIndexOf("/")+1));
+				try {
+					load(game, b ? maps.get(0) : maps.get(0).substring(maps.get(0).lastIndexOf("/")+1));
+				} catch (Exception e) {
+					ErrorUtil.printError("Loading Map " + maps.get(0));
+				}
 			} else {
 				for (String newFile: getMaps(file, true)) {
 					maps.add(maps.get(0) + "/" + newFile);
@@ -150,7 +154,7 @@ public class MapLoader {
 				int i = 4;
 				while (i < values.length) {
 					if (values[i].equals("tag")) {
-						tags.put(values[i + 1], values[i + 2]);
+						tags.put(values[i + 1], values[i + 2].replaceAll("δ", ";"));
 						i++;
 						i++;
 					}
@@ -190,11 +194,19 @@ public class MapLoader {
 						map.setSpawnPoint(x, y, drawingPriority);
 						map.getCameraController().setSpawn(x, y);
 						break;
-					case "ability_gate":
+					case "ability_gate_left":
 						Map<Ability, Boolean> abilities = new HashMap<>();
-						if (tags.containsKey("add")) abilities.put(Ability.valueOf(tags.get("add").toUpperCase()), true);
-						if (tags.containsKey("remove")) abilities.put(Ability.valueOf(tags.get("remove").toUpperCase()), false);
-						map.addGameObject(new AbilityGate(x, y, drawingPriority, abilities));
+						for (Ability ability: Ability.values()) {
+							abilities.put(ability, tags.getOrDefault("add", "").toUpperCase().contains(ability.toString()));
+						}
+						map.addGameObject(new AbilityGate(x, y, drawingPriority, abilities, false));
+						break;
+					case "ability_gate_right":
+						abilities = new HashMap<>();
+						for (Ability ability: Ability.values()) {
+							abilities.put(ability, tags.getOrDefault("add", "").toUpperCase().contains(ability.toString()));
+						}
+						map.addGameObject(new AbilityGate(x, y, drawingPriority, abilities, true));
 						break;
 					case "coin":
 						String coinID = String.format("%s_coin_%f_%f", directory, x, y);
@@ -211,8 +223,11 @@ public class MapLoader {
 					case "door_side_open":
 						map.addGameObject(new Exit(x, y, drawingPriority, tags.getOrDefault("target", Constants.SYS_PREFIX + "world"), null));
 						break;
+					case "lantern_off":
+						map.addGameObject(new Lantern(x, y, drawingPriority, Parser.loadScript(Parser.BOOLEAN, tags.getOrDefault("condition", "false"))));
+						break;
 					case "lantern":
-						map.addGameObject(new Lantern(x, y, drawingPriority));
+						map.addGameObject(new Lantern(x, y, drawingPriority, Parser.loadScript(Parser.BOOLEAN, tags.getOrDefault("condition", "true"))));
 						break;
 					case "box":
 						map.addGameObject(new Box(x, y, drawingPriority));
@@ -229,7 +244,11 @@ public class MapLoader {
 					case "pressureplate":
 					case "pressureplate_pressed":
 						tag = tags.getOrDefault("tag", "pressureplate");
-						map.addGameObject(new PressurePlate(x, y, drawingPriority, Parser.loadScript(Parser.COMMAND, String.format("#%s=(#%s+1);", tag, tag)), Parser.loadScript(Parser.COMMAND, String.format("#%s=(#%s-1);", tag, tag))));
+						if (tags.containsKey("onActivated") || tags.containsKey("onDeActivated")) {
+							map.addGameObject(new PressurePlate(x, y, drawingPriority, Parser.loadScript(Parser.COMMAND_BLOCK, tags.getOrDefault("onActivated", "")), Parser.loadScript(Parser.COMMAND_BLOCK, tags.getOrDefault("onDeActivated", ""))));
+						} else {
+							map.addGameObject(new PressurePlate(x, y, drawingPriority, Parser.loadScript(Parser.COMMAND, String.format("#%s=(#%s+1);", tag, tag)), Parser.loadScript(Parser.COMMAND, String.format("#%s=(#%s-1);", tag, tag))));
+						}
 						break;
 					case "door_6":
 					case "door_5":
@@ -270,7 +289,7 @@ public class MapLoader {
 					case "zombie_l_idle_0":
 					case "zombie_r_fall":
 					case "zombie_r_idle_0":
-						map.addGameObject(new Zombie(x, y, drawingPriority));
+						map.addGameObject(new Zombie(x, y, drawingPriority, Parser.loadScript(Parser.COMMAND_BLOCK, tags.getOrDefault("onDead", ""))));
 						break;
 					default:
 						HitBox hitBox = new HitBox(x, y, textureBounds.width / tileSize, textureBounds.height / tileSize);
@@ -302,7 +321,7 @@ public class MapLoader {
 				int i = 4;
 				while (i < values.length) {
 					if (values[i].equals("tag")) {
-						tags.put(values[i + 1], values[i + 2]);
+						tags.put(values[i + 1], values[i + 2].replaceAll("δ", ";"));
 						i++;
 						i++;
 					}
@@ -343,7 +362,7 @@ public class MapLoader {
 			map.addGameObject(new Exit(i * 9 + 4, 4, 0.7f, mapNames[i], null));
 			map.addGameObject(new Text(0.7f, mapNames[i].replace(Constants.SYS_PREFIX, ""), i * 9 + 4.5f, 6, 0.5f, true, 0.5f, 0));
 			if (!mapNames[i].startsWith(Constants.SYS_PREFIX)) map.addGameObject(new Text(0.7f, String.valueOf(g.getKeyAmount(mapNames[i] + "_coin_", 1)) + "/" + String.valueOf(g.getKeyAmount(mapNames[i] + "_coin_")), i * 9 + 4.5f, 7, 0.5f, true, 0.5f, 0));
-			map.addGameObject(new Lantern(i * 9 + 2, 1, 0.7f));
+			map.addGameObject(new Lantern(i * 9 + 2, 1, 0.7f, new Tree((t, g2) -> g2.getGameTick() % 120 < 60)));
 			map.getCameraController().addCameraArea(new Area(i * 9, -2, i * 9 + 9, 9));
 		}
 		map.setSpawnPoint(0, 1, 0.5f);
