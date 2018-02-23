@@ -27,8 +27,8 @@ public class DeadBodyHandler extends AbstractGameObject {
 	}
 
 	@Override
-	public void remove(Game game) {
-		super.remove(game);
+	public void remove(Game game, boolean mapChange) {
+		super.remove(game, mapChange);
 
 		for (DeadBody d: deadBodies.keySet()) {
 			game.removeGameObject(d);

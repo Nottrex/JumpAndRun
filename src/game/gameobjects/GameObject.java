@@ -9,5 +9,5 @@ public interface GameObject {
 
 	void init(Game game);
 
-	void remove(Game game);
+	void remove(Game game, boolean mapChange);
 }

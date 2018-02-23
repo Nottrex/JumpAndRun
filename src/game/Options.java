@@ -54,10 +54,10 @@ public class Options {
 						controls.put(s, con.get(s));
 					}
 				}
-				if (data.containsKey("startWithTutorial")) startWithTutorial = data.get("startWithTutorial");
-				if (data.containsKey("fullscreen")) fullscreen = data.get("fullscreen");
-				if (data.containsKey("effectVolume")) effectVolume = data.get("effectVolume");
-				if (data.containsKey("musicVolume")) musicVolume = data.get("musicVolume");
+				if (data.containsKey("startWithTutorial")) startWithTutorial = (Boolean) data.get("startWithTutorial");
+				if (data.containsKey("fullscreen")) fullscreen = (Boolean) data.get("fullscreen");
+				if (data.containsKey("effectVolume")) effectVolume = (Float) data.get("effectVolume");
+				if (data.containsKey("musicVolume")) musicVolume = (Float) data.get("musicVolume");
 			
 			} catch (FileNotFoundException e) {
 				ErrorUtil.printError("Loading options: " + e.toString());

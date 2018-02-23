@@ -41,6 +41,7 @@ public class Game {
 	private int fadeStart;				//The startTick of a transition between maps
 	private String newMap, currentMap;				//The target map for a map change
 	private Queue<GameObject> toRemove;		//list of gameobjects, that are removed next Tick
+	private Map<GameObject, Boolean> removeMapChange;
 	private Queue<GameObject> toAdd;		//list of gameobjects, that are added next Tick
 
 	private ParticleSystem particleSystem;		//display and store all particles
@@ -65,6 +66,7 @@ public class Game {
 		collisionObjects = new LinkedList<>();
 		toRemove = new ConcurrentLinkedQueue<>();
 		toAdd = new ConcurrentLinkedQueue<>();
+		removeMapChange = new HashMap<>();
 
 		values = new HashMap<>();
 
@@ -102,7 +104,7 @@ public class Game {
 				GameMap newGameMap = MapLoader.load(this, newMap);
 				if (map != null) {
 					for (GameObject gameObject : map.getGameObjects()) {
-						this.removeGameObject(gameObject);
+						this.removeGameObject(gameObject, true);
 					}
 				}
 
@@ -123,7 +125,10 @@ public class Game {
 			while (!toRemove.isEmpty()) {
 				GameObject gameObject = toRemove.poll();
 
-				gameObject.remove(this);
+				boolean mapChange = removeMapChange.get(gameObject);
+				removeMapChange.remove(gameObject);
+
+				gameObject.remove(this, mapChange);
 				gameObjects.remove(gameObject);
 				if (gameObject instanceof CollisionObject) collisionObjects.remove(gameObject);
 				if (gameObject instanceof Drawable) window.removeDrawable((Drawable) gameObject);
@@ -213,7 +218,7 @@ public class Game {
 	* loads the current map again
 	**/
 	public void restartMap() {
-		if (!currentMap.contains(Constants.SYS_PREFIX)) setGameMap(currentMap);
+		if (!currentMap.contains(Constants.SYS_PREFIX)) setGameMap(currentMap, true);
 	}
 
 	/**
@@ -252,8 +257,18 @@ public class Game {
 	 * remove a GameObject from the Game
 	 * @param gameObject the gameobject to be removed
 	**/
+	private void removeGameObject(GameObject gameObject, boolean mapChange) {
+		if (!toRemove.contains(gameObject) && gameObjects.contains(gameObject)) {
+			toRemove.add(gameObject);
+			removeMapChange.put(gameObject, mapChange);
+		}
+	}
+
 	public void removeGameObject(GameObject gameObject) {
-		if (!toRemove.contains(gameObject) && gameObjects.contains(gameObject)) toRemove.add(gameObject);
+		if (!toRemove.contains(gameObject) && gameObjects.contains(gameObject)) {
+			toRemove.add(gameObject);
+			removeMapChange.put(gameObject, false);
+		}
 	}
 
 	/**

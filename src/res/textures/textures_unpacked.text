@@ -1,4 +1,4 @@
-323
+339
 single_stone 0 32 8 8
 row_stone_left 8 32 8 8
 row_stone_middle 16 32 8 8
@@ -324,3 +324,17 @@ chair_right 199 171 3 5
 table 192 172 7 4 
 beer 194 169 3 3
 circle_saw 136 144 12 12
+zombie_l_dead 177 65 8 7
+zombie_r_dead 200 65 8 7
+zombie_l_move_0 176 41 8 7
+zombie_l_move_1 184 41 8 7
+zombie_l_move_2 192 41 8 7
+zombie_l_move_3 200 41 8 7
+zombie_r_move_0 176 49 8 7
+zombie_r_move_1 184 49 8 7
+zombie_r_move_2 192 49 8 7
+zombie_r_move_3 200 49 8 7
+zombie_l_fall 184 57 8 7
+zombie_l_idle_0 184 57 8 7 
+zombie_r_fall 192 57 8 7
+zombie_r_idle_0 192 57 8 7 

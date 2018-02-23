@@ -5,6 +5,7 @@ import game.data.hitbox.HitBox;
 import game.data.hitbox.HitBoxDirection;
 import game.data.Sprite;
 import game.gameobjects.CollisionObject;
+import game.gameobjects.GameObject;
 import game.gameobjects.gameobjects.entities.BasicStaticEntity;
 
 public class Spikes extends BasicStaticEntity {
@@ -18,8 +19,8 @@ public class Spikes extends BasicStaticEntity {
 
 	@Override
 	public void collide(CollisionObject gameObject, HitBoxDirection direction, float velocity, boolean source) {
-		if (gameObject instanceof Player) {
-			game.removeGameObject((Player) gameObject);
+		if (gameObject instanceof Player || gameObject instanceof Zombie) {
+			game.removeGameObject((GameObject) gameObject);
 		}
 	}
 

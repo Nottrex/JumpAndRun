@@ -68,10 +68,10 @@ public class Player extends BasicWalkingEntity implements Light {
 	}
 
 	@Override
-	public void remove(Game game) {
-		super.remove(game);
+	public void remove(Game game, boolean mapChange) {
+		super.remove(game, mapChange);
 
-		if (game.getDeadBodyHandler() != null) game.getDeadBodyHandler().addDeadBody((new DeadBody(getHitBox().x, getHitBox().y, "player", color)));
+		if (game.getDeadBodyHandler() != null) game.getDeadBodyHandler().addDeadBody((new DeadBody(getHitBox().x, getHitBox().y, "player", color, lastMX > 0)));
 	}
 
 	@Override
