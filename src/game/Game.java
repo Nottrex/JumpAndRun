@@ -39,7 +39,7 @@ public class Game {
 	private GameMap map;				//current GameMap
 
 	private int fadeStart;				//The startTick of a transition between maps
-	private String newMap;				//The target map for a map change
+	private String newMap, currentMap;				//The target map for a map change
 	private Queue<GameObject> toRemove;		//list of gameobjects, that are removed next Tick
 	private Queue<GameObject> toAdd;		//list of gameobjects, that are added next Tick
 
@@ -75,6 +75,7 @@ public class Game {
 
 		//Start the game in the "menu" map
 		setGameMap(Constants.SYS_PREFIX + "menu", false);
+		currentMap = Constants.SYS_PREFIX + "menu";
 
 		audioPlayer = new AudioPlayer(Sound.EP.fileName);
 		audioPlayer.addMusic("EP", Clip.LOOP_CONTINUOUSLY);
@@ -85,9 +86,8 @@ public class Game {
 	 * Update the game 60 times per second
 	**/
 	public void gameLoop() {
-		MapLoader.loadAllMaps(this);
-
 		long time;
+		
 		while (window.isRunning()) {
 			gameTick++;
 			time = TimeUtil.getTime();
@@ -115,6 +115,7 @@ public class Game {
 				}
 
 				map = newGameMap;
+				currentMap = newMap;
 				newMap = null;
 			}
 
@@ -197,6 +198,7 @@ public class Game {
 			player.setDown(keyboard.isPressed(Options.controls.get("DOWN" + input)));
 			player.setInteracting(keyboard.isPressed(Options.controls.get("INTERACT" + input)));
 			player.setAttacking(keyboard.isPressed(Options.controls.get("ATTACK" + input)));
+			if (keyboard.isPressed(Options.controls.get("RESET" + input))) restartMap();
 		}
 	}
 
@@ -205,6 +207,13 @@ public class Game {
 	**/
 	private void cleanUp() {
 		Options.save();
+	}
+	
+	/**
+	* loads the current map again
+	**/
+	public void restartMap() {
+		if (!currentMap.contains(Constants.SYS_PREFIX)) setGameMap(currentMap);
 	}
 
 	/**

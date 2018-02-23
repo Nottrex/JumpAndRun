@@ -11,7 +11,11 @@ import java.util.Map;
 
 public class Options {
 
-	public static Map<String, Integer> controls = new HashMap<>();
+	public static Map<String, Integer> controls = Constants.DEFAULT_CONTROLS;
+	public static boolean startWithTutorial = true;
+	public static boolean fullscreen = false;
+	public static float effectVolume = 1.0f;
+	public static float musicVolume = 1.0f;
 
 	static {
 		new File(Constants.DATA_PATH).mkdirs();
@@ -23,7 +27,11 @@ public class Options {
 		Yaml yaml = new Yaml(op);
 
 		Map<String, Object> data = new HashMap<>();
-		data.put("CONTROLS", controls);
+		data.put("controls", controls);
+		data.put("startWithTutorial", false);
+		data.put("fullscreen", fullscreen);
+		data.put("effectVolume", effectVolume);
+		data.put("musicVolume", musicVolume);
 
 		try {
 			yaml.dump(data, new FileWriter(new File(Constants.DATA_FILE_PATH)));
@@ -41,14 +49,25 @@ public class Options {
 				Map<String, Object> data = (Map<String, Object>) yaml.load(new FileInputStream(new File(Constants.DATA_FILE_PATH)));
 
 				if (data.containsKey("CONTROLS")) {
-					controls = (Map<String, Integer>) data.get("CONTROLS");}
-				else {
-					controls = Constants.DEFAULT_CONTROLS;}
+					Map<String, Integer> con = (Map<String, Integer>) data.get("CONTROLS");
+					for (String s: con.keySet()) {
+						controls.put(s, con.get(s));
+					}
+				}
+				if (data.containsKey("startWithTutorial")) startWithTutorial = data.get("startWithTutorial");
+				if (data.containsKey("fullscreen")) fullscreen = data.get("fullscreen");
+				if (data.containsKey("effectVolume")) effectVolume = data.get("effectVolume");
+				if (data.containsKey("musicVolume")) musicVolume = data.get("musicVolume");
+			
 			} catch (FileNotFoundException e) {
 				ErrorUtil.printError("Loading options: " + e.toString());
 			}
-		} else {
-			controls = Constants.DEFAULT_CONTROLS;
 		}
+	}
+	
+	public static void applyOptions(Game g) {
+		/*g.getAudioPlayer().setEffectVolume(effectVolume);
+		g.getAudioPlayer().setMusicVolume(musicVolume);
+		g.getWindow.setFullscreen(fullscreen);*/
 	}
 }
