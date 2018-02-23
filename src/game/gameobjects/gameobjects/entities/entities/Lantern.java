@@ -4,18 +4,25 @@ import game.Game;
 import game.data.hitbox.HitBox;
 import game.data.hitbox.HitBoxDirection;
 import game.data.Sprite;
+import game.data.script.Tree;
 import game.gameobjects.CollisionObject;
 import game.gameobjects.gameobjects.entities.BasicStaticEntity;
 import game.window.Window;
 import game.window.light.Light;
 
 public class Lantern extends BasicStaticEntity implements Light{
-	private static Sprite idle = new Sprite(100, "lantern");
+	private static Sprite on = new Sprite(100, "lantern");
+	private static Sprite off = new Sprite(100, "lantern_off");
 
-	public Lantern(float x, float y, float drawingPriority) {
+	private Tree activated;
+	private boolean isOn;
+	public Lantern(float x, float y, float drawingPriority, Tree activated) {
 		super(new HitBox(x, y, 1f, 2f), drawingPriority);
 
-		setSprite(idle);
+		this.activated = activated;
+
+		isOn = false;
+		setSprite(off);
 	}
 
 	@Override
@@ -37,7 +44,10 @@ public class Lantern extends BasicStaticEntity implements Light{
 
 	@Override
 	public void update(Game game) {
+		isOn = (Boolean) activated.get(game);
 
+		Sprite s = isOn ? on : off;
+		if (s != sprite) setSprite(s);
 	}
 
 	@Override
@@ -64,7 +74,7 @@ public class Lantern extends BasicStaticEntity implements Light{
 	public void getLightPosition(float[] values) {
 		values[0] = hitBox.x + hitBox.width / 2;
 		values[1] = hitBox.y + hitBox.height * 4 / 5;
-		values[2] = 0.91f;
+		values[2] = isOn ? 0.91f : 0;
 	}
 
 	@Override

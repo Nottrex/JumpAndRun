@@ -3,6 +3,8 @@ package game.gameobjects.gameobjects.entities.entities;
 import game.Game;
 import game.data.Sprite;
 import game.data.hitbox.HitBox;
+import game.data.script.Tree;
+import game.gameobjects.CollisionObject;
 import game.gameobjects.gameobjects.entities.BasicWalkingEntity;
 
 import java.awt.*;
@@ -16,13 +18,17 @@ public class Zombie extends BasicWalkingEntity {
 	private static Sprite idle_l = new Sprite(250, "zombie_l_idle_0");
 	private static Sprite falling_l = new Sprite(250, "zombie_l_fall");
 
-	public Zombie(float x, float y, float drawingPriority) {
+	private Tree onDead;
+
+	public Zombie(float x, float y, float drawingPriority, Tree onDead) {
 		super(new HitBox(x, y, 0.5f, 0.875f), drawingPriority);
 
 		setSprite(idle_r);
 
+		this.onDead = onDead;
+
 		setMaxSpeed(0.15f);
-		setMaxJumpHeight(0.75f);
+		setMaxJumpHeight(0.9f);
 	}
 
 	@Override
@@ -43,7 +49,7 @@ public class Zombie extends BasicWalkingEntity {
 		if (nearestPlayer.isPresent()) {
 			Player p = nearestPlayer.get();
 			setDown(hitBox.getCenterY() > p.getHitBox().getCenterY());
-			setJumping((game.getGameTick() % 60 == 0 || jumpTicks > 0) && hitBox.getCenterY() < p.getHitBox().getCenterY() - 1);
+			setJumping((game.getGameTick() % 60 == 0 && hitBox.getCenterY() < p.getHitBox().getCenterY() - 1) || jumpTicks > 0);
 			setMx(p.getHitBox().getCenterX() - hitBox.getCenterX());
 		} else {
 			setDown(false);
@@ -56,9 +62,18 @@ public class Zombie extends BasicWalkingEntity {
 	public void remove(Game game, boolean mapChange) {
 		super.remove(game, mapChange);
 
+		if (onDead != null) onDead.get(game);
+
 		if (!mapChange) {
 			if (game.getDeadBodyHandler() != null) game.getDeadBodyHandler().addDeadBody((new DeadBody(getHitBox().x, getHitBox().y, "zombie", Color.BLACK, lastMX > 0)));
 		}
+	}
+
+	@Override
+	public void interact(CollisionObject gameObject, HitBox hitBox, InteractionType interactionType) {
+		super.interact(gameObject, hitBox, interactionType);
+
+		if (interactionType == InteractionType.ATTACK) game.removeGameObject(this);
 	}
 
 	@Override

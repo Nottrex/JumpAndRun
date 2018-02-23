@@ -11,14 +11,15 @@ import game.gameobjects.gameobjects.entities.BasicStaticEntity;
 import java.util.Map;
 
 public class AbilityGate extends BasicStaticEntity {
-	private static Sprite idle = new Sprite(100, "ability_gate");
+	private static Sprite left = new Sprite(100, "ability_gate_left");
+	private static Sprite right = new Sprite(100, "ability_gate_right");
 	private Map<Ability, Boolean> abilities;
 
-	public AbilityGate(float x, float y, float drawingPriority, Map<Ability, Boolean> abilities) {
-		super(new HitBox(x, y, 1f, 1f), drawingPriority);
+	public AbilityGate(float x, float y, float drawingPriority, Map<Ability, Boolean> abilities, boolean isRight) {
+		super(new HitBox(x, y, 0.5f, 1f), drawingPriority);
 		this.abilities = abilities;
 
-		setSprite(idle);
+		setSprite(isRight ? right : left);
 	}
 
 	@Override
