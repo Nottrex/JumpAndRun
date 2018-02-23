@@ -56,7 +56,7 @@ public class Constants {
 		DEFAULT_CONTROLS.put("LEFT0", Keyboard.KEY_A);
 		DEFAULT_CONTROLS.put("INTERACT0", Keyboard.KEY_E);
 		DEFAULT_CONTROLS.put("ATTACK0", Keyboard.KEY_SPACE);
-		DEFAULT_CONTROLS.put("RESET0", Keyboard.Key_R);
+		DEFAULT_CONTROLS.put("RESET0", Keyboard.KEY_R);
 
 		DEFAULT_CONTROLS.put("UP1", Keyboard.KEY_UP);
 		DEFAULT_CONTROLS.put("DOWN1", Keyboard.KEY_DOWN);
@@ -64,7 +64,7 @@ public class Constants {
 		DEFAULT_CONTROLS.put("LEFT1", Keyboard.KEY_LEFT);
 		DEFAULT_CONTROLS.put("INTERACT1", Keyboard.KEY_RIGHT_SHIFT);
 		DEFAULT_CONTROLS.put("ATTACK1", Keyboard.KEY_RIGHT_CONTROL);
-		DEFAULT_CONTROLS.put("RESET1", Keyboard.Key_R);
+		DEFAULT_CONTROLS.put("RESET1", Keyboard.KEY_R);
 
 		for (int i = 0; i < 16; i++) {
 			DEFAULT_CONTROLS.put("UP" + (i+2), Keyboard.GAMEPAD_1_BUTTON_A + 30*i);
@@ -73,7 +73,7 @@ public class Constants {
 			DEFAULT_CONTROLS.put("LEFT" + (i+2), Keyboard.GAMEPAD_1_LEFT_AXIS_LEFT + 30*i);
 			DEFAULT_CONTROLS.put("INTERACT" + (i+2), Keyboard.GAMEPAD_1_BUTTON_Y + 30*i);
 			DEFAULT_CONTROLS.put("ATTACK" + (i+2), Keyboard.GAMEPAD_1_BUTTON_B + 30*i);
-			DEFAILT_CONTROLS.put("RESET" + (i+2), Keyboard.GAMEPAD_1_BUTTON_X + 30*i);
+			DEFAULT_CONTROLS.put("RESET" + (i+2), Keyboard.GAMEPAD_1_BUTTON_X + 30*i);
 		}
 	}
 }

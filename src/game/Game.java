@@ -218,7 +218,7 @@ public class Game {
 	* loads the current map again
 	**/
 	public void restartMap() {
-		if (!currentMap.contains(Constants.SYS_PREFIX)) setGameMap(currentMap);
+		if (!currentMap.contains(Constants.SYS_PREFIX)) setGameMap(currentMap, true);
 	}
 
 	/**
