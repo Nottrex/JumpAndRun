@@ -97,7 +97,17 @@ public class Player extends BasicWalkingEntity implements Light {
 					for (HitBox hitBox: collisionObject.getCollisionBoxes()) {
 						if (hitBox.collides(attackHitBox)) {
 							collisionObject.interact(this, attackHitBox, InteractionType.ATTACK);
-							if (hitBox.type == HitBox.HitBoxType.BLOCKING) game.getCamera().addScreenshake(0.003f);
+							if (hitBox.type == HitBox.HitBoxType.BLOCKING)
+								game.getCamera().addScreenshake(0.003f);
+
+							if (collisionObject instanceof Wall) {
+								game.getParticleSystem().createParticle(ParticleType.GRAY, attackHitBox.getCenterX(), attackHitBox.getCenterY(), -0.025f + 0.05f*(float)Math.random(), -0.025f + 0.05f*(float)Math.random());
+							}
+
+							if (collisionObject instanceof Player || collisionObject instanceof Zombie) {
+								game.getParticleSystem().createParticle(ParticleType.RED, attackHitBox.getCenterX(), attackHitBox.getCenterY(), -0.025f + 0.05f*(float)Math.random(), -0.025f + 0.05f*(float)Math.random());
+							}
+
 							break;
 						}
 					}
@@ -133,10 +143,6 @@ public class Player extends BasicWalkingEntity implements Light {
 
 		} else if (interacting && !interactingLastTick && attack == 0) {
 			interact++;
-		}
-
-		if (!onGround && !hasDoubleJumped && hasAbility(Ability.DOUBLE_JUMP)) {
-			game.getParticleSystem().createParticle(ParticleType.RED, hitBox.getCenterX() + (float)(Math.random()*hitBox.width) - hitBox.width/2, hitBox.getCenterY() + (float)(Math.random()*hitBox.height) - hitBox.height/2, (float)(Math.random()*0.05f)-0.025f, (float)(Math.random()*0.05f)-0.025f);
 		}
 
 		interactingLastTick = interacting;
