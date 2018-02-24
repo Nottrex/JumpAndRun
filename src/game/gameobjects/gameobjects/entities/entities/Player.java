@@ -177,7 +177,12 @@ public class Player extends BasicWalkingEntity implements Light {
 		vx = 0;
 		vy = 0;
 		onGround = false;
+		removeAllAbilities();
 		setDrawingPriority(drawingPriority);
+
+		//TODO: REMOVE
+		this.addAbility(Ability.WALL_JUMP);
+		this.addAbility(Ability.DOUBLE_JUMP);
 	}
 
 	@Override

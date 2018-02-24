@@ -4,6 +4,7 @@ import com.joml.matrix.Matrix4f;
 import com.joml.utils.CamMath;
 import com.joml.vector.Vector3f;
 import game.Constants;
+import game.Options;
 import game.util.ErrorUtil;
 import game.util.TextureHandler;
 import game.util.TimeUtil;
@@ -14,26 +15,17 @@ import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
-import org.lwjgl.openal.AL;
-import org.lwjgl.openal.AL10;
-import org.lwjgl.openal.ALC;
-import org.lwjgl.openal.ALCCapabilities;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 
 import java.awt.image.BufferedImage;
-import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-
-import static org.lwjgl.openal.ALC10.alcCreateContext;
-import static org.lwjgl.openal.ALC10.alcMakeContextCurrent;
-import static org.lwjgl.openal.ALC10.alcOpenDevice;
 
 public class Window {
 	private float aspect = Constants.WINDOW_WIDTH / Constants.WINDOW_HEIGHT;
@@ -62,6 +54,8 @@ public class Window {
 
 	public void run() {
 		while (running) {
+			Options.applyOptions(this);
+
 			while (!toAdd.isEmpty()) {
 				Drawable drawable = toAdd.poll();
 				drawables.add(drawable);

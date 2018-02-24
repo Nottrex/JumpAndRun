@@ -428,6 +428,7 @@ public class MapLoader {
 		Text textOptions = new Text(-0.25f, "OPTIONS", exitOptions.getCollisionBoxes().get(0).getCenterX(), exitOptions.getCollisionBoxes().get(0).y + 2, 0.5f, true, 0.5f, 0.5f, Color.RED);
 		map.addGameObject(textOptions);
 
+		map.addGameObject(new Text(-100, "press <w> to spawn", map.getSpawnX(), map.getSpawnY() - 3, 1.0f, true, 0.5f, 0));
 		return map;
 	}
 
@@ -476,15 +477,11 @@ public class MapLoader {
 	}
 
 	private static String[] getMaps(File folder, boolean all) {
-		File[] packages = folder.listFiles(new FileFilter() {
-			@Override
-			public boolean accept(File pathname) {
-				return pathname.isDirectory();
-			}
-		});
+		File[] packages = folder.listFiles(File::isDirectory);
 
 		List<String> maps = new ArrayList<>();
 
+		if (packages == null) return maps.toArray(new String[0]);
 		for (File f : packages) {
 			File initialMap = new File(f.getAbsolutePath() + "/" + f.getName() + ".map");
 			if (initialMap.exists()) maps.add(f.getName() + "/" + f.getName());

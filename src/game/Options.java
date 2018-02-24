@@ -1,6 +1,7 @@
 package game;
 
 import game.util.ErrorUtil;
+import game.window.Window;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
@@ -66,8 +67,10 @@ public class Options {
 	}
 	
 	public static void applyOptions(Game g) {
-		/*g.getAudioPlayer().setEffectVolume(effectVolume);
-		g.getAudioPlayer().setMusicVolume(musicVolume);*/
-		g.getWindow().setFullscreen(fullscreen);
+
+	}
+
+	public static void applyOptions(Window window) {
+		window.setFullscreen(fullscreen);
 	}
 }

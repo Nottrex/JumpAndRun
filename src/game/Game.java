@@ -236,7 +236,6 @@ public class Game {
 			} else {
 				fadeStart = gameTick - Constants.FADE_TIME;
 			}
-			for (Player p: players) p.removeAllAbilities();
 
 			return true;
 		}
@@ -289,13 +288,6 @@ public class Game {
 	**/
 	public AudioPlayer getAudioPlayer() {
 		return audioPlayer;
-	}
-
-	/**
-	 * @return th Window used to display the game
-	 */
-	public Window getWindow() {
-		return window;
 	}
 
 	/**
