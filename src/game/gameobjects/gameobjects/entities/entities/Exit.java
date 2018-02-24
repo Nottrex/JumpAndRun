@@ -61,4 +61,8 @@ public class Exit extends BasicStaticEntity {
 	public void setTargetMap(String targetMap) {
 		this.targetMap = targetMap;
 	}
+
+	public void setOnEntrance(Tree onEntrance) {
+		this.onEntrance = onEntrance;
+	}
 }

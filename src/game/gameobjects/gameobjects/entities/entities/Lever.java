@@ -87,4 +87,9 @@ public class Lever extends BasicStaticEntity {
 	public void setOnDeactivate(Tree onDeactivate) {
 		this.onDeactivate = onDeactivate;
 	}
+
+	public void setActivated(boolean activated) {
+		this.activated = activated;
+		setSprite(activated ? left : right);
+	}
 }

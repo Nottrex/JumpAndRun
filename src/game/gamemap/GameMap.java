@@ -13,6 +13,7 @@ public class GameMap {
 	private CameraController cameraController;
 
 	private float spawnX, spawnY, playerDrawingPriority;
+	private String directory, name;
 
 	public GameMap() {
 		gameObjects = new ArrayList<>();
@@ -53,5 +54,18 @@ public class GameMap {
 
 	public float getPlayerDrawingPriority() {
 		return playerDrawingPriority;
+	}
+
+	public void setMapInfo(String directory, String name) {
+		this.directory = directory;
+		this.name = name;
+	}
+
+	public String getDirectory() {
+		return directory;
+	}
+
+	public String getName() {
+		return name;
 	}
 }

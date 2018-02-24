@@ -39,7 +39,7 @@ public class Game {
 	private GameMap map;				//current GameMap
 
 	private int fadeStart;				//The startTick of a transition between maps
-	private String newMap, currentMap;				//The target map for a map change
+	private String newMap;				//The target map for a map change
 	private Queue<GameObject> toRemove;		//list of gameobjects, that are removed next Tick
 	private Map<GameObject, Boolean> removeMapChange;
 	private Queue<GameObject> toAdd;		//list of gameobjects, that are added next Tick
@@ -54,6 +54,7 @@ public class Game {
 
 	public Game(Window window) {
 		this.window = window;
+		Options.applyOptions(this);
 
 		gameTick = 0;
 
@@ -77,7 +78,6 @@ public class Game {
 
 		//Start the game in the "menu" map
 		setGameMap(Constants.SYS_PREFIX + "menu", false);
-		currentMap = Constants.SYS_PREFIX + "menu";
 
 		audioPlayer = new AudioPlayer(Sound.EP.fileName);
 		audioPlayer.addMusic("EP", Clip.LOOP_CONTINUOUSLY);
@@ -117,7 +117,6 @@ public class Game {
 				}
 
 				map = newGameMap;
-				currentMap = newMap;
 				newMap = null;
 			}
 
@@ -218,7 +217,7 @@ public class Game {
 	* loads the current map again
 	**/
 	public void restartMap() {
-		if (!currentMap.contains(Constants.SYS_PREFIX)) setGameMap(currentMap, true);
+		if (!map.getDirectory().equals("hidden") && map.getDirectory() != null) setGameMap(map.getDirectory() + "/" + map.getName(), true); //TO-DO fix if
 	}
 
 	/**
@@ -290,6 +289,13 @@ public class Game {
 	**/
 	public AudioPlayer getAudioPlayer() {
 		return audioPlayer;
+	}
+
+	/**
+	 * @return th Window used to display the game
+	 */
+	public Window getWindow() {
+		return window;
 	}
 
 	/**

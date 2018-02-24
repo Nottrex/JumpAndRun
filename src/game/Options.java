@@ -67,7 +67,7 @@ public class Options {
 	
 	public static void applyOptions(Game g) {
 		/*g.getAudioPlayer().setEffectVolume(effectVolume);
-		g.getAudioPlayer().setMusicVolume(musicVolume);
-		g.getWindow.setFullscreen(fullscreen);*/
+		g.getAudioPlayer().setMusicVolume(musicVolume);*/
+		g.getWindow().setFullscreen(fullscreen);
 	}
 }

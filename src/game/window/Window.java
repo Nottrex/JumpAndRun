@@ -274,4 +274,12 @@ public class Window {
 		return running;
 	}
 
+	public void setFullscreen(boolean value) {
+		if (value) {
+			GLFWVidMode mode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
+			GLFW.glfwSetWindowMonitor(window, GLFW.glfwGetPrimaryMonitor(), 0, 0, mode.width(), mode.height(), mode.refreshRate());
+		} else {
+			GLFW.glfwSetWindowSize(window, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+		}
+	}
 }
