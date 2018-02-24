@@ -4,7 +4,6 @@ import game.Constants;
 import game.Game;
 import game.data.hitbox.HitBox;
 import game.gameobjects.AbstractGameObject;
-import game.gameobjects.GameObject;
 import game.util.TextureHandler;
 import game.window.Drawable;
 import game.window.Window;
@@ -134,6 +133,16 @@ public class Text extends AbstractGameObject implements Drawable {
 	private void updateBuffers(TextShader shader) {
 		//Create characters
 		Map<HitBox, String> hitBoxList = new HashMap<>();
+
+		for (int i = 65; i < 91; i++) {
+			text = text.replaceAll(("<" + ((char) i) + ">"), String.valueOf((char) (i + 880)));
+			text = text.replaceAll(("<" + ((char) (i + 32)) + ">"), String.valueOf((char) (i + 880)));
+		}
+		text = text.replace("<stick>", String.valueOf((char) 800));
+		text = text.replace("<stick_left>", String.valueOf((char) 801));
+		text = text.replace("<stick_right>", String.valueOf((char) 802));
+		text = text.replace("<stick_up>", String.valueOf((char) 803));
+		text = text.replace("<stick_down>", String.valueOf((char) 804));
 		char[] chars = text.replaceAll("_", " ").toLowerCase().toCharArray();
 
 		float fontHeight = size;
@@ -147,7 +156,13 @@ public class Text extends AbstractGameObject implements Drawable {
 		float centeredY = y - height * anchorY;
 		for (int i = 0; i < chars.length; i++) {
 			if (chars[i] != ' ') {
-				hitBoxList.put(new HitBox(centeredX + i * fontSpacing, centeredY, fontWidth, fontHeight), String.valueOf(chars[i]));
+				if (chars[i] > 900) {
+					float keySize = 1.5f * fontHeight;
+					hitBoxList.put(new HitBox(centeredX + i * fontSpacing - 0.25f * keySize, centeredY - 0.15f * keySize, keySize, keySize), "key");
+					hitBoxList.put(new HitBox(centeredX + i * fontSpacing, centeredY, fontWidth, fontHeight), String.valueOf((char) (chars[i] - 848)));
+				} else {
+					hitBoxList.put(new HitBox(centeredX + i * fontSpacing, centeredY, fontWidth, fontHeight), String.valueOf(chars[i]));
+				}
 			}
 		}
 

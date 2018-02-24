@@ -1,4 +1,4 @@
-341
+358
 single_stone 0 32 8 8
 row_stone_left 8 32 8 8
 row_stone_middle 16 32 8 8
@@ -340,3 +340,20 @@ zombie_r_fall 192 57 8 7
 zombie_r_idle_0 192 57 8 7 
 ability_gate_right 228 160 4 8
 ability_gate_left 224 160 4 8
+key 150 203 11 11
+stick_left_0 97 187 13 13
+stick_left_1 110 187 13 13
+stick_left_2 123 187 13 13
+stick_left_3 136 187 13 13
+stick_right_0 97 200 13 13
+stick_right_1 110 200 13 13
+stick_right_2 123 200 13 13
+stick_right_3 136 200 13 13
+stick_up_0 97 213 13 13
+stick_up_1 110 213 13 13
+stick_up_2 123 213 13 13
+stick_up_3 136 213 13 13
+stick_down_0 97 226 13 13
+stick_down_1 110 226 13 13
+stick_down_2 123 226 13 13
+stick_down_3 136 226 13 13
