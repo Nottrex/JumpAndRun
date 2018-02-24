@@ -25,7 +25,6 @@ public class AbilityGate extends BasicStaticEntity {
 	@Override
 	public void collide(CollisionObject gameObject, HitBoxDirection direction, float velocity, boolean source) {
 		if (gameObject instanceof Player) {
-			((Player) gameObject).addAbility(Ability.STOMP);
 			for (Ability a: abilities.keySet()) {
 				if (abilities.get(a)) ((Player) gameObject).addAbility(a);
 				else ((Player) gameObject).removeAbility(a);

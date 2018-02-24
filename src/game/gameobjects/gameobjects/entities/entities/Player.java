@@ -135,6 +135,10 @@ public class Player extends BasicWalkingEntity implements Light {
 			interact++;
 		}
 
+		if (!onGround && !hasDoubleJumped && hasAbility(Ability.DOUBLE_JUMP)) {
+			game.getParticleSystem().createParticle(ParticleType.RED, hitBox.getCenterX() + (float)(Math.random()*hitBox.width) - hitBox.width/2, hitBox.getCenterY() + (float)(Math.random()*hitBox.height) - hitBox.height/2, (float)(Math.random()*0.05f)-0.025f, (float)(Math.random()*0.05f)-0.025f);
+		}
+
 		interactingLastTick = interacting;
 		attackingLastTick = attacking;
 	}
@@ -181,7 +185,6 @@ public class Player extends BasicWalkingEntity implements Light {
 		setDrawingPriority(drawingPriority);
 
 		//TODO: REMOVE
-		this.addAbility(Ability.WALL_JUMP);
 		this.addAbility(Ability.DOUBLE_JUMP);
 	}
 

@@ -1,4 +1,4 @@
-363
+380
 single_stone 0 32 8 8
 row_stone_left 8 32 8 8
 row_stone_middle 16 32 8 8
@@ -362,3 +362,20 @@ cloud_1 287 184 31 24
 cloud_2 318 184 31 24
 cloud_3 349 184 31 24
 cloud_4 256 208 31 24
+particle_red 165 136 1 1 
+particle_light_green 160 137 1 1
+particle_green 161 137 1 1
+particle_dark_green 162 137 1 1
+particle_gray 164 137 1 1
+particle_dark_gray 163 137 1 1
+particle_light_gray 165 137 1 1
+particle_white 166 137 1 1
+particle_light_blue 167 137 1 1
+particle_blue 167 138 1 1
+particle_dark_red 164 136 1 1
+particle_orange 166 136 1 1
+particle_yellow 167 136 1 1
+particle_light_light_brown 160 136 1 1
+particle_light_brown 161 136 1 1
+particle_brown 162 136 1 1
+particle_dark_brown 16 136 1 1
