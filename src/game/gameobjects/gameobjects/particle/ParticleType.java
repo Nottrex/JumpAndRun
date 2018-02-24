@@ -3,7 +3,8 @@ package game.gameobjects.gameobjects.particle;
 import game.data.Sprite;
 
 public enum ParticleType {
-	EXPLOSION(new Sprite(55, "explosion_1", "explosion_2", "explosion_3", "explosion_4", "explosion_5", "explosion_6", "explosion_7", "explosion_8", "explosion_9"), 30, 2f, 2f, false);
+	EXPLOSION(new Sprite(55, "explosion_1", "explosion_2", "explosion_3", "explosion_4", "explosion_5", "explosion_6", "explosion_7", "explosion_8", "explosion_9"), 30, 2f, 2f, false),
+	CLOUD(new Sprite(100, "cloud_0", "cloud_1", "cloud_2", "cloud_3", "cloud_4"), 29, 1.9375f, 1.5f, false);
 
 	private int lifeTime;
 	private boolean gravity;

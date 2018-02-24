@@ -56,7 +56,7 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 		} else if (jumpTicks == 0 && !jumpingLastTick && jumping && !hasDoubleJumped && (this instanceof Player && ((Player) this).hasAbility(Ability.DOUBLE_JUMP))) {
 			jumpTicks = 1;
 			vy = Constants.JUMP_ACCELERATION * maxJumpHeight;
-			game.getParticleSystem().createParticle(ParticleType.EXPLOSION, hitBox.getCenterX(), hitBox.y, 0, -0.02f);
+			game.getParticleSystem().createParticle(ParticleType.CLOUD, hitBox.getCenterX(), hitBox.y, 0, -0.02f);
 			hasDoubleJumped = true;
 		} else if (jumpTicks > 0 && jumping && vy > 0) {
 			jumpTicks++;

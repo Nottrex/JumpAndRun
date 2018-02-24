@@ -1,4 +1,4 @@
-358
+363
 single_stone 0 32 8 8
 row_stone_left 8 32 8 8
 row_stone_middle 16 32 8 8
@@ -115,10 +115,10 @@ pressureplate 152 6 8 2
 pressureplate_pressed 160 6 8 2
 lantern 176 16 8 16
 lantern_off 184 16 8 16
-platform 152 32 8 8
-platform_left 160 32 8 8
-platform_middle 168 32 8 8
-platform_right 176 32 8 8
+platform 152 33 8 3
+platform_left 160 33 8 3
+platform_middle 168 33 8 3
+platform_right 176 33 8 3
 spikes_bot_blood 144 8 8 8
 spikes_top_blood 136 8 8 8
 spikes_right_blood 136 16 8 8
@@ -357,3 +357,8 @@ stick_down_0 97 226 13 13
 stick_down_1 110 226 13 13
 stick_down_2 123 226 13 13
 stick_down_3 136 226 13 13
+cloud_0 256 184 31 24
+cloud_1 287 184 31 24
+cloud_2 318 184 31 24
+cloud_3 349 184 31 24
+cloud_4 256 208 31 24
