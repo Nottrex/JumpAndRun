@@ -3,6 +3,7 @@ package game.gamemap;
 import game.Ability;
 import game.Constants;
 import game.Game;
+import game.Options;
 import game.data.hitbox.HitBox;
 import game.data.script.Parser;
 import game.data.script.Tree;
@@ -19,6 +20,7 @@ import game.util.TextureHandler;
 
 import java.awt.*;
 import java.io.File;
+import java.io.FileFilter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -26,38 +28,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class MapLoader {
-	private static String directory;
 	private static final File mapFolder = new File("src/res/files/maps");
-
-	public static void loadAllMaps(Game game) {
-		ArrayList<String> maps = new ArrayList<String>(Arrays.asList(getMaps(mapFolder, true)));
-
-		while (!maps.isEmpty()) {
-			File file = new File(mapFolder, maps.get(0));
-			if (!file.isDirectory()) {
-				boolean b = !maps.get(0).contains("/");
-
-				directory = b ? "" : maps.get(0).substring(0, maps.get(0).lastIndexOf("/"));
-				try {
-					load(game, b ? maps.get(0) : maps.get(0).substring(maps.get(0).lastIndexOf("/")+1));
-				} catch (Exception e) {
-					ErrorUtil.printError("Loading Map " + maps.get(0));
-				}
-			} else {
-				for (String newFile: getMaps(file, true)) {
-					maps.add(maps.get(0) + "/" + newFile);
-				}
-			}
-
-			maps.remove(0);
-		}
-
-		directory = "";
-	}
 
 	public static GameMap load(Game g, String mapName) {
 		if (mapName.startsWith(Constants.SYS_PREFIX)) {
-			directory = "";
 			if (mapName.endsWith("menu")) return createMenu(g);
 			if (mapName.endsWith("load")) return createLoad(g);
 			if (mapName.endsWith("new")) return createNew(g);
@@ -66,8 +40,8 @@ public class MapLoader {
 			if (mapName.endsWith("save")) return createSave(g);
 		}
 
-		if (!FileHandler.fileExists("maps/" + directory + File.separator + mapName + ".map")) {
-			GameMap map = load(g, Constants.SYS_PREFIX + "menu");
+		if (!FileHandler.fileExists("maps/" + mapName + ".map")) {
+			GameMap map = load(g, Constants.SYS_PREFIX + "world");
 			Text text = new Text(-100, "Something went wrong. We send you back to the Menu", -0.9f, -0.9f, 0.05f, false, 0, 0, Color.RED);
 			text.setTimer(300);
 			map.addGameObject(text);
@@ -77,11 +51,11 @@ public class MapLoader {
 		GameMap map = new GameMap();
 		Map<Integer, String> textureReplacements = new HashMap<>();
 		Map<Float, Map<HitBox, String>> layers = new HashMap<>();
+		map.setMapInfo(mapName.split("/")[0], mapName.split("/")[1]);
 
-		Scanner fileScanner = new Scanner(FileHandler.loadFile("maps/" + directory + File.separator + mapName + ".map"));
+		Scanner fileScanner = new Scanner(FileHandler.loadFile("maps/" + mapName + ".map"));
 		Constants.PIXEL_PER_TILE = Integer.valueOf(fileScanner.nextLine());
 		float tileSize = Constants.PIXEL_PER_TILE;
-		if (directory.equals("")) directory = mapName;
 
 		while (fileScanner.hasNextLine()) {
 			String line = fileScanner.nextLine();
@@ -209,7 +183,7 @@ public class MapLoader {
 						map.addGameObject(new AbilityGate(x, y, drawingPriority, abilities, true));
 						break;
 					case "coin":
-						String coinID = String.format("%s_coin_%f_%f", directory, x, y);
+						String coinID = String.format("%s_coin_%s_%f_%f", map.getDirectory(), map.getName(), x, y);
 						if (g.getValue(coinID) == 0) g.setValue(coinID, 0);
 						map.addGameObject(new Coin(x, y, drawingPriority, g.getValue(coinID) > 0, new Tree((tree, game) -> {
 							game.setValue(coinID, 1);                                            //Mark this coin as collected
@@ -221,7 +195,9 @@ public class MapLoader {
 					case "door_side_open_0":
 					case "door_side_open_1":
 					case "door_side_open":
-						map.addGameObject(new Exit(x, y, drawingPriority, tags.getOrDefault("target", Constants.SYS_PREFIX + "world"), null));
+						String target = Constants.SYS_PREFIX + "world";
+						if (tags.containsKey("target")) target = map.getDirectory() + "/" + tags.get("target");
+						map.addGameObject(new Exit(x, y, drawingPriority, target, null));
 						break;
 					case "lantern_off":
 						map.addGameObject(new Lantern(x, y, drawingPriority, Parser.loadScript(Parser.BOOLEAN, tags.getOrDefault("condition", "false"))));
@@ -361,11 +337,12 @@ public class MapLoader {
 			}
 			map.addGameObject(new Exit(i * 9 + 4, 4, 0.7f, mapNames[i], null));
 			map.addGameObject(new Text(0.7f, mapNames[i].replace(Constants.SYS_PREFIX, ""), i * 9 + 4.5f, 6, 0.5f, true, 0.5f, 0));
-			if (!mapNames[i].startsWith(Constants.SYS_PREFIX)) map.addGameObject(new Text(0.7f, String.valueOf(g.getKeyAmount(mapNames[i] + "_coin_", 1)) + "/" + String.valueOf(g.getKeyAmount(mapNames[i] + "_coin_")), i * 9 + 4.5f, 7, 0.5f, true, 0.5f, 0));
+			if (!mapNames[i].startsWith(Constants.SYS_PREFIX)) map.addGameObject(new Text(0.7f, String.valueOf(g.getKeyAmount(mapNames[i].split("/")[0] + "_coin_", 1)) + "/" + String.valueOf(g.getKeyAmount(mapNames[i].split("/")[0] + "_coin_")), i * 9 + 4.5f, 7, 0.5f, true, 0.5f, 0));
 			map.addGameObject(new Lantern(i * 9 + 2, 1, 0.7f, new Tree((t, g2) -> g2.getGameTick() % 120 < 60)));
 			map.getCameraController().addCameraArea(new Area(i * 9, -2, i * 9 + 9, 9));
 		}
 		map.setSpawnPoint(0, 1, 0.5f);
+		map.addGameObject(new Exit(0, 1, 0.6f, Constants.SYS_PREFIX + "save", null));
 
 		for (float drawingPriority : layers.keySet()) {
 			Map<HitBox, String> layer = layers.get(drawingPriority);
@@ -407,13 +384,14 @@ public class MapLoader {
 
 			lever1.setEnabled(new Tree((t, g2) -> true));
 			lever1.setOnActivate(new Tree((t, g2) -> {
-				//TODO: Maximize
+				Options.fullscreen = true;
 				return null;
 			}));
 			lever1.setOnDeactivate(new Tree((t, g2) -> {
-				//TODO: Don't maximize
+				Options.fullscreen = false;
 				return null;
 			}));
+			lever1.setActivated(Options.fullscreen);
 
 			HitBox textBox = lever1.getCollisionBoxes().get(0).clone();
 			textBox.move(0, 1f);
@@ -425,24 +403,27 @@ public class MapLoader {
 		}
 
 		((Exit) map.getGameObjects().stream().filter(go -> go instanceof Exit).findAny().get()).setTargetMap(Constants.SYS_PREFIX + "menu");
-
+		((Exit) map.getGameObjects().stream().filter(go -> go instanceof Exit).findAny().get()).setOnEntrance(new Tree(((tree, game) -> {
+			Options.applyOptions(game);
+			return null;
+		})));
 		return map;
 	}
 
 	private static GameMap createMenu(Game g) {
 		GameMap map = load(g, "hidden/menu");
 
-		Exit exitLoad = (Exit) map.getGameObjects().stream().filter(go -> go instanceof Exit).filter(go -> ((Exit) go).getTargetMap().equals("2")).findAny().get();
+		Exit exitLoad = (Exit) map.getGameObjects().stream().filter(go -> go instanceof Exit).filter(go -> ((Exit) go).getTargetMap().endsWith("2")).findAny().get();
 		exitLoad.setTargetMap(Constants.SYS_PREFIX + "load");
 		Text textLoad = new Text(-0.25f, "LOAD", exitLoad.getCollisionBoxes().get(0).getCenterX(), exitLoad.getCollisionBoxes().get(0).y + 2, 0.5f, true, 0.5f, 0.5f, Color.RED);
 		map.addGameObject(textLoad);
 
-		Exit exitNew = (Exit) map.getGameObjects().stream().filter(go -> go instanceof Exit).filter(go -> ((Exit) go).getTargetMap().equals("3")).findAny().get();
+		Exit exitNew = (Exit) map.getGameObjects().stream().filter(go -> go instanceof Exit).filter(go -> ((Exit) go).getTargetMap().endsWith("3")).findAny().get();
 		exitNew.setTargetMap(Constants.SYS_PREFIX + "new");
 		Text textNew = new Text(-0.25f, "NEW", exitNew.getCollisionBoxes().get(0).getCenterX(), exitNew.getCollisionBoxes().get(0).y + 2, 0.5f, true, 0.5f, 0.5f, Color.RED);
 		map.addGameObject(textNew);
 
-		Exit exitOptions = (Exit) map.getGameObjects().stream().filter(go -> go instanceof Exit).filter(go -> ((Exit) go).getTargetMap().equals("1")).findAny().get();
+		Exit exitOptions = (Exit) map.getGameObjects().stream().filter(go -> go instanceof Exit).filter(go -> ((Exit) go).getTargetMap().endsWith("1")).findAny().get();
 		exitOptions.setTargetMap(Constants.SYS_PREFIX + "options");
 		Text textOptions = new Text(-0.25f, "OPTIONS", exitOptions.getCollisionBoxes().get(0).getCenterX(), exitOptions.getCollisionBoxes().get(0).y + 2, 0.5f, true, 0.5f, 0.5f, Color.RED);
 		map.addGameObject(textOptions);
@@ -475,10 +456,12 @@ public class MapLoader {
 
 	private static GameMap createNew(Game g) {
 		GameMap map = load(g, "hidden/saves");
-		map.addGameObject(new Exit(0, 0, 1, Constants.SYS_PREFIX + "world", new Tree((tree, game) -> {
-			loadAllMaps(g);
+		map.addGameObject(new Exit(15, 0-13, 1, Constants.SYS_PREFIX + "world", new Tree((tree, game) -> {
+			loadAllMaps(game);
 			return null;
 		})));
+		map.setSpawnPoint(15, -16, 0.5f);
+		map.addGameObject(new Exit(15, -16, 0.6f, Constants.SYS_PREFIX + "menu", null));
 		return map;
 	}
 
@@ -492,17 +475,37 @@ public class MapLoader {
 		}
 	}
 
-	private static String[] getMaps(File folder, boolean folders) {
-		File[] listOfFiles = folder.listFiles();
+	private static String[] getMaps(File folder, boolean all) {
+		File[] packages = folder.listFiles(new FileFilter() {
+			@Override
+			public boolean accept(File pathname) {
+				return pathname.isDirectory();
+			}
+		});
 
-		java.util.List<String> maps = new ArrayList<>();
-		maps.add(Constants.SYS_PREFIX + "save");
+		List<String> maps = new ArrayList<>();
 
-		for (File f : listOfFiles) {
-			if (folders || (f.isFile() && f.getName().endsWith(".map"))) {
-				maps.add(f.getName().replaceAll(".map", ""));
+		for (File f : packages) {
+			File initialMap = new File(f.getAbsolutePath() + "/" + f.getName() + ".map");
+			if (initialMap.exists()) maps.add(f.getName() + "/" + f.getName());
+			if (all) {
+				for (File f2: f.listFiles()) {
+					if (f2.getName().endsWith(".map")) maps.add(f.getName() + "/" + f2.getName().replace(".map", ""));
+				}
 			}
 		}
 		return maps.toArray(new String[0]);
+	}
+
+	public static void loadAllMaps(Game game) {
+		String[] maps =getMaps(mapFolder, true);
+
+		for (String mapName: maps) {
+			try {
+				load(game, mapName);
+			} catch (Exception e) {
+				ErrorUtil.printError("Loading Map " + mapName);
+			}
+		}
 	}
 }

@@ -1,6 +1,7 @@
 package game.util;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +44,14 @@ public class SaveHandler {
 	}
 
 	public static void writeSave(Map<String, Integer> values, String saveName) {
+		File[] oldSave = new File(saveDirectory).listFiles(new FileFilter() {
+			@Override
+			public boolean accept(File pathname) {
+				return pathname.getName().startsWith(saveName.substring(0,2)) && pathname.getName().endsWith(".save");
+			}
+		});
+		for (File file: oldSave) file.delete();
+
 		try {
 			PrintWriter writer = new PrintWriter(new File(saveDirectory + File.separator + saveName + ".save"));
 			for (String key: values.keySet()) {
