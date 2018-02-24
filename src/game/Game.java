@@ -217,7 +217,7 @@ public class Game {
 	* loads the current map again
 	**/
 	public void restartMap() {
-		if (!map.getDirectory().equals("hidden") && map.getDirectory() != null) setGameMap(map.getDirectory() + "/" + map.getName(), true); //TO-DO fix if
+		if (map.getDirectory() != null && !map.getDirectory().equals("hidden") ) setGameMap(map.getDirectory() + "/" + map.getName(), true); //TO-DO fix if
 	}
 
 	/**
