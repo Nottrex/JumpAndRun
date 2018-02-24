@@ -236,7 +236,6 @@ public class Game {
 			} else {
 				fadeStart = gameTick - Constants.FADE_TIME;
 			}
-			for (Player p: players) p.removeAllAbilities();
 
 			return true;
 		}

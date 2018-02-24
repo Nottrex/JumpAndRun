@@ -13,8 +13,10 @@ import game.util.MathUtil;
 
 public abstract class BasicWalkingEntity extends BasicMovingEntity {
 	protected boolean onGround, onLadder;
+	protected HitBoxDirection onWall;
 	protected int jumpTicks;
 	private boolean jumpingLastTick;
+	private boolean hasDoubleJumped;
 
 	protected float lastMX;
 	protected float mx;
@@ -46,6 +48,16 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 		if ((onGround && !jumpingLastTick) && jumping) {
 			vy = Constants.JUMP_ACCELERATION * maxJumpHeight;
 			jumpTicks = 1;
+		} else if ((onWall == HitBoxDirection.RIGHT || onWall == HitBoxDirection.LEFT) && !jumpingLastTick && jumping && (this instanceof Player && ((Player) this).hasAbility(Ability.WALL_JUMP))) {
+			jumpTicks = 1;
+			vy = Constants.JUMP_ACCELERATION * maxJumpHeight;
+			this.addKnockBack(- onWall.getXDirection() * 0.27f, 0);
+			hasDoubleJumped = false;
+		} else if (jumpTicks == 0 && !jumpingLastTick && jumping && !hasDoubleJumped && (this instanceof Player && ((Player) this).hasAbility(Ability.DOUBLE_JUMP))) {
+			jumpTicks = 1;
+			vy = Constants.JUMP_ACCELERATION * maxJumpHeight;
+			game.getParticleSystem().createParticle(ParticleType.EXPLOSION, hitBox.getCenterX(), hitBox.y, 0, -0.02f);
+			hasDoubleJumped = true;
 		} else if (jumpTicks > 0 && jumping && vy > 0) {
 			jumpTicks++;
 
@@ -54,7 +66,7 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 			jumpTicks = 0;
 
 			if (-vy < Constants.MAX_GRAVITY_SPEED) vy = Math.max(vy - Constants.GRAVITY_ACCELERATION, -Constants.MAX_GRAVITY_SPEED);
-			if (this instanceof Player && ((Player) this).hasAbility(Ability.STOMP) && down && -vy < Constants.MAX_DOWN_SPEED) vy = Math.max(vy - Constants.DOWN_ACCELERATION, -Constants.MAX_DOWN_SPEED);
+			if ((this instanceof Player && ((Player) this).hasAbility(Ability.STOMP)) && down && -vy < Constants.MAX_DOWN_SPEED) vy = Math.max(vy - Constants.DOWN_ACCELERATION, -Constants.MAX_DOWN_SPEED);
 		}
 
 		if (onLadder) {
@@ -65,6 +77,7 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 
 		onGround = false;
 		onLadder = false;
+		onWall = HitBoxDirection.COLLIDE;
 		super.update(game);
 	}
 
@@ -80,6 +93,11 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 			}
 
 			onGround = true;
+			hasDoubleJumped = false;
+		}
+
+		if ((direction == HitBoxDirection.LEFT || direction == HitBoxDirection.RIGHT) && velocity != 0) {
+			onWall = direction;
 		}
 
 		if (gameObject instanceof Ladder) {
