@@ -292,13 +292,6 @@ public class Game {
 	}
 
 	/**
-	 * @return th Window used to display the game
-	 */
-	public Window getWindow() {
-		return window;
-	}
-
-	/**
 	 * @return the width of the window divided by the height
 	**/
 	public float getAspectRatio() {

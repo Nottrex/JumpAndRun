@@ -4,6 +4,7 @@ import com.joml.matrix.Matrix4f;
 import com.joml.utils.CamMath;
 import com.joml.vector.Vector3f;
 import game.Constants;
+import game.Options;
 import game.util.ErrorUtil;
 import game.util.TextureHandler;
 import game.util.TimeUtil;
@@ -62,6 +63,8 @@ public class Window {
 
 	public void run() {
 		while (running) {
+			Options.applyOptions(this);
+
 			while (!toAdd.isEmpty()) {
 				Drawable drawable = toAdd.poll();
 				drawables.add(drawable);
