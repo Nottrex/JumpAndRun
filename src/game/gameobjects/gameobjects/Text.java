@@ -20,6 +20,7 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Text extends AbstractGameObject implements Drawable {
 	private float x, y, size, drawingPriority;
@@ -201,7 +202,8 @@ public class Text extends AbstractGameObject implements Drawable {
 		IntBuffer indices = BufferUtils.createIntBuffer(letters * Constants.INDICES.length);
 
 		int i = 0;
-		for (HitBox hitBox: hitBoxList.keySet()) {
+		java.util.List<HitBox> hitBoxList1 = hitBoxList.keySet().stream().sorted((o1, o2) -> Boolean.compare(hitBoxList.get(o2).equals("key"), hitBoxList.get(o1).equals("key"))).collect(Collectors.toList());
+		for (HitBox hitBox: hitBoxList1) {
 			Rectangle texture = TextureHandler.getSpriteSheetBounds("textures_" + hitBoxList.get(hitBox));
 
 			for (float[] v : Constants.VERTEX_POS) {
