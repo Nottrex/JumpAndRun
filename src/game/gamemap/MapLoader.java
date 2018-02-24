@@ -338,7 +338,6 @@ public class MapLoader {
 			map.addGameObject(new Exit(i * 9 + 4, 4, 0.7f, mapNames[i], null));
 			map.addGameObject(new Text(0.7f, mapNames[i].replace(Constants.SYS_PREFIX, ""), i * 9 + 4.5f, 6, 0.5f, true, 0.5f, 0));
 			if (!mapNames[i].startsWith(Constants.SYS_PREFIX)) map.addGameObject(new Text(0.7f, String.valueOf(g.getKeyAmount(mapNames[i].split("/")[0] + "_coin_", 1)) + "/" + String.valueOf(g.getKeyAmount(mapNames[i].split("/")[0] + "_coin_")), i * 9 + 4.5f, 7, 0.5f, true, 0.5f, 0));
-			map.addGameObject(new Lantern(i * 9 + 2, 1, 0.7f, new Tree((t, g2) -> g2.getGameTick() % 120 < 60)));
 			map.getCameraController().addCameraArea(new Area(i * 9, -2, i * 9 + 9, 9));
 		}
 		map.setSpawnPoint(0, 1, 0.5f);
