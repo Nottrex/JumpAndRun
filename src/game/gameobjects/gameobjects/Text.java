@@ -33,6 +33,11 @@ public class Text extends AbstractGameObject implements Drawable {
 	private boolean update;
 	private float aspectRatio;
 
+	private boolean hasAnimation;
+	private int animationNumber = 0;
+	private int drawTime;
+	private boolean rising = true;
+
 	private int vao, vao2;
 	private int locationVBO, texLocationVBO, indicesVBO;
 
@@ -50,6 +55,8 @@ public class Text extends AbstractGameObject implements Drawable {
 		color = Color.WHITE;
 		timer = -1;
 		setText(text);
+
+		drawTime = 0;
 	}
 
 	public Text(float drawingPriority, String text, float x, float y, float size, boolean useCamera, Color c) {
@@ -98,6 +105,11 @@ public class Text extends AbstractGameObject implements Drawable {
 			aspectRatio = window.getAspectRatio();
 			updateBuffers(shader);
 			update = false;
+		}
+		if (hasAnimation) {
+			if (drawTime == 0) updateBuffers(shader);
+			drawTime++;
+			if (drawTime == 20) drawTime = 0;
 		}
 
 		if (letters == 0) return;
@@ -160,6 +172,21 @@ public class Text extends AbstractGameObject implements Drawable {
 					float keySize = 1.5f * fontHeight;
 					hitBoxList.put(new HitBox(centeredX + i * fontSpacing - 0.25f * keySize, centeredY - 0.15f * keySize, keySize, keySize), "key");
 					hitBoxList.put(new HitBox(centeredX + i * fontSpacing, centeredY, fontWidth, fontHeight), String.valueOf((char) (chars[i] - 848)));
+				} else if (chars[i] > 800 && chars[i] < 805) {
+					hasAnimation = true;
+					float stickSize = 1.5f * fontHeight;
+					String direction = "up";
+					switch (chars[i]) {
+						case 801: direction = "left"; break;
+						case 802: direction = "right"; break;
+						case 803: direction = "up"; break;
+						case 804: direction = "down"; break;
+					}
+					hitBoxList.put(new HitBox(centeredX + i * fontSpacing - 0.25f * stickSize, centeredY - 0.15f * stickSize, stickSize, stickSize), "stick_" + direction + "_" + animationNumber);
+					if (rising) animationNumber++;
+					else  animationNumber--;
+					if (animationNumber == 0) rising = true;
+					else if (animationNumber == 3) rising = false;
 				} else {
 					hitBoxList.put(new HitBox(centeredX + i * fontSpacing, centeredY, fontWidth, fontHeight), String.valueOf(chars[i]));
 				}
