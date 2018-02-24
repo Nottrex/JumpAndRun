@@ -11,9 +11,13 @@ import game.data.hitbox.HitBoxDirection;
 import game.gameobjects.CollisionObject;
 import game.gameobjects.gameobjects.entities.BasicStaticEntity;
 
-public class Piano extends BasicStaticEntity {
+import java.util.Random;
 
+public class Piano extends BasicStaticEntity {
+	private static final int[] JINGLES = new int[] {3*60, 3*60, 13*60 };
 	private static Sprite idle = new Sprite(100, "piano");
+
+	private int waitTil = -1;
 
 	public Piano(float x, float y, float drawingPriority) {
 		super(new HitBox(x, y, 2, 2), drawingPriority);
@@ -43,8 +47,11 @@ public class Piano extends BasicStaticEntity {
 
 	@Override
 	public void interact(CollisionObject gameObject, HitBox hitBox, InteractionType interactionType) {
-		if (gameObject instanceof Player) {
-			game.getAudioPlayer().playAudio(Sound.EXPLOSION.fileName);
+		if (gameObject instanceof Player && game.getGameTick() > waitTil) {
+			int jingle = new Random().nextInt(JINGLES.length);
+
+			waitTil = game.getGameTick() + JINGLES[jingle] + 60;
+			game.getAudioPlayer().playAudio("piano" + jingle);
 		}
 	}
 }
