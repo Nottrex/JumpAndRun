@@ -2,9 +2,11 @@ package game.gameobjects.gameobjects;
 
 import game.Constants;
 import game.Game;
+import game.data.Sprite;
 import game.data.hitbox.HitBox;
 import game.gameobjects.AbstractGameObject;
 import game.util.TextureHandler;
+import game.util.TimeUtil;
 import game.window.Drawable;
 import game.window.Window;
 import game.window.shader.ShaderType;
@@ -23,6 +25,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Text extends AbstractGameObject implements Drawable {
+	private Sprite stick_up = new Sprite(400, "stick_up_0", "stick_up_1", "stick_up_2", "stick_up_3", "stick_up_2", "stick_up_1");
+	private Sprite stick_down = new Sprite(400, "stick_down_0", "stick_down_1", "stick_down_2", "stick_down_3", "stick_down_2", "stick_down_1");
+	private Sprite stick_left = new Sprite(400, "stick_left_0", "stick_left_1", "stick_left_2", "stick_left_3", "stick_left_2", "stick_left_1");
+	private Sprite stick_right = new Sprite(400, "stick_right_0", "stick_right_1", "stick_right_2", "stick_right_3", "stick_right_2", "stick_right_1");
+	private Sprite stick_vertical = new Sprite(400, "stick_up_0", "stick_up_1", "stick_up_2", "stick_up_3", "stick_up_2", "stick_up_1", "stick_down_0", "stick_down_1", "stick_down_2", "stick_down_3", "stick_down_2", "stick_down_1");
+	private Sprite stick_horizontal = new Sprite(400, "stick_left_0", "stick_left_1", "stick_left_2", "stick_left_3", "stick_left_2", "stick_left_1", "stick_right_0", "stick_right_1", "stick_right_2", "stick_right_3", "stick_right_2", "stick_right_1");
+
 	private float x, y, size, drawingPriority;
 	private boolean useCamera;
 	private int letters, timer;
@@ -35,9 +44,7 @@ public class Text extends AbstractGameObject implements Drawable {
 	private float aspectRatio;
 
 	private boolean hasAnimation;
-	private int animationNumber = 0;
-	private int drawTime;
-	private boolean rising = true;
+	private long startTime;
 
 	private int vao, vao2;
 	private int locationVBO, texLocationVBO, indicesVBO;
@@ -57,7 +64,7 @@ public class Text extends AbstractGameObject implements Drawable {
 		timer = -1;
 		setText(text);
 
-		drawTime = 0;
+		startTime = TimeUtil.getTime();
 	}
 
 	public Text(float drawingPriority, String text, float x, float y, float size, boolean useCamera, Color c) {
@@ -104,13 +111,11 @@ public class Text extends AbstractGameObject implements Drawable {
 
 		if (update) {
 			aspectRatio = window.getAspectRatio();
-			updateBuffers(shader);
+			updateBuffers(shader, time);
 			update = false;
 		}
 		if (hasAnimation) {
-			if (drawTime == 0) updateBuffers(shader);
-			drawTime++;
-			if (drawTime == 20) drawTime = 0;
+			updateBuffers(shader, time);
 		}
 
 		if (letters == 0) return;
@@ -143,20 +148,11 @@ public class Text extends AbstractGameObject implements Drawable {
 		GL30.glDeleteVertexArrays(vao2);
 	}
 
-	private void updateBuffers(TextShader shader) {
+	private void updateBuffers(TextShader shader, long currentTime) {
 		//Create characters
 		Map<HitBox, String> hitBoxList = new HashMap<>();
 
-		for (int i = 65; i < 91; i++) {
-			text = text.replaceAll(("<" + ((char) i) + ">"), String.valueOf((char) (i + 880)));
-			text = text.replaceAll(("<" + ((char) (i + 32)) + ">"), String.valueOf((char) (i + 880)));
-		}
-		text = text.replace("<stick>", String.valueOf((char) 800));
-		text = text.replace("<stick_left>", String.valueOf((char) 801));
-		text = text.replace("<stick_right>", String.valueOf((char) 802));
-		text = text.replace("<stick_up>", String.valueOf((char) 803));
-		text = text.replace("<stick_down>", String.valueOf((char) 804));
-		char[] chars = text.replaceAll("_", " ").toLowerCase().toCharArray();
+		char[] chars = trimText();
 
 		float fontHeight = size;
 		float fontWidth =  fontHeight / Constants.FONT_ASPECT  / (useCamera ? 1 : aspectRatio);
@@ -169,25 +165,14 @@ public class Text extends AbstractGameObject implements Drawable {
 		float centeredY = y - height * anchorY;
 		for (int i = 0; i < chars.length; i++) {
 			if (chars[i] != ' ') {
-				if (chars[i] > 900) {
+				if (chars[i] > 900 && chars[i] < 975) {
 					float keySize = 1.5f * fontHeight;
 					hitBoxList.put(new HitBox(centeredX + i * fontSpacing - 0.25f * keySize, centeredY - 0.15f * keySize, keySize, keySize), "key");
 					hitBoxList.put(new HitBox(centeredX + i * fontSpacing, centeredY, fontWidth, fontHeight), String.valueOf((char) (chars[i] - 848)));
-				} else if (chars[i] > 800 && chars[i] < 805) {
+				} else if (chars[i] > 1071 && chars[i] < 1079) {
 					hasAnimation = true;
 					float stickSize = 1.5f * fontHeight;
-					String direction = "up";
-					switch (chars[i]) {
-						case 801: direction = "left"; break;
-						case 802: direction = "right"; break;
-						case 803: direction = "up"; break;
-						case 804: direction = "down"; break;
-					}
-					hitBoxList.put(new HitBox(centeredX + i * fontSpacing - 0.25f * stickSize, centeredY - 0.15f * stickSize, stickSize, stickSize), "stick_" + direction + "_" + animationNumber);
-					if (rising) animationNumber++;
-					else  animationNumber--;
-					if (animationNumber == 0) rising = true;
-					else if (animationNumber == 3) rising = false;
+					hitBoxList.put(new HitBox(centeredX + i * fontSpacing - 0.25f * stickSize, centeredY - 0.15f * stickSize, stickSize, stickSize), String.valueOf(chars[i]));
 				} else {
 					hitBoxList.put(new HitBox(centeredX + i * fontSpacing, centeredY, fontWidth, fontHeight), String.valueOf(chars[i]));
 				}
@@ -204,7 +189,22 @@ public class Text extends AbstractGameObject implements Drawable {
 		int i = 0;
 		java.util.List<HitBox> hitBoxList1 = hitBoxList.keySet().stream().sorted((o1, o2) -> Boolean.compare(hitBoxList.get(o2).equals("key"), hitBoxList.get(o1).equals("key"))).collect(Collectors.toList());
 		for (HitBox hitBox: hitBoxList1) {
-			Rectangle texture = TextureHandler.getSpriteSheetBounds("textures_" + hitBoxList.get(hitBox));
+			Rectangle texture;
+			if (hitBoxList.get(hitBox).charAt(0) > 1071 && hitBoxList.get(hitBox).charAt(0) < 1079) {
+				Sprite animation = stick_up;
+				switch (hitBoxList.get(hitBox).charAt(0)) {
+					case 1072: animation = stick_up; break;
+					case 1073: animation = stick_up; break;
+					case 1074: animation = stick_down; break;
+					case 1075: animation = stick_left; break;
+					case 1076: animation = stick_right; break;
+					case 1077: animation = stick_vertical; break;
+					case 1078: animation = stick_horizontal; break;
+				}
+				texture = animation.getTexture(startTime, currentTime);
+			} else {
+				texture = TextureHandler.getSpriteSheetBounds("textures_" + hitBoxList.get(hitBox));
+			}
 
 			for (float[] v : Constants.VERTEX_POS) {
 				locations.put(hitBox.x + v[0] * hitBox.width);
@@ -319,6 +319,23 @@ public class Text extends AbstractGameObject implements Drawable {
 
 	public static float getHeight(String text, float size) {
 		return size;
+	}
+
+	private char[] trimText() {
+		for (int i = 65; i < 91; i++) {
+			text = text.replaceAll(("<" + ((char) i) + ">"), String.valueOf((char) (i + 880)));
+			text = text.replaceAll(("<" + ((char) (i + 32)) + ">"), String.valueOf((char) (i + 880)));
+		}
+		text = text.replaceAll("<stick>", String.valueOf((char) 1072));
+		text = text.replaceAll("<stick_up>", String.valueOf((char) 1073));
+		text = text.replaceAll("<stick_down>", String.valueOf((char) 1074));
+		text = text.replaceAll("<stick_left>", String.valueOf((char) 1075));
+		text = text.replaceAll("<stick_right>", String.valueOf((char) 1076));
+		text = text.replaceAll("<stick_vertical>", String.valueOf((char) 1077));
+		text = text.replaceAll("<stick_horizontal>", String.valueOf((char) 1078));
+		text = text.replaceAll("_", " ").toLowerCase();
+		//System.out.println(text);
+		return text.toCharArray();
 	}
 }
 
