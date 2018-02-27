@@ -71,8 +71,8 @@ public class Game {
 
 		values = new HashMap<>();
 
-		coinCounter = new Text(-1000f, "<#coins>", 1, 1-(0.1f/6), 0.1f, false, 1, 1);
 		coinCounterCoin = new ScreenEntity(new HitBox(1, 1, 0.4f/3, 0.4f/3), -1000, Coin.idle, 1, 1);
+		coinCounter = new Text(-1000f, "<#coins>", 1 - coinCounterCoin.getWidth(), 1-(0.1f/6), 0.1f, false, 1, 1);
 		addGameObject(coinCounter);
 		addGameObject(coinCounterCoin);
 
