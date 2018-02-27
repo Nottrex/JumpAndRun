@@ -9,12 +9,29 @@ import game.gameobjects.GameObject;
 import game.gameobjects.gameobjects.entities.BasicStaticEntity;
 
 public class Spikes extends BasicStaticEntity {
-	private Sprite idle = new Sprite(100, "spikes_bot_blood");
+	private static Sprite down = new Sprite(100, "spikes_bot_blood");
+	private static Sprite up = new Sprite(100, "spikes_top_blood");
+	private static Sprite right = new Sprite(100, "spikes_right_blood");
+	private static Sprite left = new Sprite(100, "spikes_left_blood");
 
-	public Spikes(float x, float y, float drawingPriority) {
+	public enum SpikeDirection{
+		UP(up), DOWN(down), LEFT(left), RIGHT(right);
+
+		private Sprite sprite;
+
+		SpikeDirection(Sprite sprite) {
+			this.sprite = sprite;
+		}
+
+		Sprite getSprite() {
+			return sprite;
+		}
+	}
+
+	public Spikes(float x, float y, float drawingPriority, SpikeDirection spikeDirection) {
 		super(new HitBox(x, y, 1f, 1f), drawingPriority);
 
-		setSprite(idle);
+		setSprite(spikeDirection.getSprite());
 	}
 
 	@Override

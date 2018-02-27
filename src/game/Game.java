@@ -117,6 +117,7 @@ public class Game {
 				}
 
 				map = newGameMap;
+				map.load(this);
 				newMap = null;
 			}
 
@@ -165,6 +166,7 @@ public class Game {
 			gameObjects.sort((o1, o2) -> Float.compare(o2.getPriority(), o1.getPriority()));
 
 			//Update every gameObject
+			map.update(this);
 			for (GameObject gameObject : gameObjects) {
 				gameObject.update(this);
 			}

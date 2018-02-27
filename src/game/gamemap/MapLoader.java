@@ -53,7 +53,27 @@ public class MapLoader {
 		map.setMapInfo(mapName.split("/")[0], mapName.split("/")[1]);
 
 		Scanner fileScanner = new Scanner(FileHandler.loadFile("maps/" + mapName + ".map"));
-		Constants.PIXEL_PER_TILE = Integer.valueOf(fileScanner.nextLine());
+
+		{
+			String[] lineOne = fileScanner.nextLine().replaceAll(" ", "").replaceAll("\\[", "").replaceAll("]", "").split(";");
+			Constants.PIXEL_PER_TILE = Integer.valueOf(lineOne[0]);
+
+			Map<String, String> tags = new HashMap<>();
+
+			int i = 1;
+			while (i < lineOne.length) {
+				if (lineOne[i].equals("tag")) {
+					tags.put(lineOne[i + 1], lineOne[i + 2].replaceAll("δ", ";"));
+					i++;
+					i++;
+				}
+
+				i++;
+			}
+
+			if (tags.containsKey("update")) map.setOnUpdate(Parser.loadScript(Parser.COMMAND_BLOCK, tags.get("update")));
+			if (tags.containsKey("load")) map.setOnLoad(Parser.loadScript(Parser.COMMAND_BLOCK, tags.get("load")));
+		}
 		float tileSize = Constants.PIXEL_PER_TILE;
 
 		while (fileScanner.hasNextLine()) {
@@ -207,8 +227,17 @@ public class MapLoader {
 					case "box":
 						map.addGameObject(new Box(x, y, drawingPriority));
 						break;
+					case "spikes_top_blood":
+						map.addGameObject(new Spikes(x, y, drawingPriority, Spikes.SpikeDirection.UP));
+						break;
+					case "spikes_right_blood":
+						map.addGameObject(new Spikes(x, y, drawingPriority, Spikes.SpikeDirection.RIGHT));
+						break;
+					case "spikes_left_blood":
+						map.addGameObject(new Spikes(x, y, drawingPriority, Spikes.SpikeDirection.LEFT));
+						break;
 					case "spikes_bot_blood":
-						map.addGameObject(new Spikes(x, y, drawingPriority));
+						map.addGameObject(new Spikes(x, y, drawingPriority, Spikes.SpikeDirection.DOWN));
 						break;
 					case "lever_left":
 					case "lever_right":
@@ -527,9 +556,6 @@ public class MapLoader {
 					if (f2.getName().endsWith(".map")) maps.add(f.getName() + "/" + f2.getName().replace(".map", ""));
 				}
 			}
-		}
-		for (int i = 0; i < 50; i++) {
-			maps.add("null/null");
 		}
 		return maps.toArray(new String[0]);
 	}

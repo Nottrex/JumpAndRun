@@ -1,5 +1,7 @@
 package game.gamemap;
 
+import game.Game;
+import game.data.script.Tree;
 import game.gameobjects.GameObject;
 import game.gameobjects.gameobjects.cameracontroller.CameraController;
 import game.gameobjects.gameobjects.entities.entities.DeadBodyHandler;
@@ -15,6 +17,8 @@ public class GameMap {
 	private float spawnX, spawnY, playerDrawingPriority;
 	private String directory, name;
 
+	private Tree onLoad, onUpdate;
+
 	public GameMap() {
 		gameObjects = new ArrayList<>();
 
@@ -22,6 +26,22 @@ public class GameMap {
 		this.addGameObject(cameraController);
 		this.addGameObject(new ParticleSystem());
 		this.addGameObject(new DeadBodyHandler());
+	}
+
+	public void load(Game game) {
+		if (onLoad != null) onLoad.get(game);
+	}
+
+	public void update(Game game) {
+		if (onUpdate != null) onUpdate.get(game);
+	}
+
+	public void setOnLoad(Tree onLoad) {
+		this.onLoad = onLoad;
+	}
+
+	public void setOnUpdate(Tree onUpdate) {
+		this.onUpdate = onUpdate;
 	}
 
 	public void addGameObject(GameObject gameObject) {
