@@ -34,7 +34,6 @@ public class MapLoader {
 		if (mapName.startsWith(Constants.SYS_PREFIX)) {
 			if (mapName.endsWith("menu")) return createMenu(g);
 			if (mapName.endsWith("load")) return createLoad(g);
-			if (mapName.endsWith("new")) return createNew(g);
 			if (mapName.endsWith("options")) return createOptions(g);
 			if (mapName.endsWith("world")) return createLobby(g, getMaps(mapFolder, false));
 			if (mapName.endsWith("save")) return createSave(g);
@@ -321,28 +320,70 @@ public class MapLoader {
 	private static GameMap createLobby(Game g, String... mapNames) {
 		GameMap map = new GameMap();
 		Map<Float, Map<HitBox, String>> layers = new HashMap<>();
+		final int sectionWidth = 10;
+		final int sectionHeight = 5;
+		final int sectionPerLine = 5;
+		final int floors = mapNames.length / sectionPerLine;
 
-		for (int i = 0; i < mapNames.length; i++) {
-			for (int j = 0; j < 9; j++) {
-				for (int k = 0; k < 8; k++) {
-					add(layers, new HitBox(i * 9 + j, k, 1f, 1f), "block_stone_middle", 1);
-					add(layers, new HitBox(i * 9 + j, k, 1f, 1f), "black_5", 0.75f);
-				}
+		for (int y = 0; y <= floors; y++) {
+			for (int x = 0; x < sectionPerLine; x++) {
+				for (int width = 0; width < sectionWidth; width++) {
+					for (int height = 0; height < sectionHeight; height++) {
+						int xValue = x * sectionWidth + width;
+						int yValue = - y * sectionHeight + height;
+						int section = y * sectionPerLine + x;
 
-				add(layers, new HitBox(i * 9 + j, 0, 1f, 1f), "block_stone_middle", 0.5f);
-				if (j < 6 && j > 2) {
-					add(layers, new HitBox(i * 9 + j, 3, 1f, 1f), "block_wood_middle", 0.5f);
-					map.addGameObject(new Ladder(i * 9 + 6, j - 2, 0.7f));
+						//map objects (door and texts)
+						if (section < mapNames.length && width == sectionWidth / 2) {
+							if (height == 1) map.addGameObject(new Exit(xValue, yValue, 1, mapNames[section], null));
+							if (height == 3) map.addGameObject(new Text(0.7f, mapNames[section].split("/")[1], xValue + 0.5f, yValue, 0.5f, true, 0.5f, 0));
+							if (height == 4) map.addGameObject(new Text(0.7f, String.valueOf(g.getKeyAmount(mapNames[section].split("/")[0] + "_coin_", 1)) + "/" + String.valueOf(g.getKeyAmount(mapNames[section].split("/")[0] + "_coin_")), xValue + 0.5f, yValue, 0.5f, true, 0.5f, 0));
+						}
+
+						//platforms
+						if (height == 0) add(layers, new HitBox(xValue, yValue, 1f, 1f, HitBox.HitBoxType.HALF_BLOCKING), "platform_middle", 0.52f);
+
+						//borders
+						if (y == 0 && height == sectionHeight - 1) 	add(layers, new HitBox(xValue, yValue + 1, 1f, 1f), "block_stone_top", 0.5f);
+						if (y == floors && height == 0) add(layers, new HitBox(xValue, yValue, 1f, 1f), "block_stone_bottom", 0.5f);
+						if (x == 0 && width == 0 && y != 0) add(layers, new HitBox(xValue - 1, yValue, 1f, 1f), "block_stone_left", 0.5f);
+						if (x == 4 && width == sectionWidth - 1) add(layers, new HitBox(xValue + 1, yValue, 1f, 1f), "block_stone_right", 0.5f);
+
+						//background
+						add(layers, new HitBox(xValue, yValue, 1f, 1f), "block_stone_middle", 100);
+						add(layers, new HitBox(xValue, yValue, 1f, 1f), "black_5", 99);
+
+						//camera
+						if (x == 0 && width == 0 && height == 0) map.getCameraController().addCameraArea(new Area(0, yValue, sectionPerLine * sectionWidth, yValue + sectionHeight));
+					}
 				}
 			}
-			map.addGameObject(new Exit(i * 9 + 4, 4, 0.7f, mapNames[i], null));
-			map.addGameObject(new Text(0.7f, mapNames[i].replace(Constants.SYS_PREFIX, ""), i * 9 + 4.5f, 6, 0.5f, true, 0.5f, 0));
-			if (!mapNames[i].startsWith(Constants.SYS_PREFIX)) map.addGameObject(new Text(0.7f, String.valueOf(g.getKeyAmount(mapNames[i].split("/")[0] + "_coin_", 1)) + "/" + String.valueOf(g.getKeyAmount(mapNames[i].split("/")[0] + "_coin_")), i * 9 + 4.5f, 7, 0.5f, true, 0.5f, 0));
-			map.addGameObject(new Lantern(i * 9 + 2, 1, 0.7f, new Tree((t, g2) -> true)));
-			map.getCameraController().addCameraArea(new Area(i * 9, -2, i * 9 + 9, 9));
 		}
-		map.setSpawnPoint(0, 1, 0.5f);
-		map.addGameObject(new Exit(0, 1, 0.6f, Constants.SYS_PREFIX + "save", null));
+		for (int x = 0; x < sectionWidth; x++) {
+			for (int y = 0; y < sectionHeight; y++) {
+				int xValue = - x - 1;
+				int yValue = y;
+
+				//background
+				add(layers, new HitBox(xValue, yValue, 1f, 1f), "block_stone_middle", 100);
+				add(layers, new HitBox(xValue, yValue, 1f, 1f), "black_5", 99);
+
+				//borders
+				if (y == 0) add(layers, new HitBox(xValue, yValue, 1f, 1f), "block_stone_bottom", 0.52f);
+				if (y == sectionHeight - 1) add(layers, new HitBox(xValue, yValue + 1, 1f, 1f), "block_stone_top", 0.52f);
+				if (x == sectionWidth - 1) add(layers, new HitBox(xValue, yValue, 1f, 1f), "block_stone_left", 0.52f);
+
+				//exit
+				if (x == sectionWidth / 2 && y == 1) {
+					map.addGameObject(new Exit(xValue, yValue, 0.6f, Constants.SYS_PREFIX + "save", null));
+					map.addGameObject(new Text(0.6f, "save", xValue + 0.5f, yValue + 1f, 0.5f, true, 0.5f, 0));
+					map.setSpawnPoint(xValue, yValue, 0.5f);
+				}
+
+				//camera
+				if (x == 0 && y == 0) map.getCameraController().addCameraArea(new Area(0, 0, - sectionWidth, sectionHeight));
+			}
+		}
 
 		for (float drawingPriority : layers.keySet()) {
 			Map<HitBox, String> layer = layers.get(drawingPriority);
@@ -350,7 +391,6 @@ public class MapLoader {
 			else map.addGameObject(new Background(layer, drawingPriority));
 
 		}
-
 		return map;
 	}
 
@@ -415,17 +455,25 @@ public class MapLoader {
 
 		Exit exitLoad = (Exit) map.getGameObjects().stream().filter(go -> go instanceof Exit).filter(go -> ((Exit) go).getTargetMap().endsWith("2")).findAny().get();
 		exitLoad.setTargetMap(Constants.SYS_PREFIX + "load");
-		Text textLoad = new Text(-0.25f, "LOAD", exitLoad.getCollisionBoxes().get(0).getCenterX(), exitLoad.getCollisionBoxes().get(0).y + 2, 0.5f, true, 0.5f, 0.5f, Color.RED);
+		exitLoad.setOnEntrance(new Tree(((tree, game) -> {
+			game.clearValues();
+			return null;
+		})));
+		Text textLoad = new Text(-0.25f, "LOAD", exitLoad.getCollisionBoxes().get(0).getCenterX(), exitLoad.getCollisionBoxes().get(0).y + 2, 0.5f, true, 0.5f, 0.5f);
 		map.addGameObject(textLoad);
 
 		Exit exitNew = (Exit) map.getGameObjects().stream().filter(go -> go instanceof Exit).filter(go -> ((Exit) go).getTargetMap().endsWith("3")).findAny().get();
-		exitNew.setTargetMap(Constants.SYS_PREFIX + "new");
-		Text textNew = new Text(-0.25f, "NEW", exitNew.getCollisionBoxes().get(0).getCenterX(), exitNew.getCollisionBoxes().get(0).y + 2, 0.5f, true, 0.5f, 0.5f, Color.RED);
+		exitNew.setTargetMap(Constants.SYS_PREFIX + "world");
+		exitNew.setOnEntrance(new Tree(((tree, game) -> {
+			game.clearValues();
+			return null;
+		})));
+		Text textNew = new Text(-0.25f, "NEW", exitNew.getCollisionBoxes().get(0).getCenterX(), exitNew.getCollisionBoxes().get(0).y + 2, 0.5f, true, 0.5f, 0.5f);
 		map.addGameObject(textNew);
 
 		Exit exitOptions = (Exit) map.getGameObjects().stream().filter(go -> go instanceof Exit).filter(go -> ((Exit) go).getTargetMap().endsWith("1")).findAny().get();
 		exitOptions.setTargetMap(Constants.SYS_PREFIX + "options");
-		Text textOptions = new Text(-0.25f, "OPTIONS", exitOptions.getCollisionBoxes().get(0).getCenterX(), exitOptions.getCollisionBoxes().get(0).y + 2, 0.5f, true, 0.5f, 0.5f, Color.RED);
+		Text textOptions = new Text(-0.25f, "OPTIONS", exitOptions.getCollisionBoxes().get(0).getCenterX(), exitOptions.getCollisionBoxes().get(0).y + 2, 0.5f, true, 0.5f, 0.5f);
 		map.addGameObject(textOptions);
 
 		map.addGameObject(new Text(-100, "press <w> or use <stick_up> to spawn", map.getSpawnX() + 0.5f, map.getSpawnY() - 3, 0.5f, true, 0.5f, 0));
@@ -450,17 +498,6 @@ public class MapLoader {
 				//locked door
 			}
 		}
-		map.setSpawnPoint(15, -16, 0.5f);
-		map.addGameObject(new Exit(15, -16, 0.6f, Constants.SYS_PREFIX + "menu", null));
-		return map;
-	}
-
-	private static GameMap createNew(Game g) {
-		GameMap map = load(g, "hidden/saves");
-		map.addGameObject(new Exit(15, 0-13, 1, Constants.SYS_PREFIX + "world", new Tree((tree, game) -> {
-			loadAllMaps(game);
-			return null;
-		})));
 		map.setSpawnPoint(15, -16, 0.5f);
 		map.addGameObject(new Exit(15, -16, 0.6f, Constants.SYS_PREFIX + "menu", null));
 		return map;
@@ -491,11 +528,14 @@ public class MapLoader {
 				}
 			}
 		}
+		for (int i = 0; i < 50; i++) {
+			maps.add("null/null");
+		}
 		return maps.toArray(new String[0]);
 	}
 
 	public static void loadAllMaps(Game game) {
-		String[] maps =getMaps(mapFolder, true);
+		String[] maps = getMaps(mapFolder, true);
 
 		for (String mapName: maps) {
 			try {
