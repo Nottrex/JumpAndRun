@@ -71,7 +71,7 @@ public class Game {
 
 		values = new HashMap<>();
 
-		coinCounter = new Text(-1000f, "0", 1, 1-(0.1f/6), 0.1f, false, 1, 1);
+		coinCounter = new Text(-1000f, "<#coins>", 1, 1-(0.1f/6), 0.1f, false, 1, 1);
 		coinCounterCoin = new ScreenEntity(new HitBox(1, 1, 0.4f/3, 0.4f/3), -1000, Coin.idle, 1, 1);
 		addGameObject(coinCounter);
 		addGameObject(coinCounterCoin);
@@ -93,11 +93,7 @@ public class Game {
 		while (window.isRunning()) {
 			gameTick++;
 			time = TimeUtil.getTime();
-			handleInput();		
-			
-			//update coinCounter
-			coinCounter.setText(values.getOrDefault("coins", 0).toString());
-			coinCounter.setPosition(1 - coinCounterCoin.getWidth(), 1-(0.1f/6), 0.1f);
+			handleInput();
 				
 			//change map
 			if (newMap != null && gameTick - fadeStart >= Constants.FADE_TIME / 2) {

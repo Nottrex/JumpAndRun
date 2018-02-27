@@ -495,6 +495,7 @@ public class MapLoader {
 		exitNew.setTargetMap(Constants.SYS_PREFIX + "world");
 		exitNew.setOnEntrance(new Tree(((tree, game) -> {
 			game.clearValues();
+			loadAllMaps(game);
 			return null;
 		})));
 		Text textNew = new Text(-0.25f, "NEW", exitNew.getCollisionBoxes().get(0).getCenterX(), exitNew.getCollisionBoxes().get(0).y + 2, 0.5f, true, 0.5f, 0.5f);

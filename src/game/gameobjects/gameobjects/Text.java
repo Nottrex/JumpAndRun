@@ -259,7 +259,7 @@ public class Text extends AbstractGameObject implements Drawable {
 
 	@Override
 	public void init(Game game) {
-
+		super.init(game);
 	}
 
 	@Override
@@ -334,8 +334,14 @@ public class Text extends AbstractGameObject implements Drawable {
 		text = text.replaceAll("<stick_vertical>", String.valueOf((char) 1077));
 		text = text.replaceAll("<stick_horizontal>", String.valueOf((char) 1078));
 		text = text.replaceAll("_", " ").toLowerCase();
-		//System.out.println(text);
-		return text.toCharArray();
+
+		String textOut = text;
+		while (textOut.contains("<#") && textOut.contains(">") && textOut.indexOf("<#") < textOut.indexOf(">")) {
+			String key = textOut.substring(textOut.indexOf("<#") + 2, textOut.indexOf(">"));
+			textOut = textOut.replace("<#" + key + ">", String.valueOf(super.game.getValue(key)));
+			hasAnimation = true;
+		}
+		return textOut.toCharArray();
 	}
 }
 
