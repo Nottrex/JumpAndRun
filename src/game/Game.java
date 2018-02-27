@@ -94,7 +94,10 @@ public class Game {
 			gameTick++;
 			time = TimeUtil.getTime();
 			handleInput();
-				
+
+			//relocate coinCounter
+			coinCounter.setPosition(1 - coinCounterCoin.getWidth(), 1-(0.1f/6), 0.1f);
+
 			//change map
 			if (newMap != null && gameTick - fadeStart >= Constants.FADE_TIME / 2) {
 				GameMap newGameMap = MapLoader.load(this, newMap);
