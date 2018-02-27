@@ -78,11 +78,24 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 	public void collide(CollisionObject gameObject, HitBoxDirection direction, float velocity, boolean source) {
 		super.collide(gameObject, direction, velocity, source);
 
-		if (direction == HitBoxDirection.DOWN && velocity != 0) {
+		if (source && direction == HitBoxDirection.DOWN && velocity != 0) {
 			if (velocity > Constants.MAX_GRAVITY_SPEED + 0.01f) {
 				game.getCamera().addScreenshake(velocity / 15);
 
 				game.getParticleSystem().createParticle(ParticleType.EXPLOSION, hitBox.getCenterX(), hitBox.y, 0, 0);
+
+				HitBox stomp = new HitBox(hitBox.x - (2 - hitBox.width)/2, hitBox.y - 0.25f, 2f, 0.5f);
+
+				for (CollisionObject collisionObject: game.getCollisionObjects()) {
+					if (collisionObject.equals(this)) continue;
+					for (HitBox hitBox2: collisionObject.getCollisionBoxes()) {
+						if (hitBox2.collides(stomp)) {
+							collisionObject.interact(this, stomp, InteractionType.STOMP);
+							break;
+						}
+					}
+				}
+
 			}
 
 			onGround = true;

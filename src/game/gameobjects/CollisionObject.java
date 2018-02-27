@@ -14,6 +14,6 @@ public interface CollisionObject {
 	void interact(CollisionObject gameObject, HitBox hitBox, InteractionType interactionType);
 
 	enum InteractionType {
-		ATTACK, INTERACT
+		ATTACK, INTERACT, STOMP
 	}
 }

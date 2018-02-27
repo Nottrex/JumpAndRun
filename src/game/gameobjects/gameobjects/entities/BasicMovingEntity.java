@@ -134,12 +134,22 @@ public abstract class BasicMovingEntity extends BasicDrawingEntity implements Co
 			addKnockBack(0.4f*dx, 0.4f*dy);
 			lastAttackKnockBack = game.getGameTick();
 		}
+
+		if (interactionType == InteractionType.STOMP) {
+			float dx = (this.hitBox.getCenterX() - hitBox.getCenterX());
+			float dy = (this.hitBox.getCenterY() - hitBox.getCenterY());
+			double l = Math.sqrt(dx*dx+dy*dy);
+			dx /= l;
+			dy /= l;
+			addKnockBack(0.6f*dx, 0.6f*dy);
+			lastAttackKnockBack = game.getGameTick();
+		}
 	}
 
 	@Override
 	public void collide(CollisionObject gameObject, HitBoxDirection direction, float velocity, boolean source) {
 		if (source && this.hitBox.type == HitBox.HitBoxType.BLOCKING && gameObject instanceof BasicMovingEntity) {
-			((BasicMovingEntity) gameObject).addKnockBack(direction.getXDirection() * velocity / 20, direction.getYDirection() * velocity / 4);
+			((BasicMovingEntity) gameObject).addKnockBack(direction.getXDirection() * velocity / 20, 0);
 		}
 	}
 

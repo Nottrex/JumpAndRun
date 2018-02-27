@@ -131,7 +131,7 @@ public class ParticleSystem extends AbstractGameObject implements Drawable {
 
 	@Override
 	public float getDrawingPriority() {
-		return -1;
+		return -100;
 	}
 
 	@Override
