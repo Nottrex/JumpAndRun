@@ -71,9 +71,9 @@ public class Constants {
 			DEFAULT_CONTROLS.put("DOWN" + (i+2), Keyboard.GAMEPAD_1_LEFT_AXIS_DOWN + 30*i);
 			DEFAULT_CONTROLS.put("RIGHT" + (i+2), Keyboard.GAMEPAD_1_LEFT_AXIS_RIGHT + 30*i);
 			DEFAULT_CONTROLS.put("LEFT" + (i+2), Keyboard.GAMEPAD_1_LEFT_AXIS_LEFT + 30*i);
-			DEFAULT_CONTROLS.put("INTERACT" + (i+2), Keyboard.GAMEPAD_1_BUTTON_Y + 30*i);
+			DEFAULT_CONTROLS.put("INTERACT" + (i+2), Keyboard.GAMEPAD_1_BUTTON_X + 30*i);
 			DEFAULT_CONTROLS.put("ATTACK" + (i+2), Keyboard.GAMEPAD_1_BUTTON_B + 30*i);
-			DEFAULT_CONTROLS.put("RESET" + (i+2), Keyboard.GAMEPAD_1_BUTTON_X + 30*i);
+			DEFAULT_CONTROLS.put("RESET" + (i+2), Keyboard.GAMEPAD_1_BUTTON_BACK + 30*i);
 		}
 	}
 }
