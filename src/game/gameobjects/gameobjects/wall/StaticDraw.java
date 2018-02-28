@@ -21,16 +21,19 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.Map;
 
+/**
+ * An implementation of Drawable that draws hitboxes efficient, that are changed reletively rare
+**/
 public abstract class StaticDraw extends AbstractGameObject implements Drawable {
-	private SmoothFloat alpha;
-	private int rectangles;
-	private int vao, vao2;
-	private int locationVBO, texLocationVBO, indicesVBO;
-	private Map<HitBox, String> hitBoxList;
+	private SmoothFloat alpha;				//the alpha value of this object -> Can be changed smoothly
+	private int rectangles;					//the amount of hitboxes
+	private int vao, vao2;					//the vertex array objects used to store data
+	private int locationVBO, texLocationVBO, indicesVBO;	//the vertex buffer objects where the locations, texure locations and indices are stored
+	private Map<HitBox, String> hitBoxList;			//a list of HitBoxes and the corresponding images
 
-	private float drawingPriority;
+	private float drawingPriority;				//the depth of this layer
 
-	private boolean update;
+	private boolean update;					//has any hitbox changed?
 
 	public StaticDraw(float drawingPriority) {
 		this.drawingPriority = drawingPriority;
@@ -97,6 +100,7 @@ public abstract class StaticDraw extends AbstractGameObject implements Drawable 
 	}
 
 	private void updateBuffers(StaticShader shader) {
+		//store data
 		rectangles = hitBoxList.size();
 
 		FloatBuffer locations = BufferUtils.createFloatBuffer(rectangles * 2 * Constants.VERTEX_POS.length);
@@ -153,10 +157,19 @@ public abstract class StaticDraw extends AbstractGameObject implements Drawable 
 		return drawingPriority;
 	}
 
+	/**
+	 * sets the visibility of this layer
+	 * @param alpha the visibility 
+	**/
 	protected void setAlpha(float alpha) {
 		this.alpha.set(alpha);
 	}
 
+	/**
+	 * sets the visibility of this layer smoothly
+	 * @param alpha the visibility 
+	 * @param time the time until this visibility is achieved
+	**/
 	protected void setAlphaSmooth(float alpha, int time) {
 		this.alpha.setSmooth(alpha, time);
 	}
