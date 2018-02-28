@@ -31,6 +31,11 @@ public class Text extends AbstractGameObject implements Drawable {
 	private Sprite stick_right = new Sprite(400, "stick_right_0", "stick_right_1", "stick_right_2", "stick_right_3", "stick_right_2", "stick_right_1");
 	private Sprite stick_vertical = new Sprite(400, "stick_up_0", "stick_up_1", "stick_up_2", "stick_up_3", "stick_up_2", "stick_up_1", "stick_down_0", "stick_down_1", "stick_down_2", "stick_down_3", "stick_down_2", "stick_down_1");
 	private Sprite stick_horizontal = new Sprite(400, "stick_left_0", "stick_left_1", "stick_left_2", "stick_left_3", "stick_left_2", "stick_left_1", "stick_right_0", "stick_right_1", "stick_right_2", "stick_right_3", "stick_right_2", "stick_right_1");
+	private Sprite stick = new Sprite(400, "stick_up_0", "stick_up_1", "stick_up_2", "stick_up_3", "stick_up_2", "stick_up_1", "stick_down_0", "stick_down_1", "stick_down_2", "stick_down_3", "stick_down_2", "stick_down_1");
+	private Sprite buttonA = new Sprite(100, "button_a");
+	private Sprite buttonB = new Sprite(100, "button_b");
+	private Sprite buttonX = new Sprite(100, "button_x");
+	private Sprite buttonY = new Sprite(100, "button_y");
 
 	private float x, y, size, drawingPriority;
 	private boolean useCamera;
@@ -165,14 +170,19 @@ public class Text extends AbstractGameObject implements Drawable {
 		float centeredY = y - height * anchorY;
 		for (int i = 0; i < chars.length; i++) {
 			if (chars[i] != ' ') {
-				if (chars[i] > 900 && chars[i] < 975) {
-					float keySize = 1.5f * fontHeight;
-					hitBoxList.put(new HitBox(centeredX + i * fontSpacing - 0.25f * keySize, centeredY - 0.15f * keySize, keySize, keySize), "key");
+				float objectSize = 1.5f * fontHeight;
+				if (chars[i] > 944 && chars[i] < 971) {
+					hitBoxList.put(new HitBox(centeredX + i * fontSpacing - 0.25f * objectSize, centeredY - 0.15f * objectSize, objectSize, objectSize), "key");
 					hitBoxList.put(new HitBox(centeredX + i * fontSpacing, centeredY, fontWidth, fontHeight), String.valueOf((char) (chars[i] - 848)));
-				} else if (chars[i] > 1071 && chars[i] < 1079) {
+				} else if (chars[i] > 1071 && chars[i] < 1083) {
 					hasAnimation = true;
-					float stickSize = 1.5f * fontHeight;
-					hitBoxList.put(new HitBox(centeredX + i * fontSpacing - 0.25f * stickSize, centeredY - 0.15f * stickSize, stickSize, stickSize), String.valueOf(chars[i]));
+					hitBoxList.put(new HitBox(centeredX + i * fontSpacing - 0.25f * objectSize, centeredY - 0.15f * objectSize, objectSize, objectSize), String.valueOf(chars[i]));
+				} else if (chars[i] > 1082 && chars[i] < 1087) {
+					hitBoxList.put(new HitBox(centeredX + i * fontSpacing - 0.25f * objectSize, centeredY - 0.15f * objectSize, objectSize, objectSize), "key");
+					if (chars[i] == 1083) hitBoxList.put(new HitBox(centeredX + i * fontSpacing, centeredY, fontWidth, fontHeight), "key_arrow_up");
+					else if (chars[i] == 1084) hitBoxList.put(new HitBox(centeredX + i * fontSpacing, centeredY, fontWidth, fontHeight), "key_arrow_down");
+					else if (chars[i] == 1084) hitBoxList.put(new HitBox(centeredX + i * fontSpacing, centeredY, fontWidth, fontHeight), "key_arrow_left");
+					else if (chars[i] == 1084) hitBoxList.put(new HitBox(centeredX + i * fontSpacing, centeredY, fontWidth, fontHeight), "key_arrow_right");
 				} else {
 					hitBoxList.put(new HitBox(centeredX + i * fontSpacing, centeredY, fontWidth, fontHeight), String.valueOf(chars[i]));
 				}
@@ -190,21 +200,21 @@ public class Text extends AbstractGameObject implements Drawable {
 		java.util.List<HitBox> hitBoxList1 = hitBoxList.keySet().stream().sorted((o1, o2) -> Boolean.compare(hitBoxList.get(o2).equals("key"), hitBoxList.get(o1).equals("key"))).collect(Collectors.toList());
 		for (HitBox hitBox: hitBoxList1) {
 			Rectangle texture;
-			if (hitBoxList.get(hitBox).charAt(0) > 1071 && hitBoxList.get(hitBox).charAt(0) < 1079) {
-				Sprite animation = stick_up;
-				switch (hitBoxList.get(hitBox).charAt(0)) {
-					case 1072: animation = stick_up; break;
-					case 1073: animation = stick_up; break;
-					case 1074: animation = stick_down; break;
-					case 1075: animation = stick_left; break;
-					case 1076: animation = stick_right; break;
-					case 1077: animation = stick_vertical; break;
-					case 1078: animation = stick_horizontal; break;
-				}
-				texture = animation.getTexture(startTime, currentTime);
-			} else {
-				texture = TextureHandler.getSpriteSheetBounds("textures_" + hitBoxList.get(hitBox));
+			switch (hitBoxList.get(hitBox).charAt(0)) {
+				case 1072: texture = stick.getTexture(startTime, currentTime); break;
+				case 1073: texture = stick_up.getTexture(startTime, currentTime); break;
+				case 1074: texture = stick_down.getTexture(startTime, currentTime); break;
+				case 1075: texture = stick_left.getTexture(startTime, currentTime); break;
+				case 1076: texture = stick_right.getTexture(startTime, currentTime); break;
+				case 1077: texture = stick_vertical.getTexture(startTime, currentTime); break;
+				case 1078: texture = stick_horizontal.getTexture(startTime, currentTime); break;
+				case 1079: texture = buttonA.getTexture(startTime, currentTime); break;
+				case 1080: texture = buttonB.getTexture(startTime, currentTime); break;
+				case 1081: texture = buttonX.getTexture(startTime, currentTime); break;
+				case 1082: texture = buttonY.getTexture(startTime, currentTime); break;
+				default: texture = TextureHandler.getSpriteSheetBounds("textures_" + hitBoxList.get(hitBox));
 			}
+
 
 			for (float[] v : Constants.VERTEX_POS) {
 				locations.put(hitBox.x + v[0] * hitBox.width);
@@ -333,6 +343,14 @@ public class Text extends AbstractGameObject implements Drawable {
 		text = text.replaceAll("<stick_right>", String.valueOf((char) 1076));
 		text = text.replaceAll("<stick_vertical>", String.valueOf((char) 1077));
 		text = text.replaceAll("<stick_horizontal>", String.valueOf((char) 1078));
+		text = text.replaceAll("<button_a>", String.valueOf((char) 1079));
+		text = text.replaceAll("<button_b>", String.valueOf((char) 1080));
+		text = text.replaceAll("<button_x>", String.valueOf((char) 1081));
+		text = text.replaceAll("<button_y>", String.valueOf((char) 1082));
+		text = text.replaceAll("<key_up>", String.valueOf((char) 1083));
+		text = text.replaceAll("<key_down>", String.valueOf((char) 1084));
+		text = text.replaceAll("<key_left>", String.valueOf((char) 1085));
+		text = text.replaceAll("<key_right>", String.valueOf((char) 1086));
 		text = text.replaceAll("_", " ").toLowerCase();
 
 		String textOut = text;

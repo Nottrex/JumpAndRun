@@ -20,6 +20,7 @@ public class Parser {
 	static {
 		List<Replacement> replacements = new ArrayList<>();
 		replacements.add(new Replacement(BOOLEAN, "!" + BOOLEAN, 1, (t, g) -> ! (boolean) t.getChild(0).get(g), true));
+		replacements.add(new Replacement(BOOLEAN, "(" + BOOLEAN + ")", 1, (t, g) -> t.getChild(0).get(g), true));
 		replacements.add(new Replacement(BOOLEAN, "(" + BOOLEAN + "||" + BOOLEAN + ")", 2, (t, g) -> ((boolean) t.getChild(0).get(g)) || ((boolean) t.getChild(1).get(g)), true));
 		replacements.add(new Replacement(BOOLEAN, "(" + BOOLEAN + "&&" + BOOLEAN + ")", 2, (t, g) -> ((boolean) t.getChild(0).get(g)) && ((boolean) t.getChild(1).get(g)), true));
 		replacements.add(new Replacement(BOOLEAN, "true", 0, (t, g) -> true, true));
