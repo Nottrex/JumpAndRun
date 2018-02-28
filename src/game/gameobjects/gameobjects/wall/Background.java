@@ -8,8 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * an implementation of StaticDraw that has no collisions and which fades out if a player is behind this
+**/
 public class Background extends StaticDraw {
-	private List<HitBox> hitBoxes;
+	private List<HitBox> hitBoxes;		//All hitboxes for the fade out
 
 	public Background(Map<HitBox, String> hitBoxList, float drawingPriority) {
 		super(drawingPriority);
@@ -20,6 +23,7 @@ public class Background extends StaticDraw {
 
 		boolean merge;
 
+		//optimize hitboxes -> Merge adjecent hitboxes of similar size into one
 		do {
 			merge = false;
 
@@ -70,6 +74,11 @@ public class Background extends StaticDraw {
 		}
 	}
 
+	/**
+	 * checks if a player is behind this layer
+	 * @param game the game instance containing this object
+	 * @return if this covers a player
+	**/
 	private boolean coversPlayer(Game game) {
 		for (Player player: game.getPlayers()) {
 			if (player.getDrawingPriority() > this.getDrawingPriority()) {
