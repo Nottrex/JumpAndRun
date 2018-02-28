@@ -506,7 +506,7 @@ public class MapLoader {
 		Text textOptions = new Text(-0.25f, "OPTIONS", exitOptions.getCollisionBoxes().get(0).getCenterX(), exitOptions.getCollisionBoxes().get(0).y + 2, 0.5f, true, 0.5f, 0.5f);
 		map.addGameObject(textOptions);
 
-		map.addGameObject(new ExplosiveBarrel(map.getSpawnX() + 2, map.getSpawnY() + 1, 0.5f, true));
+		map.addGameObject(new BeerBarrel(map.getSpawnX() + 1, map.getSpawnY(), 0.5f));
 		map.addGameObject(new Text(-100, "press <w> or use <button_a> to spawn", map.getSpawnX() + 0.5f, map.getSpawnY() - 3, 0.5f, true, 0.5f, 0));
 		return map;
 	}
