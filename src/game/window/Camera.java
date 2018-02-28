@@ -10,7 +10,7 @@ import game.util.TimeUtil;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Camera extends Source{
+public class Camera {
 
 	private float zoom, x, y, rotation;
 	private SmoothFloat tZoom, tX, tY, tRotation;

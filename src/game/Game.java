@@ -3,6 +3,7 @@ package game;
 import game.audio.AudioHandler;
 import game.audio.AudioPlayer;
 import game.audio.Sound;
+import game.audio.Source;
 import game.data.hitbox.HitBox;
 import game.gamemap.GameMap;
 import game.gamemap.MapLoader;
@@ -52,6 +53,8 @@ public class Game {
 
 	private Text coinCounter;			//display coin amount on the screeen
 
+	private Source musicPlayer;
+
 	public Game(Window window) {
 		this.window = window;
 		Options.applyOptions(this);
@@ -77,10 +80,8 @@ public class Game {
 		//Start the game in the "menu" map
 		setGameMap(Constants.SYS_PREFIX + "menu", false);
 
-		/*audioPlayer = new AudioPlayer(Sound.EP.fileName);
-		audioPlayer.addMusic("EP", Clip.LOOP_CONTINUOUSLY);
-		audioPlayer.start();*/
-		getCamera().play(AudioHandler.getMusicWav("EP"));
+		musicPlayer = new Source();
+		musicPlayer.play(AudioHandler.getMusicWav("EP"));
 	}
 
 	/**

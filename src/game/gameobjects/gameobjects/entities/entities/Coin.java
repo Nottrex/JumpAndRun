@@ -1,6 +1,9 @@
 package game.gameobjects.gameobjects.entities.entities;
 
 import game.Game;
+import game.audio.AudioHandler;
+import game.audio.Sound;
+import game.audio.Source;
 import game.data.hitbox.HitBox;
 import game.data.hitbox.HitBoxDirection;
 import game.data.Sprite;
@@ -17,9 +20,12 @@ public class Coin extends BasicStaticEntity implements Light {
 
 	private boolean collected, ghost;
 	private Tree onFirstCollect, onReCollect;
+	private Source source;
 
 	public Coin(float x, float y, float drawingPriority, boolean wasCollected, Tree onFirstCollect, Tree onReCollect) {
 		super(new HitBox(x, y, 0.75f, 1f), drawingPriority);
+
+		this.source = new Source();
 
 		collected = false;
 		ghost = wasCollected;
@@ -42,6 +48,7 @@ public class Coin extends BasicStaticEntity implements Light {
 	private void collect() {
 		if (!collected) {
 			//game.getAudioPlayer().playAudio("Pickup_Coin11");
+			source.play(AudioHandler.getMusicWav(Sound.COIN));
 			game.removeGameObject(this);
 			if (ghost) {
 				if (onReCollect != null) onReCollect.get(game);

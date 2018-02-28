@@ -11,13 +11,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AudioHandler {
-	private static Map<String, Integer> audio_buffer;
+	private static Map<String, WaveData> audio_buffer;
+	private static List<Integer> currentBuffers;
 
 	static {
 		audio_buffer = new HashMap<>();
+		currentBuffers = new ArrayList<>();
 		loadMusicWav();
 	}
 
@@ -27,21 +30,34 @@ public class AudioHandler {
 		for (Sound sound: sounds) {
 			String s = sound.fileName;
 
-			int buffer = AL10.alGenBuffers();
-			WaveData waveFile = WaveData.create(s);
-			AL10.alBufferData(buffer, waveFile.format, waveFile.data, waveFile.samplerate);
-			waveFile.dispose();
+			System.out.println(s);
 
-			audio_buffer.put(s.toLowerCase(), buffer);
+			WaveData waveFile = WaveData.create("res/files/audio/" + s + ".wav");
+			audio_buffer.put(s, waveFile);
 		}
 	}
 
 	public static int getMusicWav(String audioName) {
-		return audio_buffer.get(audioName);
+		WaveData waveFile = audio_buffer.get(audioName);
+		int buffer = AL10.alGenBuffers();
+		AL10.alBufferData(buffer, waveFile.format, waveFile.data, waveFile.samplerate);
+		waveFile.dispose();
+		return buffer;
+	}
+
+	public static int getMusicWav(Sound audio) {
+		WaveData waveFile = audio_buffer.get(audio.fileName);
+		int buffer = AL10.alGenBuffers();
+		AL10.alBufferData(buffer, waveFile.format, waveFile.data, waveFile.samplerate);
+		waveFile.dispose();
+		return buffer;
 	}
 
 	public static void unloadMusicWav(String audioName) {
-		AL10.alDeleteBuffers(audio_buffer.get(audioName));
 		audio_buffer.remove(audioName);
+	}
+
+	public static void cleanUp() {
+		for(int i: currentBuffers) AL10.alDeleteBuffers(i);
 	}
 }

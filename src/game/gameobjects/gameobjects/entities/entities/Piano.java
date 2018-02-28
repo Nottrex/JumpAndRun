@@ -5,6 +5,7 @@ import game.Game;
 import game.audio.AudioHandler;
 import game.audio.AudioPlayer;
 import game.audio.Sound;
+import game.audio.Source;
 import game.data.Sprite;
 import game.data.hitbox.HitBox;
 import game.data.hitbox.HitBoxDirection;
@@ -17,11 +18,13 @@ public class Piano extends BasicStaticEntity {
 	private static final int[] JINGLES = new int[] {3*60, 3*60, 13*60 };
 	private static Sprite idle = new Sprite(100, "piano");
 
+	private Source source;
+
 	private int waitTil = -1;
 
 	public Piano(float x, float y, float drawingPriority) {
 		super(new HitBox(x, y, 2, 2), drawingPriority);
-
+		this.source = new Source();
 		setSprite(idle);
 	}
 
@@ -51,7 +54,7 @@ public class Piano extends BasicStaticEntity {
 			int jingle = new Random().nextInt(JINGLES.length);
 
 			waitTil = game.getGameTick() + JINGLES[jingle] + 60;
-			//game.getAudioPlayer().playAudio("piano" + jingle);
+			source.play(AudioHandler.getMusicWav("piano\" + jingle"));
 		}
 	}
 }

@@ -5,6 +5,7 @@ import com.joml.utils.CamMath;
 import com.joml.vector.Vector3f;
 import game.Constants;
 import game.Options;
+import game.audio.AudioHandler;
 import game.util.ErrorUtil;
 import game.util.TextureHandler;
 import game.util.TimeUtil;
@@ -50,9 +51,9 @@ public class Window {
 	public Window() {
 		System.out.println(String.format("LWJGL Version %s", Version.getVersion()));
 
+		initOpenAL();
 		initGLFW();
 		initOpenGL();
-		initOpenAL();
 	}
 
 	public void run() {
@@ -153,6 +154,7 @@ public class Window {
 		GLFW.glfwTerminate();
 		GLFW.glfwSetErrorCallback(null).free();
 
+		AudioHandler.cleanUp();
 		ALC10.alcDestroyContext(audioContext);
 		ALC10.alcCloseDevice(audioDevice);
 	}

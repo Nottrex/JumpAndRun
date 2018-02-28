@@ -7,10 +7,14 @@ public class Source {
 	private int sourceID;
 
 	public Source() {
+		this(0, 0);
+	}
+
+	public Source(float x, float y) {
 		sourceID = AL10.alGenSources();
 		AL10.alSourcef(sourceID, AL10.AL_GAIN, 1);
 		AL10.alSourcef(sourceID, AL10.AL_PITCH, 1);
-		AL10.alSource3f(sourceID, AL10.AL_POSITION, 0, 0, 0);
+		AL10.alSource3f(sourceID, AL10.AL_POSITION, x, y, 0);
 	}
 
 	public void play(int buffer) {
