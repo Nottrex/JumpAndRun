@@ -76,6 +76,7 @@ public class Game {
 		setGameMap(Constants.SYS_PREFIX + "menu", false);
 
 		musicPlayer = new Source();
+		musicPlayer.setLooping(true);
 		musicPlayer.play(AudioHandler.getMusicWav("EP"));
 	}
 
