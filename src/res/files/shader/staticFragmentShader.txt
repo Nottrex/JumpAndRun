@@ -2,8 +2,8 @@
 
 uniform sampler2D tex;
 uniform int lightAmount;
-uniform vec3 lights[25];
-uniform vec3 lightColors[25];
+uniform vec3 lights[128];
+uniform vec3 lightColors[128];
 uniform float minBrightness;
 uniform float alpha;
 
