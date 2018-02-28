@@ -1,5 +1,6 @@
 package game;
 
+import game.audio.AudioHandler;
 import game.audio.AudioPlayer;
 import game.audio.Sound;
 import game.data.hitbox.HitBox;
@@ -79,9 +80,10 @@ public class Game {
 		//Start the game in the "menu" map
 		setGameMap(Constants.SYS_PREFIX + "menu", false);
 
-		audioPlayer = new AudioPlayer(Sound.EP.fileName);
+		/*audioPlayer = new AudioPlayer(Sound.EP.fileName);
 		audioPlayer.addMusic("EP", Clip.LOOP_CONTINUOUSLY);
-		audioPlayer.start();
+		audioPlayer.start();*/
+		getCamera().play(AudioHandler.getMusicWav("EP"));
 	}
 
 	/**

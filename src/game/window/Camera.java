@@ -1,6 +1,7 @@
 package game.window;
 
 import game.Constants;
+import game.audio.Source;
 import game.data.smoothfloat.SmoothFloat;
 import game.data.smoothfloat.SmoothFloatCubic;
 import game.util.MathUtil;
@@ -9,7 +10,7 @@ import game.util.TimeUtil;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Camera {
+public class Camera extends Source{
 
 	private float zoom, x, y, rotation;
 	private SmoothFloat tZoom, tX, tY, tRotation;

@@ -51,7 +51,7 @@ public class Piano extends BasicStaticEntity {
 			int jingle = new Random().nextInt(JINGLES.length);
 
 			waitTil = game.getGameTick() + JINGLES[jingle] + 60;
-			game.getAudioPlayer().playAudio("piano" + jingle);
+			//game.getAudioPlayer().playAudio("piano" + jingle);
 		}
 	}
 }

@@ -15,12 +15,14 @@ import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
+import org.lwjgl.openal.*;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 
 import java.awt.image.BufferedImage;
+import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,7 +31,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Window {
 	private float aspect = Constants.WINDOW_WIDTH / Constants.WINDOW_HEIGHT;
-	private long window;
+	private long window, audioDevice, audioContext;
 	private Keyboard keyboard;
 	private Camera camera;
 	private LightHandler lightHandler;
@@ -50,6 +52,7 @@ public class Window {
 
 		initGLFW();
 		initOpenGL();
+		initOpenAL();
 	}
 
 	public void run() {
@@ -149,6 +152,22 @@ public class Window {
 		GLFW.glfwDestroyWindow(window);
 		GLFW.glfwTerminate();
 		GLFW.glfwSetErrorCallback(null).free();
+
+		ALC10.alcDestroyContext(audioContext);
+		ALC10.alcCloseDevice(audioDevice);
+	}
+
+	private void initOpenAL() {
+		audioDevice = ALC10.alcOpenDevice((ByteBuffer) null);
+		ALCCapabilities cap = ALC.createCapabilities(audioDevice);
+
+		audioContext = ALC10.alcCreateContext(audioDevice, (IntBuffer) null);
+		ALC10.alcMakeContextCurrent(audioContext);
+
+		AL.createCapabilities(cap);
+
+		AL10.alListener3f(AL10.AL_POSITION, 0, 0, 0);
+		AL10.alListener3f(AL10.AL_VELOCITY, 0, 0, 0);
 	}
 
 	private void initOpenGL() {
