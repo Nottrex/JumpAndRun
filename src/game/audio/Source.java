@@ -11,7 +11,7 @@ public class Source {
 	}
 
 	public Source(float x, float y) {
-		this(x, y,  1.0f);
+		this(x, y, 1.0f);
 	}
 
 	public Source(float x, float y, float v) {
@@ -61,7 +61,7 @@ public class Source {
 	}
 
 	public void setLooping(boolean loop) {
-		AL10.alSourcei(sourceID, AL10.AL_LOOPING, loop? AL10.AL_TRUE: AL10.AL_FALSE);
+		AL10.alSourcei(sourceID, AL10.AL_LOOPING, loop ? AL10.AL_TRUE : AL10.AL_FALSE);
 	}
 
 	public boolean isPlaying() {
@@ -69,7 +69,10 @@ public class Source {
 	}
 
 	public void delete() {
-		stop();
-		AL10.alDeleteSources(sourceID);
+		if (isPlaying()) {
+			AudioHandler.removeSource(this);
+		} else {
+			AL10.alDeleteSources(sourceID);
+		}
 	}
 }

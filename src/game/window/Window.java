@@ -83,6 +83,7 @@ public class Window {
 
 			draw();
 			keyboard.update();
+			AudioHandler.update();
 
 			running = !GLFW.glfwWindowShouldClose(window);
 		}
@@ -167,6 +168,8 @@ public class Window {
 		ALC10.alcMakeContextCurrent(audioContext);
 
 		AL.createCapabilities(cap);
+
+		System.out.println(String.format("OpenAL Version %s", AL10.alGetString(AL10.AL_VERSION)));
 
 		AL10.alListener3f(AL10.AL_POSITION, 0, 0, 0);
 		AL10.alListener3f(AL10.AL_VELOCITY, 0, 0, 0);
