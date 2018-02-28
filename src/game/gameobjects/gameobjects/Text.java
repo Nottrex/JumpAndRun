@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Text extends AbstractGameObject implements Drawable {
+	public static Sprite coin = new Sprite(100, "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin","coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin_idle1_0", "coin_idle1_1", "coin_idle1_2", "coin_idle1_3", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin","coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin_idle2_0", "coin_idle2_1", "coin_idle2_0");
 	private Sprite stick_up = new Sprite(400, "stick_up_0", "stick_up_1", "stick_up_2", "stick_up_3", "stick_up_2", "stick_up_1");
 	private Sprite stick_down = new Sprite(400, "stick_down_0", "stick_down_1", "stick_down_2", "stick_down_3", "stick_down_2", "stick_down_1");
 	private Sprite stick_left = new Sprite(400, "stick_left_0", "stick_left_1", "stick_left_2", "stick_left_3", "stick_left_2", "stick_left_1");
@@ -174,7 +175,7 @@ public class Text extends AbstractGameObject implements Drawable {
 				if (chars[i] > 944 && chars[i] < 971) {
 					hitBoxList.put(new HitBox(centeredX + i * fontSpacing - 0.25f * objectSize, centeredY - 0.15f * objectSize, objectSize, objectSize), "key");
 					hitBoxList.put(new HitBox(centeredX + i * fontSpacing, centeredY, fontWidth, fontHeight), String.valueOf((char) (chars[i] - 848)));
-				} else if (chars[i] > 1071 && chars[i] < 1083) {
+				} else if (chars[i] > 1071 && chars[i] < 1083 || chars[i] == 1087) {
 					hasAnimation = true;
 					hitBoxList.put(new HitBox(centeredX + i * fontSpacing - 0.25f * objectSize, centeredY - 0.15f * objectSize, objectSize, objectSize), String.valueOf(chars[i]));
 				} else if (chars[i] > 1082 && chars[i] < 1087) {
@@ -212,6 +213,7 @@ public class Text extends AbstractGameObject implements Drawable {
 				case 1080: texture = buttonB.getTexture(startTime, currentTime); break;
 				case 1081: texture = buttonX.getTexture(startTime, currentTime); break;
 				case 1082: texture = buttonY.getTexture(startTime, currentTime); break;
+				case 1087: texture = coin.getTexture(startTime, currentTime); break;
 				default: texture = TextureHandler.getSpriteSheetBounds("textures_" + hitBoxList.get(hitBox));
 			}
 
@@ -351,6 +353,7 @@ public class Text extends AbstractGameObject implements Drawable {
 		text = text.replaceAll("<key_down>", String.valueOf((char) 1084));
 		text = text.replaceAll("<key_left>", String.valueOf((char) 1085));
 		text = text.replaceAll("<key_right>", String.valueOf((char) 1086));
+		text = text.replaceAll("<coin>", String.valueOf((char) 1087));
 		text = text.replaceAll("_", " ").toLowerCase();
 
 		String textOut = text;

@@ -49,7 +49,6 @@ public class Game {
 
 	private Map<String, Integer> values;		//store all in game variables -> SaveGame
 
-	private ScreenEntity coinCounterCoin;		//display coin icon on the screen
 	private Text coinCounter;			//display coin amount on the screeen
 
 	public Game(Window window) {
@@ -71,10 +70,8 @@ public class Game {
 
 		values = new HashMap<>();
 
-		coinCounterCoin = new ScreenEntity(new HitBox(1, 1, 0.4f/3, 0.4f/3), -1000, Coin.idle, 1, 1);
-		coinCounter = new Text(-1000f, "<#coins>", 1 - coinCounterCoin.getWidth(), 1-(0.1f/6), 0.1f, false, 1, 1);
+		coinCounter = new Text(-1000f, "<#coins>", 1, 1-(0.1f/6), 0.1f, false, 1, 1);
 		addGameObject(coinCounter);
-		addGameObject(coinCounterCoin);
 
 		//Start the game in the "menu" map
 		setGameMap(Constants.SYS_PREFIX + "menu", false);
@@ -95,8 +92,9 @@ public class Game {
 			time = TimeUtil.getTime();
 			handleInput();
 
-			//relocate coinCounter
-			coinCounter.setPosition(1 - coinCounterCoin.getWidth(), 1-(0.1f/6), 0.1f);
+			//update coinCounter
+			if (map == null || map.getDirectory() == null || map.getDirectory().equals("hidden")) coinCounter.setText("");
+			else coinCounter.setText(getKeyAmount(map.getDirectory() + "_coin_" + map.getName(), 1) + "/" + getKeyAmount(map.getDirectory() + "_coin_" + map.getName()) + " <coin> -");
 
 			//change map
 			if (newMap != null && gameTick - fadeStart >= Constants.FADE_TIME / 2) {
