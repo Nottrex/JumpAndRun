@@ -351,10 +351,10 @@ public class MapLoader {
 		Map<Float, Map<HitBox, String>> layers = new HashMap<>();
 		final int sectionWidth = 10;
 		final int sectionHeight = 5;
-		final int sectionPerLine = 5;
-		final int floors = mapNames.length / sectionPerLine;
+		final int sectionPerLine = 2;
+		final int floors = (int) Math.ceil(1.0f*mapNames.length / sectionPerLine);
 
-		for (int y = 0; y <= floors; y++) {
+		for (int y = 0; y < floors; y++) {
 			for (int x = 0; x < sectionPerLine; x++) {
 				for (int width = 0; width < sectionWidth; width++) {
 					for (int height = 0; height < sectionHeight; height++) {
@@ -374,9 +374,9 @@ public class MapLoader {
 
 						//borders
 						if (y == 0 && height == sectionHeight - 1) 	add(layers, new HitBox(xValue, yValue + 1, 1f, 1f), "block_stone_top", 0.5f);
-						if (y == floors && height == 0) add(layers, new HitBox(xValue, yValue, 1f, 1f), "block_stone_bottom", 0.5f);
+						if (y == floors - 1 && height == 0) add(layers, new HitBox(xValue, yValue, 1f, 1f), "block_stone_bottom", 0.5f);
 						if (x == 0 && width == 0 && y != 0) add(layers, new HitBox(xValue - 1, yValue, 1f, 1f), "block_stone_left", 0.5f);
-						if (x == 4 && width == sectionWidth - 1) add(layers, new HitBox(xValue + 1, yValue, 1f, 1f), "block_stone_right", 0.5f);
+						if (x == sectionPerLine - 1 && width == sectionWidth - 1) add(layers, new HitBox(xValue + 1, yValue, 1f, 1f), "block_stone_right", 0.5f);
 
 						//background
 						add(layers, new HitBox(xValue, yValue, 1f, 1f), "block_stone_middle", 100);
@@ -405,7 +405,7 @@ public class MapLoader {
 				//exit
 				if (x == sectionWidth / 2 && y == 1) {
 					map.addGameObject(new Exit(xValue, yValue, 0.6f, Constants.SYS_PREFIX + "save", null));
-					map.addGameObject(new Text(0.6f, "save", xValue + 0.5f, yValue + 1f, 0.5f, true, 0.5f, 0));
+					map.addGameObject(new Text(0.6f, "save", xValue + 0.5f, yValue + 2f, 0.5f, true, 0.5f, 0));
 					map.setSpawnPoint(xValue, yValue, 0.5f);
 				}
 
