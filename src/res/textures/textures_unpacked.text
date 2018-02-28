@@ -190,11 +190,11 @@ ex_barrel_ground_s 128 0 8 8
 ex_barrel_ground_l 120 0 8 8
 ex_barrel_ground_e_0 112 0 8 8
 ex_barrel_ground_e_1 104 0 8 8
-barrel 136 0 8 8
-barrel_0 104 16 8 8
-barrel_1 112 16 8 8
-barrel_2 120 16 8 8
-barrel_3 128 16 8 8
+barrel 93 16 7 8
+barrel_0 101 16 9 8
+barrel_1 109 16 9 8
+barrel_2 118 16 9 8
+barrel_3 127 16 9 8
 door_side 144 40 8 8
 door_side_open_0 152 40 8 8
 door_side_open_1 160 40 8 8

@@ -19,7 +19,9 @@ public class ExplosiveBarrel extends BasicStaticEntity{
 	private int startTick;
 
 	public ExplosiveBarrel(float x, float y, float drawingPriority, boolean onGround) {
-		super(new HitBox(x, y, 1, 1), drawingPriority);
+		super(new HitBox(x+0.125f, y+0.125f + 1f/16, 0.75f, 0.625f), drawingPriority);
+
+		hitBox.type = HitBox.HitBoxType.BLOCKING;
 
 		this.onGround = onGround;
 		setSprite((onGround ? stand : ground));

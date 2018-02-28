@@ -32,7 +32,6 @@ public class DeadBodyHandler extends AbstractGameObject {
 
 		for (DeadBody d: deadBodies.keySet()) {
 			game.removeGameObject(d);
-			System.out.println(1);
 		}
 	}
 

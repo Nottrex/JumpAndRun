@@ -243,7 +243,8 @@ public class MapLoader {
 					case "lever_right":
 					case "lever_middle":
 						String tag = tags.getOrDefault("tag", "lever");
-						map.addGameObject(new Lever(x, y, drawingPriority, g.getValue(tag) > 0, Parser.loadScript(Parser.COMMAND, String.format("#%s=(#%s+1);", tag, tag)), Parser.loadScript(Parser.COMMAND, String.format("#%s=(#%s-1);", tag, tag)), null));
+						map.addGameObject(new Lever(x, y, drawingPriority, false, Parser.loadScript(Parser.COMMAND, String.format("#%s=(#%s+1);", tag, tag)), Parser.loadScript(Parser.COMMAND, String.format("#%s=(#%s-1);", tag, tag)), null));
+						g.setValue(tag, 0);
 						break;
 					case "pressureplate":
 					case "pressureplate_pressed":
