@@ -9,10 +9,13 @@ import game.window.shader.ShaderType;
 import game.window.shader.shader.ColorShader;
 import org.lwjgl.opengl.GL11;
 
+/**
+ * a gameobject, that draws a transparent black bar on the screen to simulate a fade effect
+**/
 public class Fade extends AbstractGameObject implements Drawable {
 
-	private int startTick = 0;
-	private int currentTick = 0;
+	private int startTick = 0;		//The tick in which the fade started
+	private int currentTick = 0;		//The current tick that is relevant to draw this
 
 	@Override
 	public float getPriority() {
@@ -48,8 +51,10 @@ public class Fade extends AbstractGameObject implements Drawable {
 		shader.setBounds(-1000, -1000, 2000, 2000);
 
 		if (t <= Constants.FADE_TIME/2.0f) {
+			//alpha is increasing
 			shader.setColor(0, 0, 0,  t / (Constants.FADE_TIME/2.0f));
 		} else {
+			//alpha is decreasing
 			shader.setColor(0, 0, 0,  2 - (t / (Constants.FADE_TIME/2.0f)));
 		}
 
