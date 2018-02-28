@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * An implementation of StaticDraw that implements collision. Therefore other objects are blocked by this -> Wall
+**/
 public class Wall extends StaticDraw implements CollisionObject {
 	private List<HitBox> hitBoxes;
 
@@ -21,6 +24,7 @@ public class Wall extends StaticDraw implements CollisionObject {
 
 		boolean merge;
 
+		//optimize hitboxes -> merge adjecent hitboxes of similar size into one
 		do {
 			merge = false;
 
