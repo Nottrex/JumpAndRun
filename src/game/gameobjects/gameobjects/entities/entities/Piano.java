@@ -3,8 +3,6 @@ package game.gameobjects.gameobjects.entities.entities;
 
 import game.Game;
 import game.audio.AudioHandler;
-import game.audio.AudioPlayer;
-import game.audio.Sound;
 import game.audio.Source;
 import game.data.Sprite;
 import game.data.hitbox.HitBox;
@@ -54,7 +52,12 @@ public class Piano extends BasicStaticEntity {
 			int jingle = new Random().nextInt(JINGLES.length);
 
 			waitTil = game.getGameTick() + JINGLES[jingle] + 60;
-			source.play(AudioHandler.getMusicWav("piano\" + jingle"));
+			source.play("piano\" + jingle");
 		}
+	}
+
+	@Override
+	public void remove(Game game, boolean mapChange) {
+		source.delete();
 	}
 }

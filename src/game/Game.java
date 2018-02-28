@@ -1,10 +1,7 @@
 package game;
 
 import game.audio.AudioHandler;
-import game.audio.AudioPlayer;
-import game.audio.Sound;
 import game.audio.Source;
-import game.data.hitbox.HitBox;
 import game.gamemap.GameMap;
 import game.gamemap.MapLoader;
 import game.gameobjects.CollisionObject;
@@ -20,7 +17,6 @@ import game.window.Drawable;
 import game.window.Keyboard;
 import game.window.Window;
 
-import javax.sound.sampled.Clip;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -29,7 +25,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Game {
 	private Window window;				//displays the game
-	private AudioPlayer audioPlayer;		//used to play Audio
 
 	private int gameTick;				//current tick of the game (starts at 0) -> 60 Ticks Per Second
 
@@ -286,13 +281,6 @@ public class Game {
 	}
 
 	/**
-	 * @return the AudioPlayer used to play the audio of the game
-	**/
-	public AudioPlayer getAudioPlayer() {
-		return audioPlayer;
-	}
-
-	/**
 	 * @return the width of the window divided by the height
 	**/
 	public float getAspectRatio() {
@@ -394,5 +382,9 @@ public class Game {
 	**/
 	public void clearValues() {
 		values.clear();
+	}
+
+	public Source getMusicPlayer() {
+		return musicPlayer;
 	}
 }

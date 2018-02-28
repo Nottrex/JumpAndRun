@@ -30,8 +30,6 @@ public class AudioHandler {
 		for (Sound sound: sounds) {
 			String s = sound.fileName;
 
-			System.out.println(s);
-
 			WaveData waveFile = WaveData.create("res/files/audio/" + s + ".wav");
 			audio_buffer.put(s, waveFile);
 		}

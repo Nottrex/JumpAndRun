@@ -47,8 +47,7 @@ public class Coin extends BasicStaticEntity implements Light {
 
 	private void collect() {
 		if (!collected) {
-			//game.getAudioPlayer().playAudio("Pickup_Coin11");
-			source.play(AudioHandler.getMusicWav(Sound.COIN));
+			source.play(Sound.COIN);
 			game.removeGameObject(this);
 			if (ghost) {
 				if (onReCollect != null) onReCollect.get(game);
@@ -106,5 +105,10 @@ public class Coin extends BasicStaticEntity implements Light {
 	@Override
 	public float getCollisionPriority() {
 		return -1;
+	}
+
+	@Override
+	public void remove(Game game, boolean mapChange) {
+		source.delete();
 	}
 }
