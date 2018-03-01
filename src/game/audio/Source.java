@@ -11,7 +11,7 @@ public class Source {
 	}
 
 	public Source(float x, float y) {
-		this(x, y, 1.0f);
+		this(x, y,  .25f);
 	}
 
 	public Source(float x, float y, float v) {

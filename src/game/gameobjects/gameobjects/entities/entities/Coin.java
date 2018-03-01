@@ -107,6 +107,10 @@ public class Coin extends BasicStaticEntity implements Light {
 		return -1;
 	}
 
+	public Source getSource() {
+		return source;
+	}
+
 	@Override
 	public void remove(Game game, boolean mapChange) {
 		source.delete();

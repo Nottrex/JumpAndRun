@@ -1,4 +1,4 @@
-407
+418
 single_stone 0 32 8 8
 row_stone_left 8 32 8 8
 row_stone_middle 16 32 8 8
@@ -406,3 +406,14 @@ circular_saw_4 320 13 12 12
 circular_saw_5 332 13 12 12
 circular_saw_6 344 13 12 12
 circular_saw_7 356 13 12 12
+flag_idle 208 320 16 16
+flag_activated_0 208 272 16 16
+flag_activated_1 224 272 16 16
+flag_activated_2 240 272 16 16
+flag_activated_3 208 288 16 16
+flag_activated_4 224 288 16 16
+flag_activated_5 240 288 16 16
+flag_activated_6 208 304 16 16
+flag_activated_7 224 304 16 16
+flag_activated_8 240 304 16 16
+flag_activated_9 256 304 16 16
