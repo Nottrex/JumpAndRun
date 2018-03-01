@@ -474,7 +474,8 @@ public class MapLoader {
 
 		Slider slider = new Slider(map.getSpawnX() + 1, map.getSpawnX() + 6, map.getSpawnY(), 0.52f, null);
 		slider.setOnRelocate(new Tree(((tree, game) -> {
-			game.getMusicPlayer().setVolume(slider.getSliderValue());
+			Options.effectVolume = slider.getSliderValue();
+			Options.musicVolume = slider.getSliderValue();
 			return null;
 		})));
 		map.addGameObject(slider);
