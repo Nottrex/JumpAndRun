@@ -255,10 +255,10 @@ z 125 165 5 7
 ) 134 172 5 7
 [ 130 165 5 7
 ] 130 172 5 7
-key_arrow_up 135 144 5 7
-key_arrow_down 135 151 5 7
-key_arrow_left 140 151 5 7
-key_arrow_right 140 144 5 7
+↑ 135 144 5 7
+↓ 135 151 5 7
+← 140 151 5 7
+→ 140 144 5 7
 chain_top_right 113 24 8 8
 chain_top 105 24 8 8
 chain_top_left 97 24 8 8

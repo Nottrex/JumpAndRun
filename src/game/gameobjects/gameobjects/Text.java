@@ -37,6 +37,7 @@ public class Text extends AbstractGameObject implements Drawable {
 	private Sprite buttonB = new Sprite(100, "button_b");
 	private Sprite buttonX = new Sprite(100, "button_x");
 	private Sprite buttonY = new Sprite(100, "button_y");
+	private Sprite key = new Sprite(100, "key");
 
 	private float x, y, size, drawingPriority;
 	private boolean useCamera;
@@ -49,7 +50,7 @@ public class Text extends AbstractGameObject implements Drawable {
 	private boolean update;
 	private float aspectRatio;
 
-	private boolean hasAnimation;
+	private Map<Integer, Sprite> animations;
 	private long startTime;
 
 	private int vao, vao2;
@@ -71,6 +72,7 @@ public class Text extends AbstractGameObject implements Drawable {
 		setText(text);
 
 		startTime = TimeUtil.getTime();
+		animations = new HashMap<>();
 	}
 
 	public Text(float drawingPriority, String text, float x, float y, float size, boolean useCamera, Color c) {
@@ -120,7 +122,7 @@ public class Text extends AbstractGameObject implements Drawable {
 			updateBuffers(shader, time);
 			update = false;
 		}
-		if (hasAnimation) {
+		if (animations.size() > 0) {
 			updateBuffers(shader, time);
 		}
 
@@ -170,53 +172,39 @@ public class Text extends AbstractGameObject implements Drawable {
 		float centeredX = x - width * anchorX;
 		float centeredY = y - height * anchorY;
 		for (int i = 0; i < chars.length; i++) {
-			if (chars[i] != ' ') {
-				float objectSize = 1.5f * fontHeight;
-				if (chars[i] > 944 && chars[i] < 971) {
-					hitBoxList.put(new HitBox(centeredX + i * fontSpacing - 0.25f * objectSize, centeredY - 0.15f * objectSize, objectSize, objectSize), "key");
-					hitBoxList.put(new HitBox(centeredX + i * fontSpacing, centeredY, fontWidth, fontHeight), String.valueOf((char) (chars[i] - 848)));
-				} else if (chars[i] > 1071 && chars[i] < 1083 || chars[i] == 1087) {
-					hasAnimation = true;
-					hitBoxList.put(new HitBox(centeredX + i * fontSpacing - 0.25f * objectSize, centeredY - 0.15f * objectSize, objectSize, objectSize), String.valueOf(chars[i]));
-				} else if (chars[i] > 1082 && chars[i] < 1087) {
-					hitBoxList.put(new HitBox(centeredX + i * fontSpacing - 0.25f * objectSize, centeredY - 0.15f * objectSize, objectSize, objectSize), "key");
-					if (chars[i] == 1083) hitBoxList.put(new HitBox(centeredX + i * fontSpacing, centeredY, fontWidth, fontHeight), "key_arrow_up");
-					else if (chars[i] == 1084) hitBoxList.put(new HitBox(centeredX + i * fontSpacing, centeredY, fontWidth, fontHeight), "key_arrow_down");
-					else if (chars[i] == 1084) hitBoxList.put(new HitBox(centeredX + i * fontSpacing, centeredY, fontWidth, fontHeight), "key_arrow_left");
-					else if (chars[i] == 1084) hitBoxList.put(new HitBox(centeredX + i * fontSpacing, centeredY, fontWidth, fontHeight), "key_arrow_right");
-				} else {
-					hitBoxList.put(new HitBox(centeredX + i * fontSpacing, centeredY, fontWidth, fontHeight), String.valueOf(chars[i]));
-				}
-			}
+			if (chars[i] != ' ') hitBoxList.put(new HitBox(centeredX + i * fontSpacing, centeredY, fontWidth, fontHeight), String.valueOf(chars[i]));
 		}
 
 		//Load stuff into OpenGL
-		letters = hitBoxList.size();
+		letters = hitBoxList.size() + animations.size();
 
 		FloatBuffer locations = BufferUtils.createFloatBuffer(letters * 2 * Constants.VERTEX_POS.length);
 		FloatBuffer texLocations = BufferUtils.createFloatBuffer(letters * 2 * Constants.VERTEX_POS.length);
 		IntBuffer indices = BufferUtils.createIntBuffer(letters * Constants.INDICES.length);
 
 		int i = 0;
-		java.util.List<HitBox> hitBoxList1 = hitBoxList.keySet().stream().sorted((o1, o2) -> Boolean.compare(hitBoxList.get(o2).equals("key"), hitBoxList.get(o1).equals("key"))).collect(Collectors.toList());
-		for (HitBox hitBox: hitBoxList1) {
-			Rectangle texture;
-			switch (hitBoxList.get(hitBox).charAt(0)) {
-				case 1072: texture = stick.getTexture(startTime, currentTime); break;
-				case 1073: texture = stick_up.getTexture(startTime, currentTime); break;
-				case 1074: texture = stick_down.getTexture(startTime, currentTime); break;
-				case 1075: texture = stick_left.getTexture(startTime, currentTime); break;
-				case 1076: texture = stick_right.getTexture(startTime, currentTime); break;
-				case 1077: texture = stick_vertical.getTexture(startTime, currentTime); break;
-				case 1078: texture = stick_horizontal.getTexture(startTime, currentTime); break;
-				case 1079: texture = buttonA.getTexture(startTime, currentTime); break;
-				case 1080: texture = buttonB.getTexture(startTime, currentTime); break;
-				case 1081: texture = buttonX.getTexture(startTime, currentTime); break;
-				case 1082: texture = buttonY.getTexture(startTime, currentTime); break;
-				case 1087: texture = coin.getTexture(startTime, currentTime); break;
-				default: texture = TextureHandler.getSpriteSheetBounds("textures_" + hitBoxList.get(hitBox));
+		for (int index: animations.keySet()) {
+			Rectangle texture = animations.get(index).getTexture(startTime, currentTime);
+			float size = 1.5f * fontHeight;
+			float x = centeredX + index * fontSpacing - 0.25f * size;
+			float y = centeredY - 0.15f * size;
+
+			for (float[] v : Constants.VERTEX_POS) {
+				locations.put(x + v[0] * (size / (useCamera ? 1 : aspectRatio)));
+				locations.put(y + v[1] * size);
+
+				texLocations.put(texture.x + v[0] * texture.width);
+				texLocations.put(texture.y + (1 - v[1]) * texture.height);
 			}
 
+			for (int ind : Constants.INDICES) {
+				indices.put(i * Constants.VERTEX_POS.length + ind);
+			}
+
+			i++;
+		}
+		for (HitBox hitBox: hitBoxList.keySet()) {
+			Rectangle texture = TextureHandler.getSpriteSheetBounds("textures_" + hitBoxList.get(hitBox));
 
 			for (float[] v : Constants.VERTEX_POS) {
 				locations.put(hitBox.x + v[0] * hitBox.width);
@@ -334,35 +322,79 @@ public class Text extends AbstractGameObject implements Drawable {
 	}
 
 	private char[] trimText() {
-		for (int i = 65; i < 91; i++) {
-			text = text.replaceAll(("<" + ((char) i) + ">"), String.valueOf((char) (i + 880)));
-			text = text.replaceAll(("<" + ((char) (i + 32)) + ">"), String.valueOf((char) (i + 880)));
-		}
-		text = text.replaceAll("<stick>", String.valueOf((char) 1072));
-		text = text.replaceAll("<stick_up>", String.valueOf((char) 1073));
-		text = text.replaceAll("<stick_down>", String.valueOf((char) 1074));
-		text = text.replaceAll("<stick_left>", String.valueOf((char) 1075));
-		text = text.replaceAll("<stick_right>", String.valueOf((char) 1076));
-		text = text.replaceAll("<stick_vertical>", String.valueOf((char) 1077));
-		text = text.replaceAll("<stick_horizontal>", String.valueOf((char) 1078));
-		text = text.replaceAll("<button_a>", String.valueOf((char) 1079));
-		text = text.replaceAll("<button_b>", String.valueOf((char) 1080));
-		text = text.replaceAll("<button_x>", String.valueOf((char) 1081));
-		text = text.replaceAll("<button_y>", String.valueOf((char) 1082));
-		text = text.replaceAll("<key_up>", String.valueOf((char) 1083));
-		text = text.replaceAll("<key_down>", String.valueOf((char) 1084));
-		text = text.replaceAll("<key_left>", String.valueOf((char) 1085));
-		text = text.replaceAll("<key_right>", String.valueOf((char) 1086));
-		text = text.replaceAll("<coin>", String.valueOf((char) 1087));
-		text = text.replaceAll("_", " ").toLowerCase();
+		String printText = text.toLowerCase();
 
-		String textOut = text;
-		while (textOut.contains("<#") && textOut.contains(">") && textOut.indexOf("<#") < textOut.indexOf(">")) {
-			String key = textOut.substring(textOut.indexOf("<#") + 2, textOut.indexOf(">"));
-			textOut = textOut.replace("<#" + key + ">", String.valueOf(super.game.getValue(key)));
-			hasAnimation = true;
+		animations.clear();
+		while (printText.contains("<") && printText.contains(">") && printText.indexOf("<") < printText.indexOf(">")) {
+			String object = printText.substring(printText.indexOf("<") + 1, printText.indexOf(">"));
+			String replacement = " ";
+			int index = printText.indexOf("<");
+
+			switch (object) {
+				case "stick":
+					animations.put(index, stick);
+					break;
+				case "stick_up":
+					animations.put(index, stick_up);
+					break;
+				case "stick_down":
+					animations.put(index, stick_down);
+					break;
+				case "stick_left":
+					animations.put(index, stick_left);
+					break;
+				case "stick_right":
+					animations.put(index, stick_right);
+					break;
+				case "stick_horizontal":
+					animations.put(index, stick_horizontal);
+					break;
+				case "stick_vertical":
+					animations.put(index, stick_vertical);
+					break;
+				case "button_a":
+					animations.put(index, buttonA);
+					break;
+				case "button_b":
+					animations.put(index, buttonB);
+					break;
+				case "button_x":
+					animations.put(index, buttonX);
+					break;
+				case "button_y":
+					animations.put(index, buttonY);
+					break;
+				case "coin":
+					animations.put(index, coin);
+					break;
+				case "key_up":
+					animations.put(index, key);
+					replacement = "↑";
+					break;
+				case "key_down":
+					animations.put(index, key);
+					replacement = "↓";
+					break;
+				case "key_left":
+					animations.put(index, key);
+					replacement = "←";
+					break;
+				case "key_right":
+					animations.put(index, key);
+					replacement = "→";
+					break;
+				default:
+					if (Character.isLetter(object.charAt(0)) && object.length() == 1) {
+						replacement = String.valueOf(object.charAt(0));
+						animations.put(index, key);
+					} else if (object.startsWith("#")) {
+						replacement = String.valueOf(game.getValue(object.substring(1)));
+					}
+			}
+			printText = printText.replaceFirst("<" + object + ">", replacement);
 		}
-		return textOut.toCharArray();
+
+		return printText.replaceAll("_", " ").toCharArray();
 	}
 }
 

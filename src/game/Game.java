@@ -69,7 +69,7 @@ public class Game {
 
 		values = new HashMap<>();
 
-		coinCounter = new Text(-1000f, "<#coins>", 1, 1, 0.1f, false, 1, 1);
+		coinCounter = new Text(-1000f, "<#coins>", 1, 0.98f, 0.1f, false, 1, 1);
 		addGameObject(coinCounter);
 
 		//Start the game in the "menu" map
@@ -93,7 +93,7 @@ public class Game {
 
 			//update coinCounter
 			if (map == null || map.getDirectory() == null || map.getDirectory().equals("hidden")) coinCounter.setText("");
-			else coinCounter.setText(getKeyAmount(map.getDirectory() + "_coin_" + map.getName(), 1) + "/" + getKeyAmount(map.getDirectory() + "_coin_" + map.getName()) + " <coin>");
+			else coinCounter.setText(getKeyAmount(map.getDirectory() + "_coin_" + map.getName(), 1) + "/" + getKeyAmount(map.getDirectory() + "_coin_" + map.getName()) + " <coin> ");
 
 			//change map
 			if (newMap != null && gameTick - fadeStart >= Constants.FADE_TIME / 2) {

@@ -70,7 +70,7 @@ coin_idle2_1 142 151 8 8
 coin_idle2_0 113 241 8 8
 door_side 246 142 8 8
 button_b 194 12 11 11
-key_arrow_up 215 154 5 7
+↑ 215 154 5 7
 banner_big_green_mid 152 213 8 8
 player_l_fall 216 40 8 8
 block_grass_bottom_left_3 235 94 8 8
@@ -101,7 +101,7 @@ block_wood_middle 192 234 8 8
 coin 173 37 8 8
 player_r_sword_2 105 60 8 8
 player_r_sword_3 144 103 8 8
-key_arrow_right 241 204 5 7
+→ 241 204 5 7
 lever_left 168 93 8 8
 player_r_sword_4 105 102 12 8
 player_r_sword_5 63 81 12 8
@@ -127,7 +127,7 @@ player_l_sword_3 131 175 12 8
 player_l_sword_2 147 17 8 8
 chain_right 235 153 8 8
 chain_bot 74 117 8 8
-key_arrow_left 145 127 5 7
+← 145 127 5 7
 banner_small_yellow 251 83 4 5
 banner_big_blue_bot 190 110 8 8
 statue_lancier_right 201 82 8 12
@@ -167,7 +167,7 @@ zombie_r_move_2 146 93 8 7
 key 159 16 11 11
 block_wood_top_left 198 59 8 8
 lantern 166 124 8 16
-key_arrow_down 169 165 5 7
+↓ 169 165 5 7
 player_l_move_3 247 19 8 8
 player_l_move_2 23 221 8 8
 player_l_move_1 225 50 8 8

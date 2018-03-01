@@ -508,7 +508,7 @@ public class MapLoader {
 		map.addGameObject(textOptions);
 
 		map.addGameObject(new BeerBarrel(map.getSpawnX() + 1, map.getSpawnY(), 0.5f));
-		map.addGameObject(new Text(-100, "press <w> or use <button_a> to spawn", map.getSpawnX() + 0.5f, map.getSpawnY() - 3, 0.5f, true, 0.5f, 0));
+		map.addGameObject(new Text(-100, "press <w> or <key_up> or <button_a> to spawn", map.getSpawnX() + 0.5f, map.getSpawnY() - 3, 0.5f, true, 0.5f, 0));
 		return map;
 	}
 
