@@ -30,7 +30,7 @@ public class PressurePlate extends BasicStaticEntity {
 
 	@Override
 	public void collide(CollisionObject gameObject, HitBoxDirection direction, float velocity, boolean source) {
-		if (gameObject instanceof Player || gameObject instanceof Box) pressed = true;
+		if (gameObject instanceof Player || gameObject instanceof Box || gameObject instanceof Zombie) pressed = true;
 	}
 
 	@Override

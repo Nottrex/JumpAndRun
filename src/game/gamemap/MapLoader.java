@@ -63,7 +63,7 @@ public class MapLoader {
 			int i = 1;
 			while (i < lineOne.length) {
 				if (lineOne[i].equals("tag")) {
-					tags.put(lineOne[i + 1], lineOne[i + 2].replaceAll("δ", ";"));
+					tags.put(lineOne[i + 1], lineOne[i + 2].replaceAll("\\?", ";").replaceAll("δ", ";"));
 					i++;
 					i++;
 				}
@@ -147,7 +147,7 @@ public class MapLoader {
 				int i = 4;
 				while (i < values.length) {
 					if (values[i].equals("tag")) {
-						tags.put(values[i + 1], values[i + 2].replaceAll("δ", ";"));
+						tags.put(values[i + 1], values[i + 2].replaceAll("\\?", ";").replaceAll("δ", ";"));
 						i++;
 						i++;
 					}
@@ -326,7 +326,7 @@ public class MapLoader {
 				int i = 4;
 				while (i < values.length) {
 					if (values[i].equals("tag")) {
-						tags.put(values[i + 1], values[i + 2].replaceAll("δ", ";"));
+						tags.put(values[i + 1], values[i + 2].replaceAll("\\?", ";").replaceAll("δ", ";"));
 						i++;
 						i++;
 					}
