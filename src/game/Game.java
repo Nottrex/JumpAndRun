@@ -1,6 +1,8 @@
 package game;
 
 import game.audio.AudioHandler;
+import game.audio.AudioPlayer;
+import game.audio.Sound;
 import game.audio.Source;
 import game.gamemap.GameMap;
 import game.gamemap.MapLoader;
@@ -34,6 +36,8 @@ public class Game {
 	private List<Integer> inputs;			//list of inputs, that are used by the players
 	private List<Color> playerColors;		//list of playerColors, that are used to recolor the Player
 	private GameMap map;				//current GameMap
+
+	private AudioPlayer audioPlayer;
 
 	private int fadeStart;				//The startTick of a transition between maps
 	private String newMap;				//The target map for a map change
@@ -75,9 +79,8 @@ public class Game {
 		//Start the game in the "menu" map
 		setGameMap(Constants.SYS_PREFIX + "menu", false);
 
-		musicPlayer = new Source();
-		musicPlayer.setLooping(true);
-		musicPlayer.play(AudioHandler.getMusicWav("EP"));
+		this.audioPlayer = new AudioPlayer();
+		audioPlayer.getMusicSource().play("EP");
 	}
 
 	/**
@@ -90,6 +93,7 @@ public class Game {
 			gameTick++;
 			time = TimeUtil.getTime();
 			handleInput();
+			audioPlayer.update();
 
 			//update coinCounter
 			if (map == null || map.getDirectory() == null || map.getDirectory().equals("hidden")) coinCounter.setText("");
@@ -385,7 +389,7 @@ public class Game {
 		values.clear();
 	}
 
-	public Source getMusicPlayer() {
-		return musicPlayer;
+	public AudioPlayer getMusicPlayer() {
+		return audioPlayer;
 	}
 }

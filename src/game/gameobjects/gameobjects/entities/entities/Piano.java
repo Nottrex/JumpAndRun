@@ -52,13 +52,12 @@ public class Piano extends BasicStaticEntity {
 			int jingle = new Random().nextInt(JINGLES.length);
 
 			waitTil = game.getGameTick() + JINGLES[jingle] + 60;
-			source.play("piano" + jingle);
+			game.getMusicPlayer().playAfx(source, "piano" + jingle);
 		}
 	}
 
 	@Override
 	public void remove(Game game, boolean mapChange) {
-		if(mapChange) source.stop();
-		source.delete();
+		source.stop();
 	}
 }

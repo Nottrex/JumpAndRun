@@ -83,7 +83,6 @@ public class Window {
 
 			draw();
 			keyboard.update();
-			AudioHandler.update();
 
 			running = !GLFW.glfwWindowShouldClose(window);
 		}

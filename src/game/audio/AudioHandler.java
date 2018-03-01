@@ -58,20 +58,4 @@ public class AudioHandler {
 	public static void cleanUp() {
 		for(int i: currentBuffers) AL10.alDeleteBuffers(i);
 	}
-
-	private static List<Source> toRemove = new ArrayList<>();
-	public static void removeSource(Source source) {
-		toRemove.add(source);
-	}
-
-	public static void update() {
-		for (int i = 0; i < toRemove.size(); i++) {
-			Source s = toRemove.get(i);
-			if (!s.isPlaying()) {
-				toRemove.remove(i);
-				s.delete();
-				i--;
-			}
-		}
-	}
 }

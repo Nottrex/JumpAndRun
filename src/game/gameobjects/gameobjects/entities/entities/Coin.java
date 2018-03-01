@@ -20,12 +20,9 @@ public class Coin extends BasicStaticEntity implements Light {
 
 	private boolean collected, ghost;
 	private Tree onFirstCollect, onReCollect;
-	private Source source;
 
 	public Coin(float x, float y, float drawingPriority, boolean wasCollected, Tree onFirstCollect, Tree onReCollect) {
 		super(new HitBox(x, y, 0.75f, 1f), drawingPriority);
-
-		this.source = new Source();
 
 		collected = false;
 		ghost = wasCollected;
@@ -47,7 +44,7 @@ public class Coin extends BasicStaticEntity implements Light {
 
 	private void collect() {
 		if (!collected) {
-			source.play(Sound.COIN);
+			game.getMusicPlayer().playAfx(Sound.COIN);
 			game.removeGameObject(this);
 			if (ghost) {
 				if (onReCollect != null) onReCollect.get(game);
@@ -107,12 +104,4 @@ public class Coin extends BasicStaticEntity implements Light {
 		return -1;
 	}
 
-	public Source getSource() {
-		return source;
-	}
-
-	@Override
-	public void remove(Game game, boolean mapChange) {
-		source.delete();
-	}
 }

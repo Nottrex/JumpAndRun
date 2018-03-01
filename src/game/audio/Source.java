@@ -69,10 +69,6 @@ public class Source {
 	}
 
 	public void delete() {
-		if (isPlaying()) {
-			AudioHandler.removeSource(this);
-		} else {
-			AL10.alDeleteSources(sourceID);
-		}
+		AL10.alDeleteSources(sourceID);
 	}
 }
