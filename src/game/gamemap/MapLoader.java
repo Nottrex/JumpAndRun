@@ -472,6 +472,13 @@ public class MapLoader {
 			leveri.setEnabled(new Tree((t,g2) -> false));
 		}
 
+		Slider slider = new Slider(map.getSpawnX() + 1, map.getSpawnX() + 6, map.getSpawnY(), 0.52f, null);
+		slider.setOnRelocate(new Tree(((tree, game) -> {
+			game.getMusicPlayer().setVolume(slider.getSliderValue());
+			return null;
+		})));
+		map.addGameObject(slider);
+
 		((Exit) map.getGameObjects().stream().filter(go -> go instanceof Exit).findAny().get()).setTargetMap(Constants.SYS_PREFIX + "menu");
 		((Exit) map.getGameObjects().stream().filter(go -> go instanceof Exit).findAny().get()).setOnEntrance(new Tree(((tree, game) -> {
 			Options.applyOptions(game);
