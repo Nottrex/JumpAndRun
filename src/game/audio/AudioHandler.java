@@ -2,20 +2,13 @@ package game.audio;
 
 import org.lwjgl.openal.AL10;
 
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class AudioHandler {
-	private static Map<String, WaveData> audio_buffer;
+	private static Map<String, WaveAudio> audio_buffer;
 	private static List<Integer> currentBuffers;
 
 	static {
@@ -30,23 +23,23 @@ public class AudioHandler {
 		for (Sound sound: sounds) {
 			String s = sound.fileName;
 
-			WaveData waveFile = WaveData.create("res/files/audio/" + s + ".wav");
+			WaveAudio waveFile = WaveAudio.create("res/files/audio/" + s + ".wav");
 			audio_buffer.put(s, waveFile);
 		}
 	}
 
 	public static int getMusicWav(String audioName) {
-		WaveData waveFile = audio_buffer.get(audioName);
+		WaveAudio waveFile = audio_buffer.get(audioName);
 		int buffer = AL10.alGenBuffers();
-		AL10.alBufferData(buffer, waveFile.format, waveFile.data, waveFile.samplerate);
+		AL10.alBufferData(buffer, waveFile.getFormat(), waveFile.getData(), waveFile.getSampleRate());
 		waveFile.dispose();
 		return buffer;
 	}
 
 	public static int getMusicWav(Sound audio) {
-		WaveData waveFile = audio_buffer.get(audio.fileName);
+		WaveAudio waveFile = audio_buffer.get(audio.fileName);
 		int buffer = AL10.alGenBuffers();
-		AL10.alBufferData(buffer, waveFile.format, waveFile.data, waveFile.samplerate);
+		AL10.alBufferData(buffer, waveFile.getFormat(), waveFile.getData(), waveFile.getSampleRate());
 		waveFile.dispose();
 		return buffer;
 	}

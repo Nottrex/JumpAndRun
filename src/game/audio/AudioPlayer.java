@@ -52,13 +52,15 @@ public class AudioPlayer {
 
 	public void update() {
 		musicSource.setVolume(Options.musicVolume);
-		for (Source c : afx) {
+		for (int i = 0; i < afx.size(); i++) {
+			Source c = afx.get(i);
 			if(!c.isPlaying()) {
 				toRemove.add(c);
 			}
 		}
 
-		for(Source c: toRemove) {
+		for (int i = 0; i < toRemove.size(); i++) {
+			Source c = toRemove.get(i);
 			afx.remove(c);
 			c.stop();
 			c.delete();
@@ -66,7 +68,8 @@ public class AudioPlayer {
 
 		toRemove.clear();
 
-		for (Source c : afx) {
+		for (int i = 0; i < afx.size(); i++) {
+			Source c = afx.get(i);
 			c.setVolume(Options.effectVolume);
 		}
 	}
