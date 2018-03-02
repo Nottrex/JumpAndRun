@@ -167,6 +167,8 @@ public class Text extends AbstractGameObject implements Drawable {
 		float fontSpacing = fontWidth * Constants.FONT_SPACING;
 
 		float width = (chars.length-1) * fontSpacing + fontWidth;
+		if (animations.containsKey(0)) width = width + 0.25f * fontHeight;
+		if (animations.containsKey(chars.length() - 1)) width = width + 0.25f * fontHeight;
 		float height = fontHeight;
 
 		float centeredX = x - width * anchorX;
