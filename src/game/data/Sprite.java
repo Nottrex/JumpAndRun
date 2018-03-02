@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Sprite {
-	private List<Rectangle> textures;      	       //Coordinates on spritesheet from textures
-	private int time;                 			   //Time (in ms) before changing sprite
+	private List<Rectangle> textures;				//Coordinates on spritesheet from textures
+	private int time;								//Time (in ms) before changing sprite
 
 	public Sprite(int time, String... textureNames) {
 		this.textures = new ArrayList<>();

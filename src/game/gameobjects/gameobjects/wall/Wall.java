@@ -11,7 +11,7 @@ import java.util.Map;
 
 /**
  * An implementation of StaticDraw that implements collision. Therefore other objects are blocked by this -> Wall
-**/
+ **/
 public class Wall extends StaticDraw implements CollisionObject {
 	private List<HitBox> hitBoxes;
 
@@ -28,9 +28,9 @@ public class Wall extends StaticDraw implements CollisionObject {
 		do {
 			merge = false;
 
-			for (int i = 0; i < hitBoxes.size()-1; i++) {
+			for (int i = 0; i < hitBoxes.size() - 1; i++) {
 				HitBox hitBox1 = hitBoxes.get(i);
-				for (int j = i+1; j < hitBoxes.size(); j++) {
+				for (int j = i + 1; j < hitBoxes.size(); j++) {
 					HitBox hitBox2 = hitBoxes.get(j);
 
 					if (hitBox1.type == hitBox2.type && (hitBox1.y == hitBox2.y && hitBox1.height == hitBox2.height && ((hitBox1.x + hitBox1.width) >= hitBox2.x && (hitBox2.x + hitBox2.width) >= hitBox1.x)) || (hitBox1.type != HitBox.HitBoxType.HALF_BLOCKING && hitBox1.x == hitBox2.x && hitBox1.width == hitBox2.width && ((hitBox1.y + hitBox1.height) >= hitBox2.y && (hitBox2.y + hitBox2.height) >= hitBox1.y))) {

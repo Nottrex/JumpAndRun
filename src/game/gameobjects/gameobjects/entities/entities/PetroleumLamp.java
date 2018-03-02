@@ -12,7 +12,7 @@ import game.window.light.Light;
 import java.awt.*;
 
 public class PetroleumLamp extends BasicStaticEntity implements Light {
-	public enum PetroleumColor{
+	public enum PetroleumColor {
 		YELLOW(new Sprite(100, "petroleum_yellow"), new Color(255, 255, 0)),
 		ORANGE(new Sprite(100, "petroleum_orange"), new Color(255, 153, 0)),
 		RED(new Sprite(100, "petroleum_red"), new Color(255, 0, 0)),
@@ -81,9 +81,9 @@ public class PetroleumLamp extends BasicStaticEntity implements Light {
 
 	@Override
 	public void getLightColor(float[] values) {
-		values[0] = 1.3f*color.getColor().getRed()/255.0f;
-		values[1] = 1.3f*color.getColor().getGreen()/255.0f;
-		values[2] = 1.3f*color.getColor().getBlue()/255.0f;
+		values[0] = 1.3f * color.getColor().getRed() / 255.0f;
+		values[1] = 1.3f * color.getColor().getGreen() / 255.0f;
+		values[2] = 1.3f * color.getColor().getBlue() / 255.0f;
 	}
 
 	@Override

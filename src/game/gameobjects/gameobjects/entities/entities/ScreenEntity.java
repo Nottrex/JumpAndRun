@@ -26,8 +26,8 @@ public class ScreenEntity extends BasicDrawingEntity {
 	public void draw(Window window, long time) {
 		hitBox = hitBox2.clone();
 		hitBox.width /= window.getAspectRatio();
-		hitBox.x -= anchorX*hitBox.width;
-		hitBox.y -= anchorY*hitBox.height;
+		hitBox.x -= anchorX * hitBox.width;
+		hitBox.y -= anchorY * hitBox.height;
 
 		super.draw(window, time);
 	}

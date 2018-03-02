@@ -2,21 +2,16 @@ package game.gameobjects.gameobjects.entities.entities;
 
 import game.Ability;
 import game.Game;
-import game.data.hitbox.HitBox;
 import game.data.Sprite;
-import game.data.hitbox.HitBoxDirection;
+import game.data.hitbox.HitBox;
 import game.gameobjects.CollisionObject;
-import game.gameobjects.gameobjects.entities.BasicMovingEntity;
-import game.gameobjects.gameobjects.entities.BasicStaticEntity;
 import game.gameobjects.gameobjects.entities.BasicWalkingEntity;
 import game.gameobjects.gameobjects.particle.ParticleType;
 import game.gameobjects.gameobjects.wall.Wall;
 import game.window.Window;
 import game.window.light.Light;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class Player extends BasicWalkingEntity implements Light {
@@ -71,41 +66,42 @@ public class Player extends BasicWalkingEntity implements Light {
 	public void remove(Game game, boolean mapChange) {
 		super.remove(game, mapChange);
 
-		if (game.getDeadBodyHandler() != null) game.getDeadBodyHandler().addDeadBody((new DeadBody(getHitBox().x, getHitBox().y, "player", color, lastMX > 0)));
+		if (game.getDeadBodyHandler() != null)
+			game.getDeadBodyHandler().addDeadBody((new DeadBody(getHitBox().x, getHitBox().y, "player", color, lastMX > 0)));
 	}
 
 	@Override
 	public void update(Game game) {
 		super.update(game);
 		Sprite newSprite = null;
-		if(attack > 0) newSprite = (attackLeft ? attack_l: attack_r);
+		if (attack > 0) newSprite = (attackLeft ? attack_l : attack_r);
 		else {
-			if(!onGround && mx != 0) newSprite = (mx < 0? falling_l: falling_r);
-			if(!onGround && mx == 0) newSprite = (lastMX < 0? falling_l: falling_r);
-			if(onGround && mx == 0) newSprite = (lastMX < 0? idle_l: idle_r);
-			if(onGround && mx != 0) newSprite = (mx < 0? walking_l: walking_r);
+			if (!onGround && mx != 0) newSprite = (mx < 0 ? falling_l : falling_r);
+			if (!onGround && mx == 0) newSprite = (lastMX < 0 ? falling_l : falling_r);
+			if (onGround && mx == 0) newSprite = (lastMX < 0 ? idle_l : idle_r);
+			if (onGround && mx != 0) newSprite = (mx < 0 ? walking_l : walking_r);
 		}
 
-		if(!sprite.equals(newSprite)) setSprite(newSprite);
+		if (!sprite.equals(newSprite)) setSprite(newSprite);
 
 		if (attack > 0) {
 			if (attack > 20) {
 				HitBox attackHitBox = new HitBox(hitBox.getCenterX() + (attackLeft ? -0.875f : 0), hitBox.y, 0.875f, 0.875f);
 
-				for (CollisionObject collisionObject: game.getCollisionObjects()) {
+				for (CollisionObject collisionObject : game.getCollisionObjects()) {
 					if (collisionObject.equals(this)) continue;
-					for (HitBox hitBox: collisionObject.getCollisionBoxes()) {
+					for (HitBox hitBox : collisionObject.getCollisionBoxes()) {
 						if (hitBox.collides(attackHitBox)) {
 							collisionObject.interact(this, attackHitBox, InteractionType.ATTACK);
 							if (hitBox.type == HitBox.HitBoxType.BLOCKING)
 								game.getCamera().addScreenshake(0.003f);
 
 							if (collisionObject instanceof Wall) {
-								game.getParticleSystem().createParticle(ParticleType.GRAY, attackHitBox.getCenterX(), attackHitBox.getCenterY(), -0.025f + 0.05f*(float)Math.random(), -0.025f + 0.05f*(float)Math.random());
+								game.getParticleSystem().createParticle(ParticleType.GRAY, attackHitBox.getCenterX(), attackHitBox.getCenterY(), -0.025f + 0.05f * (float) Math.random(), -0.025f + 0.05f * (float) Math.random());
 							}
 
 							if (collisionObject instanceof Player || collisionObject instanceof Zombie) {
-								game.getParticleSystem().createParticle(ParticleType.RED, attackHitBox.getCenterX(), attackHitBox.getCenterY(), -0.025f + 0.05f*(float)Math.random(), -0.025f + 0.05f*(float)Math.random());
+								game.getParticleSystem().createParticle(ParticleType.RED, attackHitBox.getCenterX(), attackHitBox.getCenterY(), -0.025f + 0.05f * (float) Math.random(), -0.025f + 0.05f * (float) Math.random());
 							}
 
 							break;
@@ -125,9 +121,9 @@ public class Player extends BasicWalkingEntity implements Light {
 		}
 
 		if (interact > 0) {
-			for (CollisionObject collisionObject: game.getCollisionObjects()) {
+			for (CollisionObject collisionObject : game.getCollisionObjects()) {
 				if (collisionObject.equals(this)) continue;
-				for (HitBox hitBox2: collisionObject.getCollisionBoxes()) {
+				for (HitBox hitBox2 : collisionObject.getCollisionBoxes()) {
 					if (hitBox2.collides(hitBox)) {
 						collisionObject.interact(this, hitBox, InteractionType.INTERACT);
 						break;

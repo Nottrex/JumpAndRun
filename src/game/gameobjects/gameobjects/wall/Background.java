@@ -10,9 +10,9 @@ import java.util.Map;
 
 /**
  * an implementation of StaticDraw that has no collisions and which fades out if a player is behind this
-**/
+ **/
 public class Background extends StaticDraw {
-	private List<HitBox> hitBoxes;		//All hitboxes for the fade out
+	private List<HitBox> hitBoxes;			//All hitboxes for the fade out
 
 	public Background(Map<HitBox, String> hitBoxList, float drawingPriority) {
 		super(drawingPriority);
@@ -27,9 +27,9 @@ public class Background extends StaticDraw {
 		do {
 			merge = false;
 
-			for (int i = 0; i < hitBoxes.size()-1; i++) {
+			for (int i = 0; i < hitBoxes.size() - 1; i++) {
 				HitBox hitBox1 = hitBoxes.get(i);
-				for (int j = i+1; j < hitBoxes.size(); j++) {
+				for (int j = i + 1; j < hitBoxes.size(); j++) {
 					HitBox hitBox2 = hitBoxes.get(j);
 
 					if ((hitBox1.y == hitBox2.y && hitBox1.height == hitBox2.height && ((hitBox1.x + hitBox1.width) >= hitBox2.x && (hitBox2.x + hitBox2.width) >= hitBox1.x)) || (hitBox1.x == hitBox2.x && hitBox1.width == hitBox2.width && ((hitBox1.y + hitBox1.height) >= hitBox2.y && (hitBox2.y + hitBox2.height) >= hitBox1.y))) {
@@ -76,13 +76,14 @@ public class Background extends StaticDraw {
 
 	/**
 	 * checks if a player is behind this layer
+	 *
 	 * @param game the game instance containing this object
 	 * @return if this covers a player
-	**/
+	 **/
 	private boolean coversPlayer(Game game) {
-		for (Player player: game.getPlayers()) {
+		for (Player player : game.getPlayers()) {
 			if (player.getDrawingPriority() > this.getDrawingPriority()) {
-				for (HitBox hitBox: hitBoxes) {
+				for (HitBox hitBox : hitBoxes) {
 					if (hitBox.collides(player.getHitBox())) return true;
 				}
 			}

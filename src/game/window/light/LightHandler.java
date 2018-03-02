@@ -9,11 +9,11 @@ import java.util.List;
 
 public class LightHandler {
 
-	private List<Light> lights;				q//all lights
+	private List<Light> lights;					//all lights
 	private float minimumBrightness;			//the current default brightness of the pixels
-	private SmoothFloat tMinimumBrightness;			//the theoretical default brightness of the pixels
+	private SmoothFloat tMinimumBrightness;		//the theoretical default brightness of the pixels
 
-	private boolean changed;				//has something changed since the last update
+	private boolean changed;					//has something changed since the last update
 
 	public LightHandler() {
 		changed = true;
@@ -25,13 +25,14 @@ public class LightHandler {
 
 	/**
 	 * updates the light
+	 *
 	 * @return if something has changed
 	 */
 	public boolean update() {
 		boolean change = changed;
 
 		for (Light light : lights) {
-			change |= light.updateLight(); 		//Update lights
+			change |= light.updateLight();		//Update lights
 		}
 
 		long time = TimeUtil.getTime();
@@ -46,6 +47,7 @@ public class LightHandler {
 
 	/**
 	 * adds a light to the game
+	 *
 	 * @param light to be added
 	 */
 	public void addLight(Light light) {
@@ -55,6 +57,7 @@ public class LightHandler {
 
 	/**
 	 * removes a light from the game
+	 *
 	 * @param light to be removed
 	 */
 	public void removeLight(Light light) {
@@ -64,6 +67,7 @@ public class LightHandler {
 
 	/**
 	 * sets the minimum brightness instantly
+	 *
 	 * @param minimumBrightness the new minimumBrightness
 	 */
 	public void setMinimumBrightness(float minimumBrightness) {
@@ -72,8 +76,9 @@ public class LightHandler {
 
 	/**
 	 * sets the minimum brightness by interpolating between the current and the target values over time
+	 *
 	 * @param minimumBrightness the target minimumBrightness
-	 * @param time the time for the interpolations
+	 * @param time              the time for the interpolations
 	 */
 	public void setMinimumBrightnessSmooth(float minimumBrightness, long time) {
 		tMinimumBrightness.setSmooth(minimumBrightness, time);

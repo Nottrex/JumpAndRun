@@ -20,7 +20,7 @@ public class AudioHandler {
 	private static void loadMusicWav() {
 		Sound[] sounds = Sound.values();
 
-		for (Sound sound: sounds) {
+		for (Sound sound : sounds) {
 			String s = sound.fileName;
 
 			WaveAudio waveFile = WaveAudio.create("res/files/audio/" + s + ".wav");
@@ -49,6 +49,6 @@ public class AudioHandler {
 	}
 
 	public static void cleanUp() {
-		for(int i: currentBuffers) AL10.alDeleteBuffers(i);
+		for (int i : currentBuffers) AL10.alDeleteBuffers(i);
 	}
 }

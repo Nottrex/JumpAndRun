@@ -43,12 +43,12 @@ public class SaveHandler {
 	}
 
 	public static void writeSave(Map<String, Integer> values, String saveName) {
-		File[] oldSave = new File(saveDirectory).listFiles(pathname -> pathname.getName().startsWith(saveName.substring(0,2)) && pathname.getName().endsWith(".save"));
-		if (oldSave != null) for (File file: oldSave) file.delete();
+		File[] oldSave = new File(saveDirectory).listFiles(pathname -> pathname.getName().startsWith(saveName.substring(0, 2)) && pathname.getName().endsWith(".save"));
+		if (oldSave != null) for (File file : oldSave) file.delete();
 
 		try {
 			PrintWriter writer = new PrintWriter(new File(saveDirectory + File.separator + saveName + ".save"));
-			for (String key: values.keySet()) {
+			for (String key : values.keySet()) {
 				writer.println(key + "~" + values.get(key));
 			}
 			writer.close();

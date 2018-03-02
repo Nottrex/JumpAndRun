@@ -51,7 +51,7 @@ public class Options {
 
 				if (data.containsKey("CONTROLS")) {
 					Map<String, Integer> con = (Map<String, Integer>) data.get("CONTROLS");
-					for (String s: con.keySet()) {
+					for (String s : con.keySet()) {
 						controls.put(s, con.get(s));
 					}
 				}
@@ -59,13 +59,13 @@ public class Options {
 				if (data.containsKey("fullscreen")) fullscreen = (Boolean) data.get("fullscreen");
 				if (data.containsKey("effectVolume")) effectVolume = (float) ((double) data.get("effectVolume"));
 				if (data.containsKey("musicVolume")) musicVolume = (float) ((double) data.get("musicVolume"));
-			
+
 			} catch (FileNotFoundException e) {
 				ErrorUtil.printError("Loading options: " + e.toString());
 			}
 		}
 	}
-	
+
 	public static void applyOptions(Game g) {
 
 	}

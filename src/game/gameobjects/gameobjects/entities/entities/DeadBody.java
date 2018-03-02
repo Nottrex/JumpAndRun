@@ -11,7 +11,7 @@ public class DeadBody extends BasicWalkingEntity {
 	public DeadBody(float x, float y, String entity, Color color, boolean direction) {
 		super(new HitBox(x, y, 0.75f, 1f, HitBox.HitBoxType.NOT_BLOCKING), 0f);
 		setColor(color == null ? Color.BLACK : color);
-		Sprite idle = new Sprite(100, entity + (direction ? "_r" : "_l") + "_dead" );
+		Sprite idle = new Sprite(100, entity + (direction ? "_r" : "_l") + "_dead");
 		setSprite(idle);
 	}
 

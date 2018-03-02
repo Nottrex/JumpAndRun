@@ -11,6 +11,7 @@ public class TimeUtil {
 
 	/**
 	 * waits the given amount of time
+	 *
 	 * @param time the time in milli seconds
 	 */
 	public static void sleep(int time) {

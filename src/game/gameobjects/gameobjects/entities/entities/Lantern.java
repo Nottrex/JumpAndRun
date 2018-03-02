@@ -10,12 +10,13 @@ import game.gameobjects.gameobjects.entities.BasicStaticEntity;
 import game.window.Window;
 import game.window.light.Light;
 
-public class Lantern extends BasicStaticEntity implements Light{
+public class Lantern extends BasicStaticEntity implements Light {
 	private static Sprite on = new Sprite(100, "lantern");
 	private static Sprite off = new Sprite(100, "lantern_off");
 
 	private Tree activated;
 	private boolean isOn;
+
 	public Lantern(float x, float y, float drawingPriority, Tree activated) {
 		super(new HitBox(x, y, 1f, 2f), drawingPriority);
 
@@ -65,9 +66,9 @@ public class Lantern extends BasicStaticEntity implements Light{
 
 	@Override
 	public void getLightColor(float[] values) {
-		values[0] = 1.35f*255.0f/255.0f;
-		values[1] = 1.35f*231.0f/255.0f;
-		values[2] = 1.35f*98.0f/255.0f;
+		values[0] = 1.35f * 255.0f / 255.0f;
+		values[1] = 1.35f * 231.0f / 255.0f;
+		values[2] = 1.35f * 98.0f / 255.0f;
 	}
 
 	@Override

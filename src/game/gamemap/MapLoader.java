@@ -20,7 +20,6 @@ import game.util.TextureHandler;
 
 import java.awt.*;
 import java.io.File;
-import java.io.FileFilter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -189,14 +188,14 @@ public class MapLoader {
 						break;
 					case "ability_gate_left":
 						Map<Ability, Boolean> abilities = new HashMap<>();
-						for (Ability ability: Ability.values()) {
+						for (Ability ability : Ability.values()) {
 							abilities.put(ability, tags.getOrDefault("add", "").toUpperCase().contains(ability.toString()));
 						}
 						map.addGameObject(new AbilityGate(x, y, drawingPriority, abilities, false));
 						break;
 					case "ability_gate_right":
 						abilities = new HashMap<>();
-						for (Ability ability: Ability.values()) {
+						for (Ability ability : Ability.values()) {
 							abilities.put(ability, tags.getOrDefault("add", "").toUpperCase().contains(ability.toString()));
 						}
 						map.addGameObject(new AbilityGate(x, y, drawingPriority, abilities, true));
@@ -353,45 +352,54 @@ public class MapLoader {
 		final int sectionWidth = 10;
 		final int sectionHeight = 5;
 		final int sectionPerLine = 2;
-		final int floors = (int) Math.ceil(1.0f*mapNames.length / sectionPerLine);
+		final int floors = (int) Math.ceil(1.0f * mapNames.length / sectionPerLine);
 
 		for (int y = 0; y < floors; y++) {
 			for (int x = 0; x < sectionPerLine; x++) {
 				for (int width = 0; width < sectionWidth; width++) {
 					for (int height = 0; height < sectionHeight; height++) {
 						int xValue = x * sectionWidth + width;
-						int yValue = - y * sectionHeight + height;
+						int yValue = -y * sectionHeight + height;
 						int section = y * sectionPerLine + x;
 
 						//map objects (door and texts)
 						if (section < mapNames.length && width == sectionWidth / 2) {
-							if (height == 1) map.addGameObject(new Exit(xValue, yValue, 1, mapNames[section], null));
-							if (height == 3) map.addGameObject(new Text(0.7f, mapNames[section].split("/")[1], xValue + 0.5f, yValue, 0.5f, true, 0.5f, 0));
-							if (height == 4) map.addGameObject(new Text(0.7f, String.valueOf(g.getKeyAmount(mapNames[section].split("/")[0] + "_coin_", 1)) + "/" + String.valueOf(g.getKeyAmount(mapNames[section].split("/")[0] + "_coin_")), xValue + 0.5f, yValue, 0.5f, true, 0.5f, 0));
+							if (height == 1)
+								map.addGameObject(new Exit(xValue, yValue, 1, mapNames[section], null));
+							if (height == 3)
+								map.addGameObject(new Text(0.7f, mapNames[section].split("/")[1], xValue + 0.5f, yValue, 0.5f, true, 0.5f, 0));
+							if (height == 4)
+								map.addGameObject(new Text(0.7f, String.valueOf(g.getKeyAmount(mapNames[section].split("/")[0] + "_coin_", 1)) + "/" + String.valueOf(g.getKeyAmount(mapNames[section].split("/")[0] + "_coin_")), xValue + 0.5f, yValue, 0.5f, true, 0.5f, 0));
 						}
 
 						//platforms
-						if (height == 0) add(layers, new HitBox(xValue, yValue, 1f, 1f, HitBox.HitBoxType.HALF_BLOCKING), "platform_middle", 0.52f);
+						if (height == 0)
+							add(layers, new HitBox(xValue, yValue, 1f, 1f, HitBox.HitBoxType.HALF_BLOCKING), "platform_middle", 0.52f);
 
 						//borders
-						if (y == 0 && height == sectionHeight - 1) 	add(layers, new HitBox(xValue, yValue + 1, 1f, 1f), "block_stone_top", 0.5f);
-						if (y == floors - 1 && height == 0) add(layers, new HitBox(xValue, yValue, 1f, 1f), "block_stone_bottom", 0.5f);
-						if (x == 0 && width == 0 && y != 0) add(layers, new HitBox(xValue - 1, yValue, 1f, 1f), "block_stone_left", 0.5f);
-						if (x == sectionPerLine - 1 && width == sectionWidth - 1) add(layers, new HitBox(xValue + 1, yValue, 1f, 1f), "block_stone_right", 0.5f);
+						if (y == 0 && height == sectionHeight - 1)
+							add(layers, new HitBox(xValue, yValue + 1, 1f, 1f), "block_stone_top", 0.5f);
+						if (y == floors - 1 && height == 0)
+							add(layers, new HitBox(xValue, yValue, 1f, 1f), "block_stone_bottom", 0.5f);
+						if (x == 0 && width == 0 && y != 0)
+							add(layers, new HitBox(xValue - 1, yValue, 1f, 1f), "block_stone_left", 0.5f);
+						if (x == sectionPerLine - 1 && width == sectionWidth - 1)
+							add(layers, new HitBox(xValue + 1, yValue, 1f, 1f), "block_stone_right", 0.5f);
 
 						//background
 						add(layers, new HitBox(xValue, yValue, 1f, 1f), "block_stone_middle", 100);
 						add(layers, new HitBox(xValue, yValue, 1f, 1f), "black_5", 99);
 
 						//camera
-						if (x == 0 && width == 0 && height == 0) map.getCameraController().addCameraArea(new Area(0, yValue, sectionPerLine * sectionWidth, yValue + sectionHeight));
+						if (x == 0 && width == 0 && height == 0)
+							map.getCameraController().addCameraArea(new Area(0, yValue, sectionPerLine * sectionWidth, yValue + sectionHeight));
 					}
 				}
 			}
 		}
 		for (int x = 0; x < sectionWidth; x++) {
 			for (int y = 0; y < sectionHeight; y++) {
-				int xValue = - x - 1;
+				int xValue = -x - 1;
 				int yValue = y;
 
 				//background
@@ -411,7 +419,7 @@ public class MapLoader {
 				}
 
 				//camera
-				if (x == 0 && y == 0) map.getCameraController().addCameraArea(new Area(0, 0, - sectionWidth, sectionHeight));
+				if (x == 0 && y == 0) map.getCameraController().addCameraArea(new Area(0, 0, -sectionWidth, sectionHeight));
 			}
 		}
 
@@ -465,14 +473,14 @@ public class MapLoader {
 
 			HitBox textBox = lever1.getCollisionBoxes().get(0).clone();
 			textBox.move(0, 1f);
-			map.addGameObject(new Text(0, "MAXIMIZE", textBox.getCenterX(), textBox.getCenterY(), 0.5f, true,  0.5f, 0.5f, Color.RED));
+			map.addGameObject(new Text(0, "MAXIMIZE", textBox.getCenterX(), textBox.getCenterY(), 0.5f, true, 0.5f, 0.5f, Color.RED));
 		}
 		for (int i = 1; i < lever.size(); i++) {
 			Lever leveri = (Lever) lever.get(i);
-			leveri.setEnabled(new Tree((t,g2) -> false));
+			leveri.setEnabled(new Tree((t, g2) -> false));
 		}
 
-		Slider slider = new Slider(map.getSpawnX() + 1, map.getSpawnX() + 6, map.getSpawnY(), 0.52f, null);
+		Slider slider = new Slider(map.getSpawnX() + 1, map.getSpawnX() + 6, Options.effectVolume, map.getSpawnY(), 0.52f, null);
 		slider.setOnRelocate(new Tree(((tree, game) -> {
 			Options.effectVolume = slider.getSliderValue();
 			Options.musicVolume = slider.getSliderValue();
@@ -563,7 +571,7 @@ public class MapLoader {
 			File initialMap = new File(f.getAbsolutePath() + "/" + f.getName() + ".map");
 			if (initialMap.exists()) maps.add(f.getName() + "/" + f.getName());
 			if (all) {
-				for (File f2: f.listFiles()) {
+				for (File f2 : f.listFiles()) {
 					if (f2.getName().endsWith(".map")) maps.add(f.getName() + "/" + f2.getName().replace(".map", ""));
 				}
 			}
@@ -574,7 +582,7 @@ public class MapLoader {
 	public static void loadAllMaps(Game game) {
 		String[] maps = getMaps(mapFolder, true);
 
-		for (String mapName: maps) {
+		for (String mapName : maps) {
 			try {
 				load(game, mapName);
 			} catch (Exception e) {

@@ -8,7 +8,7 @@ import game.gameobjects.CollisionObject;
 import game.gameobjects.gameobjects.entities.BasicStaticEntity;
 import game.gameobjects.gameobjects.particle.ParticleType;
 
-public class ExplosiveBarrel extends BasicStaticEntity{
+public class ExplosiveBarrel extends BasicStaticEntity {
 	private static Sprite stand = new Sprite(100, "ex_barrel_stand_s");
 	private static Sprite ground = new Sprite(100, "ex_barrel_ground_s");
 	private static Sprite explodeStand = new Sprite(300, "ex_barrel_stand_l", "ex_barrel_stand_e_0", "ex_barrel_stand_e_1");
@@ -19,7 +19,7 @@ public class ExplosiveBarrel extends BasicStaticEntity{
 	private int startTick;
 
 	public ExplosiveBarrel(float x, float y, float drawingPriority, boolean onGround) {
-		super(new HitBox(x+0.125f, y+0.125f + 1f/16, 0.75f, 0.625f), drawingPriority);
+		super(new HitBox(x + 0.125f, y + 0.125f + 1f / 16, 0.75f, 0.625f), drawingPriority);
 
 		hitBox.type = HitBox.HitBoxType.BLOCKING;
 
@@ -28,6 +28,7 @@ public class ExplosiveBarrel extends BasicStaticEntity{
 		exploding = false;
 		startTick = 0;
 	}
+
 	@Override
 	public float getCollisionPriority() {
 		return 0;

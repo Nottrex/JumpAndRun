@@ -12,7 +12,7 @@ public class Lever extends BasicStaticEntity {
 	private static Sprite right = new Sprite(100, "lever_right");
 	private static Sprite left = new Sprite(100, "lever_left");
 	private static Sprite changingLeft = new Sprite(350, "lever_right_2", "lever_middle", "lever_left_2", "lever_left");
-	private static Sprite changingRight = new Sprite(350, "lever_left_2","lever_middle","lever_right_2", "lever_right");
+	private static Sprite changingRight = new Sprite(350, "lever_left_2", "lever_middle", "lever_right_2", "lever_right");
 
 	private boolean activated;
 	private boolean turning;
@@ -40,7 +40,7 @@ public class Lever extends BasicStaticEntity {
 
 	@Override
 	public void interact(CollisionObject gameObject, HitBox hitBox, InteractionType interactionType) {
-		if (enabled != null && !(boolean)enabled.get(game)) return;
+		if (enabled != null && !(boolean) enabled.get(game)) return;
 
 		if (gameObject instanceof Player) {
 			if (!turning) {
@@ -58,8 +58,8 @@ public class Lever extends BasicStaticEntity {
 				activated = !activated;
 				turning = false;
 
-				if(activated && onActivate!=null) onActivate.get(game);
-				if(!activated && onDeactivate!=null) onDeactivate.get(game);
+				if (activated && onActivate != null) onActivate.get(game);
+				if (!activated && onDeactivate != null) onDeactivate.get(game);
 
 				setSprite(activated ? left : right);
 			}

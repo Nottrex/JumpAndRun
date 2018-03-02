@@ -14,7 +14,7 @@ public class Spikes extends BasicStaticEntity {
 	private static Sprite right = new Sprite(100, "spikes_right_blood");
 	private static Sprite left = new Sprite(100, "spikes_left_blood");
 
-	public enum SpikeDirection{
+	public enum SpikeDirection {
 		UP(up), DOWN(down), LEFT(left), RIGHT(right);
 
 		private Sprite sprite;

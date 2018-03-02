@@ -7,17 +7,18 @@ import game.data.hitbox.HitBoxDirection;
 import game.gameobjects.CollisionObject;
 import game.gameobjects.gameobjects.entities.BasicStaticEntity;
 
-public class BeerBarrel extends BasicStaticEntity{
+public class BeerBarrel extends BasicStaticEntity {
 	private static Sprite idle = new Sprite(100, "barrel");
 	private static Sprite leak = new Sprite(200, "barrel_0", "barrel_1", "barrel_2", "barrel_3");
 
 	public BeerBarrel(float x, float y, float drawingPriority) {
-		super(new HitBox(x+0.125f, y, 0.875f, 1), drawingPriority);
+		super(new HitBox(x + 0.125f, y, 0.875f, 1), drawingPriority);
 
 		hitBox.type = HitBox.HitBoxType.BLOCKING;
 
 		setSprite(idle);
 	}
+
 	@Override
 	public float getCollisionPriority() {
 		return 0;

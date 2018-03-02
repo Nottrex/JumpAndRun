@@ -15,17 +15,17 @@ public class Source {
 
 	/**
 	 * Creates new Audio Source at (x, y, 0)
-	 * 
+	 *
 	 * @param x x-Coordinate of Source
 	 * @param y y-Coordinate of Source
 	 */
 	public Source(float x, float y) {
-		this(x, y,  .25f);
+		this(x, y, .25f);
 	}
-	
+
 	/**
 	 * Creates new Audio Source at (x, y, 0) and sets its volume to v
-	 * 
+	 *
 	 * @param x x-Coordinate of Source
 	 * @param y y-Coordinate of Source
 	 * @param v volume of Source
@@ -34,10 +34,10 @@ public class Source {
 		this(x, y, 0, v);
 	}
 
-	
+
 	/**
 	 * Creates new Audio Source at (x, y, z) and sets its volume to v
-	 * 
+	 *
 	 * @param x x-Coordinate of Source
 	 * @param y y-Coordinate of Source
 	 * @param z z-Coordinate of Source
@@ -80,7 +80,7 @@ public class Source {
 		AL10.alSourcePlay(sourceID);
 	}
 
-	
+
 	/**
 	 * Pauses current playing sound
 	 */
@@ -88,7 +88,7 @@ public class Source {
 		AL10.alSourcePause(sourceID);
 	}
 
-	
+
 	/**
 	 * Resumes playing current sound
 	 */
@@ -96,7 +96,7 @@ public class Source {
 		AL10.alSourcePlay(sourceID);
 	}
 
-	
+
 	/**
 	 * Stops current track
 	 */
@@ -104,19 +104,20 @@ public class Source {
 		AL10.alSourceStop(sourceID);
 	}
 
-	
+
 	/**
 	 * Changes the volume
-	 * 
+	 *
 	 * @param volume value of volume
 	 */
 	public void setVolume(float volume) {
 		AL10.alSourcef(sourceID, AL10.AL_GAIN, volume);
 	}
 
-	
+
 	/**
 	 * Changes position of the source
+	 *
 	 * @param x x-Coordinate of Source
 	 * @param y y-Coordinate of Source
 	 * @param z z-Coordinate of Source
@@ -125,7 +126,7 @@ public class Source {
 		AL10.alSource3f(sourceID, AL10.AL_POSITION, x, y, z);
 	}
 
-	
+
 	/**
 	 * Enables/ Disables sound-looping
 	 *
@@ -135,7 +136,7 @@ public class Source {
 		AL10.alSourcei(sourceID, AL10.AL_LOOPING, loop ? AL10.AL_TRUE : AL10.AL_FALSE);
 	}
 
-	
+
 	/**
 	 * Gets if soure is playing somethin
 	 *

@@ -22,10 +22,9 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class Text extends AbstractGameObject implements Drawable {
-	public static Sprite coin = new Sprite(100, "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin","coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin_idle1_0", "coin_idle1_1", "coin_idle1_2", "coin_idle1_3", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin","coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin_idle2_0", "coin_idle2_1", "coin_idle2_0");
+	public static Sprite coin = new Sprite(100, "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin_idle1_0", "coin_idle1_1", "coin_idle1_2", "coin_idle1_3", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin_idle2_0", "coin_idle2_1", "coin_idle2_0");
 	private Sprite stick_up = new Sprite(400, "stick_up_0", "stick_up_1", "stick_up_2", "stick_up_3", "stick_up_2", "stick_up_1");
 	private Sprite stick_down = new Sprite(400, "stick_down_0", "stick_down_1", "stick_down_2", "stick_down_3", "stick_down_2", "stick_down_1");
 	private Sprite stick_left = new Sprite(400, "stick_left_0", "stick_left_1", "stick_left_2", "stick_left_3", "stick_left_2", "stick_left_1");
@@ -129,7 +128,7 @@ public class Text extends AbstractGameObject implements Drawable {
 		if (letters == 0) return;
 
 		shader.setUseCameraLocation(useCamera);
-		shader.setColor(color.getRed()/255f, color.getGreen()/255f, color.getBlue()/255f, color.getAlpha()/255f);
+		shader.setColor(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
 
 		GL30.glBindVertexArray(vao);
 
@@ -163,18 +162,19 @@ public class Text extends AbstractGameObject implements Drawable {
 		char[] chars = trimText();
 
 		float fontHeight = size;
-		float fontWidth =  fontHeight / Constants.FONT_ASPECT  / (useCamera ? 1 : aspectRatio);
+		float fontWidth = fontHeight / Constants.FONT_ASPECT / (useCamera ? 1 : aspectRatio);
 		float fontSpacing = fontWidth * Constants.FONT_SPACING;
 
-		float width = (chars.length-1) * fontSpacing + fontWidth;
+		float width = (chars.length - 1) * fontSpacing + fontWidth;
 		if (animations.containsKey(0)) width = width + 0.25f * fontHeight;
-		if (animations.containsKey(chars.length() - 1)) width = width + 0.25f * fontHeight;
+		if (animations.containsKey(chars.length - 1)) width = width + 0.25f * fontHeight;
 		float height = fontHeight;
 
 		float centeredX = x - width * anchorX;
 		float centeredY = y - height * anchorY;
 		for (int i = 0; i < chars.length; i++) {
-			if (chars[i] != ' ') hitBoxList.put(new HitBox(centeredX + i * fontSpacing, centeredY, fontWidth, fontHeight), String.valueOf(chars[i]));
+			if (chars[i] != ' ')
+				hitBoxList.put(new HitBox(centeredX + i * fontSpacing, centeredY, fontWidth, fontHeight), String.valueOf(chars[i]));
 		}
 
 		//Load stuff into OpenGL
@@ -185,7 +185,7 @@ public class Text extends AbstractGameObject implements Drawable {
 		IntBuffer indices = BufferUtils.createIntBuffer(letters * Constants.INDICES.length);
 
 		int i = 0;
-		for (int index: animations.keySet()) {
+		for (int index : animations.keySet()) {
 			Rectangle texture = animations.get(index).getTexture(startTime, currentTime);
 			float size = 1.5f * fontHeight;
 			float x = centeredX + index * fontSpacing - 0.25f * size;
@@ -205,7 +205,7 @@ public class Text extends AbstractGameObject implements Drawable {
 
 			i++;
 		}
-		for (HitBox hitBox: hitBoxList.keySet()) {
+		for (HitBox hitBox : hitBoxList.keySet()) {
 			Rectangle texture = TextureHandler.getSpriteSheetBounds("textures_" + hitBoxList.get(hitBox));
 
 			for (float[] v : Constants.VERTEX_POS) {
@@ -302,10 +302,10 @@ public class Text extends AbstractGameObject implements Drawable {
 
 
 		float fontHeight = size;
-		float fontWidth =  fontHeight / Constants.FONT_ASPECT;
+		float fontWidth = fontHeight / Constants.FONT_ASPECT;
 		float fontSpacing = fontWidth * Constants.FONT_SPACING;
 
-		return (chars.length-1) * fontSpacing + fontWidth;
+		return (chars.length - 1) * fontSpacing + fontWidth;
 	}
 
 	public static float getWidth(String text, float size, float aspectRatio) {
@@ -313,10 +313,10 @@ public class Text extends AbstractGameObject implements Drawable {
 
 
 		float fontHeight = size;
-		float fontWidth =  fontHeight / Constants.FONT_ASPECT / aspectRatio;
+		float fontWidth = fontHeight / Constants.FONT_ASPECT / aspectRatio;
 		float fontSpacing = fontWidth * Constants.FONT_SPACING;
 
-		return (chars.length-1) * fontSpacing + fontWidth;
+		return (chars.length - 1) * fontSpacing + fontWidth;
 	}
 
 	public static float getHeight(String text, float size) {

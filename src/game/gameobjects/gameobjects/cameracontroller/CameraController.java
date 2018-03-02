@@ -4,13 +4,10 @@ import game.Constants;
 import game.Game;
 import game.data.hitbox.HitBox;
 import game.gameobjects.AbstractGameObject;
-import game.gameobjects.gameobjects.entities.entities.DeadBody;
 import game.gameobjects.gameobjects.entities.entities.Player;
-import game.window.Window;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CameraController extends AbstractGameObject {
@@ -47,7 +44,7 @@ public class CameraController extends AbstractGameObject {
 		boolean outside = false;
 
 		if (visibleObjects.size() > 0) {
-			for (HitBox h: visibleObjects) {
+			for (HitBox h : visibleObjects) {
 				Area area = getAreaAt(h.getCenterX(), h.getCenterY());
 
 				if (area == null) {
@@ -131,7 +128,7 @@ public class CameraController extends AbstractGameObject {
 	}
 
 	private Area getAreaAt(float x, float y) {
-		for (Area area: cameraAreas) {
+		for (Area area : cameraAreas) {
 			if (area.contains(x, y)) return area;
 		}
 

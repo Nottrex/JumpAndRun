@@ -7,7 +7,7 @@ import java.util.List;
 
 public class AudioPlayer {
 
-	private List<Source> afx,toRemove;
+	private List<Source> afx, toRemove;
 	private Source musicSource;
 
 	public AudioPlayer() {
@@ -18,6 +18,7 @@ public class AudioPlayer {
 		musicSource.setVolume(Options.musicVolume);
 		musicSource.setLooping(true);
 	}
+
 	public Source getMusicSource() {
 		return musicSource;
 	}
@@ -54,7 +55,7 @@ public class AudioPlayer {
 		musicSource.setVolume(Options.musicVolume);
 		for (int i = 0; i < afx.size(); i++) {
 			Source c = afx.get(i);
-			if(!c.isPlaying()) {
+			if (!c.isPlaying()) {
 				toRemove.add(c);
 			}
 		}

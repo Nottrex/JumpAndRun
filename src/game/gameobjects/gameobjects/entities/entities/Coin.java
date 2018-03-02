@@ -1,12 +1,10 @@
 package game.gameobjects.gameobjects.entities.entities;
 
 import game.Game;
-import game.audio.AudioHandler;
 import game.audio.Sound;
-import game.audio.Source;
+import game.data.Sprite;
 import game.data.hitbox.HitBox;
 import game.data.hitbox.HitBoxDirection;
-import game.data.Sprite;
 import game.data.script.Tree;
 import game.gameobjects.CollisionObject;
 import game.gameobjects.gameobjects.entities.BasicStaticEntity;
@@ -15,8 +13,8 @@ import game.window.light.Light;
 
 public class Coin extends BasicStaticEntity implements Light {
 
-	public static Sprite idle = new Sprite(100, "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin","coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin_idle1_0", "coin_idle1_1", "coin_idle1_2", "coin_idle1_3", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin","coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin_idle2_0", "coin_idle2_1", "coin_idle2_0");
-	private static Sprite ghost_idle = new Sprite(100, "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost","coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost_idle1_0", "coin_ghost_idle1_1", "coin_ghost_idle1_2", "coin_ghost_idle1_3", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost","coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost_idle2_0", "coin_ghost_idle2_1", "coin_ghost_idle2_0");
+	public static Sprite idle = new Sprite(100, "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin_idle1_0", "coin_idle1_1", "coin_idle1_2", "coin_idle1_3", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin_idle2_0", "coin_idle2_1", "coin_idle2_0");
+	private static Sprite ghost_idle = new Sprite(100, "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost_idle1_0", "coin_ghost_idle1_1", "coin_ghost_idle1_2", "coin_ghost_idle1_3", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost_idle2_0", "coin_ghost_idle2_1", "coin_ghost_idle2_0");
 
 	private boolean collected, ghost;
 	private Tree onFirstCollect, onReCollect;

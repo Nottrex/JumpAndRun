@@ -4,7 +4,7 @@ import game.Game;
 
 /**
  * An implementation of GameObject that stores the game instance
-**/
+ **/
 public abstract class AbstractGameObject implements GameObject {
 	protected Game game; // The variable used to store the game instance
 

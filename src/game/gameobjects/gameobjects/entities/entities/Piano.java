@@ -1,8 +1,6 @@
 package game.gameobjects.gameobjects.entities.entities;
 
-
 import game.Game;
-import game.audio.AudioHandler;
 import game.audio.Source;
 import game.data.Sprite;
 import game.data.hitbox.HitBox;
@@ -13,7 +11,7 @@ import game.gameobjects.gameobjects.entities.BasicStaticEntity;
 import java.util.Random;
 
 public class Piano extends BasicStaticEntity {
-	private static final int[] JINGLES = new int[] {3*60, 3*60, 13*60 };
+	private static final int[] JINGLES = new int[]{3 * 60, 3 * 60, 13 * 60};
 	private static Sprite idle = new Sprite(100, "piano");
 
 	private Source source;

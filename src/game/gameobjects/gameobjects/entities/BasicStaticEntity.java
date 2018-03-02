@@ -6,7 +6,7 @@ import game.gameobjects.CollisionObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BasicStaticEntity extends BasicDrawingEntity implements CollisionObject{
+public abstract class BasicStaticEntity extends BasicDrawingEntity implements CollisionObject {
 
 	private List<HitBox> hitBoxes;
 

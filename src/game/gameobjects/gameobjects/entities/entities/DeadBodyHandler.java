@@ -3,6 +3,7 @@ package game.gameobjects.gameobjects.entities.entities;
 import game.Game;
 import game.gameobjects.AbstractGameObject;
 import game.gameobjects.gameobjects.particle.ParticleType;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,7 +31,7 @@ public class DeadBodyHandler extends AbstractGameObject {
 	public void remove(Game game, boolean mapChange) {
 		super.remove(game, mapChange);
 
-		for (DeadBody d: deadBodies.keySet()) {
+		for (DeadBody d : deadBodies.keySet()) {
 			game.removeGameObject(d);
 		}
 	}

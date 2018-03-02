@@ -51,8 +51,7 @@ public class PressurePlate extends BasicStaticEntity {
 		if (timeActivated == 10 && onActivate != null) {
 			onActivate.get(game);
 			pressedREAL = true;
-		}
-		else if (timeDeactivated == 10 && onDeactivate != null) {
+		} else if (timeDeactivated == 10 && onDeactivate != null) {
 			onDeactivate.get(game);
 			pressedREAL = false;
 		}

@@ -36,12 +36,12 @@ public class Zombie extends BasicWalkingEntity {
 		super.update(game);
 
 		Sprite newSprite = null;
-		if(!onGround && mx != 0) newSprite = (mx < 0? falling_l: falling_r);
-		if(!onGround && mx == 0) newSprite = (lastMX < 0? falling_l: falling_r);
-		if(onGround && mx == 0) newSprite = (lastMX < 0? idle_l: idle_r);
-		if(onGround && mx != 0) newSprite = (mx < 0? walking_l: walking_r);
+		if (!onGround && mx != 0) newSprite = (mx < 0 ? falling_l : falling_r);
+		if (!onGround && mx == 0) newSprite = (lastMX < 0 ? falling_l : falling_r);
+		if (onGround && mx == 0) newSprite = (lastMX < 0 ? idle_l : idle_r);
+		if (onGround && mx != 0) newSprite = (mx < 0 ? walking_l : walking_r);
 
-		if(!sprite.equals(newSprite)) setSprite(newSprite);
+		if (!sprite.equals(newSprite)) setSprite(newSprite);
 
 
 		Optional<Player> nearestPlayer = game.getPlayers().stream().sorted((p1, p2) -> Float.compare(hitBox.distance(p1.getHitBox()), hitBox.distance(p2.getHitBox()))).findFirst();
@@ -54,7 +54,7 @@ public class Zombie extends BasicWalkingEntity {
 		} else {
 			setDown(false);
 			setJumping(false);
-			setMx((game.getGameTick() % 121)-60);
+			setMx((game.getGameTick() % 121) - 60);
 		}
 	}
 
@@ -65,7 +65,8 @@ public class Zombie extends BasicWalkingEntity {
 		if (onDead != null) onDead.get(game);
 
 		if (!mapChange) {
-			if (game.getDeadBodyHandler() != null) game.getDeadBodyHandler().addDeadBody((new DeadBody(getHitBox().x, getHitBox().y, "zombie", Color.BLACK, lastMX > 0)));
+			if (game.getDeadBodyHandler() != null)
+				game.getDeadBodyHandler().addDeadBody((new DeadBody(getHitBox().x, getHitBox().y, "zombie", Color.BLACK, lastMX > 0)));
 		}
 	}
 

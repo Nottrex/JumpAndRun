@@ -13,7 +13,7 @@ public class ShaderHandler {
 	public ShaderHandler() {
 		shaders = new HashMap<>();
 
-		for (ShaderType shaderType: ShaderType.values()) {
+		for (ShaderType shaderType : ShaderType.values()) {
 			ShaderProgram shader = shaderType.createShader();
 			shaders.put(shaderType, shader);
 		}

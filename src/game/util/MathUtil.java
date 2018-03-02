@@ -8,7 +8,7 @@ import java.util.Random;
 public class MathUtil {
 
 	/**
-	 * @param x the value to be checked
+	 * @param x   the value to be checked
 	 * @param min the min allowed value
 	 * @param max the max allowed value
 	 * @return min for x < min, max for x > max or x otherwise
@@ -19,8 +19,9 @@ public class MathUtil {
 
 	/**
 	 * extends the modulo function to work properly with negative numbers
+	 *
 	 * @param value the value
-	 * @param mod the modulo
+	 * @param mod   the modulo
 	 * @return the smallest positive float r, that fulfills:  r == value (modulo mod)
 	 */
 	public static float mod(float value, float mod) {
@@ -32,8 +33,9 @@ public class MathUtil {
 	 * calculates a cosine interpolated noise
 	 * generates an infinite function by creating random values between 0 and 1 for every multiple of STEP_SIZE
 	 * and interpolates between them by the given value
-	 * @param seed determines the randomness -> same seed, same values
-	 * @param time the x value that is used to evaluate the noise
+	 *
+	 * @param seed      determines the randomness -> same seed, same values
+	 * @param time      the x value that is used to evaluate the noise
 	 * @param STEP_SIZE the distance between random values
 	 * @return the interpolated noise
 	 */
@@ -55,7 +57,8 @@ public class MathUtil {
 	 * generates a random float from two seeds
 	 * such that every change in any seed leads to a significant change in the value
 	 * using the same seed leads to the same value
-	 * @param seed first seed
+	 *
+	 * @param seed  first seed
 	 * @param seed2 second seed
 	 * @return the generated float
 	 */

@@ -8,6 +8,7 @@ public class FileHandler {
 
 	/**
 	 * Reads a text file from the jar in the package src/res/files/
+	 *
 	 * @param fileName the filename in the package
 	 * @return the text of the file
 	 */
@@ -31,6 +32,7 @@ public class FileHandler {
 
 	/**
 	 * Checks if a file exists in the jar in the package src/res/files/
+	 *
 	 * @param fileName the filename in the package
 	 * @return if the file is present
 	 */

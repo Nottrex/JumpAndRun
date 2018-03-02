@@ -15,8 +15,8 @@ public class Slider extends BasicMovingEntity {
 	private float currentX;
 	private float y;
 
-	public Slider(float minX, float maxX, float y, float drawingPriority, Tree onRelocate) {
-		super(new HitBox(minX, y, 1, 1), drawingPriority);
+	public Slider(float minX, float maxX, float currentValue, float y, float drawingPriority, Tree onRelocate) {
+		super(new HitBox(minX + (maxX - minX) * currentValue, y, 1, 1), drawingPriority);
 
 		this.y = y;
 		this.minX = minX;

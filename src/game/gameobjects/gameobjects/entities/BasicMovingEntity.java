@@ -104,7 +104,7 @@ public abstract class BasicMovingEntity extends BasicDrawingEntity implements Co
 				vx = 0;
 				ky *= 0.75f;
 				kx = 0;
-			} else if (direction == HitBoxDirection.UP ||direction == HitBoxDirection.DOWN) {
+			} else if (direction == HitBoxDirection.UP || direction == HitBoxDirection.DOWN) {
 				vy = 0;
 				kx *= 0.75f;
 				ky = 0;
@@ -123,25 +123,26 @@ public abstract class BasicMovingEntity extends BasicDrawingEntity implements Co
 
 	private int lastAttackKnockBack = -MIN_TIME_BETWEEN_ATTACK_KNOCK_BACK;
 	private static final int MIN_TIME_BETWEEN_ATTACK_KNOCK_BACK = 30;
+
 	@Override
 	public void interact(CollisionObject gameObject, HitBox hitBox, InteractionType interactionType) {
 		if (game.getGameTick() - lastAttackKnockBack > MIN_TIME_BETWEEN_ATTACK_KNOCK_BACK && gameObject instanceof Player && interactionType == InteractionType.ATTACK) {
 			float dx = (this.hitBox.getCenterX() - hitBox.getCenterX());
 			float dy = (this.hitBox.getCenterY() - hitBox.getCenterY());
-			double l = Math.sqrt(dx*dx+dy*dy);
+			double l = Math.sqrt(dx * dx + dy * dy);
 			dx /= l;
 			dy /= l;
-			addKnockBack(0.4f*dx, 0.4f*dy);
+			addKnockBack(0.4f * dx, 0.4f * dy);
 			lastAttackKnockBack = game.getGameTick();
 		}
 
 		if (interactionType == InteractionType.STOMP) {
 			float dx = (this.hitBox.getCenterX() - hitBox.getCenterX());
 			float dy = (this.hitBox.getCenterY() - hitBox.getCenterY());
-			double l = Math.sqrt(dx*dx+dy*dy);
+			double l = Math.sqrt(dx * dx + dy * dy);
 			dx /= l;
 			dy /= l;
-			addKnockBack(0.6f*dx, 0.6f*dy);
+			addKnockBack(0.6f * dx, 0.6f * dy);
 			lastAttackKnockBack = game.getGameTick();
 		}
 	}

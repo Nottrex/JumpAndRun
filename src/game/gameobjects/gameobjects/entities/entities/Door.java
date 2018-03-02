@@ -21,7 +21,7 @@ public class Door extends BasicStaticEntity {
 	private Tree condition;
 
 	public Door(float x, float y, float drawingPriority, Tree condition) {
-		super(new HitBox(x+0.375f, y, 0.25f, 1f), drawingPriority);
+		super(new HitBox(x + 0.375f, y, 0.25f, 1f), drawingPriority);
 
 		this.condition = condition;
 		turning = false;
@@ -58,7 +58,7 @@ public class Door extends BasicStaticEntity {
 			}
 
 			game.getCamera().addScreenshake(0.004f);
-		} else if ((boolean) condition.get(game) != isOpen){
+		} else if ((boolean) condition.get(game) != isOpen) {
 			turning = true;
 			startTick = game.getGameTick();
 			setSprite(isOpen ? close : open);

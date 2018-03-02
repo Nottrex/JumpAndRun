@@ -1,20 +1,18 @@
 package game.window;
 
 import game.Constants;
-import game.audio.Source;
 import game.data.smoothfloat.SmoothFloat;
 import game.data.smoothfloat.SmoothFloatCubic;
 import game.util.MathUtil;
 import game.util.TimeUtil;
-import org.lwjgl.openal.AL10;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class Camera {
 
-	private float zoom, x, y, rotation;				//the current position  
-	private SmoothFloat tZoom, tX, tY, tRotation;			//the theoretical position
+	private float zoom, x, y, rotation;					//the current position
+	private SmoothFloat tZoom, tX, tY, tRotation;		//the theoretical position
 
 	private List<Screenshake> screenshakeList;			//all active screenshakes
 
@@ -27,7 +25,7 @@ public class Camera {
 		tZoom = new SmoothFloatCubic(zoom);
 		tX = new SmoothFloatCubic(x);
 		tY = new SmoothFloatCubic(y);
-		
+
 		//Rotation should be looping
 		tRotation = new SmoothFloatCubic(rotation) {
 			@Override
@@ -52,6 +50,7 @@ public class Camera {
 	/**
 	 * updates the camera
 	 * theoretical position are turned into the real values
+	 *
 	 * @return if something has changed
 	 */
 	public boolean update() {
@@ -92,6 +91,7 @@ public class Camera {
 
 	/**
 	 * adds a screenshake
+	 *
 	 * @param strength amplitude of the screenshake
 	 */
 	public void addScreenshake(float strength) {
@@ -100,6 +100,7 @@ public class Camera {
 
 	/**
 	 * sets the zoom of the camera instantly
+	 *
 	 * @param zoom the zoom
 	 */
 	public void setZoom(float zoom) {
@@ -108,8 +109,9 @@ public class Camera {
 
 	/**
 	 * sets the zoom of the camera by interpolating the current value with the target value over time
+	 *
 	 * @param zoom the target zoom
-	 * @param time the time of the interpolation 
+	 * @param time the time of the interpolation
 	 */
 	public void setZoomSmooth(float zoom, long time) {
 		tZoom.setSmooth(zoom, time);
@@ -117,6 +119,7 @@ public class Camera {
 
 	/**
 	 * sets the position of the camera instantly
+	 *
 	 * @param x the x coordinate
 	 * @param y the y coordinate
 	 */
@@ -127,8 +130,9 @@ public class Camera {
 
 	/**
 	 * sets the position of the camera by interpolating the current value with the target value over time
-	 * @param x the target x coordinate
-	 * @param y the target y coordinate
+	 *
+	 * @param x    the target x coordinate
+	 * @param y    the target y coordinate
 	 * @param time the time of the interpolation
 	 */
 	public void setPositionSmooth(float x, float y, long time) {
@@ -138,6 +142,7 @@ public class Camera {
 
 	/**
 	 * sets the rotation of the camera instantly
+	 *
 	 * @param rotation the rotation
 	 */
 	public void setRotation(float rotation) {
@@ -146,8 +151,9 @@ public class Camera {
 
 	/**
 	 * sets the rotation of the camera by interpolating the current value with the target value over time
+	 *
 	 * @param rotation the target rotation
-	 * @param time the time of the interpolation
+	 * @param time     the time of the interpolation
 	 */
 	public void setRotationSmooth(float rotation, long time) {
 		tRotation.setSmooth(rotation, time);
@@ -184,7 +190,7 @@ public class Camera {
 	//screenshake
 	private class Screenshake {
 		long startTime;			//the time the screenshake was added
-		float decay;			//the rate at which the screenshake disappears 
+		float decay;			//the rate at which the screenshake disappears
 		float amp_x, amp_y, amp_r, phase_x, phase_y, phase_r, freq_x, freq_y, freq_r; //Amplitude, Phase and Frequency of x, y and rotation
 
 		private Screenshake(long startTime, float decay, float amp_x, float amp_y, float amp_r, float phase_x, float phase_y, float phase_r, float freq_x, float freq_y, float freq_r) {

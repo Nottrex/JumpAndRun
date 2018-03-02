@@ -42,7 +42,7 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 	@Override
 	public void update(Game game) {
 		vx = mx * Constants.MAX_WALKING_SPEED * maxSpeed;
-		if(Math.abs(mx) >= 0.2f) lastMX = mx;
+		if (Math.abs(mx) >= 0.2f) lastMX = mx;
 
 		if ((onGround && !jumpingLastTick) && jumping) {
 			vy = Constants.JUMP_ACCELERATION * maxJumpHeight;
@@ -64,7 +64,7 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 		}
 
 		if (onLadder) {
-			vy = (jumping? 0.1f: -0.1f);
+			vy = (jumping ? 0.1f : -0.1f);
 		}
 
 		jumpingLastTick = jumping;
@@ -84,11 +84,11 @@ public abstract class BasicWalkingEntity extends BasicMovingEntity {
 
 				game.getParticleSystem().createParticle(ParticleType.EXPLOSION, hitBox.getCenterX(), hitBox.y, 0, 0);
 
-				HitBox stomp = new HitBox(hitBox.x - (2 - hitBox.width)/2, hitBox.y - 0.25f, 2f, 0.5f);
+				HitBox stomp = new HitBox(hitBox.x - (2 - hitBox.width) / 2, hitBox.y - 0.25f, 2f, 0.5f);
 
-				for (CollisionObject collisionObject: game.getCollisionObjects()) {
+				for (CollisionObject collisionObject : game.getCollisionObjects()) {
 					if (collisionObject.equals(this)) continue;
-					for (HitBox hitBox2: collisionObject.getCollisionBoxes()) {
+					for (HitBox hitBox2 : collisionObject.getCollisionBoxes()) {
 						if (hitBox2.collides(stomp)) {
 							collisionObject.interact(this, stomp, InteractionType.STOMP);
 							break;

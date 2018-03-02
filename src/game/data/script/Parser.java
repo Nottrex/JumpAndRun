@@ -19,7 +19,7 @@ public class Parser {
 
 	static {
 		List<Replacement> replacements = new ArrayList<>();
-		replacements.add(new Replacement(BOOLEAN, "!" + BOOLEAN, 1, (t, g) -> ! (boolean) t.getChild(0).get(g), true));
+		replacements.add(new Replacement(BOOLEAN, "!" + BOOLEAN, 1, (t, g) -> !(boolean) t.getChild(0).get(g), true));
 		replacements.add(new Replacement(BOOLEAN, "(" + BOOLEAN + ")", 1, (t, g) -> t.getChild(0).get(g), true));
 		replacements.add(new Replacement(BOOLEAN, "(" + BOOLEAN + "||" + BOOLEAN + ")", 2, (t, g) -> ((boolean) t.getChild(0).get(g)) || ((boolean) t.getChild(1).get(g)), true));
 		replacements.add(new Replacement(BOOLEAN, "(" + BOOLEAN + "&&" + BOOLEAN + ")", 2, (t, g) -> ((boolean) t.getChild(0).get(g)) && ((boolean) t.getChild(1).get(g)), true));
@@ -34,12 +34,12 @@ public class Parser {
 		replacements.add(new Replacement(BOOLEAN, NUMBER + ">=" + NUMBER, 2, (t, g) -> (Integer) t.getChild(0).get(g) >= (Integer) t.getChild(1).get(g), true));
 		replacements.add(new Replacement(BOOLEAN, NUMBER + "==" + NUMBER, 2, (t, g) -> t.getChild(0).get(g) == t.getChild(1).get(g), true));
 
-		for (final char c: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789".toCharArray()) {
+		for (final char c : "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789".toCharArray()) {
 			replacements.add(new Replacement(VAR, "" + c, 0, (t, g) -> "" + c, true));
 			replacements.add(new Replacement(VAR, c + "" + VAR, 1, (t, g) -> c + ((String) t.getChild(0).get(g)), true));
 		}
 
-		for (final char c: "0123456789".toCharArray()) {
+		for (final char c : "0123456789".toCharArray()) {
 			replacements.add(new Replacement(NUMBER_, "" + c, 0, (t, g) -> "" + c, true));
 			replacements.add(new Replacement(NUMBER_, c + "" + VAR, 1, (t, g) -> c + ((String) t.getChild(0).get(g)), true));
 		}
@@ -67,18 +67,17 @@ public class Parser {
 			return null;
 		}, true));
 
-		replacements.add(new Replacement(COMMAND_BLOCK_NON_NULL, COMMAND + "", 1, (t,g) -> t.getChild(0).get(g), true));
-		replacements.add(new Replacement(COMMAND_BLOCK_NON_NULL, COMMAND + "" + COMMAND_BLOCK_NON_NULL, 2, (t,g) -> {
+		replacements.add(new Replacement(COMMAND_BLOCK_NON_NULL, COMMAND + "", 1, (t, g) -> t.getChild(0).get(g), true));
+		replacements.add(new Replacement(COMMAND_BLOCK_NON_NULL, COMMAND + "" + COMMAND_BLOCK_NON_NULL, 2, (t, g) -> {
 			t.getChild(0).get(g);
 			return t.getChild(1).get(g);
 		}, true));
 
-		replacements.add(new Replacement(COMMAND_BLOCK, COMMAND_BLOCK_NON_NULL + "", 1, (t,g) -> t.getChild(0).get(g), true));
-		replacements.add(new Replacement(COMMAND_BLOCK,  "", 0, (t,g) -> null, true));
+		replacements.add(new Replacement(COMMAND_BLOCK, COMMAND_BLOCK_NON_NULL + "", 1, (t, g) -> t.getChild(0).get(g), true));
+		replacements.add(new Replacement(COMMAND_BLOCK, "", 0, (t, g) -> null, true));
 
 		PARSER = new Parser(replacements);
 	}
-
 
 
 	List<Replacement> replacements;
@@ -88,7 +87,7 @@ public class Parser {
 	}
 
 	public List<Replacement> parse(String startSymbol, String value) {
-		while (!startSymbol.isEmpty() && !value.isEmpty() && isTerminal(startSymbol.charAt(0))&& value.charAt(0) == startSymbol.charAt(0)) {
+		while (!startSymbol.isEmpty() && !value.isEmpty() && isTerminal(startSymbol.charAt(0)) && value.charAt(0) == startSymbol.charAt(0)) {
 			startSymbol = startSymbol.substring(1);
 			value = value.substring(1);
 		}
@@ -100,7 +99,7 @@ public class Parser {
 
 		if (isTerminal(startSymbol.charAt(0))) return null;
 		else {
-			for (Replacement r: getReplacementsForKey(startSymbol.charAt(0))) {
+			for (Replacement r : getReplacementsForKey(startSymbol.charAt(0))) {
 				List<Replacement> rep = parse(r.getReplacement() + startSymbol.substring(1), value);
 				if (rep != null) {
 					rep.add(r);
@@ -117,7 +116,7 @@ public class Parser {
 	}
 
 	private boolean isTerminal(char c) {
-		for (Replacement r: replacements) {
+		for (Replacement r : replacements) {
 			if (r.getKey() == c) {
 				return false;
 			}
@@ -127,7 +126,7 @@ public class Parser {
 
 	public Tree toTree(List<Replacement> list) {
 		Stack<Replacement> replacementStack = new Stack<>();
-		for (Replacement r: list) {
+		for (Replacement r : list) {
 			replacementStack.push(r);
 		}
 
@@ -139,11 +138,11 @@ public class Parser {
 		while (!replacementStack.isEmpty()) {
 			Tree missing = tree;
 
-			while(missing.getChildAmount() > 0) {
-				missing = missing.getChild(missing.getChildAmount()-1);
+			while (missing.getChildAmount() > 0) {
+				missing = missing.getChild(missing.getChildAmount() - 1);
 			}
 
-			while(missing.getChildAmount() == missing.getTotalChildAmount()) {
+			while (missing.getChildAmount() == missing.getTotalChildAmount()) {
 				missing = missing.getParent();
 			}
 
@@ -173,7 +172,7 @@ public class Parser {
 
 			return PARSER.optimizeTree(PARSER.toTree(PARSER.parse(start + "", value)));
 		} catch (Exception e) {
-			ErrorUtil.printError("Loading Script: " + value + " as "+ start);
+			ErrorUtil.printError("Loading Script: " + value + " as " + start);
 			return null;
 		}
 	}

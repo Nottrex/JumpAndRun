@@ -49,15 +49,15 @@ public class Tree {
 
 	public int getDepth() {
 		int depth = 0;
-		for (Tree child: childs) {
+		for (Tree child : childs) {
 			depth = Math.max(depth, child.getDepth());
 		}
-		return depth+1;
+		return depth + 1;
 	}
 
 	public boolean isConstant() {
 		boolean constantC = true;
-		for (Tree c: childs) {
+		for (Tree c : childs) {
 			constantC = constantC && c.isConstant();
 		}
 		return constant && constantC;

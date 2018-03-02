@@ -8,6 +8,7 @@ public class ErrorUtil {
 
 	/**
 	 * Prints a formatted error to the console and exits the program
+	 *
 	 * @param error the error to be printed
 	 */
 	public static void printError(String error) {
