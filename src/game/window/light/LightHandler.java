@@ -9,11 +9,11 @@ import java.util.List;
 
 public class LightHandler {
 
-	private List<Light> lights;
-	private float minimumBrightness;
-	private SmoothFloat tMinimumBrightness;
+	private List<Light> lights;				q//all lights
+	private float minimumBrightness;			//the current default brightness of the pixels
+	private SmoothFloat tMinimumBrightness;			//the theoretical default brightness of the pixels
 
-	private boolean changed;
+	private boolean changed;				//has something changed since the last update
 
 	public LightHandler() {
 		changed = true;
@@ -23,11 +23,15 @@ public class LightHandler {
 		tMinimumBrightness = new SmoothFloatCubic(minimumBrightness);
 	}
 
+	/**
+	 * updates the light
+	 * @return if something has changed
+	 */
 	public boolean update() {
 		boolean change = changed;
 
 		for (Light light : lights) {
-			change |= light.updateLight();
+			change |= light.updateLight(); 		//Update lights
 		}
 
 		long time = TimeUtil.getTime();
@@ -40,32 +44,58 @@ public class LightHandler {
 		return change;
 	}
 
+	/**
+	 * adds a light to the game
+	 * @param light to be added
+	 */
 	public void addLight(Light light) {
 		lights.add(light);
 		changed = true;
 	}
 
+	/**
+	 * removes a light from the game
+	 * @param light to be removed
+	 */
 	public void removeLight(Light light) {
 		lights.remove(light);
 		changed = true;
 	}
 
+	/**
+	 * sets the minimum brightness instantly
+	 * @param minimumBrightness the new minimumBrightness
+	 */
 	public void setMinimumBrightness(float minimumBrightness) {
 		tMinimumBrightness.set(minimumBrightness);
 	}
 
+	/**
+	 * sets the minimum brightness by interpolating between the current and the target values over time
+	 * @param minimumBrightness the target minimumBrightness
+	 * @param time the time for the interpolations
+	 */
 	public void setMinimumBrightnessSmooth(float minimumBrightness, long time) {
 		tMinimumBrightness.setSmooth(minimumBrightness, time);
 	}
 
+	/**
+	 * @return the current minimumBrightness
+	 */
 	public float getMinimumBrightness() {
 		return minimumBrightness;
 	}
 
+	/**
+	 * @return the current amount of lights
+	 */
 	public int getLightAmount() {
 		return lights.size();
 	}
 
+	/**
+	 * @return a two dimensional array of all light positions
+	 */
 	public float[][] getLights() {
 		float[][] light = new float[lights.size()][3];
 
@@ -76,6 +106,9 @@ public class LightHandler {
 		return light;
 	}
 
+	/**
+	 * @return a two dimensional array of all light colors
+	 */
 	public float[][] getLightColors() {
 		float[][] light = new float[lights.size()][3];
 
