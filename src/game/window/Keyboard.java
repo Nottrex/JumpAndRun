@@ -10,8 +10,12 @@ import java.util.Map;
 
 public class Keyboard {
 
-	private Map<Integer, Float> keys;
+	private Map<Integer, Float> keys;			//Stores how much every key is pressed
 
+	/**
+	 * creates a Keyboard for the given glfw window
+	 * @param window the glfw window
+	 */
 	public Keyboard(long window) {
 		this.keys = new HashMap<>();
 
@@ -26,14 +30,27 @@ public class Keyboard {
 		});
 	}
 
+	/**
+	 * checks if a key is pressed
+	 * @param keyCode the code of the key
+	 * @return if the given keyCode is pressed more than 0.5
+	 */
 	public boolean isPressed(int keyCode) {
 		return getPressed(keyCode) >= 0.5f;
 	}
 
+	/**
+	 * checks how much a key is pressed
+	 * @param keyCode the code of the key
+	 * @return how much the given keyCode is pressed, or 0 if it was never pressed
+	 */
 	public float getPressed(int keyCode) {
 		return keys.getOrDefault(keyCode, 0f);
 	}
 
+	/**
+	 * updates the keyboard and checks for pressed keys 
+	 */
 	public void update() {
 		GLFW.glfwPollEvents();
 
@@ -57,7 +74,10 @@ public class Keyboard {
 		}
 
 	}
-
+	
+	//All keys:
+	
+	//GamePad 1
 	public static final int
 			GAMEPAD_1_BUTTON_A = 30 * 0 + GLFW.GLFW_GAMEPAD_BUTTON_A,
 			GAMEPAD_1_BUTTON_B = 30 * 0 + GLFW.GLFW_GAMEPAD_BUTTON_B,
@@ -87,6 +107,7 @@ public class Keyboard {
 			GAMEPAD_1_RIGHT_AXIS_RIGHT = 21 + 30 * 0 + GLFW.GLFW_GAMEPAD_AXIS_RIGHT_X,
 			GAMEPAD_1_RIGHT_AXIS_DOWN = 21 + 30 * 0 + GLFW.GLFW_GAMEPAD_AXIS_RIGHT_Y;
 
+	//GamePad 2
 	public static final int
 			GAMEPAD_2_BUTTON_A = 30 * 1 + GLFW.GLFW_GAMEPAD_BUTTON_A,
 			GAMEPAD_2_BUTTON_B = 30 * 1 + GLFW.GLFW_GAMEPAD_BUTTON_B,
@@ -116,6 +137,7 @@ public class Keyboard {
 			GAMEPAD_2_RIGHT_AXIS_RIGHT = 21 + 30 * 1 + GLFW.GLFW_GAMEPAD_AXIS_RIGHT_X,
 			GAMEPAD_2_RIGHT_AXIS_DOWN = 21 + 30 * 1 + GLFW.GLFW_GAMEPAD_AXIS_RIGHT_Y;
 
+	//GamePad 3
 	public static final int
 			GAMEPAD_3_BUTTON_A = 30 * 2 + GLFW.GLFW_GAMEPAD_BUTTON_A,
 			GAMEPAD_3_BUTTON_B = 30 * 2 + GLFW.GLFW_GAMEPAD_BUTTON_B,
@@ -145,6 +167,7 @@ public class Keyboard {
 			GAMEPAD_3_RIGHT_AXIS_RIGHT = 21 + 30 * 2 + GLFW.GLFW_GAMEPAD_AXIS_RIGHT_X,
 			GAMEPAD_3_RIGHT_AXIS_DOWN = 21 + 30 * 2 + GLFW.GLFW_GAMEPAD_AXIS_RIGHT_Y;
 
+	//GamePad 4
 	public static final int
 			GAMEPAD_4_BUTTON_A = 30 * 3 + GLFW.GLFW_GAMEPAD_BUTTON_A,
 			GAMEPAD_4_BUTTON_B = 30 * 3 + GLFW.GLFW_GAMEPAD_BUTTON_B,
@@ -174,6 +197,7 @@ public class Keyboard {
 			GAMEPAD_4_RIGHT_AXIS_RIGHT = 21 + 30 * 3 + GLFW.GLFW_GAMEPAD_AXIS_RIGHT_X,
 			GAMEPAD_4_RIGHT_AXIS_DOWN = 21 + 30 * 3 + GLFW.GLFW_GAMEPAD_AXIS_RIGHT_Y;
 
+	//GamePad 5
 	public static final int
 			GAMEPAD_5_BUTTON_A = 30 * 4 + GLFW.GLFW_GAMEPAD_BUTTON_A,
 			GAMEPAD_5_BUTTON_B = 30 * 4 + GLFW.GLFW_GAMEPAD_BUTTON_B,
@@ -203,6 +227,7 @@ public class Keyboard {
 			GAMEPAD_5_RIGHT_AXIS_RIGHT = 21 + 30 * 4 + GLFW.GLFW_GAMEPAD_AXIS_RIGHT_X,
 			GAMEPAD_5_RIGHT_AXIS_DOWN = 21 + 30 * 4 + GLFW.GLFW_GAMEPAD_AXIS_RIGHT_Y;
 
+	//GamePad 6
 	public static final int
 			GAMEPAD_6_BUTTON_A = 30 * 5 + GLFW.GLFW_GAMEPAD_BUTTON_A,
 			GAMEPAD_6_BUTTON_B = 30 * 5 + GLFW.GLFW_GAMEPAD_BUTTON_B,
@@ -232,6 +257,7 @@ public class Keyboard {
 			GAMEPAD_6_RIGHT_AXIS_RIGHT = 21 + 30 * 5 + GLFW.GLFW_GAMEPAD_AXIS_RIGHT_X,
 			GAMEPAD_6_RIGHT_AXIS_DOWN = 21 + 30 * 5 + GLFW.GLFW_GAMEPAD_AXIS_RIGHT_Y;
 
+	//GamePad 7
 	public static final int
 			GAMEPAD_7_BUTTON_A = 30 * 6 + GLFW.GLFW_GAMEPAD_BUTTON_A,
 			GAMEPAD_7_BUTTON_B = 30 * 6 + GLFW.GLFW_GAMEPAD_BUTTON_B,
@@ -261,6 +287,7 @@ public class Keyboard {
 			GAMEPAD_7_RIGHT_AXIS_RIGHT = 21 + 30 * 6 + GLFW.GLFW_GAMEPAD_AXIS_RIGHT_X,
 			GAMEPAD_7_RIGHT_AXIS_DOWN = 21 + 30 * 6 + GLFW.GLFW_GAMEPAD_AXIS_RIGHT_Y;
 
+	//GamePad 8
 	public static final int
 			GAMEPAD_8_BUTTON_A = 30 * 7 + GLFW.GLFW_GAMEPAD_BUTTON_A,
 			GAMEPAD_8_BUTTON_B = 30 * 7 + GLFW.GLFW_GAMEPAD_BUTTON_B,
@@ -290,6 +317,7 @@ public class Keyboard {
 			GAMEPAD_8_RIGHT_AXIS_RIGHT = 21 + 30 * 7 + GLFW.GLFW_GAMEPAD_AXIS_RIGHT_X,
 			GAMEPAD_8_RIGHT_AXIS_DOWN = 21 + 30 * 7 + GLFW.GLFW_GAMEPAD_AXIS_RIGHT_Y;
 
+	//GamePad 9
 	public static final int
 			GAMEPAD_9_BUTTON_A = 30 * 8 + GLFW.GLFW_GAMEPAD_BUTTON_A,
 			GAMEPAD_9_BUTTON_B = 30 * 8 + GLFW.GLFW_GAMEPAD_BUTTON_B,
@@ -319,6 +347,7 @@ public class Keyboard {
 			GAMEPAD_9_RIGHT_AXIS_RIGHT = 21 + 30 * 8 + GLFW.GLFW_GAMEPAD_AXIS_RIGHT_X,
 			GAMEPAD_9_RIGHT_AXIS_DOWN = 21 + 30 * 8 + GLFW.GLFW_GAMEPAD_AXIS_RIGHT_Y;
 
+	//GamePad 10
 	public static final int
 			GAMEPAD_10_BUTTON_A = 30 * 9 + GLFW.GLFW_GAMEPAD_BUTTON_A,
 			GAMEPAD_10_BUTTON_B = 30 * 9 + GLFW.GLFW_GAMEPAD_BUTTON_B,
@@ -348,6 +377,7 @@ public class Keyboard {
 			GAMEPAD_10_RIGHT_AXIS_RIGHT = 21 + 30 * 9 + GLFW.GLFW_GAMEPAD_AXIS_RIGHT_X,
 			GAMEPAD_10_RIGHT_AXIS_DOWN = 21 + 30 * 9 + GLFW.GLFW_GAMEPAD_AXIS_RIGHT_Y;
 
+	//GamePad 11
 	public static final int
 			GAMEPAD_11_BUTTON_A = 30 * 10 + GLFW.GLFW_GAMEPAD_BUTTON_A,
 			GAMEPAD_11_BUTTON_B = 30 * 10 + GLFW.GLFW_GAMEPAD_BUTTON_B,
@@ -377,6 +407,7 @@ public class Keyboard {
 			GAMEPAD_11_RIGHT_AXIS_RIGHT = 21 + 30 * 10 + GLFW.GLFW_GAMEPAD_AXIS_RIGHT_X,
 			GAMEPAD_11_RIGHT_AXIS_DOWN = 21 + 30 * 10 + GLFW.GLFW_GAMEPAD_AXIS_RIGHT_Y;
 
+	//GamePad 12
 	public static final int
 			GAMEPAD_12_BUTTON_A = 30 * 11 + GLFW.GLFW_GAMEPAD_BUTTON_A,
 			GAMEPAD_12_BUTTON_B = 30 * 11 + GLFW.GLFW_GAMEPAD_BUTTON_B,
@@ -406,6 +437,7 @@ public class Keyboard {
 			GAMEPAD_12_RIGHT_AXIS_RIGHT = 21 + 30 * 11 + GLFW.GLFW_GAMEPAD_AXIS_RIGHT_X,
 			GAMEPAD_12_RIGHT_AXIS_DOWN = 21 + 30 * 11 + GLFW.GLFW_GAMEPAD_AXIS_RIGHT_Y;
 
+	//GamePad 13
 	public static final int
 			GAMEPAD_13_BUTTON_A = 30 * 12 + GLFW.GLFW_GAMEPAD_BUTTON_A,
 			GAMEPAD_13_BUTTON_B = 30 * 12 + GLFW.GLFW_GAMEPAD_BUTTON_B,
@@ -435,6 +467,7 @@ public class Keyboard {
 			GAMEPAD_13_RIGHT_AXIS_RIGHT = 21 + 30 * 12 + GLFW.GLFW_GAMEPAD_AXIS_RIGHT_X,
 			GAMEPAD_13_RIGHT_AXIS_DOWN = 21 + 30 * 12 + GLFW.GLFW_GAMEPAD_AXIS_RIGHT_Y;
 
+	//GamePad 14
 	public static final int
 			GAMEPAD_14_BUTTON_A = 30 * 13 + GLFW.GLFW_GAMEPAD_BUTTON_A,
 			GAMEPAD_14_BUTTON_B = 30 * 13 + GLFW.GLFW_GAMEPAD_BUTTON_B,
@@ -464,6 +497,7 @@ public class Keyboard {
 			GAMEPAD_14_RIGHT_AXIS_RIGHT = 21 + 30 * 13 + GLFW.GLFW_GAMEPAD_AXIS_RIGHT_X,
 			GAMEPAD_14_RIGHT_AXIS_DOWN = 21 + 30 * 13 + GLFW.GLFW_GAMEPAD_AXIS_RIGHT_Y;
 
+	//GamePad 15
 	public static final int
 			GAMEPAD_15_BUTTON_A = 30 * 14 + GLFW.GLFW_GAMEPAD_BUTTON_A,
 			GAMEPAD_15_BUTTON_B = 30 * 14 + GLFW.GLFW_GAMEPAD_BUTTON_B,
@@ -493,6 +527,7 @@ public class Keyboard {
 			GAMEPAD_15_RIGHT_AXIS_RIGHT = 21 + 30 * 14 + GLFW.GLFW_GAMEPAD_AXIS_RIGHT_X,
 			GAMEPAD_15_RIGHT_AXIS_DOWN = 21 + 30 * 14 + GLFW.GLFW_GAMEPAD_AXIS_RIGHT_Y;
 
+	//GamePad 16
 	public static final int
 			GAMEPAD_16_BUTTON_A = 30 * 15 + GLFW.GLFW_GAMEPAD_BUTTON_A,
 			GAMEPAD_16_BUTTON_B = 30 * 15 + GLFW.GLFW_GAMEPAD_BUTTON_B,
@@ -522,6 +557,7 @@ public class Keyboard {
 			GAMEPAD_16_RIGHT_AXIS_RIGHT = 21 + 30 * 15 + GLFW.GLFW_GAMEPAD_AXIS_RIGHT_X,
 			GAMEPAD_16_RIGHT_AXIS_DOWN = 21 + 30 * 15 + GLFW.GLFW_GAMEPAD_AXIS_RIGHT_Y;
 
+	//Keyboard
 	public static final int
 			KEY_SPACE = 30 * 16 + GLFW.GLFW_KEY_SPACE,
 			KEY_APOSTROPHE = 30 * 16 + GLFW.GLFW_KEY_APOSTROPHE,
