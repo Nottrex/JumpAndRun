@@ -295,6 +295,34 @@ public class MapLoader {
 					case "zombie_r_idle_0":
 						map.addGameObject(new Zombie(x, y, drawingPriority, Parser.loadScript(Parser.COMMAND_BLOCK, tags.getOrDefault("onDead", ""))));
 						break;
+					case "a":
+					case "b":
+					case "c":
+					case "d":
+					case "e":
+					case "f":
+					case "g":
+					case "h":
+					case "i":
+					case "j":
+					case "k":
+					case "l":
+					case "m":
+					case "n":
+					case "o":
+					case "p":
+					case "q":
+					case "r":
+					case "s":
+					case "t":
+					case "u":
+					case "v":
+					case "w":
+					case "x":
+					case "y":
+					case "z":
+						map.addGameObject(new Text(drawingPriority, tags.getOrDefault("text", ""), x, y, Float.valueOf(tags.getOrDefault("size", "0.5")), true, Float.valueOf(tags.getOrDefault("anchorX", "0")), Float.valueOf(tags.getOrDefault("anchorY", "0"))));
+						break;
 					default:
 						HitBox hitBox = new HitBox(x, y, textureBounds.width / tileSize, textureBounds.height / tileSize);
 
@@ -458,35 +486,58 @@ public class MapLoader {
 		List<GameObject> lever = map.getGameObjects().stream().filter(go -> go instanceof Lever).sorted((g1, g2) -> Float.compare(((Lever) g1).getCollisionBoxes().get(0).y, ((Lever) g2).getCollisionBoxes().get(0).y)).collect(Collectors.toList());
 
 		{
-			Lever lever1 = (Lever) lever.get(0);
+			Lever fullscreenLever = (Lever) lever.get(0);
 
-			lever1.setEnabled(new Tree((t, g2) -> true));
-			lever1.setOnActivate(new Tree((t, g2) -> {
+			fullscreenLever.setEnabled(new Tree((t, g2) -> true));
+			fullscreenLever.setOnActivate(new Tree((t, g2) -> {
 				Options.fullscreen = true;
 				return null;
 			}));
-			lever1.setOnDeactivate(new Tree((t, g2) -> {
+			fullscreenLever.setOnDeactivate(new Tree((t, g2) -> {
 				Options.fullscreen = false;
 				return null;
 			}));
-			lever1.setActivated(Options.fullscreen);
+			fullscreenLever.setActivated(Options.fullscreen);
 
-			HitBox textBox = lever1.getCollisionBoxes().get(0).clone();
+			HitBox textBox = fullscreenLever.getCollisionBoxes().get(0).clone();
 			textBox.move(0, 1f);
-			map.addGameObject(new Text(0, "MAXIMIZE", textBox.getCenterX(), textBox.getCenterY(), 0.5f, true, 0.5f, 0.5f, Color.RED));
+			map.addGameObject(new Text(0, "fullscreen", textBox.getCenterX(), textBox.getCenterY(), 0.5f, true, 0.5f, 0.5f));
 		}
-		for (int i = 1; i < lever.size(); i++) {
-			Lever leveri = (Lever) lever.get(i);
-			leveri.setEnabled(new Tree((t, g2) -> false));
+		{
+			Lever soundLever = (Lever) lever.get(1);
+
+			soundLever.setEnabled(new Tree((t, g2) -> true));
+			soundLever.setOnActivate(new Tree((t, g2) -> {
+				Options.stereo = true;
+				return null;
+			}));
+			soundLever.setOnDeactivate(new Tree((t, g2) -> {
+				Options.stereo = false;
+				return null;
+			}));
+			soundLever.setActivated(Options.stereo);
+
+			HitBox textBox = soundLever.getCollisionBoxes().get(0).clone();
+			textBox.move(0, 1f);
+			map.addGameObject(new Text(0, "3d sound", textBox.getCenterX(), textBox.getCenterY(), 0.5f, true, 0.5f, 0.5f));
 		}
 
-		Slider slider = new Slider(map.getSpawnX() + 1, map.getSpawnX() + 6, Options.effectVolume, map.getSpawnY(), 0.52f, null);
-		slider.setOnRelocate(new Tree(((tree, game) -> {
-			Options.effectVolume = slider.getSliderValue();
-			Options.musicVolume = slider.getSliderValue();
+		Slider musicSlider = new Slider(map.getSpawnX(), map.getSpawnX() + 8, Options.musicVolume, map.getSpawnY() + 4, 0.52f, null);
+		musicSlider.setOnRelocate(new Tree(((tree, game) -> {
+			Options.musicVolume = musicSlider.getSliderValue();
 			return null;
 		})));
-		map.addGameObject(slider);
+		map.addGameObject(musicSlider);
+		map.addGameObject(new Text(0.52f, "music volume", map.getSpawnX() + 2, map.getSpawnY() + 5.5f, 0.5f, true));
+
+		Slider effectSlider = new Slider(map.getSpawnX(), map.getSpawnX() + 8, Options.effectVolume, map.getSpawnY() + 8, 0.52f, null);
+		effectSlider.setOnRelocate(new Tree(((tree, game) -> {
+			Options.effectVolume = effectSlider.getSliderValue();
+			return null;
+		})));
+		map.addGameObject(effectSlider);
+		map.addGameObject(new Text(0.52f, "effect volume", map.getSpawnX() + 2, map.getSpawnY() + 9.5f, 0.5f, true));
+
 
 		((Exit) map.getGameObjects().stream().filter(go -> go instanceof Exit).findAny().get()).setTargetMap(Constants.SYS_PREFIX + "menu");
 		((Exit) map.getGameObjects().stream().filter(go -> go instanceof Exit).findAny().get()).setOnEntrance(new Tree(((tree, game) -> {

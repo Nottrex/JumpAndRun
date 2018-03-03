@@ -17,6 +17,7 @@ public class Options {
 	public static boolean fullscreen = false;
 	public static float effectVolume = 1.0f;
 	public static float musicVolume = 1.0f;
+	public static boolean stereo = true;
 
 	static {
 		new File(Constants.DATA_PATH).mkdirs();
@@ -33,6 +34,7 @@ public class Options {
 		data.put("fullscreen", fullscreen);
 		data.put("effectVolume", effectVolume);
 		data.put("musicVolume", musicVolume);
+		data.put("stereo", stereo);
 
 		try {
 			yaml.dump(data, new FileWriter(new File(Constants.DATA_FILE_PATH)));
@@ -59,6 +61,7 @@ public class Options {
 				if (data.containsKey("fullscreen")) fullscreen = (Boolean) data.get("fullscreen");
 				if (data.containsKey("effectVolume")) effectVolume = (float) ((double) data.get("effectVolume"));
 				if (data.containsKey("musicVolume")) musicVolume = (float) ((double) data.get("musicVolume"));
+				if (data.containsKey("stereo")) stereo = (boolean) data.get("stereo");
 
 			} catch (FileNotFoundException e) {
 				ErrorUtil.printError("Loading options: " + e.toString());

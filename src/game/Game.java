@@ -1,7 +1,6 @@
 package game;
 
 import game.audio.AudioPlayer;
-import game.audio.Source;
 import game.gamemap.GameMap;
 import game.gamemap.MapLoader;
 import game.gameobjects.CollisionObject;
@@ -25,33 +24,31 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Game {
-	private Window window;                //displays the game
+	private Window window;							//displays the game
 
-	private int gameTick;                //current tick of the game (starts at 0) -> 60 Ticks Per Second
+	private int gameTick;							//current tick of the game (starts at 0) -> 60 Ticks Per Second
 
-	private List<GameObject> gameObjects;        //list of gameobjects, that are updated every tick
-	private List<CollisionObject> collisionObjects;    //list of collisionobjects, that are used when calculating collision
-	private List<Player> players;            //list of players, that are current
-	private List<Integer> inputs;            //list of inputs, that are used by the players
-	private List<Color> playerColors;        //list of playerColors, that are used to recolor the Player
-	private GameMap map;                //current GameMap
+	private List<GameObject> gameObjects;			//list of gameObjects, that are updated every tick
+	private List<CollisionObject> collisionObjects;	//list of collisionObjects, that are used when calculating collision
+	private List<Player> players;					//list of players, that are current
+	private List<Integer> inputs;					//list of inputs, that are used by the players
+	private List<Color> playerColors;				//list of playerColors, that are used to recolor the Player
+	private GameMap map;							//current GameMap
 
 	private AudioPlayer audioPlayer;
 
-	private int fadeStart;                //The startTick of a transition between maps
-	private String newMap;                //The target map for a map change
-	private Queue<GameObject> toRemove;        //list of gameobjects, that are removed next Tick
+	private int fadeStart;							//The startTick of a transition between maps
+	private String newMap;							//The target map for a map change
+	private Queue<GameObject> toRemove;				//list of gameObjects, that are removed next Tick
 	private Map<GameObject, Boolean> removeMapChange;
-	private Queue<GameObject> toAdd;        //list of gameobjects, that are added next Tick
+	private Queue<GameObject> toAdd;				//list of gameObjects, that are added next Tick
 
-	private ParticleSystem particleSystem;        //display and store all particles
-	private DeadBodyHandler deadBodyHandler;    //display and store all deadBodies
+	private ParticleSystem particleSystem;			//display and store all particles
+	private DeadBodyHandler deadBodyHandler;		//display and store all deadBodies
 
-	private Map<String, Integer> values;        //store all in game variables -> SaveGame
+	private Map<String, Integer> values;			//store all in game variables -> SaveGame
 
-	private Text coinCounter;            //display coin amount on the screeen
-
-	private Source musicPlayer;
+	private Text coinCounter;						//display coin amount on the screen
 
 	public Game(Window window) {
 		this.window = window;
@@ -122,7 +119,7 @@ public class Game {
 				newMap = null;
 			}
 
-			//Remove gameobjects
+			//Remove gameObjects
 			while (!toRemove.isEmpty()) {
 				GameObject gameObject = toRemove.poll();
 
@@ -145,7 +142,7 @@ public class Game {
 				}
 			}
 
-			//Add gameobjects
+			//Add gameObjects
 			while (!toAdd.isEmpty()) {
 				GameObject gameObject = toAdd.poll();
 
@@ -162,7 +159,7 @@ public class Game {
 				}
 			}
 
-			//Sort gameobjects for priority
+			//Sort gameObjects for priority
 			collisionObjects.sort((o1, o2) -> Float.compare(o2.getCollisionPriority(), o1.getCollisionPriority()));
 			gameObjects.sort((o1, o2) -> Float.compare(o2.getPriority(), o1.getPriority()));
 
@@ -221,7 +218,7 @@ public class Game {
 	 **/
 	public void restartMap() {
 		if (map.getDirectory() != null && !map.getDirectory().equals("hidden"))
-			setGameMap(map.getDirectory() + "/" + map.getName(), true); //TO-DO fix if
+			setGameMap(map.getDirectory() + "/" + map.getName(), true);
 	}
 
 	/**
@@ -251,7 +248,7 @@ public class Game {
 	/**
 	 * add a new GameObject to the Game
 	 *
-	 * @param gameObject the gameobject to be added
+	 * @param gameObject the gameObject to be added
 	 **/
 	public void addGameObject(GameObject gameObject) {
 		if (!toAdd.contains(gameObject) && !gameObjects.contains(gameObject)) toAdd.add(gameObject);
@@ -260,7 +257,7 @@ public class Game {
 	/**
 	 * remove a GameObject from the Game
 	 *
-	 * @param gameObject the gameobject to be removed
+	 * @param gameObject the gameObject to be removed
 	 **/
 	private void removeGameObject(GameObject gameObject, boolean mapChange) {
 		if (!toRemove.contains(gameObject) && gameObjects.contains(gameObject)) {
@@ -298,7 +295,7 @@ public class Game {
 	}
 
 	/**
-	 * @return the particlesystem used to display and store particles
+	 * @return the particleSystem used to display and store particles
 	 **/
 	public ParticleSystem getParticleSystem() {
 		return particleSystem;
@@ -327,18 +324,18 @@ public class Game {
 
 	/**
 	 * @param key the key of the value to be returned
-	 * @return the value of the given key in the game savestate
+	 * @return the value of the given key in the game save state
 	 **/
 	public int getValue(String key) {
 		return values.getOrDefault(key, 0);
 	}
 
 	/**
-	 * searches for all set values in the savegame, where the key cointains the given string and where the value is one of the given values or anything when given no values
+	 * searches for all set values in the saveGame, where the key contains the given string and where the value is one of the given values or anything when given no values
 	 *
 	 * @param key   the String that every key has to contain
 	 * @param value that the found values may be, or nothing to allow every value
-	 * @return the amount of keys found in the savestate
+	 * @return the amount of keys found in the save state
 	 **/
 	public int getKeyAmount(String key, int... value) {
 		String[] keySet = values.keySet().toArray(new String[0]);
@@ -375,7 +372,7 @@ public class Game {
 	/**
 	 * loads all values from a saveGame with the given name
 	 *
-	 * @param saveName the name of the save that should be loade
+	 * @param saveName the name of the save that should be loaded
 	 **/
 	public void loadValues(String saveName) {
 		values = SaveHandler.readSave(saveName);
