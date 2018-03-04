@@ -1,8 +1,6 @@
 package game.util;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStreamReader;
+import java.io.*;
 
 public class FileHandler {
 
@@ -14,7 +12,7 @@ public class FileHandler {
 	 */
 	public static String loadFile(String fileName) {
 		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(ClassLoader.getSystemResourceAsStream("res/files/" + fileName)));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(ClassLoader.getSystemResourceAsStream("res/files/" + fileName), "UTF8"));
 
 			StringBuilder source = new StringBuilder();
 			String line;
@@ -30,14 +28,21 @@ public class FileHandler {
 		return null;
 	}
 
-	/**
-	 * Checks if a file exists in the jar in the package src/res/files/
-	 *
-	 * @param fileName the filename in the package
-	 * @return if the file is present
-	 */
-	public static boolean fileExists(String fileName) {
-		File file = new File("src/res/files/" + fileName);
-		return file.exists();
+	public static String loadFile(File file) {
+		try {
+			BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF8"));
+
+			StringBuilder source = new StringBuilder();
+			String line;
+			while ((line = reader.readLine()) != null) {
+				source.append(line).append("\n");
+			}
+			reader.close();
+
+			return source.toString();
+		} catch (Exception e) {
+			ErrorUtil.printError(String.format("Loading file: %s", file.getName()));
+		}
+		return null;
 	}
 }

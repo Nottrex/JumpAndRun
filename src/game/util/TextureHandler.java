@@ -57,7 +57,7 @@ public class TextureHandler {
 		try {
 			//loading spritesheet.png and reading number of subimages
 			loadImagePng(spriteSheetName, fileName);
-			Scanner s = new Scanner(ClassLoader.getSystemResourceAsStream("res/textures/" + fileName + ".text"));
+			Scanner s = new Scanner(ClassLoader.getSystemResourceAsStream("res/textures/" + fileName + ".text"), "UTF8");
 
 			int amount = Integer.valueOf(s.nextLine());
 

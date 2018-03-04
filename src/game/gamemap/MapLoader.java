@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class MapLoader {
-	private static final File mapFolder = new File("src/res/files/maps");
+	private static final File mapFolder = new File(System.getProperty("user.dir") + File.separator + "maps" + File.separator);
 
 	public static GameMap load(Game g, String mapName) {
 		if (mapName.startsWith(Constants.SYS_PREFIX)) {
@@ -38,7 +38,9 @@ public class MapLoader {
 			if (mapName.endsWith("save")) return createSave(g);
 		}
 
-		if (!FileHandler.fileExists("maps/" + mapName + ".map")) {
+		File f = new File(mapFolder, mapName + ".map");
+
+		if (!f.exists()) {
 			GameMap map = load(g, Constants.SYS_PREFIX + "world");
 			Text text = new Text(-100, "Something went wrong. We send you back to the Menu", -0.9f, -0.9f, 0.05f, false, 0, 0, Color.RED);
 			text.setTimer(300);
@@ -51,7 +53,7 @@ public class MapLoader {
 		Map<Float, Map<HitBox, String>> layers = new HashMap<>();
 		map.setMapInfo(mapName.split("/")[0], mapName.split("/")[1]);
 
-		Scanner fileScanner = new Scanner(FileHandler.loadFile("maps/" + mapName + ".map"));
+		Scanner fileScanner = new Scanner(FileHandler.loadFile(f));
 
 		{
 			String[] lineOne = fileScanner.nextLine().replaceAll(" ", "").replaceAll("\\[", "").replaceAll("]", "").split(";");
