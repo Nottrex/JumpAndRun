@@ -11,6 +11,8 @@ import java.util.Map;
 
 
 public class Options {
+	public static final String DATA_PATH = System.getProperty("user.dir") + File.separator + "saves" + File.separator;
+	public static final String DATA_FILE_PATH = DATA_PATH + "options.yml";
 
 	public static Map<String, Integer> controls = Constants.DEFAULT_CONTROLS;
 	public static boolean startWithTutorial = true;
@@ -20,7 +22,7 @@ public class Options {
 	public static boolean stereo = true;
 
 	static {
-		new File(Constants.DATA_PATH).mkdirs();
+		new File(DATA_PATH).mkdirs();
 	}
 
 	public static void save() {
@@ -37,7 +39,7 @@ public class Options {
 		data.put("stereo", stereo);
 
 		try {
-			yaml.dump(data, new FileWriter(new File(Constants.DATA_FILE_PATH)));
+			yaml.dump(data, new FileWriter(new File(DATA_FILE_PATH)));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -47,9 +49,9 @@ public class Options {
 		DumperOptions op = new DumperOptions();
 		op.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
 		Yaml yaml = new Yaml(op);
-		if (new File(Constants.DATA_FILE_PATH).exists()) {
+		if (new File(DATA_FILE_PATH).exists()) {
 			try {
-				Map<String, Object> data = (Map<String, Object>) yaml.load(new FileInputStream(new File(Constants.DATA_FILE_PATH)));
+				Map<String, Object> data = (Map<String, Object>) yaml.load(new FileInputStream(new File(DATA_FILE_PATH)));
 
 				if (data.containsKey("CONTROLS")) {
 					Map<String, Integer> con = (Map<String, Integer>) data.get("CONTROLS");

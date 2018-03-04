@@ -42,8 +42,6 @@ public class Constants {
 	public static final float MIN_CAMERA_ZOOM = 0.125f;			//nearest camera distance
 	public static final int FADE_TIME = 60;					//tick amount of camera fading
 
-	public static final String DATA_PATH = System.getProperty("user.dir") + File.separator + "src" + File.separator;
-	public static final String DATA_FILE_PATH = DATA_PATH + "options.yml";	//directory of settings file
 	public static final String SYS_PREFIX = String.valueOf(Math.random());	//internal prefix for private data
 
 	public static final Map<String, Integer> DEFAULT_CONTROLS = new HashMap<>();	//default controls for all 18 players
