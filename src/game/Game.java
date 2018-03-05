@@ -69,7 +69,7 @@ public class Game {
 
 		values = new HashMap<>();
 
-		coinCounter = new Text(-1000f, "<#coins>", 1, 0.98f, 0.1f, false, 1, 1);
+		coinCounter = new Text(1, 0.98f, -1000, "<#coins>", 0.1f, false, 1f, 1f, null);
 		addGameObject(coinCounter);
 
 		//Start the game in the "menu" map

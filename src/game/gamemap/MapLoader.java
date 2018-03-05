@@ -38,22 +38,28 @@ public class MapLoader {
 			if (mapName.endsWith("save")) return createSave(g);
 		}
 
-		File f = new File(mapFolder, mapName + ".map");
-
-		if (!f.exists()) {
-			GameMap map = load(g, Constants.SYS_PREFIX + "world");
-			Text text = new Text(-100, "Something went wrong. We send you back to the Menu", -0.9f, -0.9f, 0.05f, false, 0, 0, Color.RED);
-			text.setTimer(300);
-			map.addGameObject(text);
-			return map;
-		}
-
+		Scanner fileScanner;
 		GameMap map = new GameMap();
 		Map<Integer, String> textureReplacements = new HashMap<>();
 		Map<Float, Map<HitBox, String>> layers = new HashMap<>();
-		map.setMapInfo(mapName.split("/")[0], mapName.split("/")[1]);
 
-		Scanner fileScanner = new Scanner(FileHandler.loadFile(f));
+		if (!mapName.startsWith(Constants.SYS_PREFIX)) {
+			File f = new File(mapFolder, mapName + ".map");
+
+			if (!f.exists()) {
+				GameMap returnMap = load(g, Constants.SYS_PREFIX + "world");
+				Text text = new Text(-0.9f, -0.9f, -100, "Something went wrong. We send you back to the Menu", 0.05f, false, 0f, 0f, null);
+				text.setTimer(300);
+				returnMap.addGameObject(text);
+				return returnMap;
+			}
+
+			map.setMapInfo(mapName.split("/")[0], mapName.split("/")[1]);
+			fileScanner = new Scanner(FileHandler.loadFile(f));
+
+		} else {
+			fileScanner = new Scanner(ClassLoader.getSystemResourceAsStream("res/files/systemMaps/" + mapName.replace(Constants.SYS_PREFIX, "") + ".map"));
+		}
 
 		{
 			String[] lineOne = fileScanner.nextLine().replaceAll(" ", "").replaceAll("\\[", "").replaceAll("]", "").split(";");
@@ -72,7 +78,8 @@ public class MapLoader {
 				i++;
 			}
 
-			if (tags.containsKey("update")) map.setOnUpdate(Parser.loadScript(Parser.COMMAND_BLOCK, tags.get("update")));
+			if (tags.containsKey("update"))
+				map.setOnUpdate(Parser.loadScript(Parser.COMMAND_BLOCK, tags.get("update")));
 			if (tags.containsKey("load")) map.setOnLoad(Parser.loadScript(Parser.COMMAND_BLOCK, tags.get("load")));
 		}
 		float tileSize = Constants.PIXEL_PER_TILE;
@@ -323,7 +330,7 @@ public class MapLoader {
 					case "x":
 					case "y":
 					case "z":
-						map.addGameObject(new Text(drawingPriority, tags.getOrDefault("text", ""), x, y, Float.valueOf(tags.getOrDefault("size", "0.5")), true, Float.valueOf(tags.getOrDefault("anchorX", "0")), Float.valueOf(tags.getOrDefault("anchorY", "0"))));
+						map.addGameObject(new Text(x, y, drawingPriority, tags.getOrDefault("text", ""), Float.valueOf(tags.getOrDefault("size", "0.5")), true, Float.valueOf(tags.getOrDefault("anchorX", "0")), Float.valueOf(tags.getOrDefault("anchorY", "0")), null));
 						break;
 					default:
 						HitBox hitBox = new HitBox(x, y, textureBounds.width / tileSize, textureBounds.height / tileSize);
@@ -397,9 +404,9 @@ public class MapLoader {
 							if (height == 1)
 								map.addGameObject(new Exit(xValue, yValue, 1, mapNames[section], null));
 							if (height == 3)
-								map.addGameObject(new Text(0.7f, mapNames[section].split("/")[1], xValue + 0.5f, yValue, 0.5f, true, 0.5f, 0));
+								map.addGameObject(new Text(xValue + 0.5f, yValue, 0.7f, mapNames[section].split("/")[1], 0.5f, true, 0.5f, 0f, null));
 							if (height == 4)
-								map.addGameObject(new Text(0.7f, String.valueOf(g.getKeyAmount(mapNames[section].split("/")[0] + "_coin_", 1)) + "/" + String.valueOf(g.getKeyAmount(mapNames[section].split("/")[0] + "_coin_")), xValue + 0.5f, yValue, 0.5f, true, 0.5f, 0));
+								map.addGameObject(new Text(xValue + 0.5f, yValue, 0.7f, String.valueOf(g.getKeyAmount(mapNames[section].split("/")[0] + "_coin_", 1)) + "/" + String.valueOf(g.getKeyAmount(mapNames[section].split("/")[0] + "_coin_")), 0.5f, true, 0.5f, 0f, null));
 						}
 
 						//platforms
@@ -438,18 +445,20 @@ public class MapLoader {
 
 				//borders
 				if (y == 0) add(layers, new HitBox(xValue, yValue, 1f, 1f), "block_stone_bottom", 0.52f);
-				if (y == sectionHeight - 1) add(layers, new HitBox(xValue, yValue + 1, 1f, 1f), "block_stone_top", 0.52f);
+				if (y == sectionHeight - 1)
+					add(layers, new HitBox(xValue, yValue + 1, 1f, 1f), "block_stone_top", 0.52f);
 				if (x == sectionWidth - 1) add(layers, new HitBox(xValue, yValue, 1f, 1f), "block_stone_left", 0.52f);
 
 				//exit
 				if (x == sectionWidth / 2 && y == 1) {
 					map.addGameObject(new Exit(xValue, yValue, 0.6f, Constants.SYS_PREFIX + "save", null));
-					map.addGameObject(new Text(0.6f, "save", xValue + 0.5f, yValue + 2f, 0.5f, true, 0.5f, 0));
+					map.addGameObject(new Text(xValue + 0.5f, yValue + 2f, 0.6f, "save", 0.5f, true, 0.5f, 0f, null));
 					map.setSpawnPoint(xValue, yValue, 0.5f);
 				}
 
 				//camera
-				if (x == 0 && y == 0) map.getCameraController().addCameraArea(new Area(0, 0, -sectionWidth, sectionHeight));
+				if (x == 0 && y == 0)
+					map.getCameraController().addCameraArea(new Area(0, 0, -sectionWidth, sectionHeight));
 			}
 		}
 
@@ -463,14 +472,14 @@ public class MapLoader {
 	}
 
 	private static GameMap createSave(Game g) {
-		GameMap map = load(g, "hidden/saves");
+		GameMap map = load(g, Constants.SYS_PREFIX + "savesMap");
 		Map<Integer, String> saves = SaveHandler.getSaves();
 
 		for (int i = 1; i < 4; i++) {
 			final int slot = i;
 			DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH.mm");
-			map.addGameObject(new Text(1, saves.getOrDefault(i, "empty"), i * 8 - 0.5f, -11, 0.5f, true, 0.5f, 0f));
-			map.addGameObject(new Text(1, "slot " + i, i * 8 - 0.5f, -10, 0.5f, true, 0.5f, 0f));
+			map.addGameObject(new Text(i * 8 - 0.5f, -11, 1, saves.getOrDefault(i, "empty"), 0.5f, true, 0.5f, 0f, null));
+			map.addGameObject(new Text(i * 8 - 0.5f, -10, 1, "slot " + i, 0.5f, true, 0.5f, 0f, null));
 			map.addGameObject(new Exit(i * 8 - 1, -13, 1, Constants.SYS_PREFIX + "menu", new Tree((tree, game) -> {
 				game.saveValues(slot + "-" + dateFormat.format(new Date()));
 				game.clearValues();
@@ -483,7 +492,7 @@ public class MapLoader {
 	}
 
 	private static GameMap createOptions(Game g) {
-		GameMap map = load(g, "hidden/options");
+		GameMap map = load(g, Constants.SYS_PREFIX + "optionsMap");
 
 		List<GameObject> lever = map.getGameObjects().stream().filter(go -> go instanceof Lever).sorted((g1, g2) -> Float.compare(((Lever) g1).getCollisionBoxes().get(0).y, ((Lever) g2).getCollisionBoxes().get(0).y)).collect(Collectors.toList());
 
@@ -503,7 +512,7 @@ public class MapLoader {
 
 			HitBox textBox = fullscreenLever.getCollisionBoxes().get(0).clone();
 			textBox.move(0, 1f);
-			map.addGameObject(new Text(0, "fullscreen", textBox.getCenterX(), textBox.getCenterY(), 0.5f, true, 0.5f, 0.5f));
+			map.addGameObject(new Text(textBox.getCenterX(), textBox.getCenterY(), 0, "fullscreen", 0.5f, true, 0.5f, 0.5f, null));
 		}
 		{
 			Lever soundLever = (Lever) lever.get(1);
@@ -521,7 +530,7 @@ public class MapLoader {
 
 			HitBox textBox = soundLever.getCollisionBoxes().get(0).clone();
 			textBox.move(0, 1f);
-			map.addGameObject(new Text(0, "3d sound", textBox.getCenterX(), textBox.getCenterY(), 0.5f, true, 0.5f, 0.5f));
+			map.addGameObject(new Text(textBox.getCenterX(), textBox.getCenterY(), 0, "3d sound", 0.5f, true, 0.5f, 0.5f, null));
 		}
 
 		Slider musicSlider = new Slider(map.getSpawnX(), map.getSpawnX() + 8, Options.musicVolume, map.getSpawnY() + 4, 0.52f, null);
@@ -530,7 +539,7 @@ public class MapLoader {
 			return null;
 		})));
 		map.addGameObject(musicSlider);
-		map.addGameObject(new Text(0.52f, "music volume", map.getSpawnX() + 2, map.getSpawnY() + 5.5f, 0.5f, true));
+		map.addGameObject(new Text(map.getSpawnX() + 2, map.getSpawnY() + 5.5f, 0.52f, "music volume", 0.5f, true, 0f, 0f, null));
 
 		Slider effectSlider = new Slider(map.getSpawnX(), map.getSpawnX() + 8, Options.effectVolume, map.getSpawnY() + 8, 0.52f, null);
 		effectSlider.setOnRelocate(new Tree(((tree, game) -> {
@@ -538,7 +547,7 @@ public class MapLoader {
 			return null;
 		})));
 		map.addGameObject(effectSlider);
-		map.addGameObject(new Text(0.52f, "effect volume", map.getSpawnX() + 2, map.getSpawnY() + 9.5f, 0.5f, true));
+		map.addGameObject(new Text(map.getSpawnX() + 2, map.getSpawnY() + 9.5f, 0.52f, "effect volume", 0.5f, true, 0f, 0f, null));
 
 
 		((Exit) map.getGameObjects().stream().filter(go -> go instanceof Exit).findAny().get()).setTargetMap(Constants.SYS_PREFIX + "menu");
@@ -550,7 +559,7 @@ public class MapLoader {
 	}
 
 	private static GameMap createMenu(Game g) {
-		GameMap map = load(g, "hidden/menu");
+		GameMap map = load(g, Constants.SYS_PREFIX + "menuMap");
 
 		Exit exitLoad = (Exit) map.getGameObjects().stream().filter(go -> go instanceof Exit).filter(go -> ((Exit) go).getTargetMap().endsWith("2")).findAny().get();
 		exitLoad.setTargetMap(Constants.SYS_PREFIX + "load");
@@ -558,7 +567,7 @@ public class MapLoader {
 			game.clearValues();
 			return null;
 		})));
-		Text textLoad = new Text(-0.25f, "LOAD", exitLoad.getCollisionBoxes().get(0).getCenterX(), exitLoad.getCollisionBoxes().get(0).y + 2, 0.5f, true, 0.5f, 0.5f);
+		Text textLoad = new Text(exitLoad.getCollisionBoxes().get(0).getCenterX(), exitLoad.getCollisionBoxes().get(0).y + 2, -0.25f, "LOAD", 0.5f, true, 0.5f, 0.5f, null);
 		map.addGameObject(textLoad);
 
 		Exit exitNew = (Exit) map.getGameObjects().stream().filter(go -> go instanceof Exit).filter(go -> ((Exit) go).getTargetMap().endsWith("3")).findAny().get();
@@ -568,26 +577,26 @@ public class MapLoader {
 			loadAllMaps(game);
 			return null;
 		})));
-		Text textNew = new Text(-0.25f, "NEW", exitNew.getCollisionBoxes().get(0).getCenterX(), exitNew.getCollisionBoxes().get(0).y + 2, 0.5f, true, 0.5f, 0.5f);
+		Text textNew = new Text(exitNew.getCollisionBoxes().get(0).getCenterX(), exitNew.getCollisionBoxes().get(0).y + 2, -0.25f, "NEW", 0.5f, true, 0.5f, 0.5f, null);
 		map.addGameObject(textNew);
 
 		Exit exitOptions = (Exit) map.getGameObjects().stream().filter(go -> go instanceof Exit).filter(go -> ((Exit) go).getTargetMap().endsWith("1")).findAny().get();
 		exitOptions.setTargetMap(Constants.SYS_PREFIX + "options");
-		Text textOptions = new Text(-0.25f, "OPTIONS", exitOptions.getCollisionBoxes().get(0).getCenterX(), exitOptions.getCollisionBoxes().get(0).y + 2, 0.5f, true, 0.5f, 0.5f);
+		Text textOptions = new Text(exitOptions.getCollisionBoxes().get(0).getCenterX(), exitOptions.getCollisionBoxes().get(0).y + 2, -0.25f, "OPTIONS", 0.5f, true, 0.5f, 0.5f, null);
 		map.addGameObject(textOptions);
 
 		map.addGameObject(new BeerBarrel(map.getSpawnX() + 1, map.getSpawnY(), 0.5f));
-		map.addGameObject(new Text(-100, "press <w> or <key_up> or <button_a> to spawn", map.getSpawnX() + 0.5f, map.getSpawnY() - 3, 0.5f, true, 0.5f, 0));
+		map.addGameObject(new Text(map.getSpawnX() + 0.5f, map.getSpawnY() - 3, -100, "press <w> or <key_up> or <button_a> to spawn", 0.5f,true, 0.5f, 0f, null));
 		return map;
 	}
 
 	private static GameMap createLoad(Game g) {
-		GameMap map = load(g, "hidden/saves");
+		GameMap map = load(g, Constants.SYS_PREFIX + "savesMap");
 		Map<Integer, String> saves = SaveHandler.getSaves();
 
 		for (int i = 1; i < 4; i++) {
-			map.addGameObject(new Text(1, saves.getOrDefault(i, "empty"), i * 8 - 0.5f, -11, 0.5f, true, 0.5f, 0f));
-			map.addGameObject(new Text(1, "slot " + i, i * 8 - 0.5f, -10, 0.5f, true, 0.5f, 0f));
+			map.addGameObject(new Text(i * 8 - 0.5f, -11, 1, saves.getOrDefault(i, "empty"), 0.5f, true, 0.5f, 0f, null));
+			map.addGameObject(new Text(i * 8 - 0.5f, -10, 1, "slot " + i, 0.5f, true, 0.5f, 0f, null));
 			if (saves.containsKey(i)) {
 				final int slot = i;
 				final String date = saves.get(i);

@@ -1,5 +1,6 @@
 package game.gameobjects.gameobjects;
 
+import com.sun.istack.internal.Nullable;
 import game.Constants;
 import game.Game;
 import game.data.Sprite;
@@ -22,9 +23,10 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class Text extends AbstractGameObject implements Drawable {
-	public static Sprite coin = new Sprite(100, "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin_idle1_0", "coin_idle1_1", "coin_idle1_2", "coin_idle1_3", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin_idle2_0", "coin_idle2_1", "coin_idle2_0");
+	private Sprite coin = new Sprite(100, "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin_idle1_0", "coin_idle1_1", "coin_idle1_2", "coin_idle1_3", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin_idle2_0", "coin_idle2_1", "coin_idle2_0");
 	private Sprite stick_up = new Sprite(400, "stick_up_0", "stick_up_1", "stick_up_2", "stick_up_3", "stick_up_2", "stick_up_1");
 	private Sprite stick_down = new Sprite(400, "stick_down_0", "stick_down_1", "stick_down_2", "stick_down_3", "stick_down_2", "stick_down_1");
 	private Sprite stick_left = new Sprite(400, "stick_left_0", "stick_left_1", "stick_left_2", "stick_left_3", "stick_left_2", "stick_left_1");
@@ -55,40 +57,22 @@ public class Text extends AbstractGameObject implements Drawable {
 	private int vao, vao2;
 	private int locationVBO, texLocationVBO, indicesVBO;
 
-
-	public Text(float drawingPriority, String text, float x, float y, float size, boolean useCamera) {
-		this.drawingPriority = drawingPriority;
+	public Text(float x, float y, float drawingPriority, @Nullable String text, @Nullable Float size, @Nullable Boolean useCamera, @Nullable Float anchorX, @Nullable Float anchorY, @Nullable Color color) {
 		this.x = x;
 		this.y = y;
-		this.size = size;
-		this.useCamera = useCamera;
+		this.drawingPriority = drawingPriority;
+		this.size = Optional.ofNullable(size).orElse(0.5f);
+		this.useCamera = Optional.ofNullable(useCamera).orElse(true);
+		this.anchorX = Optional.ofNullable(anchorX).orElse(0f);
+		this.anchorY = Optional.ofNullable(anchorY).orElse(0f);
+		this.color = Optional.ofNullable(color).orElse(Color.WHITE);
+
 		update = false;
 		letters = 0;
-		anchorY = 0;
-		anchorX = 0f;
-		color = Color.WHITE;
 		timer = -1;
-		setText(text);
-
+		setText(Optional.ofNullable(text).orElse(""));
 		startTime = TimeUtil.getTime();
 		animations = new HashMap<>();
-	}
-
-	public Text(float drawingPriority, String text, float x, float y, float size, boolean useCamera, Color c) {
-		this(drawingPriority, text, x, y, size, useCamera);
-		color = c;
-	}
-
-	public Text(float drawingPriority, String text, float x, float y, float size, boolean useCamera, float anchorX, float anchorY) {
-		this(drawingPriority, text, x, y, size, useCamera);
-
-		this.anchorX = anchorX;
-		this.anchorY = anchorY;
-	}
-
-	public Text(float drawingPriority, String text, float x, float y, float size, boolean useCamera, float anchorX, float anchorY, Color c) {
-		this(drawingPriority, text, x, y, size, useCamera, anchorX, anchorY);
-		color = c;
 	}
 
 	public void setText(String text) {
@@ -268,29 +252,6 @@ public class Text extends AbstractGameObject implements Drawable {
 	public void update(Game game) {
 		if (timer == 0) game.removeGameObject(this);
 		else if (timer > 0) timer--;
-	}
-
-	public void setPosition(float x, float y, float size) {
-		this.x = x;
-		this.y = y;
-		this.size = size;
-
-		if (text != null) update = true;
-	}
-
-	public void setUseCamera(boolean useCamera) {
-		this.useCamera = useCamera;
-	}
-
-	public void setAnchorPoint(float anchorX, float anchorY) {
-		this.anchorX = anchorX;
-		this.anchorY = anchorY;
-
-		if (text != null) update = true;
-	}
-
-	public void setColor(Color color) {
-		this.color = color;
 	}
 
 	public void setTimer(int ticks) {
