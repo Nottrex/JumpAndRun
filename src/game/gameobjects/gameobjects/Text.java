@@ -30,13 +30,13 @@ import java.util.Optional;
  */
 public class Text extends AbstractGameObject implements Drawable {
 	private Sprite coin = new Sprite(100, "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin_idle1_0", "coin_idle1_1", "coin_idle1_2", "coin_idle1_3", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin_idle2_0", "coin_idle2_1", "coin_idle2_0");
-	private Sprite stick_up = new Sprite(400, "stick_up_0", "stick_up_1", "stick_up_2", "stick_up_3", "stick_up_2", "stick_up_1");
-	private Sprite stick_down = new Sprite(400, "stick_down_0", "stick_down_1", "stick_down_2", "stick_down_3", "stick_down_2", "stick_down_1");
-	private Sprite stick_left = new Sprite(400, "stick_left_0", "stick_left_1", "stick_left_2", "stick_left_3", "stick_left_2", "stick_left_1");
-	private Sprite stick_right = new Sprite(400, "stick_right_0", "stick_right_1", "stick_right_2", "stick_right_3", "stick_right_2", "stick_right_1");
-	private Sprite stick_vertical = new Sprite(400, "stick_up_0", "stick_up_1", "stick_up_2", "stick_up_3", "stick_up_2", "stick_up_1", "stick_down_0", "stick_down_1", "stick_down_2", "stick_down_3", "stick_down_2", "stick_down_1");
-	private Sprite stick_horizontal = new Sprite(400, "stick_left_0", "stick_left_1", "stick_left_2", "stick_left_3", "stick_left_2", "stick_left_1", "stick_right_0", "stick_right_1", "stick_right_2", "stick_right_3", "stick_right_2", "stick_right_1");
-	private Sprite stick = new Sprite(400, "stick_up_0", "stick_up_1", "stick_up_2", "stick_up_3", "stick_up_2", "stick_up_1", "stick_down_0", "stick_down_1", "stick_down_2", "stick_down_3", "stick_down_2", "stick_down_1");
+	private Sprite stick_up = new Sprite(300, "stick_up_0", "stick_up_1", "stick_up_2", "stick_up_3", "stick_up_2", "stick_up_1");
+	private Sprite stick_down = new Sprite(300, "stick_down_0", "stick_down_1", "stick_down_2", "stick_down_3", "stick_down_2", "stick_down_1");
+	private Sprite stick_left = new Sprite(300, "stick_left_0", "stick_left_1", "stick_left_2", "stick_left_3", "stick_left_2", "stick_left_1");
+	private Sprite stick_right = new Sprite(300, "stick_right_0", "stick_right_1", "stick_right_2", "stick_right_3", "stick_right_2", "stick_right_1");
+	private Sprite stick_vertical = new Sprite(300, "stick_up_0", "stick_up_1", "stick_up_2", "stick_up_3", "stick_up_2", "stick_up_1", "stick_down_0", "stick_down_1", "stick_down_2", "stick_down_3", "stick_down_2", "stick_down_1");
+	private Sprite stick_horizontal = new Sprite(300, "stick_left_0", "stick_left_1", "stick_left_2", "stick_left_3", "stick_left_2", "stick_left_1", "stick_right_0", "stick_right_1", "stick_right_2", "stick_right_3", "stick_right_2", "stick_right_1");
+	private Sprite stick = new Sprite(300, "stick_up_0", "stick_up_1", "stick_up_2", "stick_up_3", "stick_up_2", "stick_up_1", "stick_down_0", "stick_down_1", "stick_down_2", "stick_down_3", "stick_down_2", "stick_down_1");
 	private Sprite buttonA = new Sprite(100, "button_a");
 	private Sprite buttonB = new Sprite(100, "button_b");
 	private Sprite buttonX = new Sprite(100, "button_x");
