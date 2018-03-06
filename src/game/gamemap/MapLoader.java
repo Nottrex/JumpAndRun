@@ -279,7 +279,7 @@ public class MapLoader {
 						break;
 					case "wood_ladder":
 					case "steel_ladder":
-						map.addGameObject(new Ladder(x, y, drawingPriority));
+						map.addGameObject(new Ladder(x, y, drawingPriority, texture == "wood_ladder"));
 						break;
 					case "piano":
 						map.addGameObject(new Piano(x, y, drawingPriority));

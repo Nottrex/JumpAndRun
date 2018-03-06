@@ -14,10 +14,10 @@ public class Ladder extends BasicStaticEntity {
 	private static Sprite wood = new Sprite(100, "wood_ladder");
 	private static Sprite steel = new Sprite(100, "steel_ladder");
 
-	public Ladder(float x, float y, float drawingPriority) {
+	public Ladder(float x, float y, float drawingPriority, boolean isWooden) {
 		super(new HitBox(x, y, 1f, 1f), drawingPriority);
 
-		setSprite(wood);
+		setSprite((isWooden ? wood : steel));
 	}
 
 	@Override
