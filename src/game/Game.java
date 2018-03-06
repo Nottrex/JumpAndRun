@@ -397,4 +397,8 @@ public class Game {
 	public AudioPlayer getMusicPlayer() {
 		return audioPlayer;
 	}
+
+	public GameMap getMap() {
+		return map;
+	}
 }

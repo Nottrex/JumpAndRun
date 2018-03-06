@@ -4,6 +4,7 @@ import game.Ability;
 import game.Game;
 import game.data.Sprite;
 import game.data.hitbox.HitBox;
+import game.data.hitbox.HitBoxDirection;
 import game.gameobjects.CollisionObject;
 import game.gameobjects.gameobjects.entities.BasicWalkingEntity;
 import game.gameobjects.gameobjects.particle.ParticleType;
@@ -74,8 +75,27 @@ public class Player extends BasicWalkingEntity implements Light {
 	}
 
 	@Override
+	public void collide(CollisionObject gameObject, HitBoxDirection direction, float velocity, boolean source) {
+		super.collide(gameObject, direction, velocity, source);
+
+		if (gameObject instanceof Zombie) {
+			Zombie zom = (Zombie) gameObject;
+			float dx = (this.hitBox.getCenterX() - zom.getHitBox().getCenterX());
+			float dy = (this.hitBox.getCenterY() - zom.getHitBox().getCenterY());
+			double l = Math.sqrt(dx * dx + dy * dy);
+			dx /= l;
+			dy /= l;
+			addKnockBack(0.4f * dx, 0.4f * dy);
+		}
+	}
+
+	@Override
 	public void update(Game game) {
 		super.update(game);
+
+		if (game.getMap().getDirectory() == null)
+			this.addAbility(Ability.DOUBLE_JUMP);
+
 		Sprite newSprite = null;
 		if (attack > 0) newSprite = (attackLeft ? attack_l : attack_r);
 		else {
@@ -188,9 +208,6 @@ public class Player extends BasicWalkingEntity implements Light {
 		onGround = false;
 		removeAllAbilities();
 		setDrawingPriority(drawingPriority);
-
-		//TODO: REMOVE
-		this.addAbility(Ability.DOUBLE_JUMP);
 	}
 
 	@Override

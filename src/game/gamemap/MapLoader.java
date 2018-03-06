@@ -321,7 +321,7 @@ public class MapLoader {
 					case "ex_barrel_stand_l":
 					case "ex_barrel_stand_e_0":
 					case "ex_barrel_stand_e_1":
-						map.addGameObject(new ExplosiveBarrel(x, y, drawingPriority, false));
+						map.addGameObject(new ExplosiveBarrel(x, y, drawingPriority, true));
 						break;
 					case "ex_barrel_ground_s":
 					case "ex_barrel_ground_l":
@@ -419,7 +419,7 @@ public class MapLoader {
 		Map<Float, Map<HitBox, String>> layers = new HashMap<>();
 		final int sectionWidth = 10;
 		final int sectionHeight = 5;
-		final int sectionPerLine = 2;
+		final int sectionPerLine = 3;
 		final int floors = (int) Math.ceil(1.0f * mapNames.length / sectionPerLine);
 
 		for (int y = 0; y < floors; y++) {
