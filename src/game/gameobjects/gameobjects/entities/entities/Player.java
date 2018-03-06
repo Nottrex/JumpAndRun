@@ -92,6 +92,10 @@ public class Player extends BasicWalkingEntity implements Light {
 	@Override
 	public void update(Game game) {
 		super.update(game);
+
+		if (game.getMap().getDirectory() == null)
+			this.addAbility(Ability.DOUBLE_JUMP);
+
 		Sprite newSprite = null;
 		if (attack > 0) newSprite = (attackLeft ? attack_l : attack_r);
 		else {
@@ -204,9 +208,6 @@ public class Player extends BasicWalkingEntity implements Light {
 		onGround = false;
 		removeAllAbilities();
 		setDrawingPriority(drawingPriority);
-
-		//TODO: REMOVE
-		this.addAbility(Ability.DOUBLE_JUMP);
 	}
 
 	@Override

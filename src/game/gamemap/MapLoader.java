@@ -419,7 +419,7 @@ public class MapLoader {
 		Map<Float, Map<HitBox, String>> layers = new HashMap<>();
 		final int sectionWidth = 10;
 		final int sectionHeight = 5;
-		final int sectionPerLine = 2;
+		final int sectionPerLine = 3;
 		final int floors = (int) Math.ceil(1.0f * mapNames.length / sectionPerLine);
 
 		for (int y = 0; y < floors; y++) {
