@@ -7,6 +7,10 @@ import java.nio.FloatBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * load, unload ShaderPrograms
+ * supply them with default values
+ */
 public class ShaderHandler {
 	private Map<ShaderType, ShaderProgram> shaders;
 

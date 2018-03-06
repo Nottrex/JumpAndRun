@@ -25,6 +25,9 @@ public class Options {
 		new File(DATA_PATH).mkdirs();
 	}
 
+	/**
+	 * writes the options to the disk
+	 */
 	public static void save() {
 		DumperOptions op = new DumperOptions();
 		op.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
@@ -45,6 +48,9 @@ public class Options {
 		}
 	}
 
+	/**
+	 * loads the options from the disk, if available
+	 */
 	public static void load() {
 		DumperOptions op = new DumperOptions();
 		op.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);

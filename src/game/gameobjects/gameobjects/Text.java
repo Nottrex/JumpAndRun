@@ -111,7 +111,7 @@ public class Text extends AbstractGameObject implements Drawable {
 
 		if (letters == 0) return;
 
-		shader.setUseCameraLocation(useCamera);
+		shader.setUseCamera(useCamera);
 		shader.setColor(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
 
 		GL30.glBindVertexArray(vao);
