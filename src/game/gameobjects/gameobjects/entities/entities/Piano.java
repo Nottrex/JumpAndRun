@@ -10,6 +10,9 @@ import game.gameobjects.gameobjects.entities.BasicStaticEntity;
 
 import java.util.Random;
 
+/**
+ * A piano that can be used to play sounds
+ */
 public class Piano extends BasicStaticEntity {
 	private static final int[] JINGLES = new int[]{3 * 60, 3 * 60, 13 * 60};
 	private static Sprite idle = new Sprite(100, "piano");
@@ -21,7 +24,7 @@ public class Piano extends BasicStaticEntity {
 	public Piano(float x, float y, float drawingPriority) {
 		super(new HitBox(x, y, 2, 2), drawingPriority);
 		this.source = new Source(false);
-		this.source.setMusicVolumeMultiplier(0.5f);
+		this.source.setMusicVolumeMultiplier(0.3f);
 		setSprite(idle);
 	}
 

@@ -7,6 +7,9 @@ import game.data.hitbox.HitBoxDirection;
 import game.gameobjects.CollisionObject;
 import game.gameobjects.gameobjects.entities.BasicStaticEntity;
 
+/**
+ * A ladder that can be climbed
+ */
 public class Ladder extends BasicStaticEntity {
 	private static Sprite wood = new Sprite(100, "wood_ladder");
 	private static Sprite steel = new Sprite(100, "steel_ladder");

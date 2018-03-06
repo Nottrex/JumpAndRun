@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Move the camera to show the player
+ */
 public class CameraController extends AbstractGameObject {
 	private List<Area> cameraAreas;
 	private float spawnX, spawnY;
@@ -104,19 +107,24 @@ public class CameraController extends AbstractGameObject {
 		float width = (maxX - minX) * 1.25f;
 		float height = (maxY - minY) * 1.25f;
 
+		//calculate zoom
 		float zoom = Math.min(Math.min(2 / height, 2 * game.getAspectRatio() / width), Constants.MIN_CAMERA_ZOOM);
 
+		//Update camera position
 		if (posX != lastX || posY != lastY || zoom != lastZoom) {
 			if (outside) {
+				//if the player leaves the camera zones he should still be shown
 				game.getCamera().setZoom(zoom);
 				game.getCamera().setPosition(posX, posY);
 			} else if (start) {
+				//On level change the camera should be zoomed in the spawn
 				game.getCamera().setPosition(spawnX, spawnY);
 				game.getCamera().setZoom(0.2f);
 				game.getCamera().setPositionSmooth(posX, posY, 1000);
 				game.getCamera().setZoomSmooth(zoom, 1000);
 				start = false;
 			} else {
+				//move the camera smooth into the new zone
 				game.getCamera().setPositionSmooth(posX, posY, 500);
 				game.getCamera().setZoomSmooth(zoom, 500);
 			}
@@ -127,6 +135,11 @@ public class CameraController extends AbstractGameObject {
 		}
 	}
 
+	/**
+	 * @param x
+	 * @param y
+	 * @return the first area that contains the given coordinates
+	 */
 	private Area getAreaAt(float x, float y) {
 		for (Area area : cameraAreas) {
 			if (area.contains(x, y)) return area;
@@ -140,6 +153,10 @@ public class CameraController extends AbstractGameObject {
 		return -1;
 	}
 
+	/**
+	 * Adds a new camera area
+	 * @param area the area to be added
+	 */
 	public void addCameraArea(Area area) {
 		cameraAreas.add(area);
 	}

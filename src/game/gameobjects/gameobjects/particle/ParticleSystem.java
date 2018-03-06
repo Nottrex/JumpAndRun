@@ -21,8 +21,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * The particle system
+ */
 public class ParticleSystem extends AbstractGameObject implements Drawable {
-	private final List<Particle> particles;
+	private final List<Particle> particles;				//The list of particles
 	private int vao, vao2;
 	private int locationVBO, texLocationVBO, indicesVBO;
 	private FloatBuffer locationBuffer, texLocationBuffer;
@@ -34,6 +37,14 @@ public class ParticleSystem extends AbstractGameObject implements Drawable {
 		toRemove = new LinkedList<>();
 	}
 
+	/**
+	 * creates a new particle
+	 * @param particle the particle type
+	 * @param x the x position
+	 * @param y the y position
+	 * @param vx the x velocity
+	 * @param vy the y velocity
+	 */
 	public void createParticle(ParticleType particle, float x, float y, float vx, float vy) {
 		if (particles.size() < Constants.MAX_PARTICLES)
 			particles.add(new Particle(particle, x - particle.getWidth() / 2, y - particle.getHeight() / 2, vx, vy, TimeUtil.getTime()));

@@ -14,6 +14,9 @@ import game.window.light.Light;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * The player class
+ */
 public class Player extends BasicWalkingEntity implements Light {
 	private static final int ATTACK_TICKS = 37;
 	private static final int INTERACT_TICKS = 5;
@@ -27,7 +30,7 @@ public class Player extends BasicWalkingEntity implements Light {
 	private static Sprite idle_l = new Sprite(250, "player_l_idle_0", "player_l_idle_0", "player_l_idle_0", "player_l_idle_0", "player_l_idle_0", "player_l_idle_0", "player_l_idle_0", "player_l_idle_0", "player_l_idle_1");
 	private static Sprite falling_l = new Sprite(250, "player_l_fall");
 
-	private Set<Ability> abilities;
+	private Set<Ability> abilities;								//The abilities of the player
 	private boolean attackingLastTick, interactingLastTick;
 	private boolean attacking, interacting;
 	private int attack, interact;

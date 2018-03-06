@@ -7,6 +7,9 @@ import game.gameobjects.gameobjects.particle.ParticleType;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A handler that controls the DeadBodies
+ */
 public class DeadBodyHandler extends AbstractGameObject {
 
 	private Map<DeadBody, Integer> deadBodies;

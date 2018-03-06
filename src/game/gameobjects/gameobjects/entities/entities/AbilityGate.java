@@ -11,6 +11,9 @@ import game.gameobjects.gameobjects.particle.ParticleType;
 
 import java.util.Map;
 
+/**
+ * A gate that adds or removes Abilities from the player
+ */
 public class AbilityGate extends BasicStaticEntity {
 	private static Sprite left = new Sprite(100, "ability_gate_left");
 	private static Sprite right = new Sprite(100, "ability_gate_right");

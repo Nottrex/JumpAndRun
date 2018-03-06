@@ -7,6 +7,9 @@ import game.data.Sprite;
 import game.gameobjects.CollisionObject;
 import game.gameobjects.gameobjects.entities.BasicWalkingEntity;
 
+/**
+ * A box that can be moved
+ */
 public class Box extends BasicWalkingEntity {
 	private static Sprite idle = new Sprite(100, "box");
 

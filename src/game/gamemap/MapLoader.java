@@ -310,6 +310,25 @@ public class MapLoader {
 					case "zombie_r_idle_0":
 						map.addGameObject(new Zombie(x, y, drawingPriority, Parser.loadScript(Parser.COMMAND_BLOCK, tags.getOrDefault("onDead", ""))));
 						break;
+					case "barrel":
+					case "barrel_0":
+					case "barrel_1":
+					case "barrel_2":
+					case "barrel_3":
+						map.addGameObject(new BeerBarrel(x, y, drawingPriority));
+						break;
+					case "ex_barrel_stand_s":
+					case "ex_barrel_stand_l":
+					case "ex_barrel_stand_e_0":
+					case "ex_barrel_stand_e_1":
+						map.addGameObject(new ExplosiveBarrel(x, y, drawingPriority, false));
+						break;
+					case "ex_barrel_ground_s":
+					case "ex_barrel_ground_l":
+					case "ex_barrel_ground_e_0":
+					case "ex_barrel_ground_e_1":
+						map.addGameObject(new ExplosiveBarrel(x, y, drawingPriority, true));
+						break;
 					case "a":
 					case "b":
 					case "c":
@@ -405,6 +424,8 @@ public class MapLoader {
 
 		for (int y = 0; y < floors; y++) {
 			for (int x = 0; x < sectionPerLine; x++) {
+				map.addGameObject(new Lantern(x*sectionWidth + 2.5f, -y*sectionHeight + 1, 0.6f, new Tree((t,g2) -> true)));
+				map.addGameObject(new Lantern(x*sectionWidth + 7.5f, -y*sectionHeight + 1, 0.6f, new Tree((t,g2) -> true)));
 				for (int width = 0; width < sectionWidth; width++) {
 					for (int height = 0; height < sectionHeight; height++) {
 						int xValue = x * sectionWidth + width;
@@ -446,6 +467,8 @@ public class MapLoader {
 				}
 			}
 		}
+		map.addGameObject(new Lantern(-sectionWidth + 1.5f, 1, 0.6f, new Tree((t,g2) -> true)));
+		map.addGameObject(new Lantern(-sectionWidth + 6.5f, 1, 0.6f, new Tree((t,g2) -> true)));
 		for (int x = 0; x < sectionWidth; x++) {
 			for (int y = 0; y < sectionHeight; y++) {
 				int xValue = -x - 1;

@@ -11,6 +11,9 @@ import game.gameobjects.gameobjects.entities.entities.Player;
 import game.gameobjects.gameobjects.particle.ParticleType;
 import game.util.MathUtil;
 
+/**
+ * A simple entity, that implements gravity, walking and jumping
+ */
 public abstract class BasicWalkingEntity extends BasicMovingEntity {
 	protected boolean onGround, onLadder;
 	protected int jumpTicks;

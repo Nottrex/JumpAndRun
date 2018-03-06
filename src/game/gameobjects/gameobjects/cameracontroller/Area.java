@@ -1,7 +1,10 @@
 package game.gameobjects.gameobjects.cameracontroller;
 
+/**
+ * Rectangle
+ */
 public class Area {
-	private float x1, y1, x2, y2;
+	private float x1, y1, x2, y2; 		//First and second Point
 
 	public Area(float x1, float y1, float x2, float y2) {
 		this.x1 = x1;
@@ -22,6 +25,11 @@ public class Area {
 		}
 	}
 
+	/**
+	 * @param x
+	 * @param y
+	 * @return if the given coordinates are within this area
+	 */
 	public boolean contains(float x, float y) {
 		return x1 <= x && y1 <= y && x2 > x && y2 > y;
 	}

@@ -7,6 +7,9 @@ import game.data.hitbox.HitBoxDirection;
 import game.gameobjects.CollisionObject;
 import game.gameobjects.gameobjects.entities.BasicStaticEntity;
 
+/**
+ * A simple barrel, that emits beer when hit
+ */
 public class BeerBarrel extends BasicStaticEntity {
 	private static Sprite idle = new Sprite(100, "barrel");
 	private static Sprite leak = new Sprite(200, "barrel_0", "barrel_1", "barrel_2", "barrel_3");

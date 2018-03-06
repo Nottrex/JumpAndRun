@@ -11,12 +11,17 @@ import game.gameobjects.gameobjects.entities.BasicStaticEntity;
 import game.window.Window;
 import game.window.light.Light;
 
+/**
+ * A coin that can be collected
+ */
 public class Coin extends BasicStaticEntity implements Light {
 
 	public static Sprite idle = new Sprite(100, "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin_idle1_0", "coin_idle1_1", "coin_idle1_2", "coin_idle1_3", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin", "coin_idle2_0", "coin_idle2_1", "coin_idle2_0");
 	private static Sprite ghost_idle = new Sprite(100, "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost_idle1_0", "coin_ghost_idle1_1", "coin_ghost_idle1_2", "coin_ghost_idle1_3", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost", "coin_ghost_idle2_0", "coin_ghost_idle2_1", "coin_ghost_idle2_0");
 
-	private boolean collected, ghost;
+	private boolean collected;
+	private boolean ghost;		//already collected
+
 	private Tree onFirstCollect, onReCollect;
 
 	public Coin(float x, float y, float drawingPriority, boolean wasCollected, Tree onFirstCollect, Tree onReCollect) {

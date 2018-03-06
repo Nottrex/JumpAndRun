@@ -8,6 +8,9 @@ import game.data.script.Tree;
 import game.gameobjects.CollisionObject;
 import game.gameobjects.gameobjects.entities.BasicStaticEntity;
 
+/**
+ * A lever that can be switched
+ */
 public class Lever extends BasicStaticEntity {
 	private static Sprite right = new Sprite(100, "lever_right");
 	private static Sprite left = new Sprite(100, "lever_left");

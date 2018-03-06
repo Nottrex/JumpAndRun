@@ -10,6 +10,9 @@ import game.gameobjects.gameobjects.entities.BasicWalkingEntity;
 import java.awt.*;
 import java.util.Optional;
 
+/**
+ * A zombie that follows the player
+ */
 public class Zombie extends BasicWalkingEntity {
 	private static Sprite walking_r = new Sprite(250, "zombie_r_move_0", "zombie_r_move_1", "zombie_r_move_2", "zombie_r_move_3");
 	private static Sprite idle_r = new Sprite(250, "zombie_r_idle_0");

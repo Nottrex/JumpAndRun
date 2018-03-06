@@ -8,15 +8,18 @@ import game.data.script.Tree;
 import game.gameobjects.CollisionObject;
 import game.gameobjects.gameobjects.entities.BasicStaticEntity;
 
+/**
+ * A door that opens and closes depending on a condition;
+ */
 public class Door extends BasicStaticEntity {
 	private static Sprite opened = new Sprite(100, "door_6");
 	private static Sprite closed = new Sprite(100, "door_1");
 	private static Sprite open = new Sprite(150, "door_2", "door_3", "door_4", "door_5", "door_6");
 	private static Sprite close = new Sprite(150, "door_5", "door_4", "door_3", "door_2", "door_1");
 
-	private boolean isOpen;
-	private boolean turning;
-	private int startTick;
+	private boolean isOpen;				//Is open
+	private boolean turning;			//Is currently opening or closing
+	private int startTick;				//The first tick of the opening or closing
 
 	private Tree condition;
 

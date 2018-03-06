@@ -11,6 +11,9 @@ import game.window.light.Light;
 
 import java.awt.*;
 
+/**
+ * a lamp that emits light in different colors
+ */
 public class PetroleumLamp extends BasicStaticEntity implements Light {
 	public enum PetroleumColor {
 		YELLOW(new Sprite(100, "petroleum_yellow"), new Color(255, 255, 0)),

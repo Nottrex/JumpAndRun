@@ -6,6 +6,9 @@ import game.gameobjects.gameobjects.entities.BasicWalkingEntity;
 
 import java.awt.*;
 
+/**
+ * A DeadBody, that remains when a player or zombie dies
+ */
 public class DeadBody extends BasicWalkingEntity {
 
 	public DeadBody(float x, float y, String entity, Color color, boolean direction) {

@@ -10,6 +10,9 @@ import game.gameobjects.gameobjects.entities.BasicStaticEntity;
 import game.window.Window;
 import game.window.light.Light;
 
+/**
+ * A lantern that emits light
+ */
 public class Lantern extends BasicStaticEntity implements Light {
 	private static Sprite on = new Sprite(100, "lantern");
 	private static Sprite off = new Sprite(100, "lantern_off");

@@ -6,6 +6,9 @@ import game.data.hitbox.HitBox;
 import game.gameobjects.gameobjects.entities.BasicDrawingEntity;
 import game.window.Window;
 
+/**
+ * A simple icon drawn on the screen
+ */
 public class ScreenEntity extends BasicDrawingEntity {
 	private HitBox hitBox2;
 	private float anchorX, anchorY;

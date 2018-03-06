@@ -8,6 +8,9 @@ import game.data.script.Tree;
 import game.gameobjects.CollisionObject;
 import game.gameobjects.gameobjects.entities.BasicStaticEntity;
 
+/**
+ * Activates when a player, zombie or box steps onto it
+ */
 public class PressurePlate extends BasicStaticEntity {
 	private static Sprite up = new Sprite(100, "pressureplate");
 	private static Sprite down = new Sprite(100, "pressureplate_pressed");

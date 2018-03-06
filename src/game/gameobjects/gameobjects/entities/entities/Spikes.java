@@ -8,6 +8,9 @@ import game.gameobjects.CollisionObject;
 import game.gameobjects.GameObject;
 import game.gameobjects.gameobjects.entities.BasicStaticEntity;
 
+/**
+ * kill players and zombies on collision
+ */
 public class Spikes extends BasicStaticEntity {
 	private static Sprite down = new Sprite(100, "spikes_bot_blood");
 	private static Sprite up = new Sprite(100, "spikes_top_blood");

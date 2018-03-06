@@ -6,6 +6,9 @@ import game.gameobjects.CollisionObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A simple entity that implements collision without moving
+ */
 public abstract class BasicStaticEntity extends BasicDrawingEntity implements CollisionObject {
 
 	private List<HitBox> hitBoxes;

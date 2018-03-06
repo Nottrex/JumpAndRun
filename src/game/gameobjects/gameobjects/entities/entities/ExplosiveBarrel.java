@@ -7,7 +7,11 @@ import game.data.hitbox.HitBoxDirection;
 import game.gameobjects.CollisionObject;
 import game.gameobjects.gameobjects.entities.BasicStaticEntity;
 import game.gameobjects.gameobjects.particle.ParticleType;
+import game.gameobjects.gameobjects.wall.Wall;
 
+/**
+ * A barrel that explodes when hit
+ */
 public class ExplosiveBarrel extends BasicStaticEntity {
 	private static Sprite stand = new Sprite(100, "ex_barrel_stand_s");
 	private static Sprite ground = new Sprite(100, "ex_barrel_ground_s");
@@ -58,6 +62,19 @@ public class ExplosiveBarrel extends BasicStaticEntity {
 		if (exploding && game.getGameTick() - startTick > 50) {
 			game.getParticleSystem().createParticle(ParticleType.EXPLOSION, this.hitBox.x + 0.5f, this.hitBox.y + 0.5f, 0, 0);
 			game.getCamera().addScreenshake(0.1f);
+
+			HitBox attackHitBox = new HitBox(hitBox.getCenterX() + -1.5f, hitBox.getCenterY() - 1.5f, 3f,  3f);
+
+			for (CollisionObject collisionObject : game.getCollisionObjects()) {
+				if (collisionObject.equals(this)) continue;
+				for (HitBox hitBox : collisionObject.getCollisionBoxes()) {
+					if (hitBox.collides(attackHitBox)) {
+						collisionObject.interact(this, attackHitBox, InteractionType.ATTACK);
+						break;
+					}
+				}
+			}
+
 			game.removeGameObject(this);
 		}
 	}

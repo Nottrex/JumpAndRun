@@ -8,11 +8,14 @@ import game.data.script.Tree;
 import game.gameobjects.CollisionObject;
 import game.gameobjects.gameobjects.entities.BasicStaticEntity;
 
+/**
+ * A door used to go into a new map
+ */
 public class Exit extends BasicStaticEntity {
 	private static Sprite door = new Sprite(1, "door_side");
 	private static Sprite doorOpen = new Sprite(100, "door_side_open_0", "door_side_open_1", "door_side_open_2", "door_side_open_2", "door_side_open_2", "door_side_open_2");
 
-	private String targetMap;
+	private String targetMap;				//name of the new map
 	private Tree onEntrance;
 
 	public Exit(float x, float y, float drawingPriority, String targetMap, Tree onEntrance) {

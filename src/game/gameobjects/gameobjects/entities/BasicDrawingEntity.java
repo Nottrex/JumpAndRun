@@ -13,6 +13,9 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
+/**
+ * An implementation of drawing, that draws a simple rectangle texture to the screen
+ */
 public abstract class BasicDrawingEntity extends AbstractGameObject implements Drawable {
 	protected HitBox hitBox;
 	protected Sprite sprite;

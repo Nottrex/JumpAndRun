@@ -9,10 +9,13 @@ import game.gameobjects.gameobjects.entities.entities.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A simple entity, that implements movement and collision detection
+ */
 public abstract class BasicMovingEntity extends BasicDrawingEntity implements CollisionObject {
 	private List<HitBox> hitBoxList;
-	protected float vx, vy;
-	protected float kx, ky;
+	protected float vx, vy;			//Velocity in x and y direction
+	protected float kx, ky;			//KnockBack in x and y direction
 
 
 	public BasicMovingEntity(HitBox hitBox, float drawingPriority) {
@@ -126,7 +129,7 @@ public abstract class BasicMovingEntity extends BasicDrawingEntity implements Co
 
 	@Override
 	public void interact(CollisionObject gameObject, HitBox hitBox, InteractionType interactionType) {
-		if (game.getGameTick() - lastAttackKnockBack > MIN_TIME_BETWEEN_ATTACK_KNOCK_BACK && gameObject instanceof Player && interactionType == InteractionType.ATTACK) {
+		if (game.getGameTick() - lastAttackKnockBack > MIN_TIME_BETWEEN_ATTACK_KNOCK_BACK && interactionType == InteractionType.ATTACK) {
 			float dx = (this.hitBox.getCenterX() - hitBox.getCenterX());
 			float dy = (this.hitBox.getCenterY() - hitBox.getCenterY());
 			double l = Math.sqrt(dx * dx + dy * dy);

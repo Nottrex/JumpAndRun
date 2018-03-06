@@ -7,6 +7,9 @@ import game.data.script.Tree;
 import game.gameobjects.gameobjects.entities.BasicMovingEntity;
 import game.util.MathUtil;
 
+/**
+ * A box that can be moved to control a variable
+ */
 public class Slider extends BasicMovingEntity {
 	private Sprite idle = new Sprite(100, "box");
 
