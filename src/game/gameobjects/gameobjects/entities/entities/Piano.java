@@ -56,6 +56,6 @@ public class Piano extends BasicStaticEntity {
 
 	@Override
 	public void remove(Game game, boolean mapChange) {
-		source.stop();
+		game.getMusicPlayer().delete(source);
 	}
 }

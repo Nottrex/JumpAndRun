@@ -7,12 +7,13 @@ import java.util.List;
 
 public class AudioPlayer {
 
-	private List<Source> afx, toRemove;
+	private List<Source> afx, noRemoveAFX, toRemove;
 	private Source musicSource;
 
 	public AudioPlayer() {
 		afx = new ArrayList<>();
 		toRemove = new ArrayList<>();
+		this.noRemoveAFX = new ArrayList<>();
 
 		musicSource = new Source();
 		musicSource.setVolume(Options.musicVolume);
@@ -28,7 +29,7 @@ public class AudioPlayer {
 	}
 
 	public void playAfx(Source c, Sound afx) {
-		this.afx.add(c);
+		this.noRemoveAFX.add(c);
 		c.play(afx);
 		c.setVolume(Options.effectVolume);
 	}
@@ -42,7 +43,7 @@ public class AudioPlayer {
 	}
 
 	public void playAfx(Source c, String afx) {
-		this.afx.add(c);
+		this.noRemoveAFX.add(c);
 		c.play(afx);
 		c.setVolume(Options.effectVolume);
 	}
@@ -73,5 +74,19 @@ public class AudioPlayer {
 			Source c = afx.get(i);
 			c.setVolume(Options.effectVolume);
 		}
+		for (int i = 0; i < noRemoveAFX.size(); i++) {
+			Source c = noRemoveAFX.get(i);
+			c.setVolume(Options.effectVolume);
+		}
+	}
+
+	public boolean delete(Source c) {
+		if(noRemoveAFX.contains(c)) {
+			noRemoveAFX.remove(c);
+			c.stop();
+			c.delete();
+			return true;
+		}
+		return false;
 	}
 }
