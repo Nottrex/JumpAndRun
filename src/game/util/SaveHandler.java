@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * Util class used to store save data of the game
+ */
 public class SaveHandler {
 	private static String saveDirectory = System.getProperty("user.dir") + File.separator + "saves";
 
@@ -13,6 +16,10 @@ public class SaveHandler {
 		new File(saveDirectory).mkdir();
 	}
 
+	/**
+	 * returns saves found in the save directory
+	 * @return the saves by mapping the save slot to the full name of the save
+	 */
 	public static Map<Integer, String> getSaves() {
 		File[] listOfFiles = new File(saveDirectory).listFiles();
 
@@ -27,6 +34,11 @@ public class SaveHandler {
 		return saves;
 	}
 
+	/**
+	 * Reads a save from the disk and returns the content of the save game
+	 * @param saveName the name of the save
+	 * @return all values set for the loaded save game
+	 */
 	public static Map<String, Integer> readSave(String saveName) {
 		Map<String, Integer> values = new HashMap<>();
 
@@ -42,6 +54,11 @@ public class SaveHandler {
 		return values;
 	}
 
+	/**
+	 * Saves a game o a given save file
+	 * @param values all the values set for the current game
+	 * @param saveName the name of the save
+	 */
 	public static void writeSave(Map<String, Integer> values, String saveName) {
 		File[] oldSave = new File(saveDirectory).listFiles(pathname -> pathname.getName().startsWith(saveName.substring(0, 2)) && pathname.getName().endsWith(".save"));
 		if (oldSave != null) for (File file : oldSave) file.delete();

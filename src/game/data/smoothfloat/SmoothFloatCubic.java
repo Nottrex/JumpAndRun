@@ -2,14 +2,17 @@ package game.data.smoothfloat;
 
 import game.util.TimeUtil;
 
+/**
+ * An implementation of SmoothFloat using cubic interpolation
+ */
 public class SmoothFloatCubic implements SmoothFloat {
 
-	private float tValue;
+	private float tValue;			//current value
 	private float targetValue;
 	private long beginTime, targetTime;
-	private float a, b, c, d;
-	private boolean z;
-	private boolean z2;
+	private float a, b, c, d;		//values for the cubic function of the transition
+	private boolean z;				//is there a transition
+	private boolean z2;				//has the value changed
 
 	public SmoothFloatCubic(float value) {
 		tValue = value;
@@ -72,7 +75,6 @@ public class SmoothFloatCubic implements SmoothFloat {
 
 		return change;
 	}
-
 
 	private static float calculateCubicFunction(float x, float a, float b, float c, float d) {
 		return a * x * x * x + b * x * x + c * x + d;

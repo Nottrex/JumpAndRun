@@ -1,11 +1,14 @@
 package game.data.script;
 
+/**
+ * A replacement in the grammar of our language
+ */
 public class Replacement {
-	private char key;
-	private String replacement;
-	private int childs;
-	private Tree.TreeValue value;
-	private boolean constant;
+	private char key;					//The key of the replacement (non terminal)
+	private String replacement;			//The result of the replacement
+	private int childs;					//The amount of non terminals in the replacement string
+	private Tree.TreeValue value;		//The function associated with this replacement
+	private boolean constant;			//Whether this function is constant given constant descending functions
 
 	public Replacement(char key, String replacement, int childs, Tree.TreeValue value, boolean constant) {
 		this.key = key;

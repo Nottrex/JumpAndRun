@@ -20,11 +20,21 @@ public class HitBox {
 		this.type = type;
 	}
 
+	/**
+	 * moves this hitbox
+	 * @param mx the x movement
+	 * @param my the y movement
+	 */
 	public void move(float mx, float my) {
 		this.x += mx;
 		this.y += my;
 	}
 
+	/**
+	 * checks for collision with a second hitbox
+	 * @param box2 the second hitbox
+	 * @return if they collide
+	 */
 	public boolean collides(HitBox box2) {
 		return ((x + width) > box2.x && (box2.x + box2.width) > x && (y + height) > box2.y && (box2.y + box2.height) > y);
 	}
@@ -76,18 +86,32 @@ public class HitBox {
 		return distance;
 	}
 
+	/**
+	 * Calculates the distance of the center of a second hitbox to this center
+	 * @param hitBox2 the second hitbox
+	 * @return the distance
+	 */
 	public float distance(HitBox hitBox2) {
 		return (float) Math.sqrt(Math.pow(hitBox2.getCenterX() - getCenterX(), 2) + Math.pow(hitBox2.getCenterY() - getCenterY(), 2));
 	}
 
+	/**
+	 * @return the center of the x value of this hitbox
+	 */
 	public float getCenterX() {
 		return x + width / 2;
 	}
 
+	/**
+	 * @return the center of the y value of this hitbox
+	 */
 	public float getCenterY() {
 		return y + height / 2;
 	}
 
+	/**
+	 * @return a second hitbox with the same position and size
+	 */
 	@Override
 	public HitBox clone() {
 		return new HitBox(x, y, width, height);
