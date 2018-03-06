@@ -29,6 +29,12 @@ import java.util.stream.Collectors;
 public class MapLoader {
 	private static final File mapFolder = new File(System.getProperty("user.dir") + File.separator + "maps" + File.separator);
 
+	/**
+	 * load a map
+	 * @param g context
+	 * @param mapName the name of the map
+	 * @return a GameMap instance containing the data of the given level
+	 */
 	public static GameMap load(Game g, String mapName) {
 		if (mapName.startsWith(Constants.SYS_PREFIX)) {
 			if (mapName.endsWith("menu")) return createMenu(g);
@@ -383,6 +389,12 @@ public class MapLoader {
 		return map;
 	}
 
+	/**
+	 * creates a lobby map that links to many maps
+ 	 * @param g context
+	 * @param mapNames a list of all maps that should be linked
+	 * @return the gameMap representing the lobby
+	 */
 	private static GameMap createLobby(Game g, String... mapNames) {
 		GameMap map = new GameMap();
 		Map<Float, Map<HitBox, String>> layers = new HashMap<>();
@@ -471,6 +483,11 @@ public class MapLoader {
 		return map;
 	}
 
+	/**
+	 * creates a save map
+	 * @param g context
+	 * @return a gameMap representing the save level
+	 */
 	private static GameMap createSave(Game g) {
 		GameMap map = load(g, Constants.SYS_PREFIX + "savesMap");
 		Map<Integer, String> saves = SaveHandler.getSaves();
@@ -491,6 +508,11 @@ public class MapLoader {
 		return map;
 	}
 
+	/**
+	 * creates an options map
+	 * @param g context
+	 * @return a gameMap representing the options level
+	 */
 	private static GameMap createOptions(Game g) {
 		GameMap map = load(g, Constants.SYS_PREFIX + "optionsMap");
 
@@ -558,6 +580,11 @@ public class MapLoader {
 		return map;
 	}
 
+	/**
+	 * creates a menu map
+	 * @param g context
+	 * @return a gameMap representing the menu level
+	 */
 	private static GameMap createMenu(Game g) {
 		GameMap map = load(g, Constants.SYS_PREFIX + "menuMap");
 
@@ -590,6 +617,11 @@ public class MapLoader {
 		return map;
 	}
 
+	/**
+	 * creates the load map
+	 * @param g context
+	 * @return a gameMap representing the load level
+	 */
 	private static GameMap createLoad(Game g) {
 		GameMap map = load(g, Constants.SYS_PREFIX + "savesMap");
 		Map<Integer, String> saves = SaveHandler.getSaves();
@@ -613,6 +645,13 @@ public class MapLoader {
 		return map;
 	}
 
+	/**
+	 * adds a texture to a a list of layers
+	 * @param layers the list of layers
+	 * @param hitBox the hitBox of the texture
+	 * @param texture the texture name
+	 * @param drawingPriority the drawing priority of the texture
+	 */
 	private static void add(Map<Float, Map<HitBox, String>> layers, HitBox hitBox, String texture, float drawingPriority) {
 		if (layers.containsKey(drawingPriority)) {
 			layers.get(drawingPriority).put(hitBox, texture);
@@ -623,6 +662,12 @@ public class MapLoader {
 		}
 	}
 
+	/**
+	 * returns all files found in a folder
+	 * @param folder the start folder
+	 * @param all whether all or only the map files should be returned
+	 * @return a String[] containing all of them
+	 */
 	private static String[] getMaps(File folder, boolean all) {
 		File[] packages = folder.listFiles(File::isDirectory);
 
@@ -641,6 +686,10 @@ public class MapLoader {
 		return maps.toArray(new String[0]);
 	}
 
+	/**
+	 * loads all maps once
+	 * @param game context
+	 */
 	public static void loadAllMaps(Game game) {
 		String[] maps = getMaps(mapFolder, true);
 

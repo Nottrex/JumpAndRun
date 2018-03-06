@@ -4,13 +4,14 @@ import org.lwjgl.openal.AL10;
 
 public class Source {
 
+	private boolean deleteOnFinish; //If this source should be deleted on finishing a replay of the sound
 	private int sourceID;			//ID of the source used to change attributes
 
 	/**
 	 * Creates new Audio Source at (0, 0, 0)
 	 */
-	public Source() {
-		this(0, 0);
+	public Source(boolean deleteOnFinish) {
+		this(0, 0, deleteOnFinish);
 	}
 
 	/**
@@ -19,8 +20,8 @@ public class Source {
 	 * @param x x-Coordinate of Source
 	 * @param y y-Coordinate of Source
 	 */
-	public Source(float x, float y) {
-		this(x, y, .25f);
+	public Source(float x, float y, boolean deleteOnFinish) {
+		this(x, y, .25f, deleteOnFinish);
 	}
 
 	/**
@@ -30,8 +31,8 @@ public class Source {
 	 * @param y y-Coordinate of Source
 	 * @param v volume of Source
 	 */
-	public Source(float x, float y, float v) {
-		this(x, y, 0, v);
+	public Source(float x, float y, float v, boolean deleteOnFinish) {
+		this(x, y, 0, v, deleteOnFinish);
 	}
 
 
@@ -43,11 +44,20 @@ public class Source {
 	 * @param z z-Coordinate of Source
 	 * @param v volume of Source
 	 */
-	public Source(float x, float y, float z, float v) {
+	public Source(float x, float y, float z, float v, boolean deleteOnFinish) {
 		sourceID = AL10.alGenSources();
 		setVolume(v);
 		AL10.alSourcef(sourceID, AL10.AL_PITCH, 1);
 		setPosition(x, y, z);
+
+		this.deleteOnFinish = deleteOnFinish;
+	}
+
+	/**
+	 * @return if this source should be deleted after finishing a play of the sound
+	 */
+	public boolean shouldDeleteOnFinish() {
+		return deleteOnFinish;
 	}
 
 	/**

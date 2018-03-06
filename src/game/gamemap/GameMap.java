@@ -10,36 +10,56 @@ import game.gameobjects.gameobjects.particle.ParticleSystem;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a Level loaded into the game
+ */
 public class GameMap {
-	private List<GameObject> gameObjects;
-	private CameraController cameraController;
+	private List<GameObject> gameObjects;					//all gameObjects in the map
+	private CameraController cameraController;				//the cameraController specific to this map
 
-	private float spawnX, spawnY, playerDrawingPriority;
-	private String directory, name;
+	private float spawnX, spawnY, playerDrawingPriority;	//spawn location of the player
+	private String directory, name;							//map name and save location
 
-	private Tree onLoad, onUpdate;
+	private Tree onLoad, onUpdate;							//map scripts
 
 	public GameMap() {
 		gameObjects = new ArrayList<>();
 
+		//Add default gameObjects
 		cameraController = new CameraController();
 		this.addGameObject(cameraController);
 		this.addGameObject(new ParticleSystem());
 		this.addGameObject(new DeadBodyHandler());
 	}
 
+	/**
+	 * execute the load script
+	 * @param game context
+	 */
 	public void load(Game game) {
 		if (onLoad != null) onLoad.get(game);
 	}
 
+	/**
+	 * execute the update script
+	 * @param game context
+	 */
 	public void update(Game game) {
 		if (onUpdate != null) onUpdate.get(game);
 	}
 
+	/**
+	 * change the load script
+	 * @param onLoad the new script
+	 */
 	public void setOnLoad(Tree onLoad) {
 		this.onLoad = onLoad;
 	}
 
+	/**
+	 * change the update script
+	 * @param onUpdate the new script
+	 */
 	public void setOnUpdate(Tree onUpdate) {
 		this.onUpdate = onUpdate;
 	}
