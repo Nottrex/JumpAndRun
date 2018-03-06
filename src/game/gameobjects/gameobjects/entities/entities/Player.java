@@ -4,6 +4,7 @@ import game.Ability;
 import game.Game;
 import game.data.Sprite;
 import game.data.hitbox.HitBox;
+import game.data.hitbox.HitBoxDirection;
 import game.gameobjects.CollisionObject;
 import game.gameobjects.gameobjects.entities.BasicWalkingEntity;
 import game.gameobjects.gameobjects.particle.ParticleType;
@@ -71,6 +72,21 @@ public class Player extends BasicWalkingEntity implements Light {
 
 		if (game.getDeadBodyHandler() != null)
 			game.getDeadBodyHandler().addDeadBody((new DeadBody(getHitBox().x, getHitBox().y, "player", color, lastMX > 0)));
+	}
+
+	@Override
+	public void collide(CollisionObject gameObject, HitBoxDirection direction, float velocity, boolean source) {
+		super.collide(gameObject, direction, velocity, source);
+
+		if (gameObject instanceof Zombie) {
+			Zombie zom = (Zombie) gameObject;
+			float dx = (this.hitBox.getCenterX() - zom.getHitBox().getCenterX());
+			float dy = (this.hitBox.getCenterY() - zom.getHitBox().getCenterY());
+			double l = Math.sqrt(dx * dx + dy * dy);
+			dx /= l;
+			dy /= l;
+			addKnockBack(0.4f * dx, 0.4f * dy);
+		}
 	}
 
 	@Override

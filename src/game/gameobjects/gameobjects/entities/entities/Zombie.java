@@ -77,7 +77,7 @@ public class Zombie extends BasicWalkingEntity {
 	public void interact(CollisionObject gameObject, HitBox hitBox, InteractionType interactionType) {
 		super.interact(gameObject, hitBox, interactionType);
 
-		if (interactionType == InteractionType.ATTACK) game.removeGameObject(this);
+		if (gameObject instanceof Player && interactionType == InteractionType.ATTACK) game.removeGameObject(this);
 	}
 
 	@Override
