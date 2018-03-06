@@ -69,9 +69,12 @@ public class AudioPlayer {
 
 		toRemove.clear();
 
+		float musicVolume = Options.musicVolume;
 		for (int i = 0; i < afx.size(); i++) {
 			Source c = afx.get(i);
 			c.setVolume(Options.effectVolume);
+			musicVolume = Math.min(musicVolume, c.getMusicVolumeMultiplier() * Options.musicVolume);
 		}
+		musicSource.setVolume(musicVolume);
 	}
 }

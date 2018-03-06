@@ -21,6 +21,7 @@ public class Piano extends BasicStaticEntity {
 	public Piano(float x, float y, float drawingPriority) {
 		super(new HitBox(x, y, 2, 2), drawingPriority);
 		this.source = new Source(false);
+		this.source.setMusicVolumeMultiplier(0.5f);
 		setSprite(idle);
 	}
 

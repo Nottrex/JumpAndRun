@@ -4,6 +4,7 @@ import org.lwjgl.openal.AL10;
 
 public class Source {
 
+	private float musicVolumeMultiplier;
 	private boolean deleteOnFinish; //If this source should be deleted on finishing a replay of the sound
 	private int sourceID;			//ID of the source used to change attributes
 
@@ -148,12 +149,20 @@ public class Source {
 
 
 	/**
-	 * Gets if soure is playing somethin
+	 * Gets if source is playing something
 	 *
 	 * @return if source is playing sound
 	 */
 	public boolean isPlaying() {
 		return AL10.alGetSourcei(sourceID, AL10.AL_SOURCE_STATE) == AL10.AL_PLAYING;
+	}
+
+	public void setMusicVolumeMultiplier(float musicVolumeMultiplier) {
+		this.musicVolumeMultiplier = musicVolumeMultiplier;
+	}
+
+	public float getMusicVolumeMultiplier() {
+		return musicVolumeMultiplier;
 	}
 
 	/**
