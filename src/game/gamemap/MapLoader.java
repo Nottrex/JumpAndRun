@@ -42,6 +42,7 @@ public class MapLoader {
 			if (mapName.endsWith("options")) return createOptions(g);
 			if (mapName.endsWith("world")) return createLobby(g, getMaps(mapFolder, false));
 			if (mapName.endsWith("save")) return createSave(g);
+			if (mapName.contains("tutorial") && !mapName.endsWith("Map")) return createTutorial(g, mapName);
 		}
 
 		Scanner fileScanner;
@@ -64,6 +65,7 @@ public class MapLoader {
 			fileScanner = new Scanner(FileHandler.loadFile(f));
 
 		} else {
+			map.setMapInfo(null, mapName.replace(Constants.SYS_PREFIX, ""));
 			fileScanner = new Scanner(ClassLoader.getSystemResourceAsStream("res/files/systemMaps/" + mapName.replace(Constants.SYS_PREFIX, "") + ".map"));
 		}
 
@@ -84,8 +86,7 @@ public class MapLoader {
 				i++;
 			}
 
-			if (tags.containsKey("update"))
-				map.setOnUpdate(Parser.loadScript(Parser.COMMAND_BLOCK, tags.get("update")));
+			if (tags.containsKey("update")) map.setOnUpdate(Parser.loadScript(Parser.COMMAND_BLOCK, tags.get("update")));
 			if (tags.containsKey("load")) map.setOnLoad(Parser.loadScript(Parser.COMMAND_BLOCK, tags.get("load")));
 		}
 		float tileSize = Constants.PIXEL_PER_TILE;
@@ -279,7 +280,7 @@ public class MapLoader {
 						break;
 					case "wood_ladder":
 					case "steel_ladder":
-						map.addGameObject(new Ladder(x, y, drawingPriority, texture == "wood_ladder"));
+						map.addGameObject(new Ladder(x, y, drawingPriority, texture.equals("wood_ladder")));
 						break;
 					case "piano":
 						map.addGameObject(new Piano(x, y, drawingPriority));
@@ -665,6 +666,21 @@ public class MapLoader {
 		}
 		map.setSpawnPoint(15, -16, 0.5f);
 		map.addGameObject(new Exit(15, -16, 0.6f, Constants.SYS_PREFIX + "menu", null));
+		return map;
+	}
+
+	/**
+	 * creates a tutorial map
+	 * @param g context
+	 * @return a gameMap representing the tutorial
+	 */
+	private static GameMap createTutorial(Game g, String mapName) {
+		GameMap map = load(g, mapName + "Map");
+
+		Exit exit = (Exit) map.getGameObjects().stream().filter(go -> go instanceof Exit).findAny().get();
+		exit.setTargetMap(Constants.SYS_PREFIX + exit.getTargetMap().replace("null/", ""));
+		if (exit.getTargetMap().endsWith("world")) exit.setTargetMap(exit.getTargetMap().replace("world", "menu"));
+
 		return map;
 	}
 

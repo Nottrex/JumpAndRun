@@ -73,7 +73,11 @@ public class Game {
 		addGameObject(coinCounter);
 
 		//Start the game in the "menu" map
-		setGameMap(Constants.SYS_PREFIX + "menu", false);
+		if (Options.startWithTutorial) {
+			setGameMap(Constants.SYS_PREFIX + "tutorial0", false);
+		} else {
+			setGameMap(Constants.SYS_PREFIX + "menu", false);
+		}
 
 		this.audioPlayer = new AudioPlayer();
 		audioPlayer.getMusicSource().play("EP");
